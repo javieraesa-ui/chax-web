@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Términos de Servicio y EULA | Chax</title>
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <!-- Privacy-friendly Web Analytics (GoatCounter) -->
+  <script data-goatcounter="https://chax.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+  <style>
+    :root {
+      --bg: #07090e;
+      --bg-card: rgba(18, 24, 38, 0.7);
+      --border: rgba(56, 189, 248, 0.15);
+      --primary: #38bdf8;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "Segoe UI", Roboto, sans-serif;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      line-height: 1.7;
+      padding: 40px 20px;
+    }
+    .container {
+      max-width: 860px;
+      margin: 0 auto;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 48px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+    .brand-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 32px;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+    .brand-header img { width: 32px; height: 32px; border-radius: 8px; }
+    h1 { font-size: 2.1rem; margin-bottom: 12px; color: var(--primary); letter-spacing: -0.02em; }
+    .meta { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 36px; border-bottom: 1px solid var(--border); padding-bottom: 16px; }
+    h2 { font-size: 1.25rem; margin: 30px 0 12px; color: #e2e8f0; }
+    p, li { color: #cbd5e1; font-size: 0.98rem; margin-bottom: 14px; }
+    ul, ol { margin-left: 24px; margin-bottom: 18px; }
+    .alert-box {
+      background: rgba(239, 68, 68, 0.12);
+      border-left: 4px solid #ef4444;
+      padding: 16px 20px;
+      border-radius: 0 12px 12px 0;
+      margin: 20px 0;
+    }
+    .alert-box strong { color: #fca5a5; }
+    a { color: var(--primary); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .footer-nav { margin-top: 48px; border-top: 1px solid var(--border); padding-top: 24px; display: flex; justify-content: space-between; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <a href="index.html" class="brand-header">
+      <img src="assets/logo.png" alt="Chax Logo">
+      <span>Chax Network</span>
+    </a>
+
+    <h1>Acuerdo de Licencia y Términos de Servicio</h1>
+    <div class="meta">Addendum Complementario al Contrato Estándar de Apple (Custom EULA) | Versión v2.14</div>
+
+    <p>
+      Al descargar, instalar o utilizar <strong>CHAX</strong> (la "Aplicación"), usted ("el Usuario") acepta expresamente quedar vinculado por el presente Acuerdo de Licencia de Usuario Final y Términos de Servicio Complementarios, conjuntamente con los términos del Acuerdo Estándar de Apple (Standard EULA).
+    </p>
+
+    <div class="alert-box">
+      <strong>AVISO CRÍTICO — EXCLUSIÓN DE SERVICIOS DE EMERGENCIA (NO 911 / NO 112):</strong>
+      <p style="margin-top: 8px; margin-bottom: 0;">
+        CHAX NO es un operador de telecomunicaciones regulado y NO proporciona acceso a servicios de socorro o llamadas de emergencia (911, 112, 999 u homólogos). La Aplicación jamás debe ser utilizada como canal primario de auxilio ni como sistema de soporte vital.
+      </p>
+    </div>
+
+    <h2>1. Arquitectura No Custodial y Soberanía Criptográfica</h2>
+    <ol>
+      <li><strong>Cuenta Instantánea y Custodia Local Exclusiva:</strong> La Aplicación no solicita su nombre, número de teléfono ni dirección de correo electrónico para funcionar. Su cuenta es un par de claves asimétricas (Ed25519/Curve25519) generado de manera instantánea y exclusiva en su propio dispositivo Apple (Keychain / Secure Enclave).</li>
+      <li><strong>Inexistencia de Servidor Central:</strong> El Desarrollador NO posee servidores centrales de cuentas, ni contraseñas maestras, ni historiales de mensajes. El Desarrollador no puede descifrar sus comunicaciones ni reestablecer sus claves.</li>
+      <li><strong>Deslinde por Pérdida de Datos:</strong> El Usuario es el único y exclusivo responsable de custodiar sus copias de seguridad físicas y frases semilla. Si el Usuario pierde su dispositivo, extravía sus claves o elimina la Aplicación sin respaldo, los datos serán permanentemente irrecuperables, deslindando al Desarrollador de toda responsabilidad por pérdida de información.</li>
+    </ol>
+
+    <h2>2. Red Mesh, Retransmisión Ciega y Doctrina de "Simple Conducto" (Mere Conduit)</h2>
+    <ol>
+      <li><strong>Entrega de Mejor Esfuerzo (Best-Effort):</strong> Las transmisiones en red local mesh (Bluetooth y Wi-Fi) dependen de la densidad física de dispositivos y de la propagación de radiofrecuencia. Los paquetes se transmiten bajo el principio de "mejor esfuerzo", sin garantías de entrega ni plazos de recepción.</li>
+      <li><strong>Consentimiento de Tránsito Ciego:</strong> Al habilitar las funciones de red, el Usuario autoriza a la Aplicación a utilizar recursos locales para retransmitir paquetes cifrados de extremo a extremo pertenecientes a otros usuarios de la comunidad. El dispositivo del Usuario actúa como un simple conducto técnico ciego e intermediario pasivo conforme a la Sección 512 de la DMCA de EE. UU. y el Artículo 4 del Reglamento de Servicios Digitales (DSA) de la Unión Europea.</li>
+    </ol>
+
+    <h2>3. Infraestructura y Relays de Terceros (Nostr)</h2>
+    <p>
+      La conectividad por internet se apoya en retransmisores abiertos operados por terceros bajo el protocolo Nostr. El Desarrollador no opera ni controla dichos relays públicos y se deslinda de cualquier responsabilidad por la disponibilidad, latencia o políticas operativas de servidores externos.
+    </p>
+
+    <h2>4. Contenido Generado por Usuarios (UGC) y Tolerancia Cero</h2>
+    <p>
+      Queda terminantemente prohibido utilizar CHAX para la transmisión de material de abuso sexual infantil (CSAM), apología del terrorismo, amenazas, acoso o distribución de malware. La Aplicación proporciona herramientas locales de bloqueo de clave pública a nivel de protocolo y reporte de abuso.
+    </p>
+
+    <h2>5. Exclusión de Garantías y Limitación Global de Responsabilidad</h2>
+    <p>
+      LA APLICACIÓN SE ENTREGA "TAL CUAL" ("AS IS") Y "SEGÚN DISPONIBILIDAD", SIN GARANTÍAS DE NINGÚN TIPO. EN LA MÁXIMA MEDIDA PERMITIDA POR LA LEY, EL DESARROLLADOR NO SERÁ RESPONSABLE POR DAÑOS DIRECTOS, INDIRECTOS, INCIDENTALES, ESPECIALES O CONSECUENTES, PÉRDIDA DE BENEFICIOS, FALLOS DE TRANSMISIÓN O CORRUPCIÓN DE DATOS DERIVADOS DEL USO O INCAPACIDAD DE USO DE LA APLICACIÓN. LA RESPONSABILIDAD TOTAL DEL DESARROLLADOR NO EXCEDERÁ EN NINGÚN CASO DE CINCUENTA DÓLARES ESTADOUNIDENSES ($50.00 USD).
+    </p>
+
+    <div class="footer-nav">
+      <a href="privacy.html">← Política de Privacidad</a>
+      <a href="support.html">Centro de Soporte →</a>
+    </div>
+  </div>
+</body>
+</html>

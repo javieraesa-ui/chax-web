@@ -1,0 +1,1590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chax | Omni-Routing P2P Messaging — Fast online, unstoppable mesh</title>
+  <meta name="description" content="Chax is the sovereign hybrid messaging network: ultra-fast over open Nostr relays, or direct P2P and local mesh nodes without cell service. Zero servers, zero trace.">
+  <meta property="og:title" content="Chax: Omni-Routing P2P Messaging">
+  <meta property="og:description" content="Fast online, unstoppable mesh. Your sovereign communication network that no one can shut down.">
+  <meta property="og:image" content="../assets/logo.png">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/png" href="../assets/logo.png">
+  <!-- Privacy-friendly Web Analytics (GoatCounter: dashboard at https://chax.goatcounter.com) -->
+  <script data-goatcounter="https://chax.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+  <style>
+    :root {
+      --bg: #07090e;
+      --bg-card: rgba(18, 24, 38, 0.65);
+      --bg-card-hover: rgba(26, 36, 58, 0.8);
+      --border: rgba(56, 189, 248, 0.15);
+      --border-glow: rgba(56, 189, 248, 0.4);
+      --primary: #38bdf8;
+      --primary-glow: #0284c7;
+      --accent: #818cf8;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #meshCanvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.45;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      position: relative;
+      z-index: 1;
+      width: 100%;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(7, 9, 14, 0.75);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 72px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: var(--text);
+      font-weight: 700;
+      font-size: 1.25rem;
+      letter-spacing: -0.02em;
+    }
+
+    .brand img {
+      width: 36px;
+      height: 36px;
+      border-radius: 9px;
+      filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.4));
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 24px;
+      align-items: center;
+    }
+
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+    }
+
+    nav a:hover {
+      color: var(--primary);
+    }
+
+    .nav-cta {
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      color: #031124 !important;
+      font-weight: 600 !important;
+      padding: 8px 18px;
+      border-radius: 9999px;
+      transition: transform 0.2s ease, box-shadow 0.2s ease !important;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.35);
+    }
+
+    .nav-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 24px rgba(56, 189, 248, 0.55);
+    }
+
+    .lang-switcher {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 9999px;
+      padding: 3px 6px;
+    }
+    .lang-btn {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      transition: all 0.2s ease;
+    }
+    .lang-btn.active, .lang-btn:hover {
+      color: #031124 !important;
+      background: var(--primary);
+    }
+
+    .screenshots-section {
+      padding: 60px 0 30px;
+      position: relative;
+    }
+    .screenshots-scroll {
+      display: flex;
+      gap: 24px;
+      overflow-x: auto;
+      padding: 16px 4px 36px;
+      scroll-snap-type: x mandatory;
+      scrollbar-width: thin;
+      scrollbar-color: var(--primary) transparent;
+      -webkit-overflow-scrolling: touch;
+    }
+    .screenshots-scroll::-webkit-scrollbar {
+      height: 6px;
+    }
+    .screenshots-scroll::-webkit-scrollbar-thumb {
+      background: var(--primary);
+      border-radius: 3px;
+    }
+    .screenshot-card {
+      flex: 0 0 280px;
+      scroll-snap-align: start;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 16px;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    @media (min-width: 768px) {
+      .screenshot-card {
+        flex: 0 0 310px;
+      }
+    }
+    .screenshot-card:hover {
+      border-color: var(--border-glow);
+      transform: translateY(-6px);
+      box-shadow: 0 12px 30px rgba(56, 189, 248, 0.25);
+    }
+    .screenshot-img-wrapper {
+      width: 100%;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: #000;
+      margin-bottom: 14px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+    }
+    .screenshot-img-wrapper img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+    .screenshot-card:hover .screenshot-img-wrapper img {
+      transform: scale(1.02);
+    }
+    .screenshot-info h4 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: var(--text);
+    }
+    .screenshot-info p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .hero {
+      padding: 100px 0 70px;
+      text-align: center;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid var(--border-glow);
+      padding: 6px 16px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 20px;
+      box-shadow: 0 0 18px rgba(56, 189, 248, 0.2);
+    }
+
+    .sovereign-banner {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(56, 189, 248, 0.08));
+      border: 1px solid rgba(16, 185, 129, 0.35);
+      padding: 8px 20px;
+      border-radius: 9999px;
+      font-size: 0.92rem;
+      font-weight: 600;
+      color: #34d399;
+      margin-bottom: 24px;
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.15);
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 800;
+      line-height: 1.1;
+      letter-spacing: -0.04em;
+      margin-bottom: 24px;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: clamp(1.1rem, 2vw, 1.35rem);
+      color: var(--text-muted);
+      max-width: 740px;
+      margin: 0 auto 36px;
+      font-weight: 400;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 14px 28px;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #0284c7, #38bdf8);
+      color: #031124;
+      box-shadow: 0 4px 20px rgba(56, 189, 248, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 28px rgba(56, 189, 248, 0.6);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--text);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 50px;
+    }
+
+    .section-title h2 {
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      margin-bottom: 14px;
+    }
+
+    .section-title p {
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+      margin-bottom: 80px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 36px 28px;
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      backdrop-filter: blur(16px);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-glow);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(56, 189, 248, 0.15);
+    }
+
+    .card-icon {
+      font-size: 2.2rem;
+      margin-bottom: 20px;
+      display: inline-block;
+    }
+
+    .card h3 {
+      font-size: 1.35rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .card p {
+      color: var(--text-muted);
+      font-size: 0.98rem;
+      line-height: 1.6;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 80px;
+    }
+
+    .feature-item {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.07);
+      border-radius: 16px;
+      padding: 24px;
+      transition: all 0.2s ease;
+    }
+
+    .feature-item:hover {
+      background: rgba(255, 255, 255, 0.04);
+      border-color: rgba(56, 189, 248, 0.3);
+    }
+
+    .feature-item h4 {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .feature-item p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .privacy-banner {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, rgba(129, 140, 248, 0.08) 100%);
+      border: 1px solid var(--border-glow);
+      border-radius: 24px;
+      padding: 50px 36px;
+      text-align: center;
+      margin-bottom: 40px;
+      position: relative;
+    }
+
+    .privacy-badge {
+      display: inline-block;
+      background: #10b981;
+      color: #022c22;
+      font-weight: 700;
+      font-size: 0.8rem;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 16px;
+    }
+
+    .privacy-banner h3 {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    .privacy-banner p {
+      color: var(--text-muted);
+      max-width: 650px;
+      margin: 0 auto 28px;
+      font-size: 1.05rem;
+    }
+
+    /* Multiplatform Downloads Section */
+    .downloads-section {
+      padding: 80px 0 60px;
+      position: relative;
+    }
+    .downloads-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      margin-top: 40px;
+    }
+    .download-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .download-card:hover {
+      border-color: var(--border-glow);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(56, 189, 248, 0.2);
+    }
+    .download-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .download-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(56, 189, 248, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+    }
+    .download-badge {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 9999px;
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+    .download-card h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .download-card p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+      line-height: 1.5;
+    }
+    .download-card .btn {
+      width: 100%;
+      justify-content: center;
+      font-size: 0.95rem;
+      padding: 12px 16px;
+    }
+
+    /* Donations Section */
+    .donations-section {
+      padding: 70px 0 60px;
+      position: relative;
+    }
+    .donations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 24px;
+      margin-top: 36px;
+    }
+    .donation-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 26px 22px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .donation-card:hover {
+      border-color: var(--border-glow);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 30px rgba(56, 189, 248, 0.2);
+    }
+    .donation-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .donation-icon-badge {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .donation-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.35rem;
+      font-weight: 800;
+    }
+    .donation-icon.btc {
+      background: rgba(247, 147, 26, 0.15);
+      color: #f7931a;
+      border: 1px solid rgba(247, 147, 26, 0.3);
+    }
+    .donation-icon.evm {
+      background: rgba(98, 126, 234, 0.15);
+      color: #627eea;
+      border: 1px solid rgba(98, 126, 234, 0.3);
+    }
+    .donation-icon.sol {
+      background: rgba(20, 241, 149, 0.15);
+      color: #14f195;
+      border: 1px solid rgba(20, 241, 149, 0.3);
+    }
+    .donation-icon.patreon {
+      background: rgba(255, 66, 77, 0.15);
+      color: #ff424d;
+      border: 1px solid rgba(255, 66, 77, 0.3);
+    }
+    .crypto-tag {
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 9999px;
+      background: rgba(56, 189, 248, 0.12);
+      color: var(--primary);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+    }
+    .donation-card h3 {
+      font-size: 1.18rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .donation-desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      line-height: 1.45;
+    }
+    .crypto-box {
+      background: rgba(7, 9, 14, 0.75);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 10px 12px;
+      margin-bottom: 16px;
+      position: relative;
+    }
+    .crypto-label {
+      font-size: 0.68rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+      display: block;
+    }
+    .crypto-address {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.76rem;
+      color: #38bdf8;
+      word-break: break-all;
+      user-select: all;
+      line-height: 1.35;
+    }
+    .btn-copy {
+      width: 100%;
+      background: rgba(56, 189, 248, 0.1);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: var(--primary);
+      border-radius: 10px;
+      padding: 10px 14px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .btn-copy:hover {
+      background: var(--primary);
+      color: #07090e;
+      box-shadow: 0 0 14px rgba(56, 189, 248, 0.4);
+    }
+    .btn-copy.copied {
+      background: #10b981 !important;
+      border-color: #10b981 !important;
+      color: #ffffff !important;
+    }
+    .btn-patreon {
+      width: 100%;
+      background: linear-gradient(135deg, #ff424d, #f96854);
+      border: none;
+      color: #ffffff !important;
+      border-radius: 10px;
+      padding: 11px 14px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 14px rgba(255, 66, 77, 0.35);
+    }
+    .btn-patreon:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 66, 77, 0.55);
+    }
+
+    footer {
+      margin-top: auto;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 48px 0;
+      background: rgba(5, 7, 10, 0.8);
+    }
+
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .footer-links {
+      display: flex;
+      list-style: none;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--primary);
+    }
+
+    .copyright {
+      color: #64748b;
+      font-size: 0.85rem;
+      width: 100%;
+      text-align: center;
+      margin-top: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding-top: 24px;
+    }
+
+    /* ==========================================================================
+       Mobile Header & Drawer Styles
+       ========================================================================== */
+    .mobile-header-actions {
+      display: none;
+    }
+    .mobile-toggle {
+      display: none;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 8px;
+      padding: 7px;
+      cursor: pointer;
+      color: var(--text);
+      flex-direction: column;
+      gap: 4px;
+      width: 36px;
+      height: 36px;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .mobile-toggle:hover {
+      background: rgba(56, 189, 248, 0.1);
+      border-color: var(--border-glow);
+    }
+    .mobile-toggle span {
+      display: block;
+      width: 18px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    @media (max-width: 768px) {
+      /* Container Gutters */
+      .container {
+        padding: 0 16px;
+      }
+
+      /* Compact Sticky Header (56px) */
+      .nav-inner {
+        height: 56px;
+        padding: 0;
+      }
+      .brand {
+        font-size: 1.15rem;
+        gap: 8px;
+      }
+      .brand img {
+        width: 30px;
+        height: 30px;
+        border-radius: 7px;
+      }
+
+      .mobile-header-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .mobile-toggle {
+        display: flex;
+      }
+
+      /* Mobile Navigation Drawer */
+      nav {
+        display: none;
+      }
+      nav.open {
+        display: block;
+        position: absolute;
+        top: 56px;
+        left: 0;
+        width: 100%;
+        background: rgba(7, 9, 14, 0.98);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border-bottom: 1px solid rgba(56, 189, 248, 0.25);
+        padding: 16px 20px 24px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
+      }
+      nav.open ul {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        align-items: stretch;
+      }
+      nav.open a {
+        font-size: 1rem;
+        padding: 8px 0;
+        color: var(--text);
+        display: block;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      nav.open .nav-cta {
+        text-align: center;
+        margin-top: 8px;
+        padding: 10px 16px;
+        border-bottom: none;
+      }
+      nav.open .lang-switcher {
+        display: none;
+      }
+
+      /* Hero Section: Proportional & Breathable */
+      .hero {
+        padding: 28px 0 20px;
+      }
+      .badge-pill {
+        font-size: 0.72rem;
+        padding: 4px 12px;
+        margin-bottom: 12px;
+        gap: 6px;
+      }
+      .sovereign-banner {
+        display: block;
+        width: 100%;
+        max-width: 330px;
+        margin: 0 auto 16px;
+        padding: 8px 12px;
+        font-size: 0.78rem;
+        line-height: 1.35;
+        border-radius: 12px;
+      }
+      .hero h1 {
+        font-size: 1.75rem;
+        line-height: 1.22;
+        letter-spacing: -0.02em;
+        margin-bottom: 12px;
+      }
+      .hero p {
+        font-size: 0.9rem;
+        line-height: 1.5;
+        margin-bottom: 20px;
+        padding: 0 4px;
+      }
+      .hero-actions {
+        flex-direction: column;
+        width: 100%;
+        max-width: 290px;
+        margin: 0 auto;
+        gap: 10px;
+      }
+      .hero-actions .btn {
+        width: 100%;
+        justify-content: center;
+        padding: 12px 16px;
+        font-size: 0.92rem;
+        border-radius: 10px;
+      }
+
+      /* Screenshots Section */
+      .screenshots-section {
+        padding: 28px 0 16px;
+      }
+      .screenshots-scroll {
+        gap: 14px;
+        padding: 8px 4px 20px;
+      }
+      .screenshot-card {
+        flex: 0 0 225px;
+        padding: 12px;
+        border-radius: 16px;
+      }
+      .screenshot-img-wrapper {
+        border-radius: 12px;
+        margin-bottom: 10px;
+      }
+      .screenshot-info h4 {
+        font-size: 0.92rem;
+        margin-bottom: 4px;
+      }
+      .screenshot-info p {
+        font-size: 0.78rem;
+        line-height: 1.4;
+      }
+
+      /* Titles & Grids */
+      .section-title {
+        margin-bottom: 24px;
+      }
+      .section-title h2 {
+        font-size: 1.4rem;
+        letter-spacing: -0.02em;
+        margin-bottom: 6px;
+      }
+      .section-title p {
+        font-size: 0.86rem;
+        line-height: 1.4;
+      }
+
+      .grid-3 {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        margin-bottom: 32px;
+      }
+      .card {
+        padding: 18px 16px;
+        border-radius: 16px;
+      }
+      .card-icon {
+        font-size: 1.7rem;
+        margin-bottom: 10px;
+      }
+      .card h3 {
+        font-size: 1.12rem;
+        margin-bottom: 6px;
+      }
+      .card p {
+        font-size: 0.86rem;
+        line-height: 1.45;
+      }
+
+      .features-grid {
+        grid-template-columns: 1fr;
+        gap: 10px;
+        margin-bottom: 32px;
+      }
+      .feature-item {
+        padding: 14px 12px;
+        border-radius: 14px;
+      }
+      .feature-item h4 {
+        font-size: 0.95rem;
+        margin-bottom: 4px;
+      }
+      .feature-item p {
+        font-size: 0.82rem;
+        line-height: 1.4;
+      }
+
+      /* Privacy Banner */
+      .privacy-banner {
+        padding: 24px 16px;
+        border-radius: 16px;
+        margin-bottom: 24px;
+      }
+      .privacy-banner h3 {
+        font-size: 1.25rem;
+        margin-bottom: 8px;
+      }
+      .privacy-banner p {
+        font-size: 0.85rem;
+        line-height: 1.45;
+        margin-bottom: 16px;
+      }
+      .privacy-banner .btn {
+        width: 100%;
+        max-width: 270px;
+        font-size: 0.88rem;
+        padding: 10px 16px;
+      }
+
+      /* TestFlight Banner & Downloads Section */
+      .testflight-banner {
+        padding: 26px 16px !important;
+        margin: 28px 0 16px !important;
+        border-radius: 18px !important;
+      }
+      .testflight-banner h2 {
+        font-size: 1.35rem !important;
+        margin-bottom: 8px !important;
+      }
+      .testflight-banner p {
+        font-size: 0.85rem !important;
+        margin-bottom: 16px !important;
+      }
+      .testflight-banner .btn {
+        font-size: 0.92rem !important;
+        padding: 12px 20px !important;
+        width: 100%;
+        max-width: 280px;
+      }
+
+      .downloads-section {
+        padding: 32px 0 24px;
+      }
+      .downloads-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        margin-top: 20px;
+      }
+      .download-card {
+        padding: 18px 16px;
+        border-radius: 16px;
+      }
+      .download-card h3 {
+        font-size: 1.1rem;
+      }
+      .download-card p {
+        font-size: 0.82rem;
+        margin-bottom: 14px;
+      }
+      .download-card .btn {
+        font-size: 0.88rem;
+        padding: 10px 14px;
+      }
+
+      /* Donations Mobile */
+      .donations-section {
+        padding: 32px 0 24px;
+      }
+      .donations-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        margin-top: 20px;
+      }
+      .donation-card {
+        padding: 20px 16px;
+        border-radius: 16px;
+      }
+      .crypto-address {
+        font-size: 0.72rem;
+      }
+
+      /* Footer */
+      footer {
+        padding: 28px 0;
+      }
+      .footer-inner {
+        flex-direction: column;
+        text-align: center;
+        gap: 14px;
+      }
+      .footer-links {
+        flex-direction: column;
+        gap: 10px;
+      }
+      .footer-links a {
+        font-size: 0.85rem;
+      }
+      .copyright {
+        margin-top: 14px;
+        padding-top: 14px;
+        font-size: 0.78rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="meshCanvas"></canvas>
+
+  <!-- Navigation -->
+  <header>
+    <div class="container">
+      <div class="nav-inner">
+        <a href="index.html" class="brand">
+          <img src="../assets/logo.png" alt="Chax Constellation Logo">
+          <span>Chax</span>
+        </a>
+        <nav id="mainNav">
+          <ul>
+            <li><a href="#screenshots">Screenshots</a></li>
+            <li><a href="#architecture">Architecture</a></li>
+            <li><a href="#features">Features</a></li>
+            <li><a href="#downloads" style="color: var(--primary); font-weight: 600;">Downloads</a></li>
+            <li><a href="../support.html">Support</a></li>
+            <li><a href="../privacy.html">Privacy</a></li>
+            <li><a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" class="nav-cta">TestFlight Beta</a></li>
+            <li>
+              <div class="lang-switcher">
+                <a href="../index.html" class="lang-btn" title="Español">ES</a>
+                <a href="index.html" class="lang-btn active" title="English">EN</a>
+                <a href="../pt/index.html" class="lang-btn" title="Português">PT</a>
+              </div>
+            </li>
+          </ul>
+        </nav>
+        <div class="mobile-header-actions">
+          <div class="lang-switcher">
+            <a href="../index.html" class="lang-btn">ES</a>
+            <a href="index.html" class="lang-btn active">EN</a>
+            <a href="../pt/index.html" class="lang-btn">PT</a>
+          </div>
+          <button class="mobile-toggle" id="mobileToggle" aria-label="Open menu" onclick="toggleMobileMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="container">
+        <div class="badge-pill">
+          <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#10b981; box-shadow:0 0 8px #10b981;"></span>
+          Adaptive Omni-Routing Mesh Network v2.14
+        </div>
+        <div>
+          <div class="sovereign-banner">
+            ⚡️ <strong>Zero Personal Data:</strong> No name · No phone number · No email — Instant account generated on your device
+          </div>
+        </div>
+        <h1>Omni-Routing P2P Messaging<br><span>Fast online, unstoppable mesh.</span></h1>
+        <p>
+          Communicate without corporate servers, censorship, or <strong>handing over any personal information</strong>. No phone number, name, or email required: your sovereign cryptographic identity is generated instantly on your device the moment you open the app. Chax seamlessly switches between open Internet (Nostr), direct P2P radio links, and local mesh networks.
+        </p>
+        <div class="hero-actions">
+          <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" class="btn btn-primary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.85c.62-.77 1.05-1.84.93-2.91-.94.04-2.03.64-2.67 1.4-.57.67-.99 1.77-.86 2.81 1.05.08 2.05-.56 2.6-1.3z"/></svg>
+            Apple (iOS / Mac)
+          </a>
+          <a href="#downloads" class="btn btn-secondary">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            Android & PC
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screenshots Showcase Section -->
+    <section id="screenshots" class="screenshots-section">
+      <div class="container">
+        <div class="section-title">
+          <h2>The Chax Experience on iOS</h2>
+          <p>Sovereign cryptographic power wrapped in a fluid, high-performance native dark interface.</p>
+        </div>
+        <div class="screenshots-scroll">
+          <div class="screenshot-card">
+            <div class="screenshot-img-wrapper">
+              <img src="../assets/screenshots/01_conversaciones.png" alt="Conversations Feed and Channels" loading="lazy">
+            </div>
+            <div class="screenshot-info">
+              <h4>Conversations Feed</h4>
+              <p>Direct chats and community groups with high-speed offline-first synchronization.</p>
+            </div>
+          </div>
+
+          <div class="screenshot-card">
+            <div class="screenshot-img-wrapper">
+              <img src="../assets/screenshots/02_chat_directo.png" alt="Encrypted Direct Chat with Reactions" loading="lazy">
+            </div>
+            <div class="screenshot-info">
+              <h4>Military-Grade E2EE</h4>
+              <p>Antenna-to-antenna radio delivery with instant emoji reactions and on-device AI voice note transcription.</p>
+            </div>
+          </div>
+
+          <div class="screenshot-card">
+            <div class="screenshot-img-wrapper">
+              <img src="../assets/screenshots/03_radar_mesh.png" alt="Live Mesh Radar" loading="lazy">
+            </div>
+            <div class="screenshot-info">
+              <h4>Live Mesh Radar</h4>
+              <p>Discover nearby peers in real time over Bluetooth and Wi-Fi Direct without any cellular coverage.</p>
+            </div>
+          </div>
+
+          <div class="screenshot-card">
+            <div class="screenshot-img-wrapper">
+              <img src="../assets/screenshots/04_identidad.png" alt="Sovereign Identity and QR Card" loading="lazy">
+            </div>
+            <div class="screenshot-info">
+              <h4>Sovereign Identity</h4>
+              <p>Ed25519 cryptographic keys in your iOS Keychain and instant in-person pairing via GPU-rendered dynamic QR.</p>
+            </div>
+          </div>
+
+          <div class="screenshot-card">
+            <div class="screenshot-img-wrapper">
+              <img src="../assets/screenshots/05_ajustes_red.png" alt="Network Settings and Nostr Relays" loading="lazy">
+            </div>
+            <div class="screenshot-info">
+              <h4>Adaptive Routing</h4>
+              <p>Configure Mobile Courier, Super-Relay Mac links, and decentralized Nostr WebSockets relays.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Architecture Section -->
+    <section id="architecture" style="padding: 40px 0;">
+      <div class="container">
+        <div class="section-title">
+          <h2>Intelligent Hybrid Routing</h2>
+          <p>The network does not live on a distant corporate server. It lives on your device and adapts instantly.</p>
+        </div>
+
+        <div class="grid-3">
+          <div class="card">
+            <div class="card-icon">🌐</div>
+            <h3>Global Internet (Nostr)</h3>
+            <p>Lightning-fast connections through decentralized Nostr WebSockets relays. No corporate monopolies, no prior censorship, and no servers owning your messages.</p>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">⚡️</div>
+            <h3>Direct P2P Link</h3>
+            <p>If your contact is nearby, packets travel via radio frequency (Bluetooth and local Wi-Fi) directly from antenna to antenna. Zero mobile data, zero intermediaries.</p>
+          </div>
+
+          <div class="card">
+            <div class="card-icon">🛰️</div>
+            <h3>Community Mesh Network</h3>
+            <p>In stadiums, emergencies, or cellular blackouts, devices relay encrypted packets hop-by-hop like a human chain protected by blind cryptography.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" style="padding: 40px 0;">
+      <div class="container">
+        <div class="section-title">
+          <h2>Engineered for Real Life</h2>
+          <p>The mathematical strength of modern cryptography wrapped in an elegant and fast user experience.</p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-item">
+            <h4>⚡️ Instant Account (Zero Data)</h4>
+            <p><strong>No name, no phone number, no email.</strong> Say goodbye to registration forms, passwords, and SMS codes. When you open Chax, your iPhone generates your Ed25519 key pair in milliseconds—100% sovereign and private.</p>
+          </div>
+
+          <div class="feature-item">
+            <h4>📻 Live Push-to-Talk (PTT) Walkie-Talkie</h4>
+            <p>Instant streaming voice communication Nextel-style. Hold to talk with haptic kickback and classic radio beeps. Smart speaker/earpiece auto-routing using the proximity sensor when held to your ear.</p>
+          </div>
+
+          <div class="feature-item">
+            <h4>🚗 "Read to Me" (Hands-Free Mode)</h4>
+            <p>Continuous conversation reader with neural text-to-speech (TTS). Listen to incoming texts and voice notes sequentially without touching the screen while driving or exercising.</p>
+          </div>
+
+          <div class="feature-item">
+            <h4>📸 QuickCamera & Video Bubbles</h4>
+            <p>Integrated tactile shutter: tap once for instant photo capture, hold to record video. Seamless native video playback embedded directly inside the conversation bubbles.</p>
+          </div>
+
+          <div class="feature-item">
+            <h4>📁 Universal File Selector</h4>
+            <p>Share documents, PDF files, audio clips, and uncompressed high-resolution images directly from Apple Files, iCloud Drive, or macOS Finder.</p>
+          </div>
+
+          <div class="feature-item">
+            <h4>🎙️ On-Device AI Transcription</h4>
+            <p>Convert voice notes to text in real time using your device's Apple neural engine without sending a single byte to external cloud servers, guaranteeing total privacy.</p>
+          </div>
+
+          <div class="feature-item">
+            <h4>📇 Sovereign Address Book & Search</h4>
+            <p>Intuitive separation between saved contacts and nearby mesh radar nodes. Add contacts directly from cards and search chat history instantly.</p>
+          </div>
+
+          <div class="feature-item">
+            <h4>🛡️ Military-Grade E2EE</h4>
+            <p>Unbreakable cryptography using Curve25519 and ChaCha20-Poly1305. Neither transport nodes nor Nostr relays can decrypt or read your messages.</p>
+          </div>
+
+          <div class="feature-item">
+            <h4>🔋 Battery Efficiency & Offline Mesh</h4>
+            <p>Engineered with Apple native frameworks to deliver maximum radio frequency mesh range (Bluetooth & Wi-Fi Direct) with negligible impact on battery life.</p>
+          </div>
+        </div>
+
+        <!-- Privacy Box -->
+        <div class="privacy-banner">
+          <span class="privacy-badge">Privacy by Design</span>
+          <h3>Your data never leaves your control</h3>
+          <p>
+            Chax does not ask for your name, phone number, or email to operate. We run zero collection servers, use no third-party tracking SDKs (no Firebase, no Google trackers), and never log activity. On the App Store, we hold the official distinction: <strong>"Data Not Collected"</strong>.
+          </p>
+          <a href="../privacy.html" class="btn btn-secondary">Read Full Privacy Policy</a>
+        </div>
+
+        <!-- Final TestFlight CTA Banner -->
+        <div class="testflight-banner" style="text-align: center; margin: 60px 0 20px; padding: 40px 20px; background: linear-gradient(180deg, rgba(18, 24, 38, 0.4), rgba(18, 24, 38, 0.8)); border: 1px solid var(--border); border-radius: 24px;">
+          <h2 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 12px;">Join the Sovereign Beta</h2>
+          <p style="color: var(--text-muted); max-width: 580px; margin: 0 auto 24px; font-size: 1.05rem;">Install Chax on your iPhone or Mac via TestFlight and communicate freely without relying on corporate infrastructure.</p>
+          <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" class="btn btn-primary" style="font-size: 1.15rem; padding: 16px 36px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.85c.62-.77 1.05-1.84.93-2.91-.94.04-2.03.64-2.67 1.4-.57.67-.99 1.77-.86 2.81 1.05.08 2.05-.56 2.6-1.3z"/></svg>
+            Install Chax on TestFlight
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Multiplatform Downloads Section -->
+    <section id="downloads" class="downloads-section">
+      <div class="container">
+        <div class="section-title">
+          <h2>Download Chax for All Your Devices</h2>
+          <p>The sovereign omni-channel messaging network is available across all platforms with real-time digital twin synchronization.</p>
+        </div>
+
+        <div class="downloads-grid">
+          <!-- Card iOS / iPadOS -->
+          <div class="download-card highlight">
+            <div>
+              <div class="download-header">
+                <div class="download-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.85c.62-.77 1.05-1.84.93-2.91-.94.04-2.03.64-2.67 1.4-.57.67-.99 1.77-.86 2.81 1.05.08 2.05-.56 2.6-1.3z"/></svg>
+                </div>
+                <span class="download-badge" style="background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3);">Official v2.14 TestFlight</span>
+              </div>
+              <h3>iPhone & iPad</h3>
+              <p>Official native Swift/SwiftUI app for iOS and iPadOS. Bonjour LAN mesh, low-energy Bluetooth LE, and Nostr relays backup.</p>
+            </div>
+            <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" class="btn btn-primary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.85c.62-.77 1.05-1.84.93-2.91-.94.04-2.03.64-2.67 1.4-.57.67-.99 1.77-.86 2.81 1.05.08 2.05-.56 2.6-1.3z"/></svg>
+              Install via TestFlight
+            </a>
+          </div>
+
+          <!-- Card macOS -->
+          <div class="download-card highlight">
+            <div>
+              <div class="download-header">
+                <div class="download-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+                </div>
+                <span class="download-badge" style="background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3);">Official v2.14 TestFlight Mac</span>
+              </div>
+              <h3>Chax for Mac</h3>
+              <p>Official native macOS app verified by Apple. Seamless installation with automatic updates via TestFlight for Mac.</p>
+            </div>
+            <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" class="btn btn-primary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.85c.62-.77 1.05-1.84.93-2.91-.94.04-2.03.64-2.67 1.4-.57.67-.99 1.77-.86 2.81 1.05.08 2.05-.56 2.6-1.3z"/></svg>
+              Install via TestFlight (Mac)
+            </a>
+          </div>
+
+          <!-- Card Android -->
+          <div class="download-card">
+            <div>
+              <div class="download-header">
+                <div class="download-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.4111 13.8533 8.077 12 8.077c-1.8533 0-3.5902.3341-5.1368.8727L4.8409 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/></svg>
+                </div>
+                <span class="download-badge" style="background: rgba(148, 163, 184, 0.15); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.3);">Coming Soon</span>
+              </div>
+              <h3>Android</h3>
+              <p>In active development. Coming soon to Google Play Store and direct APK download.</p>
+            </div>
+            <button type="button" onclick="alert('📱 Chax for Android will be available shortly following the completion of the official Apple test phase. Thank you for your patience!')" class="btn btn-secondary" style="border-color: rgba(148, 163, 184, 0.3); color: #94a3b8;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              Coming Soon on Android
+            </button>
+          </div>
+
+          <!-- Card Windows & Linux -->
+          <div class="download-card">
+            <div>
+              <div class="download-header">
+                <div class="download-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+                </div>
+                <span class="download-badge" style="background: rgba(148, 163, 184, 0.15); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.3);">Coming Soon</span>
+              </div>
+              <h3>PC Desktop (Windows / Linux)</h3>
+              <p>In active development. Official installers for Windows (.exe) and Linux distributions coming soon.</p>
+            </div>
+            <button type="button" onclick="alert('💻 Chax for Windows and Linux will be available soon. Thank you for your patience!')" class="btn btn-secondary" style="border-color: rgba(148, 163, 184, 0.3); color: #94a3b8;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+              Coming Soon on PC
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Donations & Project Support Section (Temporarily hidden; addresses left blank) -->
+    <!--
+    <section id="donate" class="donations-section" style="display: none;">
+      <div class="container">
+        <div class="section-title">
+          <h2>Support Sovereign and Censorship-Resistant Development</h2>
+          <p>Chax is 100% independent, with zero venture capital, zero trackers, and zero corporate advertising. Your contribution directly funds public relay infrastructure and unstoppable open-source communication.</p>
+        </div>
+        <div class="donations-grid">
+          <div class="donation-card">
+            <div class="donation-header">
+              <div class="donation-icon-badge">
+                <div class="donation-icon btc">₿</div>
+                <div><h3>Bitcoin</h3><span class="crypto-tag">BTC (Native SegWit)</span></div>
+              </div>
+            </div>
+            <p class="donation-desc">Direct on-chain donations to the Bitcoin main network.</p>
+            <div class="crypto-box"><span class="crypto-label">BTC Address</span><div class="crypto-address"></div></div>
+          </div>
+          <div class="donation-card">
+            <div class="donation-header">
+              <div class="donation-icon-badge">
+                <div class="donation-icon evm">Ξ</div>
+                <div><h3>EVM Multichain</h3><span class="crypto-tag">ETH · USDT · USDC</span></div>
+              </div>
+            </div>
+            <p class="donation-desc">Compatible with Ethereum, Arbitrum, Optimism, Polygon, BSC, and Base.</p>
+            <div class="crypto-box"><span class="crypto-label">EVM Address (0x)</span><div class="crypto-address"></div></div>
+          </div>
+          <div class="donation-card">
+            <div class="donation-header">
+              <div class="donation-icon-badge">
+                <div class="donation-icon sol">◎</div>
+                <div><h3>Solana</h3><span class="crypto-tag">SOL · USDC (SPL)</span></div>
+              </div>
+            </div>
+            <p class="donation-desc">High-speed, ultra-low fee transfers on the Solana network.</p>
+            <div class="crypto-box"><span class="crypto-label">Solana Address</span><div class="crypto-address"></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+    -->
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <div class="brand">
+          <img src="../assets/logo.png" alt="Chax Logo">
+          <span>Chax Network</span>
+        </div>
+        <ul class="footer-links">
+          <li><a href="../support.html">Support</a></li>
+          <li><a href="../privacy.html">Privacy</a></li>
+          <li><a href="../terms.html">Terms of Service / EULA</a></li>
+        </ul>
+        <div class="copyright">
+          © 2026 Chax Network. Sovereign and decentralized software.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    const canvas = document.getElementById('meshCanvas');
+    const ctx = canvas.getContext('2d');
+    let width, height, points = [];
+
+    function resize() {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+
+    const POINT_COUNT = Math.min(Math.floor(window.innerWidth / 25), 45);
+    const MAX_DIST = 140;
+
+    for (let i = 0; i < POINT_COUNT; i++) {
+      points.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.6,
+        vy: (Math.random() - 0.5) * 0.6,
+        radius: Math.random() * 2 + 1.5
+      });
+    }
+
+    function animate() {
+      ctx.clearRect(0, 0, width, height);
+
+      for (let i = 0; i < points.length; i++) {
+        const p = points[i];
+        p.x += p.vx;
+        p.y += p.vy;
+
+        if (p.x < 0 || p.x > width) p.vx *= -1;
+        if (p.y < 0 || p.y > height) p.vy *= -1;
+
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+        ctx.fillStyle = '#38bdf8';
+        ctx.fill();
+
+        for (let j = i + 1; j < points.length; j++) {
+          const p2 = points[j];
+          const dx = p.x - p2.x;
+          const dy = p.y - p2.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist < MAX_DIST) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y);
+            ctx.lineTo(p2.x, p2.y);
+            ctx.strokeStyle = `rgba(56, 189, 248, ${0.35 * (1 - dist / MAX_DIST)})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      }
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    function toggleMobileMenu() {
+      const nav = document.getElementById('mainNav');
+      if (nav) nav.classList.toggle('open');
+    }
+
+    document.querySelectorAll('#mainNav a').forEach(link => {
+      link.addEventListener('click', () => {
+        const nav = document.getElementById('mainNav');
+        if (nav) nav.classList.remove('open');
+      });
+    });
+
+    function copyCryptoAddress(address, btn) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(address).then(() => {
+          showCopySuccess(btn);
+        }).catch(() => {
+          fallbackCopyText(address, btn);
+        });
+      } else {
+        fallbackCopyText(address, btn);
+      }
+    }
+
+    function fallbackCopyText(text, btn) {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.style.position = 'fixed';
+      textarea.style.opacity = '0';
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand('copy');
+        showCopySuccess(btn);
+      } catch (err) {
+        prompt('Copy address manually:', text);
+      }
+      document.body.removeChild(textarea);
+    }
+
+    function showCopySuccess(btn) {
+      const origHtml = btn.innerHTML;
+      btn.classList.add('copied');
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Copied!';
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = origHtml;
+      }, 2200);
+    }
+  </script>
+</body>
+</html>

@@ -1188,9 +1188,211 @@ footer {
 }
 
 /* ==========================================================================
+   BENTO GRID DE FUNCIONALIDADES & SUPERPODERES
+   ========================================================================== */
+.bento-section {
+  padding: 80px 0;
+  position: relative;
+}
+
+.bento-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 48px;
+}
+
+.bento-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: 36px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(16px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.bento-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(0, 245, 155, 0.35);
+  box-shadow: 0 20px 50px -10px rgba(0, 245, 155, 0.15);
+}
+
+.bento-card.span-2 {
+  grid-column: span 2;
+}
+
+.bento-card.highlight-green {
+  border-color: rgba(0, 245, 155, 0.3);
+  background: linear-gradient(135deg, rgba(14, 24, 38, 0.9) 0%, rgba(8, 14, 22, 0.95) 100%);
+}
+
+.bento-card.highlight-purple {
+  border-color: rgba(139, 92, 246, 0.3);
+  background: linear-gradient(135deg, rgba(22, 18, 42, 0.9) 0%, rgba(10, 10, 24, 0.95) 100%);
+}
+
+.bento-icon-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: 4px 12px;
+  border-radius: var(--radius-pill);
+  margin-bottom: 20px;
+  width: fit-content;
+}
+
+.bento-icon-badge.green {
+  background: var(--volt-green-dim);
+  color: var(--volt-green);
+  border: 1px solid rgba(0, 245, 155, 0.3);
+}
+
+.bento-icon-badge.purple {
+  background: rgba(139, 92, 246, 0.15);
+  color: #c084fc;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+}
+
+.bento-icon-badge.orange {
+  background: rgba(255, 87, 34, 0.15);
+  color: #ff7a00;
+  border: 1px solid rgba(255, 87, 34, 0.3);
+}
+
+.bento-icon-badge.blue {
+  background: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+.bento-title {
+  font-size: 1.55rem;
+  font-weight: 850;
+  letter-spacing: -0.02em;
+  margin-bottom: 12px;
+  line-height: 1.25;
+}
+
+.bento-desc {
+  color: var(--text-muted);
+  font-size: 0.98rem;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.bento-ptt-player {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: auto;
+}
+
+.ptt-play-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--volt-green);
+  color: #041208;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.ptt-play-btn:hover {
+  transform: scale(1.08);
+}
+
+.audio-bars-wrap {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 32px;
+}
+
+.audio-bar {
+  flex: 1;
+  background: rgba(0, 245, 155, 0.35);
+  border-radius: 2px;
+  height: 8px;
+  transition: height 0.2s ease;
+}
+
+.audio-bar.playing {
+  animation: barBounce 0.8s infinite ease-in-out alternate;
+}
+
+@keyframes barBounce {
+  0% { height: 6px; background: rgba(0, 245, 155, 0.4); }
+  100% { height: 28px; background: var(--volt-green); }
+}
+
+.radar-mini-display {
+  background: radial-gradient(circle, rgba(6, 78, 59, 0.35) 0%, rgba(5, 15, 25, 0.8) 100%);
+  border: 1px solid rgba(0, 245, 155, 0.3);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+.radar-target-stat {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+}
+
+.hero-value-pills {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 28px;
+}
+
+.val-pill {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-light);
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  font-size: 0.85rem;
+  font-weight: 650;
+  color: #e2e8f0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ==========================================================================
    RESPONSIVE DESIGN (MOBILE & TABLET)
    ========================================================================== */
 @media (max-width: 900px) {
+  .bento-grid {
+    grid-template-columns: 1fr;
+  }
+  .bento-card.span-2 {
+    grid-column: span 1;
+  }
   .sim-phones-grid {
     grid-template-columns: 1fr;
   }

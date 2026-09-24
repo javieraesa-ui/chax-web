@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initMeshCanvas();
   initSignalSimulator();
   initDeviceTabs();
+  initPttPlayer();
 });
 
 /* ==========================================================================
@@ -307,4 +308,80 @@ function initDeviceTabs() {
 
   // Cargar por defecto iPhone
   renderDeviceScreens("iphone");
+}
+
+/* ==========================================================================
+   4. REPRODUCTOR SIMULADO DE AUDIO PTT (WALKIE-TALKIE)
+   ========================================================================== */
+function initPttPlayer() {
+  const playBtn = document.getElementById("pttPlayBtn");
+  const bars = document.querySelectorAll(".audio-bar");
+  const timerLabel = document.getElementById("pttTimer");
+  if (!playBtn || !bars.length) return;
+
+  let isPlaying = false;
+  let playInterval = null;
+  let seconds = 0;
+
+  playBtn.addEventListener("click", () => {
+    isPlaying = !isPlaying;
+
+    if (isPlaying) {
+      playBtn.innerHTML = `
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <rect x="6" y="4" width="4" height="16" rx="1"/>
+          <rect x="14" y="4" width="4" height="16" rx="1"/>
+        </svg>
+      `;
+      bars.forEach(b => b.classList.add("playing"));
+
+      // Simular audio táctico con Web Audio API (beep sutil de radio militar)
+      playTacticalTone();
+
+      playInterval = setInterval(() => {
+        seconds++;
+        if (timerLabel) {
+          const m = String(Math.floor(seconds / 60)).padStart(2, '0');
+          const s = String(seconds % 60).padStart(2, '0');
+          timerLabel.innerText = `${m}:${s}`;
+        }
+        if (seconds >= 6) { // Fin del clip de 6 segundos
+          stopPtt();
+        }
+      }, 1000);
+    } else {
+      stopPtt();
+    }
+  });
+
+  function stopPtt() {
+    isPlaying = false;
+    clearInterval(playInterval);
+    seconds = 0;
+    if (timerLabel) timerLabel.innerText = "00:06";
+    playBtn.innerHTML = `
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+        <polygon points="5 3 19 12 5 21 5 3"/>
+      </svg>
+    `;
+    bars.forEach(b => b.classList.remove("playing"));
+  }
+
+  function playTacticalTone() {
+    try {
+      const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(880, audioCtx.currentTime); // Beep táctico 880Hz
+      gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.15);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.15);
+    } catch (e) {
+      // Ignorar si el navegador bloquea audio sin interacción
+    }
+  }
 }

@@ -24,8 +24,8 @@
 
   <!-- BANNER DE URGENCIA CRÍTICA (STICKY TOP) -->
   <div class="urgent-banner">
-    <span class="urgent-banner-badge">Aviso Crítico</span>
-    <span>⚠️ <strong>Ten Chax instalado ANTES de que lo necesites.</strong> Cuando se va la señal... ya no podrás entrar a la App Store a descargarlo.</span>
+    <span class="urgent-banner-badge">Aviso Práctico</span>
+    <span>📱 <strong>Mejor tenerla instalada antes:</strong> sin señal no hay App Store. Ocupa casi nada y asegura que todos sigan comunicados.</span>
     <a href="https://apps.apple.com/app/chax/id6751280620" target="_blank" rel="noopener">Descargar Gratis →</a>
   </div>
 
@@ -43,7 +43,6 @@
         <ul class="nav-links">
           <li><a href="#superpoderes">Superpoderes</a></li>
           <li><a href="#diagramas">¿Cómo Funciona?</a></li>
-          <li><a href="#simulador">Simulador en Vivo</a></li>
           <li><a href="#problemas">Escenarios Reales</a></li>
           <li><a href="#arquitectura">Arquitectura</a></li>
           <li><a href="#capturas">Dispositivos</a></li>
@@ -245,8 +244,8 @@
               No tienes que activar nada. En el milisegundo en que pierdes la conexión, Chax conmuta de manera invisible a Bluetooth Mesh multi-salto.
             </p>
           </div>
-          <a href="#simulador" style="color: var(--volt-green); font-weight: 750; font-size: 0.9rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
-            Probar simulador interactivo →
+          <a href="#diagramas" style="color: var(--volt-green); font-weight: 750; font-size: 0.9rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+            Ver cómo viaja el mensaje →
           </a>
         </div>
       </div>
@@ -576,87 +575,6 @@
               <rect x="140" y="335" width="240" height="26" rx="13" fill="rgba(0,0,0,0.8)" stroke="#00f59b" stroke-width="1"/>
               <text x="260" y="352" fill="#00f59b" font-size="10" font-weight="bold" text-anchor="middle">⚡ Malla Barrial Activa • 0% Dependencia Eléctrica</text>
             </svg>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ==========================================================================
-       SIMULADOR INTERACTIVO: "CORTA LA SEÑAL"
-       ========================================================================== -->
-  <section class="simulator-section" id="simulador">
-    <div class="container">
-      <div class="sim-card">
-        <div class="sim-header">
-          <span class="sim-tag">Simulador Interactivo</span>
-          <h2 class="sim-title">Prueba la conmutación automática de Chax</h2>
-          <p class="sim-desc">
-            Observa qué ocurre cuando hay internet versus cuando se corta la señal. Mueve el interruptor para ver cómo Chax mantiene viva la conversación mientras las apps tradicionales colapsan.
-          </p>
-
-          <div class="signal-toggle-wrapper">
-            <span class="toggle-label online">🌐 Con Internet (5G/WiFi)</span>
-            <label class="switch">
-              <input type="checkbox" id="signalToggle">
-              <span class="slider"></span>
-            </label>
-            <span class="toggle-label offline">🚫 ¡CORTAR SEÑAL CELULAR!</span>
-          </div>
-        </div>
-
-        <div class="sim-phones-grid">
-          <!-- Lado Izquierdo: App Convencional -->
-          <div class="sim-phone-box standard-side">
-            <div class="phone-header">
-              <span class="phone-name">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" color="#ef4444">
-                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/>
-                </svg>
-                Apps Tradicionales (WhatsApp / Meta)
-              </span>
-              <span id="standardStatus" class="phone-status-badge status-online">🌐 5G / Servidor OK</span>
-            </div>
-
-            <div class="sim-chat-area" id="standardChat">
-              <div class="chat-bubble outgoing">
-                <p>¿Dónde están? Ya comenzó la banda y se saturó todo el estadio...</p>
-                <div class="bubble-meta">
-                  <span>21:42</span>
-                  <span class="bubble-check">✓✓</span>
-                </div>
-              </div>
-            </div>
-
-            <div style="font-size: 0.8rem; color: var(--text-dim); text-align: center; margin-top: 8px;">
-              Dependiente de antenas celulares y servidores centrales en la nube.
-            </div>
-          </div>
-
-          <!-- Lado Derecho: CHAX P2P -->
-          <div class="sim-phone-box chax-side">
-            <div class="phone-header">
-              <span class="phone-name">
-                <img src="assets/logo.png" style="width: 22px; height: 22px; border-radius: 6px;" alt="Chax" />
-                Chax Messenger
-              </span>
-              <span id="chaxStatus" class="phone-status-badge status-online">🌐 Online (Nostr Relays)</span>
-            </div>
-
-            <div class="sim-chat-area" id="chaxChat">
-              <div class="chat-bubble outgoing">
-                <p>¿Dónde están? Ya comenzó la banda y se saturó todo el estadio...</p>
-                <div class="bubble-meta">
-                  <span>Vía Internet</span>
-                  <span class="bubble-check green">✓✓</span>
-                </div>
-              </div>
-            </div>
-
-            <div class="sim-input-row">
-              <input type="text" id="simInput" class="sim-input" placeholder="Escribe un mensaje de prueba..." value="¡Manda un Chax! No hay señal" />
-              <button id="simSendBtn" class="sim-send-btn">Enviar</button>
-            </div>
           </div>
         </div>
       </div>
@@ -1122,41 +1040,42 @@
   </section>
 
   <!-- ==========================================================================
-       LA URGENCIA INELUDIBLE: "ANTES DE QUE LO NECESITES"
+       LA COMUNIDAD MESH: "MEJOR TENERLA LISTA ANTES"
        ========================================================================== -->
   <section class="urgency-deep-section" id="urgencia">
     <div class="container">
       <div class="urgency-card">
-        <span class="urgency-badge">El Factor de Urgencia</span>
+        <span class="urgency-badge">Comunidad & Resiliencia</span>
         <h2 class="urgency-title">
-          "Cuando se va la señal... ya no puedes entrar a la App Store a descargarlo."
+          Mejor tenerla instalada antes.<br>
+          <span class="highlight-green">Sin señal</span> ya no hay App Store.
         </h2>
         <p class="urgency-p">
-          Chax no es una app que descargas cuando la necesitas: <strong>debes tenerla lista antes</strong>. Si hay un sismo, un apagón eléctrico, entras a un túnel o estás en medio del desierto, la App Store no cargará. Instálala hoy y dile a tu grupo de confianza que haga lo mismo.
+          Chax es de muy bajo impacto: duerme en reposo profundo y casi no ocupa espacio. Obviamente, al ser nodo de la malla regalas unos cuantos bytes y microwatts que ni vas a notar para ayudar a retransmitir paquetes ajenos encriptados, pero a cambio todos ganamos una red vecinal que nunca se apaga. Si todos aportamos ese pequeño granito de arena, nadie se queda incomunicado.
         </p>
 
         <div class="urgency-grid">
           <div class="urgency-item">
-            <div class="urgency-item-icon">⚡</div>
-            <h4>El Dilema del Corte</h4>
-            <p>Para bajar una app necesitas internet. Cuando las torres celulares caen, las descargas son imposibles. Chax debe vivir en tu teléfono desde hoy.</p>
-          </div>
-
-          <div class="urgency-item">
-            <div class="urgency-item-icon">👥</div>
-            <h4>Efecto Red Inmediato</h4>
-            <p>Cada persona con Chax instalado expande el alcance del Bluetooth Mesh para todos. Es la infraestructura comunitaria del siglo XXI.</p>
-          </div>
-
-          <div class="urgency-item">
             <div class="urgency-item-icon">🔋</div>
-            <h4>0% Impacto de Batería</h4>
-            <p>El motor Bluetooth Low Energy de Chax duerme en segundo plano sin drenar tu batería. Se despierta únicamente cuando envías o retransmites un paquete.</p>
+            <h4>Casi Cero Batería</h4>
+            <p>Bluetooth Low Energy se mantiene en reposo absoluto. Retransmitir un paquete consume menos energía que encender la pantalla un segundo.</p>
+          </div>
+
+          <div class="urgency-item">
+            <div class="urgency-item-icon">🤝</div>
+            <h4>Unos Bytes por el Bien Común</h4>
+            <p>Prestas un hilo invisible de datos locales para que el mensaje de alguien llegue. Todos en la red hacen exactamente lo mismo por ti.</p>
+          </div>
+
+          <div class="urgency-item">
+            <div class="urgency-item-icon">📲</div>
+            <h4>Bájala Hoy y Olvídate</h4>
+            <p>En un concierto abarrotado, en la sierra o en un corte de luz, la App Store no abrirá. Instálala ahora y tenla lista para cuando haga falta.</p>
           </div>
         </div>
 
         <a href="https://apps.apple.com/app/chax/id6751280620" target="_blank" rel="noopener" class="btn-primary" style="font-size: 1.15rem; padding: 18px 40px;">
-          Descargar Ahora en App Store (Gratis) →
+          Descargar Gratis en App Store →
         </a>
       </div>
     </div>
@@ -1304,15 +1223,15 @@
           </a>
         </div>
 
-        <!-- Card Open Source -->
+        <!-- Card Privacidad Soberana -->
         <div class="urgency-item" style="border-color: rgba(139, 92, 246, 0.35); background: rgba(14, 20, 32, 0.9);">
-          <div class="urgency-item-icon">🌐</div>
-          <h4 style="font-size: 1.15rem; color: #fff;">Código Libre & Multiplataforma</h4>
+          <div class="urgency-item-icon">🛡️</div>
+          <h4 style="font-size: 1.15rem; color: #fff;">Privacidad & Enclave Seguro</h4>
           <p style="margin-bottom: 20px;">
-            Protocolos abiertos, sin telemetría corporativa ni rastreo. Explora el código fuente y las especificaciones de la red mesh.
+            Cero registros telefónicos, cero recopilación de metadatos y cifrado E2EE local. Tus llaves nunca abandonan tu dispositivo.
           </p>
-          <a href="https://github.com/javieraesa-ui/chax-web" target="_blank" rel="noopener" class="btn-secondary" style="padding: 10px 20px; font-size: 0.9rem; border-color: rgba(139, 92, 246, 0.4);">
-            Ver en GitHub →
+          <a href="privacy.html" class="btn-secondary" style="padding: 10px 20px; font-size: 0.9rem; border-color: rgba(139, 92, 246, 0.4);">
+            Política de Privacidad →
           </a>
         </div>
       </div>
@@ -1360,7 +1279,7 @@
       <div class="footer-top">
         <div class="brand-wrap">
           <div class="brand-icon-box">
-            <img src="assets/logo.png" alt="Chax Logo" />
+            <img src="assets/app-icon.png" alt="Chax Logo" />
           </div>
           <span>Chax Messenger</span>
         </div>
@@ -1369,7 +1288,6 @@
           <li><a href="privacy.html">Privacidad</a></li>
           <li><a href="terms.html">Términos</a></li>
           <li><a href="support.html">Soporte</a></li>
-          <li><a href="https://github.com/javieraesa-ui/chax-web" target="_blank" rel="noopener">GitHub</a></li>
           <!-- Idiomas en Footer -->
           <li><a href="index.html" style="color: var(--volt-green); font-weight: 750;">Español</a></li>
           <li><a href="en/index.html">English</a></li>

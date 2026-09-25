@@ -1535,9 +1535,6 @@ footer {
   .bento-card.span-2 {
     grid-column: span 1;
   }
-  .sim-phones-grid {
-    grid-template-columns: 1fr;
-  }
   .scenario-block, .scenario-block.reverse {
     grid-template-columns: 1fr;
   }

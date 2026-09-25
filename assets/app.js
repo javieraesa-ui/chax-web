@@ -1,17 +1,16 @@
 /**
- * CHAX 2.0 — CONTROLADOR INTERACTIVO Y SIMULADOR TÁCTICO
+ * CHAX — CONTROLADOR INTERACTIVO Y DIAGRAMAS TÁCTICOS
  */
 
 document.addEventListener("DOMContentLoaded", () => {
   initMeshCanvas();
-  initSignalSimulator();
   initDeviceTabs();
   initPttPlayer();
   initDiagramSlideshow();
 });
 
 /* ==========================================================================
-   1. FONDO DE MALLA POR CLUSTERS E ISLAS INTERCONECTADAS
+   1. FONDO DE MALLA: CLUSTERS VIVOS QUE SE ACERCAN Y DESCONECTAN
    ========================================================================== */
 function initMeshCanvas() {
   const canvas = document.getElementById("meshBackground");
@@ -30,29 +29,41 @@ function initMeshCanvas() {
 
   function initClusters() {
     clusters = [];
-    const numClusters = width < 768 ? 3 : 5;
-    const nodesPerCluster = width < 768 ? 10 : 14;
+    const isMobile = width < 768;
+    const numClusters = isMobile ? 3 : 5;
+    const nodesPerCluster = isMobile ? 16 : 24;
 
     for (let c = 0; c < numClusters; c++) {
-      const cx = (width * (c + 0.5)) / numClusters + (Math.random() - 0.5) * 80;
-      const cy = (height * 0.15) + Math.random() * (height * 0.7);
-      const clusterNodes = [];
+      // Centro del cluster con velocidad de desplazamiento propia
+      const cx = (width * (c + 0.5)) / numClusters + (Math.random() - 0.5) * 60;
+      const cy = (height * 0.2) + Math.random() * (height * 0.6);
+      const cvx = (Math.random() - 0.5) * 0.45;
+      const cvy = (Math.random() - 0.5) * 0.35;
 
+      const clusterNodes = [];
       for (let i = 0; i < nodesPerCluster; i++) {
         const angle = Math.random() * Math.PI * 2;
-        const dist = Math.random() * (width < 768 ? 65 : 100);
+        const dist = Math.random() * (isMobile ? 55 : 85);
         clusterNodes.push({
+          relX: Math.cos(angle) * dist,
+          relY: Math.sin(angle) * dist,
+          relVx: (Math.random() - 0.5) * 0.25,
+          relVy: (Math.random() - 0.5) * 0.25,
+          maxDist: isMobile ? 65 : 95,
+          radius: i === 0 ? 3.0 : (Math.random() * 1.8 + 1.2),
+          isGateway: i === 0 || i === 1,
           x: cx + Math.cos(angle) * dist,
-          y: cy + Math.sin(angle) * dist,
-          ox: cx + Math.cos(angle) * dist,
-          oy: cy + Math.sin(angle) * dist,
-          vx: (Math.random() - 0.5) * 0.35,
-          vy: (Math.random() - 0.5) * 0.35,
-          radius: Math.random() * 2 + 1.2,
-          isGateway: i === 0
+          y: cy + Math.sin(angle) * dist
         });
       }
-      clusters.push({ cx, cy, nodes: clusterNodes });
+
+      clusters.push({
+        cx,
+        cy,
+        cvx,
+        cvy,
+        nodes: clusterNodes
+      });
     }
   }
 
@@ -63,28 +74,62 @@ function initMeshCanvas() {
     frame++;
     ctx.clearRect(0, 0, width, height);
 
-    // 1. Dibujar conexiones internas dentro de cada cluster
+    // 1. Actualizar posiciones de cada cluster y sus nodos
+    for (let c = 0; c < clusters.length; c++) {
+      const cluster = clusters[c];
+
+      // Movimiento suave del centro del cluster
+      cluster.cx += cluster.cvx;
+      cluster.cy += cluster.cvy;
+
+      // Rebote suave en los límites de la pantalla
+      const margin = 80;
+      if (cluster.cx < margin) {
+        cluster.cx = margin;
+        cluster.cvx = Math.abs(cluster.cvx);
+      } else if (cluster.cx > width - margin) {
+        cluster.cx = width - margin;
+        cluster.cvx = -Math.abs(cluster.cvx);
+      }
+      if (cluster.cy < margin) {
+        cluster.cy = margin;
+        cluster.cvy = Math.abs(cluster.cvy);
+      } else if (cluster.cy > height - margin) {
+        cluster.cy = height - margin;
+        cluster.cvy = -Math.abs(cluster.cvy);
+      }
+
+      // Actualizar nodos internos
+      const nodes = cluster.nodes;
+      for (let i = 0; i < nodes.length; i++) {
+        const n = nodes[i];
+        n.relX += n.relVx;
+        n.relY += n.relVy;
+
+        // Mantener dentro del radio del cluster
+        const currentDist = Math.hypot(n.relX, n.relY);
+        if (currentDist > n.maxDist) {
+          n.relVx *= -0.9;
+          n.relVy *= -0.9;
+        }
+
+        n.x = cluster.cx + n.relX;
+        n.y = cluster.cy + n.relY;
+      }
+    }
+
+    // 2. Dibujar conexiones internas dentro de cada cluster
     for (let c = 0; c < clusters.length; c++) {
       const nodes = clusters[c].nodes;
-
       for (let i = 0; i < nodes.length; i++) {
         const a = nodes[i];
-        a.x += a.vx;
-        a.y += a.vy;
-
-        // Mantener dentro del área del cluster
-        const dx = a.x - a.ox;
-        const dy = a.y - a.oy;
-        if (Math.abs(dx) > 35) a.vx *= -1;
-        if (Math.abs(dy) > 35) a.vy *= -1;
-
         for (let j = i + 1; j < nodes.length; j++) {
           const b = nodes[j];
           const dist = Math.hypot(a.x - b.x, a.y - b.y);
-          if (dist < 95) {
-            const alpha = (1 - dist / 95) * 0.28;
+          if (dist < 75) {
+            const alpha = (1 - dist / 75) * 0.28;
             ctx.strokeStyle = `rgba(56, 189, 248, ${alpha})`;
-            ctx.lineWidth = 1;
+            ctx.lineWidth = 0.9;
             ctx.beginPath();
             ctx.moveTo(a.x, a.y);
             ctx.lineTo(b.x, b.y);
@@ -94,46 +139,71 @@ function initMeshCanvas() {
       }
     }
 
-    // 2. Conectar clusters vecinos con puentes inter-cluster dinámicos
-    for (let c = 0; c < clusters.length; c++) {
-      const nextCluster = clusters[(c + 1) % clusters.length];
-      const gwA = clusters[c].nodes.find(n => n.isGateway) || clusters[c].nodes[0];
-      const gwB = nextCluster.nodes.find(n => n.isGateway) || nextCluster.nodes[0];
+    // 3. Conexiones dinámicas entre clusters según proximidad
+    // Cuando se aproximan (< proximityThreshold), se conectan y transfieren paquetes.
+    // Cuando se alejan, se desconectan suavemente.
+    const proximityThreshold = width < 768 ? 320 : 440;
 
-      const bridgeDist = Math.hypot(gwA.x - gwB.x, gwA.y - gwB.y);
-      if (bridgeDist < 500) {
-        const alpha = Math.max(0.12, (1 - bridgeDist / 500) * 0.4);
-        ctx.strokeStyle = `rgba(0, 245, 155, ${alpha})`;
-        ctx.lineWidth = 1.5;
-        ctx.setLineDash([5, 5]);
-        ctx.beginPath();
-        ctx.moveTo(gwA.x, gwA.y);
-        ctx.lineTo(gwB.x, gwB.y);
-        ctx.stroke();
-        ctx.setLineDash([]);
+    for (let i = 0; i < clusters.length; i++) {
+      for (let j = i + 1; j < clusters.length; j++) {
+        const c1 = clusters[i];
+        const c2 = clusters[j];
+        const distClusters = Math.hypot(c1.cx - c2.cx, c1.cy - c2.cy);
 
-        // Paquete luminoso viajando por el puente
-        const t = ((frame * 0.012) % 1);
-        const px = gwA.x + (gwB.x - gwA.x) * t;
-        const py = gwA.y + (gwB.y - gwA.y) * t;
-        ctx.beginPath();
-        ctx.arc(px, py, 3.5, 0, Math.PI * 2);
-        ctx.fillStyle = "#00f59b";
-        ctx.shadowColor = "#00f59b";
-        ctx.shadowBlur = 10;
-        ctx.fill();
-        ctx.shadowBlur = 0;
+        if (distClusters < proximityThreshold) {
+          // Factor de proximidad de 0 a 1 (1 = muy cerca, 0 = al límite)
+          const factor = 1 - (distClusters / proximityThreshold);
+
+          // Buscar los nodos gateway o más cercanos entre ambos clusters
+          const gw1 = c1.nodes.find(n => n.isGateway) || c1.nodes[0];
+          const gw2 = c2.nodes.find(n => n.isGateway) || c2.nodes[0];
+
+          // Dibujar puente inter-cluster con intensidad proporcional al acercamiento
+          const lineAlpha = factor * 0.45;
+          ctx.strokeStyle = `rgba(0, 245, 155, ${lineAlpha})`;
+          ctx.lineWidth = 1.0 + factor * 1.2;
+          ctx.setLineDash([6, 5]);
+          ctx.beginPath();
+          ctx.moveTo(gw1.x, gw1.y);
+          ctx.lineTo(gw2.x, gw2.y);
+          ctx.stroke();
+          ctx.setLineDash([]);
+
+          // Paquete de datos transferido a través del puente activo
+          if (factor > 0.15) {
+            const speed = 0.012;
+            const t = ((frame * speed + (i * 0.3)) % 1);
+            const px = gw1.x + (gw2.x - gw1.x) * t;
+            const py = gw1.y + (gw2.y - gw1.y) * t;
+
+            ctx.beginPath();
+            ctx.arc(px, py, 3.2, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(0, 245, 155, ${factor * 0.95})`;
+            ctx.shadowColor = "#00f59b";
+            ctx.shadowBlur = 8 * factor;
+            ctx.fill();
+            ctx.shadowBlur = 0;
+          }
+        }
       }
     }
 
-    // 3. Dibujar nodos
+    // 4. Dibujar nodos
     for (let c = 0; c < clusters.length; c++) {
       for (let i = 0; i < clusters[c].nodes.length; i++) {
         const n = clusters[c].nodes[i];
         ctx.beginPath();
-        ctx.arc(n.x, n.y, n.isGateway ? n.radius + 1.4 : n.radius, 0, Math.PI * 2);
-        ctx.fillStyle = n.isGateway ? "#00f59b" : "#38bdf8";
-        ctx.fill();
+        ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
+        if (n.isGateway) {
+          ctx.fillStyle = "#00f59b";
+          ctx.shadowColor = "#00f59b";
+          ctx.shadowBlur = 6;
+          ctx.fill();
+          ctx.shadowBlur = 0;
+        } else {
+          ctx.fillStyle = "rgba(56, 189, 248, 0.85)";
+          ctx.fill();
+        }
       }
     }
 
@@ -141,179 +211,6 @@ function initMeshCanvas() {
   }
 
   draw();
-}
-
-/* ==========================================================================
-   2. SIMULADOR INTERACTIVO "CORTA LA SEÑAL"
-   ========================================================================== */
-function initSignalSimulator() {
-  const signalToggle = document.getElementById("signalToggle");
-  const standardStatus = document.getElementById("standardStatus");
-  const chaxStatus = document.getElementById("chaxStatus");
-  const standardChat = document.getElementById("standardChat");
-  const chaxChat = document.getElementById("chaxChat");
-  const simInput = document.getElementById("simInput");
-  const simSendBtn = document.getElementById("simSendBtn");
-  const labelOnline = document.querySelector(".toggle-label.online");
-  const labelOffline = document.querySelector(".toggle-label.offline");
-
-  if (!signalToggle) return;
-
-  function updateSimulationState() {
-    const isOffline = signalToggle.checked;
-
-    if (isOffline) {
-      if (labelOffline) {
-        labelOffline.style.fontWeight = "850";
-        labelOffline.style.color = "var(--solar-coral)";
-      }
-      if (labelOnline) {
-        labelOnline.style.fontWeight = "500";
-        labelOnline.style.color = "var(--text-dim)";
-      }
-
-      if (standardStatus) {
-        standardStatus.className = "phone-status-badge status-failed";
-        standardStatus.innerHTML = "🚫 Sin Señal / Colapsado";
-      }
-
-      if (chaxStatus) {
-        chaxStatus.className = "phone-status-badge status-mesh";
-        chaxStatus.innerHTML = "⚡ Malla Mesh P2P (3 Nodos)";
-      }
-
-      if (standardChat) {
-        const outgoingStandard = standardChat.querySelectorAll(".chat-bubble.outgoing");
-        outgoingStandard.forEach(b => {
-          b.classList.add("failed-bubble");
-          const meta = b.querySelector(".bubble-meta");
-          if (meta) {
-            meta.innerHTML = "<span>No entregado</span> <span class='bubble-check red'>⏱️ Esperando red</span>";
-          }
-        });
-      }
-
-      if (chaxChat) {
-        const outgoingChax = chaxChat.querySelectorAll(".chat-bubble.outgoing");
-        outgoingChax.forEach(b => {
-          b.classList.remove("failed-bubble");
-          const meta = b.querySelector(".bubble-meta");
-          if (meta) {
-            meta.innerHTML = "<span>Vía Salto Bluetooth Mesh</span> <span class='bubble-check green'>✓✓ Entregado</span>";
-          }
-        });
-      }
-
-    } else {
-      if (labelOnline) {
-        labelOnline.style.fontWeight = "850";
-        labelOnline.style.color = "#38bdf8";
-      }
-      if (labelOffline) {
-        labelOffline.style.fontWeight = "500";
-        labelOffline.style.color = "var(--text-dim)";
-      }
-
-      if (standardStatus) {
-        standardStatus.className = "phone-status-badge status-online";
-        standardStatus.innerHTML = "🌐 5G / Servidor Cloud OK";
-      }
-
-      if (chaxStatus) {
-        chaxStatus.className = "phone-status-badge status-online";
-        chaxStatus.innerHTML = "🌐 Online (Nostr Relays)";
-      }
-
-      if (standardChat) {
-        const outgoingStandard = standardChat.querySelectorAll(".chat-bubble.outgoing");
-        outgoingStandard.forEach(b => {
-          b.classList.remove("failed-bubble");
-          const meta = b.querySelector(".bubble-meta");
-          if (meta) {
-            meta.innerHTML = "<span>Enviado</span> <span class='bubble-check'>✓✓</span>";
-          }
-        });
-      }
-
-      if (chaxChat) {
-        const outgoingChax = chaxChat.querySelectorAll(".chat-bubble.outgoing");
-        outgoingChax.forEach(b => {
-          const meta = b.querySelector(".bubble-meta");
-          if (meta) {
-            meta.innerHTML = "<span>Vía Internet</span> <span class='bubble-check green'>✓✓</span>";
-          }
-        });
-      }
-    }
-  }
-
-  signalToggle.addEventListener("change", updateSimulationState);
-
-  function sendMessage() {
-    if (!simInput) return;
-    const text = simInput.value.trim();
-    if (!text) return;
-
-    const isOffline = signalToggle.checked;
-    const time = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-    if (standardChat) {
-      const standardBubble = document.createElement("div");
-      standardBubble.className = isOffline ? "chat-bubble outgoing failed-bubble" : "chat-bubble outgoing";
-      standardBubble.innerHTML = `
-        <p>${escapeHtml(text)}</p>
-        <div class="bubble-meta">
-          <span>${time}</span>
-          <span class="${isOffline ? 'bubble-check red' : 'bubble-check'}">${isOffline ? '⏱️ Reintentando...' : '✓✓'}</span>
-        </div>
-      `;
-      standardChat.appendChild(standardBubble);
-      standardChat.scrollTop = standardChat.scrollHeight;
-    }
-
-    if (chaxChat) {
-      const chaxBubble = document.createElement("div");
-      chaxBubble.className = "chat-bubble outgoing";
-      chaxBubble.innerHTML = `
-        <p>${escapeHtml(text)}</p>
-        <div class="bubble-meta">
-          <span>${isOffline ? '⚡ Malla P2P (Salto #2)' : '🌐 Nostr'}</span>
-          <span class="bubble-check green">✓✓ Entregado</span>
-        </div>
-      `;
-      chaxChat.appendChild(chaxBubble);
-      chaxChat.scrollTop = chaxChat.scrollHeight;
-
-      if (isOffline) {
-        setTimeout(() => {
-          const replyBubble = document.createElement("div");
-          replyBubble.className = "chat-bubble incoming";
-          replyBubble.innerHTML = `
-            <p>¡Recibido por Bluetooth! Te localicé en el mapa satelital Mapax a 45 metros 📍</p>
-            <div class="bubble-meta">
-              <span>Directo P2P</span>
-              <span class="bubble-check green">✓✓</span>
-            </div>
-          `;
-          chaxChat.appendChild(replyBubble);
-          chaxChat.scrollTop = chaxChat.scrollHeight;
-        }, 1200);
-      }
-    }
-
-    simInput.value = "";
-  }
-
-  if (simSendBtn) {
-    simSendBtn.addEventListener("click", sendMessage);
-  }
-  if (simInput) {
-    simInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") sendMessage();
-    });
-  }
-
-  updateSimulationState();
 }
 
 function escapeHtml(str) {

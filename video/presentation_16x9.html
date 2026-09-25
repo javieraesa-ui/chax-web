@@ -1,0 +1,904 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chax | Presentación de Video 16:9</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #080c14;
+      --card-bg: rgba(14, 20, 32, 0.85);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --volt-green: #00f59b;
+      --coral-red: #ff5722;
+      --electric-blue: #38bdf8;
+      --cyber-purple: #c084fc;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #030712;
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* CONTENEDOR MAESTRO 16:9 NATIVO (1920 x 1080) */
+    #viewportFrame {
+      width: 1920px;
+      height: 1080px;
+      max-width: 100vw;
+      max-height: 100vh;
+      aspect-ratio: 16 / 9;
+      position: relative;
+      background: radial-gradient(circle at 50% 20%, #0d1527 0%, #060911 100%);
+      overflow: hidden;
+      box-shadow: 0 0 80px rgba(0, 0, 0, 0.9);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Fondo de Malla Canvas */
+    #canvasMesh {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0.65;
+    }
+
+    /* Barra Superior de Identidad */
+    .top-header {
+      position: absolute;
+      top: 36px;
+      left: 60px;
+      right: 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 20;
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      border: 1px solid rgba(0, 245, 155, 0.4);
+      box-shadow: 0 0 20px rgba(0, 245, 155, 0.25);
+    }
+
+    .brand-text {
+      font-size: 1.8rem;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      color: #fff;
+    }
+
+    .badge-pill {
+      background: rgba(0, 245, 155, 0.1);
+      border: 1px solid var(--volt-green);
+      color: var(--volt-green);
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      font-family: var(--font-mono);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--volt-green);
+      box-shadow: 0 0 10px var(--volt-green);
+      animation: pulseDot 1.5s infinite;
+    }
+
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.4; transform: scale(0.8); }
+    }
+
+    /* CONTENEDOR DE ESCENAS */
+    .scenes-wrapper {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      z-index: 10;
+    }
+
+    .scene {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      padding: 120px 80px 80px 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(0.97) translateY(20px);
+      transition: all 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .scene.active {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1) translateY(0);
+    }
+
+    /* ESTILOS COMUNES DE TIPOGRAFÍA */
+    .scene-tag {
+      font-family: var(--font-mono);
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: var(--volt-green);
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+      display: inline-block;
+    }
+
+    .scene-title {
+      font-size: 3.6rem;
+      font-weight: 900;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      margin-bottom: 24px;
+    }
+
+    .scene-title span.green { color: var(--volt-green); }
+    .scene-title span.coral { color: var(--coral-red); }
+    .scene-title span.blue { color: var(--electric-blue); }
+    .scene-title span.purple { color: var(--cyber-purple); }
+
+    .scene-desc {
+      font-size: 1.4rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      max-width: 980px;
+      margin-bottom: 36px;
+    }
+
+    /* ESCENA 1: HERO */
+    .hero-layout {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 60px;
+    }
+
+    .hero-features-list {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .feat-tag {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      padding: 10px 20px;
+      border-radius: 12px;
+      font-size: 1.05rem;
+      font-weight: 700;
+    }
+
+    .hero-device-mock {
+      width: 480px;
+      border-radius: 36px;
+      border: 3px solid rgba(0, 245, 155, 0.3);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 60px rgba(0, 245, 155, 0.15);
+      overflow: hidden;
+      animation: floatPhone 6s ease-in-out infinite;
+    }
+
+    @keyframes floatPhone {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-16px); }
+    }
+
+    /* ESCENA 2: MAPAX & RADAR */
+    .split-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .radar-card-large {
+      background: rgba(14, 20, 32, 0.9);
+      border: 1px solid rgba(0, 245, 155, 0.4);
+      border-radius: 28px;
+      padding: 32px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+    }
+
+    .radar-visual-box {
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      border: 2px solid rgba(0, 245, 155, 0.35);
+      margin: 0 auto 24px auto;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle, rgba(0, 245, 155, 0.05) 0%, transparent 70%);
+    }
+
+    .radar-sweep-hand {
+      position: absolute;
+      width: 50%;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--volt-green));
+      top: 50%;
+      left: 50%;
+      transform-origin: 0% 0%;
+      animation: sweepRadar 4s linear infinite;
+    }
+
+    @keyframes sweepRadar {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .radar-target-dot {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--volt-green);
+      box-shadow: 0 0 20px var(--volt-green);
+      top: 35%;
+      left: 70%;
+      animation: pulseTarget 1.5s infinite;
+    }
+
+    @keyframes pulseTarget {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.4); opacity: 0.6; }
+    }
+
+    .radar-data-readout {
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 16px 24px;
+      font-family: var(--font-mono);
+      font-size: 1.05rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* ESCENA 4: DIAGRAMA FÍSICA MESH */
+    .flow-steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+      margin-top: 20px;
+    }
+
+    .step-box {
+      background: rgba(14, 20, 32, 0.85);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 28px 24px;
+      position: relative;
+    }
+
+    .step-box.active-step {
+      border-color: var(--volt-green);
+      box-shadow: 0 0 30px rgba(0, 245, 155, 0.2);
+    }
+
+    .step-num {
+      font-family: var(--font-mono);
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--volt-green);
+      margin-bottom: 12px;
+    }
+
+    .step-box h4 {
+      font-size: 1.25rem;
+      margin-bottom: 8px;
+    }
+
+    .step-box p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* ESCENA 6: TABLA COMPARATIVA */
+    .compare-container {
+      background: rgba(14, 20, 32, 0.95);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      overflow: hidden;
+      margin-top: 20px;
+    }
+
+    .comp-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+
+    .comp-table th, .comp-table td {
+      padding: 18px 28px;
+      font-size: 1.15rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .comp-table th {
+      background: rgba(255, 255, 255, 0.03);
+      font-weight: 800;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+    }
+
+    .comp-table th.col-highlight {
+      background: rgba(0, 245, 155, 0.12);
+      color: var(--volt-green);
+      font-size: 1.1rem;
+    }
+
+    .comp-table td.col-highlight {
+      background: rgba(0, 245, 155, 0.06);
+      color: var(--volt-green);
+      font-weight: 800;
+    }
+
+    .cross-badge {
+      color: #ef4444;
+      font-weight: 700;
+    }
+
+    /* BARRA INFERIOR / LOWER-THIRD SUBTÍTULOS */
+    .bottom-timeline {
+      position: absolute;
+      bottom: 24px;
+      left: 60px;
+      right: 60px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 20;
+    }
+
+    .time-indicator {
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .progress-track {
+      flex: 1;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.1);
+      margin: 0 24px;
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--electric-blue), var(--volt-green));
+      transition: width 0.4s linear;
+    }
+
+    .playback-controls {
+      display: flex;
+      gap: 12px;
+    }
+
+    .ctrl-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--card-border);
+      color: #fff;
+      font-family: var(--font-sans);
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .ctrl-btn:hover {
+      background: var(--volt-green);
+      color: #000;
+      border-color: var(--volt-green);
+    }
+
+    /* SUBTÍTULOS DINÁMICOS */
+    .caption-overlay {
+      position: absolute;
+      bottom: 80px;
+      left: 100px;
+      right: 100px;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 16px 28px;
+      border-radius: 16px;
+      text-align: center;
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: #fff;
+      z-index: 25;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- CONTENEDOR MAESTRO 16:9 -->
+  <div id="viewportFrame">
+    <!-- Fondo de Malla Canvas Interactivo -->
+    <canvas id="canvasMesh"></canvas>
+
+    <!-- Header Fijo Superior -->
+    <div class="top-header">
+      <div class="brand-group">
+        <img src="../assets/app-icon.png" alt="Chax" class="brand-icon">
+        <span class="brand-text">Chax</span>
+      </div>
+      <div class="badge-pill">
+        <span class="badge-dot"></span>
+        <span id="badgeText">RÁPIDO ONLINE • IMPARABLE MESH</span>
+      </div>
+    </div>
+
+    <!-- WRAPPER DE ESCENAS -->
+    <div class="scenes-wrapper">
+
+      <!-- ESCENA 1: INTRO & HERO -->
+      <div class="scene active" id="scene1" data-duration="22">
+        <div class="hero-layout">
+          <div style="flex: 1.2;">
+            <span class="scene-tag">⚡ MENSAJERÍA P2P SOBERANA</span>
+            <h1 class="scene-title">
+              Rápido online.<br>
+              <span class="green">Imparable</span> <span class="coral">mesh.</span>
+            </h1>
+            <p class="scene-desc">
+              Tu app de mensajería para todos los días: Walkie-Talkie Push-To-Talk, mapas satelitales Mapax y grupos sin servidores. Vuela por Internet con Nostr y, cuando se corta la señal o estás en un concierto masivo, <strong>continúa chateando por Bluetooth Mesh sin antenas</strong>.
+            </p>
+            <div class="hero-features-list">
+              <span class="feat-tag">🗺️ Mapax Satelital</span>
+              <span class="feat-tag">🎙️ Walkie-Talkie PTT</span>
+              <span class="feat-tag">🛡️ Cero Números</span>
+              <span class="feat-tag">📶 Malla de Respaldo</span>
+            </div>
+          </div>
+          <div style="flex: 0.8; display: flex; justify-content: center;">
+            <img src="../assets/screenshots/01_conversaciones.png" class="hero-device-mock" alt="Chax Chat">
+          </div>
+        </div>
+      </div>
+
+      <!-- ESCENA 2: MAPAX Y RADAR -->
+      <div class="scene" id="scene2" data-duration="25">
+        <div class="split-grid">
+          <div>
+            <span class="scene-tag">🗺️ EXCLUSIVO CHAX • 100% OFFLINE</span>
+            <h2 class="scene-title">
+              Mapax: Cartografía Satelital & <span class="green">Radar Mesh</span>
+            </h2>
+            <p class="scene-desc">
+              Mapas de satélite y relieve en alta resolución guardados en tu memoria local sin consumir datos. El radar de proximidad calcula el rumbo en grados magnéticos y la distancia exacta en metros hacia tus amigos cercanos.
+            </p>
+            <div style="display: flex; gap: 16px;">
+              <div class="feat-tag" style="border-color: var(--volt-green); color: var(--volt-green);">
+                ✓ Rumbo Azimutal 360°
+              </div>
+              <div class="feat-tag" style="border-color: var(--volt-green); color: var(--volt-green);">
+                ✓ Distancia en Metros
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="radar-card-large">
+              <div class="radar-visual-box">
+                <div class="radar-sweep-hand"></div>
+                <div class="radar-target-dot"></div>
+                <div style="width: 12px; height: 12px; background: var(--volt-green); border-radius: 50%;"></div>
+              </div>
+              <div class="radar-data-readout">
+                <span style="color: var(--volt-green); font-weight: 800;">TARGET: Javier (Mac Studio)</span>
+                <span style="color: #fff;">42m • Rumbo 312° NO</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ESCENA 3: WALKIE-TALKIE PTT & IDENTIDAD SOBERANA -->
+      <div class="scene" id="scene3" data-duration="25">
+        <div class="split-grid">
+          <div>
+            <span class="scene-tag">🎙️ AUDIO TÁCTICO & CRIPTOGRAFÍA</span>
+            <h2 class="scene-title">
+              Walkie-Talkie PTT & <span class="purple">Cero Números</span>
+            </h2>
+            <p class="scene-desc">
+              Presiona para hablar y suelta para enviar notas de voz al instante de antena a antena. Transcripción inteligente local en el dispositivo. Cero servidores intermediarios, cero números telefónicos y claves X25519 generadas en tu Enclave Seguro de Apple.
+            </p>
+            <div class="hero-features-list">
+              <span class="feat-tag" style="border-color: var(--cyber-purple); color: var(--cyber-purple);">🔑 Identidad Criptográfica E2EE</span>
+              <span class="feat-tag" style="border-color: var(--volt-green); color: var(--volt-green);">🎙️ PTT Instantáneo P2P</span>
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: center; gap: 24px;">
+            <img src="../assets/screenshots/02_chat_directo.png" style="width: 320px; border-radius: 28px; border: 2px solid rgba(255,255,255,0.1);" alt="Chat PTT">
+            <img src="../assets/screenshots/04_identidad.png" style="width: 320px; border-radius: 28px; border: 2px solid rgba(192,132,252,0.4);" alt="Identidad">
+          </div>
+        </div>
+      </div>
+
+      <!-- ESCENA 4: FÍSICA DEL PROTOCOLO (RELEVO MULTI-SALTO) -->
+      <div class="scene" id="scene4" data-duration="25">
+        <span class="scene-tag">📡 ARQUITECTURA DE MALLA BLUETOOTH</span>
+        <h2 class="scene-title">
+          ¿Cómo viaja un mensaje <span class="green">sin señal?</span>
+        </h2>
+        <p class="scene-desc">
+          Propagación en abanico multi-salto con cifrado sellado: nadie en el camino puede leer el contenido ni saber el remitente original.
+        </p>
+
+        <div class="flow-steps-grid">
+          <div class="step-box active-step">
+            <div class="step-num">01</div>
+            <h4>Emisión Inicial</h4>
+            <p>Tu iPhone cifra el paquete con la llave del destinatario y emite por BLE en un radio de 100 metros.</p>
+          </div>
+          <div class="step-box active-step">
+            <div class="step-num">02</div>
+            <h4>Primer Salto (x2)</h4>
+            <p>Dos teléfonos cercanos capturan el paquete, verifican que no sea repetido y restan 1 al TTL.</p>
+          </div>
+          <div class="step-box active-step">
+            <div class="step-num">03</div>
+            <h4>Expansión (x4)</h4>
+            <p>Cuatro nodos rebotan en abanico cubriendo kilómetros sin tocar una sola torre celular.</p>
+          </div>
+          <div class="step-box active-step">
+            <div class="step-num">04</div>
+            <h4>Entrega o Puente</h4>
+            <p>Llega a destino, o el primer teléfono con señal lo sube automáticamente a relés Nostr globales.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ESCENA 5: CASOS DE USO CRÍTICOS -->
+      <div class="scene" id="scene5" data-duration="25">
+        <span class="scene-tag">🚨 RESILIENCIA EN EL MUNDO REAL</span>
+        <h2 class="scene-title">
+          Momentos donde <span class="coral">ninguna otra app</span> funciona
+        </h2>
+
+        <div class="flow-steps-grid" style="grid-template-columns: repeat(3, 1fr); margin-top: 30px;">
+          <div class="step-box" style="border-color: rgba(255, 87, 34, 0.4);">
+            <div style="font-size: 2.2rem; margin-bottom: 12px;">🎪</div>
+            <h4 style="color: var(--coral-red);">Festivales y Conciertos</h4>
+            <p>60,000 personas saturando las antenas 5G. Chax vuela porque cada persona es un repetidor adicional de la malla.</p>
+          </div>
+          <div class="step-box" style="border-color: rgba(0, 245, 155, 0.4);">
+            <div style="font-size: 2.2rem; margin-bottom: 12px;">🏔️</div>
+            <h4 style="color: var(--volt-green);">Montaña & Senderismo</h4>
+            <p>Sin torres celulares a kilómetros. Mapas topográficos offline y Walkie-Talkie para todo tu grupo de expedición.</p>
+          </div>
+          <div class="step-box" style="border-color: rgba(56, 189, 248, 0.4);">
+            <div style="font-size: 2.2rem; margin-bottom: 12px;">🌪️</div>
+            <h4 style="color: var(--electric-blue);">Catástrofes & Apagones</h4>
+            <p>Cuando un huracán o sismo derriba el tendido eléctrico, la comunidad levanta un enjambre de emergencia de mano en mano.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- ESCENA 6: COMPARATIVA CON GIGANTES -->
+      <div class="scene" id="scene6" data-duration="22">
+        <span class="scene-tag">⚡ AUTONOMÍA TOTAL</span>
+        <h2 class="scene-title">
+          Chax frente a los <span class="green">mensajeros tradicionales</span>
+        </h2>
+
+        <div class="compare-container">
+          <table class="comp-table">
+            <thead>
+              <tr>
+                <th>Capacidad Fundamental</th>
+                <th class="col-highlight">CHAX</th>
+                <th>WhatsApp</th>
+                <th>Telegram</th>
+                <th>Signal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>¿Funciona sin conexión a Internet?</strong></td>
+                <td class="col-highlight">✓ SÍ (Bluetooth Mesh)</td>
+                <td><span class="cross-badge">✕ Muere</span></td>
+                <td><span class="cross-badge">✕ Muere</span></td>
+                <td><span class="cross-badge">✕ Muere</span></td>
+              </tr>
+              <tr>
+                <td><strong>¿Exige número de teléfono obligatorio?</strong></td>
+                <td class="col-highlight">✓ NUNCA (Identidad P2P)</td>
+                <td><span class="cross-badge">✕ Obligatorio</span></td>
+                <td><span class="cross-badge">✕ Obligatorio</span></td>
+                <td><span class="cross-badge">✕ Obligatorio</span></td>
+              </tr>
+              <tr>
+                <td><strong>Cartografía Táctica Offline (Mapax)</strong></td>
+                <td class="col-highlight">✓ Satelital integrado</td>
+                <td><span class="cross-badge">✕ Inexistente</span></td>
+                <td><span class="cross-badge">✕ Inexistente</span></td>
+                <td><span class="cross-badge">✕ Inexistente</span></td>
+              </tr>
+              <tr>
+                <td><strong>Walkie-Talkie Push-To-Talk Offline</strong></td>
+                <td class="col-highlight">✓ Directo por radio BLE</td>
+                <td><span class="cross-badge">✕ Requiere nube</span></td>
+                <td><span class="cross-badge">✕ Requiere nube</span></td>
+                <td><span class="cross-badge">✕ Requiere nube</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- ESCENA 7: DISPOSITIVOS & TESTFLIGHT CTA -->
+      <div class="scene" id="scene7" data-duration="24">
+        <div class="hero-layout">
+          <div style="flex: 1.2;">
+            <span class="scene-tag" style="color: var(--coral-red);">⚠️ AVISO PRÁCTICO CRÍTICO</span>
+            <h2 class="scene-title">
+              Mejor tenerla instalada antes.<br>
+              <span class="coral">Sin señal no hay cómo descargarla.</span>
+            </h2>
+            <p class="scene-desc">
+              Chax es 100% nativa para <strong>iPhone, iPad y Mac</strong>. Casi no ocupa espacio y duerme en reposo profundo. Descárgala hoy gratis para tenerla lista cuando realmente la necesites.
+            </p>
+            <div style="background: rgba(0,245,155,0.12); border: 1px solid var(--volt-green); padding: 18px 28px; border-radius: 18px; display: inline-flex; align-items: center; gap: 20px;">
+              <span style="font-size: 2.4rem;">📲</span>
+              <div>
+                <div style="font-weight: 800; font-size: 1.2rem; color: #fff;">Disponible Gratis en Apple TestFlight</div>
+                <div style="color: var(--volt-green); font-family: var(--font-mono); font-size: 1rem;">https://testflight.apple.com/join/hmfhvFdf</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="flex: 0.8; display: flex; justify-content: center;">
+            <img src="../assets/screenshots/mac/01_conversaciones.png" style="width: 480px; border-radius: 20px; border: 2px solid rgba(255,255,255,0.15); box-shadow: 0 30px 80px rgba(0,0,0,0.8);" alt="Chax Mac">
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- SUBTÍTULO / GUION DINÁMICO EN PANTALLA -->
+    <div class="caption-overlay" id="captionBox">
+      Cargando presentación de Chax...
+    </div>
+
+    <!-- BARRA INFERIOR DE TIEMPO Y CONTROLES -->
+    <div class="bottom-timeline">
+      <span class="time-indicator" id="timeLabel">00:00 / 02:48</span>
+      <div class="progress-track">
+        <div class="progress-bar-fill" id="progressBar"></div>
+      </div>
+      <div class="playback-controls">
+        <button class="ctrl-btn" id="prevBtn">◀ Ant</button>
+        <button class="ctrl-btn" id="playBtn">▶ Reproducir</button>
+        <button class="ctrl-btn" id="nextBtn">Sig ▶</button>
+        <button class="ctrl-btn" id="fullBtn">⛶ Pantalla Completa</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCRIPT DE NAVEGACIÓN Y SINCRONIZACIÓN -->
+  <script>
+    // Subtítulos sincronizados por escena
+    const captions = [
+      "¿Cuántas veces tu app de mensajería se ha muerto en un festival o en un apagón? Conoce Chax: rápido online, imparable mesh.",
+      "Mapax: cartografía satelital y radar de proximidad offline. Ubica a tus amigos en metros y grados sin satélite ni datos.",
+      "Walkie-Talkie Push-to-Talk directo e Identidad Soberana: Cero números telefónicos, cero cuentas, llaves en enclave seguro.",
+      "¿Cómo viaja sin señal? Malla multi-salto: de 1 a 2, de 2 a 4 teléfonos en abanico hasta su destino. Cero intermediarios espías.",
+      "Escenarios críticos: 60k personas en festivales, senderismo en la montaña y catástrofes naturales donde se cae la luz.",
+      "A diferencia de WhatsApp, Telegram o Signal, Chax nunca muere sin internet ni te exige registrar tu número.",
+      "Regla de oro: Mejor tenerla instalada hoy. Sin señal no hay cómo descargarla. Bájala gratis en TestFlight para iPhone, iPad y Mac."
+    ];
+
+    const scenes = document.querySelectorAll('.scene');
+    const captionBox = document.getElementById('captionBox');
+    const progressBar = document.getElementById('progressBar');
+    const timeLabel = document.getElementById('timeLabel');
+    const playBtn = document.getElementById('playBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const fullBtn = document.getElementById('fullBtn');
+
+    let currentScene = 0;
+    let isPlaying = false;
+    let autoTimer = null;
+    let elapsedSeconds = 0;
+    const totalSeconds = 168; // ~2:48 min
+
+    function showScene(index) {
+      scenes.forEach((s, i) => {
+        s.classList.toggle('active', i === index);
+      });
+      captionBox.textContent = captions[index];
+      currentScene = index;
+
+      const progress = ((index + 1) / scenes.length) * 100;
+      progressBar.style.width = progress + '%';
+      
+      const m = Math.floor(elapsedSeconds / 60);
+      const s = elapsedSeconds % 60;
+      timeLabel.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')} / 02:48`;
+    }
+
+    function nextScene() {
+      if (currentScene < scenes.length - 1) {
+        showScene(currentScene + 1);
+      } else {
+        pause();
+      }
+    }
+
+    function prevScene() {
+      if (currentScene > 0) {
+        showScene(currentScene - 1);
+      }
+    }
+
+    function play() {
+      isPlaying = true;
+      playBtn.textContent = '⏸ Pausa';
+      autoTimer = setInterval(() => {
+        elapsedSeconds++;
+        const currentDur = parseInt(scenes[currentScene].dataset.duration) || 24;
+        if (elapsedSeconds % currentDur === 0) {
+          nextScene();
+        }
+      }, 1000);
+    }
+
+    function pause() {
+      isPlaying = false;
+      playBtn.textContent = '▶ Reproducir';
+      clearInterval(autoTimer);
+    }
+
+    playBtn.addEventListener('click', () => {
+      if (isPlaying) pause(); else play();
+    });
+
+    prevBtn.addEventListener('click', prevScene);
+    nextBtn.addEventListener('click', nextScene);
+
+    // Teclado
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ') nextScene();
+      if (e.key === 'ArrowLeft') prevScene();
+      if (e.key === 'f' || e.key === 'F') toggleFullScreen();
+    });
+
+    fullBtn.addEventListener('click', toggleFullScreen);
+
+    function toggleFullScreen() {
+      const elem = document.getElementById('viewportFrame');
+      if (!document.fullscreenElement) {
+        elem.requestFullscreen().catch(err => console.log(err));
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    // Detectar parámetro ?scene=N en la URL para capturas automatizadas
+    const urlParams = new URLSearchParams(window.location.search);
+    const sceneParam = urlParams.get('scene');
+    if (sceneParam !== null) {
+      const idx = parseInt(sceneParam);
+      if (!isNaN(idx) && idx >= 0 && idx < scenes.length) {
+        showScene(idx);
+      } else {
+        showScene(0);
+      }
+    } else {
+      // Inicializar primera escena por defecto
+      showScene(0);
+    }
+
+    // Fondo Canvas de Partículas Mesh
+    const canvas = document.getElementById('canvasMesh');
+    const ctx = canvas.getContext('2d');
+    let width = canvas.width = 1920;
+    let height = canvas.height = 1080;
+
+    const nodes = [];
+    for (let i = 0; i < 45; i++) {
+      nodes.push({
+        x: Math.random() * width,
+        y: Math.random() * height,
+        vx: (Math.random() - 0.5) * 0.8,
+        vy: (Math.random() - 0.5) * 0.8,
+        r: Math.random() * 2.5 + 1.5
+      });
+    }
+
+    function drawMesh() {
+      ctx.clearRect(0, 0, width, height);
+
+      for (let i = 0; i < nodes.length; i++) {
+        const n1 = nodes[i];
+        n1.x += n1.vx;
+        n1.y += n1.vy;
+        if (n1.x < 0 || n1.x > width) n1.vx *= -1;
+        if (n1.y < 0 || n1.y > height) n1.vy *= -1;
+
+        ctx.beginPath();
+        ctx.arc(n1.x, n1.y, n1.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(0, 245, 155, 0.6)';
+        ctx.fill();
+
+        for (let j = i + 1; j < nodes.length; j++) {
+          const n2 = nodes[j];
+          const dist = Math.hypot(n1.x - n2.x, n1.y - n2.y);
+          if (dist < 180) {
+            ctx.beginPath();
+            ctx.moveTo(n1.x, n1.y);
+            ctx.lineTo(n2.x, n2.y);
+            ctx.strokeStyle = `rgba(0, 245, 155, ${0.25 * (1 - dist / 180)})`;
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(drawMesh);
+    }
+    drawMesh();
+  </script>
+</body>
+</html>

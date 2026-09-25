@@ -3,1588 +3,1463 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chax | Omni-Routing P2P Messaging — Fast online, unstoppable mesh</title>
-  <meta name="description" content="Chax is the sovereign hybrid messaging network: ultra-fast over open Nostr relays, or direct P2P and local mesh nodes without cell service. Zero servers, zero trace.">
-  <meta property="og:title" content="Chax: Omni-Routing P2P Messaging">
+  <title>Chax | Fast online, unstoppable mesh</title>
+  <meta name="description" content="Chax: Fast online, unstoppable mesh. Sovereign messaging for everyday life: Push-To-Talk Walkie-Talkie, Mapax satellite maps, encrypted photos, serverless groups, and Bluetooth Mesh when signal drops.">
+  <meta property="og:title" content="Chax: Fast online, unstoppable mesh">
   <meta property="og:description" content="Fast online, unstoppable mesh. Your sovereign communication network that no one can shut down.">
   <meta property="og:image" content="../assets/logo.png">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/png" href="../assets/logo.png">
-  <!-- Privacy-friendly Web Analytics (GoatCounter: dashboard at https://chax.goatcounter.com) -->
+
+  <!-- Hojas de Estilo del Nuevo Sistema Táctico -->
+  <link rel="stylesheet" href="../assets/style.css">
+
+  <!-- Privacy-friendly Web Analytics (GoatCounter) -->
   <script data-goatcounter="https://chax.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
-  <style>
-    :root {
-      --bg: #07090e;
-      --bg-card: rgba(18, 24, 38, 0.65);
-      --bg-card-hover: rgba(26, 36, 58, 0.8);
-      --border: rgba(56, 189, 248, 0.15);
-      --border-glow: rgba(56, 189, 248, 0.4);
-      --primary: #38bdf8;
-      --primary-glow: #0284c7;
-      --accent: #818cf8;
-      --text: #f8fafc;
-      --text-muted: #94a3b8;
-      --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      font-family: var(--font);
-      line-height: 1.6;
-      overflow-x: hidden;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    #meshCanvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 0;
-      pointer-events: none;
-      opacity: 0.45;
-    }
-
-    .container {
-      max-width: 1200px;
-      margin: 0 auto;
-      padding: 0 24px;
-      position: relative;
-      z-index: 1;
-      width: 100%;
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      background: rgba(7, 9, 14, 0.75);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-    }
-
-    .nav-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 72px;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      text-decoration: none;
-      color: var(--text);
-      font-weight: 700;
-      font-size: 1.25rem;
-      letter-spacing: -0.02em;
-    }
-
-    .brand img {
-      width: 36px;
-      height: 36px;
-      border-radius: 9px;
-      filter: drop-shadow(0 0 10px rgba(56, 189, 248, 0.4));
-    }
-
-    nav ul {
-      display: flex;
-      list-style: none;
-      gap: 24px;
-      align-items: center;
-    }
-
-    nav a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.95rem;
-      font-weight: 500;
-      transition: color 0.2s ease;
-    }
-
-    nav a:hover {
-      color: var(--primary);
-    }
-
-    .nav-cta {
-      background: linear-gradient(135deg, #0284c7, #38bdf8);
-      color: #031124 !important;
-      font-weight: 600 !important;
-      padding: 8px 18px;
-      border-radius: 9999px;
-      transition: transform 0.2s ease, box-shadow 0.2s ease !important;
-      box-shadow: 0 0 16px rgba(56, 189, 248, 0.35);
-    }
-
-    .nav-cta:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 0 24px rgba(56, 189, 248, 0.55);
-    }
-
-    .lang-switcher {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      background: rgba(255, 255, 255, 0.06);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 9999px;
-      padding: 3px 6px;
-    }
-    .lang-btn {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.78rem;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 9999px;
-      transition: all 0.2s ease;
-    }
-    .lang-btn.active, .lang-btn:hover {
-      color: #031124 !important;
-      background: var(--primary);
-    }
-
-    .screenshots-section {
-      padding: 60px 0 30px;
-      position: relative;
-    }
-    .screenshots-scroll {
-      display: flex;
-      gap: 24px;
-      overflow-x: auto;
-      padding: 16px 4px 36px;
-      scroll-snap-type: x mandatory;
-      scrollbar-width: thin;
-      scrollbar-color: var(--primary) transparent;
-      -webkit-overflow-scrolling: touch;
-    }
-    .screenshots-scroll::-webkit-scrollbar {
-      height: 6px;
-    }
-    .screenshots-scroll::-webkit-scrollbar-thumb {
-      background: var(--primary);
-      border-radius: 3px;
-    }
-    .screenshot-card {
-      flex: 0 0 280px;
-      scroll-snap-align: start;
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 16px;
-      transition: all 0.3s ease;
-      display: flex;
-      flex-direction: column;
-    }
-    @media (min-width: 768px) {
-      .screenshot-card {
-        flex: 0 0 310px;
-      }
-    }
-    .screenshot-card:hover {
-      border-color: var(--border-glow);
-      transform: translateY(-6px);
-      box-shadow: 0 12px 30px rgba(56, 189, 248, 0.25);
-    }
-    .screenshot-img-wrapper {
-      width: 100%;
-      border-radius: 14px;
-      overflow: hidden;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      background: #000;
-      margin-bottom: 14px;
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
-    }
-    .screenshot-img-wrapper img {
-      width: 100%;
-      height: auto;
-      display: block;
-      transition: transform 0.3s ease;
-    }
-    .screenshot-card:hover .screenshot-img-wrapper img {
-      transform: scale(1.02);
-    }
-    .screenshot-info h4 {
-      font-size: 1.05rem;
-      font-weight: 700;
-      margin-bottom: 6px;
-      color: var(--text);
-    }
-    .screenshot-info p {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      line-height: 1.45;
-    }
-
-    .hero {
-      padding: 100px 0 70px;
-      text-align: center;
-    }
-
-    .badge-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: rgba(56, 189, 248, 0.1);
-      border: 1px solid var(--border-glow);
-      padding: 6px 16px;
-      border-radius: 9999px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--primary);
-      margin-bottom: 20px;
-      box-shadow: 0 0 18px rgba(56, 189, 248, 0.2);
-    }
-
-    .sovereign-banner {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      background: linear-gradient(135deg, rgba(16, 185, 129, 0.12), rgba(56, 189, 248, 0.08));
-      border: 1px solid rgba(16, 185, 129, 0.35);
-      padding: 8px 20px;
-      border-radius: 9999px;
-      font-size: 0.92rem;
-      font-weight: 600;
-      color: #34d399;
-      margin-bottom: 24px;
-      box-shadow: 0 0 20px rgba(16, 185, 129, 0.15);
-    }
-
-    .hero h1 {
-      font-size: clamp(2.5rem, 6vw, 4.5rem);
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -0.04em;
-      margin-bottom: 24px;
-    }
-
-    .hero h1 span {
-      background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-    }
-
-    .hero p {
-      font-size: clamp(1.1rem, 2vw, 1.35rem);
-      color: var(--text-muted);
-      max-width: 740px;
-      margin: 0 auto 36px;
-      font-weight: 400;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 14px 28px;
-      border-radius: 12px;
-      font-size: 1.05rem;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.2s ease;
-      cursor: pointer;
-    }
-
-    .btn-primary {
-      background: linear-gradient(135deg, #0284c7, #38bdf8);
-      color: #031124;
-      box-shadow: 0 4px 20px rgba(56, 189, 248, 0.4);
-    }
-
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 28px rgba(56, 189, 248, 0.6);
-    }
-
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.05);
-      color: var(--text);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
-    }
-
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.1);
-      border-color: rgba(255, 255, 255, 0.3);
-      transform: translateY(-2px);
-    }
-
-    .section-title {
-      text-align: center;
-      margin-bottom: 50px;
-    }
-
-    .section-title h2 {
-      font-size: clamp(2rem, 4vw, 2.75rem);
-      font-weight: 700;
-      letter-spacing: -0.03em;
-      margin-bottom: 14px;
-    }
-
-    .section-title p {
-      color: var(--text-muted);
-      font-size: 1.1rem;
-      max-width: 600px;
-      margin: 0 auto;
-    }
-
-    .grid-3 {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 24px;
-      margin-bottom: 80px;
-    }
-
-    .card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 36px 28px;
-      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-      backdrop-filter: blur(16px);
-      display: flex;
-      flex-direction: column;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .card:hover {
-      background: var(--bg-card-hover);
-      border-color: var(--border-glow);
-      transform: translateY(-4px);
-      box-shadow: 0 12px 30px rgba(56, 189, 248, 0.15);
-    }
-
-    .card-icon {
-      font-size: 2.2rem;
-      margin-bottom: 20px;
-      display: inline-block;
-    }
-
-    .card h3 {
-      font-size: 1.35rem;
-      font-weight: 700;
-      margin-bottom: 12px;
-      letter-spacing: -0.02em;
-    }
-
-    .card p {
-      color: var(--text-muted);
-      font-size: 0.98rem;
-      line-height: 1.6;
-    }
-
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 20px;
-      margin-bottom: 80px;
-    }
-
-    .feature-item {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      border-radius: 16px;
-      padding: 24px;
-      transition: all 0.2s ease;
-    }
-
-    .feature-item:hover {
-      background: rgba(255, 255, 255, 0.04);
-      border-color: rgba(56, 189, 248, 0.3);
-    }
-
-    .feature-item h4 {
-      font-size: 1.15rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .feature-item p {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-    }
-
-    .privacy-banner {
-      background: linear-gradient(135deg, rgba(56, 189, 248, 0.08) 0%, rgba(129, 140, 248, 0.08) 100%);
-      border: 1px solid var(--border-glow);
-      border-radius: 24px;
-      padding: 50px 36px;
-      text-align: center;
-      margin-bottom: 40px;
-      position: relative;
-    }
-
-    .privacy-badge {
-      display: inline-block;
-      background: #10b981;
-      color: #022c22;
-      font-weight: 700;
-      font-size: 0.8rem;
-      padding: 4px 12px;
-      border-radius: 9999px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-bottom: 16px;
-    }
-
-    .privacy-banner h3 {
-      font-size: 2rem;
-      font-weight: 700;
-      margin-bottom: 14px;
-    }
-
-    .privacy-banner p {
-      color: var(--text-muted);
-      max-width: 650px;
-      margin: 0 auto 28px;
-      font-size: 1.05rem;
-    }
-
-    /* Multiplatform Downloads Section */
-    .downloads-section {
-      padding: 80px 0 60px;
-      position: relative;
-    }
-    .downloads-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
-      margin-top: 40px;
-    }
-    .download-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 28px 24px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    .download-card:hover {
-      border-color: var(--border-glow);
-      transform: translateY(-4px);
-      box-shadow: 0 12px 30px rgba(56, 189, 248, 0.2);
-    }
-    .download-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-    }
-    .download-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      background: rgba(56, 189, 248, 0.1);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: var(--primary);
-    }
-    .download-badge {
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 9999px;
-      background: rgba(16, 185, 129, 0.15);
-      color: #34d399;
-      border: 1px solid rgba(16, 185, 129, 0.3);
-    }
-    .download-card h3 {
-      font-size: 1.25rem;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-    .download-card p {
-      font-size: 0.88rem;
-      color: var(--text-muted);
-      margin-bottom: 20px;
-      line-height: 1.5;
-    }
-    .download-card .btn {
-      width: 100%;
-      justify-content: center;
-      font-size: 0.95rem;
-      padding: 12px 16px;
-    }
-
-    /* Donations Section */
-    .donations-section {
-      padding: 70px 0 60px;
-      position: relative;
-    }
-    .donations-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 24px;
-      margin-top: 36px;
-    }
-    .donation-card {
-      background: var(--bg-card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      padding: 26px 22px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: all 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-    .donation-card:hover {
-      border-color: var(--border-glow);
-      transform: translateY(-4px);
-      box-shadow: 0 12px 30px rgba(56, 189, 248, 0.2);
-    }
-    .donation-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 14px;
-    }
-    .donation-icon-badge {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-    .donation-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.35rem;
-      font-weight: 800;
-    }
-    .donation-icon.btc {
-      background: rgba(247, 147, 26, 0.15);
-      color: #f7931a;
-      border: 1px solid rgba(247, 147, 26, 0.3);
-    }
-    .donation-icon.evm {
-      background: rgba(98, 126, 234, 0.15);
-      color: #627eea;
-      border: 1px solid rgba(98, 126, 234, 0.3);
-    }
-    .donation-icon.sol {
-      background: rgba(20, 241, 149, 0.15);
-      color: #14f195;
-      border: 1px solid rgba(20, 241, 149, 0.3);
-    }
-    .donation-icon.patreon {
-      background: rgba(255, 66, 77, 0.15);
-      color: #ff424d;
-      border: 1px solid rgba(255, 66, 77, 0.3);
-    }
-    .crypto-tag {
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 9999px;
-      background: rgba(56, 189, 248, 0.12);
-      color: var(--primary);
-      border: 1px solid rgba(56, 189, 248, 0.25);
-    }
-    .donation-card h3 {
-      font-size: 1.18rem;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-    .donation-desc {
-      font-size: 0.85rem;
-      color: var(--text-muted);
-      margin-bottom: 16px;
-      line-height: 1.45;
-    }
-    .crypto-box {
-      background: rgba(7, 9, 14, 0.75);
-      border: 1px solid rgba(255, 255, 255, 0.08);
-      border-radius: 12px;
-      padding: 10px 12px;
-      margin-bottom: 16px;
-      position: relative;
-    }
-    .crypto-label {
-      font-size: 0.68rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-      margin-bottom: 4px;
-      display: block;
-    }
-    .crypto-address {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-      font-size: 0.76rem;
-      color: #38bdf8;
-      word-break: break-all;
-      user-select: all;
-      line-height: 1.35;
-    }
-    .btn-copy {
-      width: 100%;
-      background: rgba(56, 189, 248, 0.1);
-      border: 1px solid rgba(56, 189, 248, 0.3);
-      color: var(--primary);
-      border-radius: 10px;
-      padding: 10px 14px;
-      font-size: 0.88rem;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: all 0.2s ease;
-    }
-    .btn-copy:hover {
-      background: var(--primary);
-      color: #07090e;
-      box-shadow: 0 0 14px rgba(56, 189, 248, 0.4);
-    }
-    .btn-copy.copied {
-      background: #10b981 !important;
-      border-color: #10b981 !important;
-      color: #ffffff !important;
-    }
-    .btn-patreon {
-      width: 100%;
-      background: linear-gradient(135deg, #ff424d, #f96854);
-      border: none;
-      color: #ffffff !important;
-      border-radius: 10px;
-      padding: 11px 14px;
-      font-size: 0.9rem;
-      font-weight: 700;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      transition: all 0.2s ease;
-      box-shadow: 0 4px 14px rgba(255, 66, 77, 0.35);
-    }
-    .btn-patreon:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(255, 66, 77, 0.55);
-    }
-
-    footer {
-      margin-top: auto;
-      border-top: 1px solid rgba(255, 255, 255, 0.08);
-      padding: 48px 0;
-      background: rgba(5, 7, 10, 0.8);
-    }
-
-    .footer-inner {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-
-    .footer-links {
-      display: flex;
-      list-style: none;
-      gap: 24px;
-      flex-wrap: wrap;
-    }
-
-    .footer-links a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 0.9rem;
-      transition: color 0.2s ease;
-    }
-
-    .footer-links a:hover {
-      color: var(--primary);
-    }
-
-    .copyright {
-      color: #64748b;
-      font-size: 0.85rem;
-      width: 100%;
-      text-align: center;
-      margin-top: 24px;
-      border-top: 1px solid rgba(255, 255, 255, 0.05);
-      padding-top: 24px;
-    }
-
-    /* ==========================================================================
-       Mobile Header & Drawer Styles
-       ========================================================================== */
-    .mobile-header-actions {
-      display: none;
-    }
-    .mobile-toggle {
-      display: none;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      border-radius: 8px;
-      padding: 7px;
-      cursor: pointer;
-      color: var(--text);
-      flex-direction: column;
-      gap: 4px;
-      width: 36px;
-      height: 36px;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s ease;
-    }
-    .mobile-toggle:hover {
-      background: rgba(56, 189, 248, 0.1);
-      border-color: var(--border-glow);
-    }
-    .mobile-toggle span {
-      display: block;
-      width: 18px;
-      height: 2px;
-      background: var(--text);
-      border-radius: 2px;
-      transition: all 0.3s ease;
-    }
-
-    @media (max-width: 768px) {
-      /* Container Gutters */
-      .container {
-        padding: 0 16px;
-      }
-
-      /* Compact Sticky Header (56px) */
-      .nav-inner {
-        height: 56px;
-        padding: 0;
-      }
-      .brand {
-        font-size: 1.15rem;
-        gap: 8px;
-      }
-      .brand img {
-        width: 30px;
-        height: 30px;
-        border-radius: 7px;
-      }
-
-      .mobile-header-actions {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-      }
-      .mobile-toggle {
-        display: flex;
-      }
-
-      /* Mobile Navigation Drawer */
-      nav {
-        display: none;
-      }
-      nav.open {
-        display: block;
-        position: absolute;
-        top: 56px;
-        left: 0;
-        width: 100%;
-        background: rgba(7, 9, 14, 0.98);
-        backdrop-filter: blur(24px);
-        -webkit-backdrop-filter: blur(24px);
-        border-bottom: 1px solid rgba(56, 189, 248, 0.25);
-        padding: 16px 20px 24px;
-        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.9);
-      }
-      nav.open ul {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        align-items: stretch;
-      }
-      nav.open a {
-        font-size: 1rem;
-        padding: 8px 0;
-        color: var(--text);
-        display: block;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      }
-      nav.open .nav-cta {
-        text-align: center;
-        margin-top: 8px;
-        padding: 10px 16px;
-        border-bottom: none;
-      }
-      nav.open .lang-switcher {
-        display: none;
-      }
-
-      /* Hero Section: Proportional & Breathable */
-      .hero {
-        padding: 28px 0 20px;
-      }
-      .badge-pill {
-        font-size: 0.72rem;
-        padding: 4px 12px;
-        margin-bottom: 12px;
-        gap: 6px;
-      }
-      .sovereign-banner {
-        display: block;
-        width: 100%;
-        max-width: 330px;
-        margin: 0 auto 16px;
-        padding: 8px 12px;
-        font-size: 0.78rem;
-        line-height: 1.35;
-        border-radius: 12px;
-      }
-      .hero h1 {
-        font-size: 1.75rem;
-        line-height: 1.22;
-        letter-spacing: -0.02em;
-        margin-bottom: 12px;
-      }
-      .hero p {
-        font-size: 0.9rem;
-        line-height: 1.5;
-        margin-bottom: 20px;
-        padding: 0 4px;
-      }
-      .hero-actions {
-        flex-direction: column;
-        width: 100%;
-        max-width: 290px;
-        margin: 0 auto;
-        gap: 10px;
-      }
-      .hero-actions .btn {
-        width: 100%;
-        justify-content: center;
-        padding: 12px 16px;
-        font-size: 0.92rem;
-        border-radius: 10px;
-      }
-
-      /* Screenshots Section */
-      .screenshots-section {
-        padding: 28px 0 16px;
-      }
-      .screenshots-scroll {
-        gap: 14px;
-        padding: 8px 4px 20px;
-      }
-      .screenshot-card {
-        flex: 0 0 225px;
-        padding: 12px;
-        border-radius: 16px;
-      }
-      .screenshot-img-wrapper {
-        border-radius: 12px;
-        margin-bottom: 10px;
-      }
-      .screenshot-info h4 {
-        font-size: 0.92rem;
-        margin-bottom: 4px;
-      }
-      .screenshot-info p {
-        font-size: 0.78rem;
-        line-height: 1.4;
-      }
-
-      /* Titles & Grids */
-      .section-title {
-        margin-bottom: 24px;
-      }
-      .section-title h2 {
-        font-size: 1.4rem;
-        letter-spacing: -0.02em;
-        margin-bottom: 6px;
-      }
-      .section-title p {
-        font-size: 0.86rem;
-        line-height: 1.4;
-      }
-
-      .grid-3 {
-        grid-template-columns: 1fr;
-        gap: 14px;
-        margin-bottom: 32px;
-      }
-      .card {
-        padding: 18px 16px;
-        border-radius: 16px;
-      }
-      .card-icon {
-        font-size: 1.7rem;
-        margin-bottom: 10px;
-      }
-      .card h3 {
-        font-size: 1.12rem;
-        margin-bottom: 6px;
-      }
-      .card p {
-        font-size: 0.86rem;
-        line-height: 1.45;
-      }
-
-      .features-grid {
-        grid-template-columns: 1fr;
-        gap: 10px;
-        margin-bottom: 32px;
-      }
-      .feature-item {
-        padding: 14px 12px;
-        border-radius: 14px;
-      }
-      .feature-item h4 {
-        font-size: 0.95rem;
-        margin-bottom: 4px;
-      }
-      .feature-item p {
-        font-size: 0.82rem;
-        line-height: 1.4;
-      }
-
-      /* Privacy Banner */
-      .privacy-banner {
-        padding: 24px 16px;
-        border-radius: 16px;
-        margin-bottom: 24px;
-      }
-      .privacy-banner h3 {
-        font-size: 1.25rem;
-        margin-bottom: 8px;
-      }
-      .privacy-banner p {
-        font-size: 0.85rem;
-        line-height: 1.45;
-        margin-bottom: 16px;
-      }
-      .privacy-banner .btn {
-        width: 100%;
-        max-width: 270px;
-        font-size: 0.88rem;
-        padding: 10px 16px;
-      }
-
-      /* TestFlight Banner & Downloads Section */
-      .testflight-banner {
-        padding: 26px 16px !important;
-        margin: 28px 0 16px !important;
-        border-radius: 18px !important;
-      }
-      .testflight-banner h2 {
-        font-size: 1.35rem !important;
-        margin-bottom: 8px !important;
-      }
-      .testflight-banner p {
-        font-size: 0.85rem !important;
-        margin-bottom: 16px !important;
-      }
-      .testflight-banner .btn {
-        font-size: 0.92rem !important;
-        padding: 12px 20px !important;
-        width: 100%;
-        max-width: 280px;
-      }
-
-      .downloads-section {
-        padding: 32px 0 24px;
-      }
-      .downloads-grid {
-        grid-template-columns: 1fr;
-        gap: 14px;
-        margin-top: 20px;
-      }
-      .download-card {
-        padding: 18px 16px;
-        border-radius: 16px;
-      }
-      .download-card h3 {
-        font-size: 1.1rem;
-      }
-      .download-card p {
-        font-size: 0.82rem;
-        margin-bottom: 14px;
-      }
-      .download-card .btn {
-        font-size: 0.88rem;
-        padding: 10px 14px;
-      }
-
-      /* Donations Mobile */
-      .donations-section {
-        padding: 32px 0 24px;
-      }
-      .donations-grid {
-        grid-template-columns: 1fr;
-        gap: 14px;
-        margin-top: 20px;
-      }
-      .donation-card {
-        padding: 20px 16px;
-        border-radius: 16px;
-      }
-      .crypto-address {
-        font-size: 0.72rem;
-      }
-
-      /* Footer */
-      footer {
-        padding: 28px 0;
-      }
-      .footer-inner {
-        flex-direction: column;
-        text-align: center;
-        gap: 14px;
-      }
-      .footer-links {
-        flex-direction: column;
-        gap: 10px;
-      }
-      .footer-links a {
-        font-size: 0.85rem;
-      }
-      .copyright {
-        margin-top: 14px;
-        padding-top: 14px;
-        font-size: 0.78rem;
-      }
-    }
-  </style>
 </head>
 <body>
 
-  <canvas id="meshCanvas"></canvas>
+  <!-- Fondo Interactivo de Malla en Canvas -->
+  <canvas id="meshBackground"></canvas>
 
-  <!-- Navigation -->
+  <!-- NAVEGACIÓN SUPERIOR -->
   <header>
     <div class="container">
-      <div class="nav-inner">
-        <a href="index.html" class="brand">
-          <img src="../assets/logo.png" alt="Chax Constellation Logo">
+      <div class="nav-bar">
+        <a href="index.html" class="brand-wrap">
+          <div class="brand-icon-box">
+            <img src="../assets/app-icon.png" alt="Chax Logo" />
+          </div>
           <span>Chax</span>
         </a>
-        <nav id="mainNav">
-          <ul>
-            <li><a href="#screenshots">Screenshots</a></li>
-            <li><a href="#architecture">Architecture</a></li>
-            <li><a href="#features">Features</a></li>
-            <li><a href="#downloads" style="color: var(--primary); font-weight: 600;">Downloads</a></li>
-            <li><a href="../support.html">Support</a></li>
-            <li><a href="../privacy.html">Privacy</a></li>
-            <li><a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" class="nav-cta">TestFlight Beta</a></li>
-            <li>
-              <div class="lang-switcher">
-                <a href="../index.html" class="lang-btn" title="Español">ES</a>
-                <a href="index.html" class="lang-btn active" title="English">EN</a>
-                <a href="../pt/index.html" class="lang-btn" title="Português">PT</a>
-              </div>
-            </li>
-          </ul>
-        </nav>
-        <div class="mobile-header-actions">
-          <div class="lang-switcher">
-            <a href="../index.html" class="lang-btn">ES</a>
-            <a href="index.html" class="lang-btn active">EN</a>
-            <a href="../pt/index.html" class="lang-btn">PT</a>
-          </div>
-          <button class="mobile-toggle" id="mobileToggle" aria-label="Open menu" onclick="toggleMobileMenu()">
-            <span></span>
-            <span></span>
-            <span></span>
-          </button>
-        </div>
+
+        <ul class="nav-links">
+          <li><a href="#superpoderes">Superpowers</a></li>
+          <li><a href="#diagramas">How It Works</a></li>
+          <li><a href="#problemas">Real Scenarios</a></li>
+          <li><a href="#arquitectura">Architecture</a></li>
+          <li><a href="#capturas">Devices</a></li>
+          <li><a href="#descargas">Downloads</a></li>
+          <li><a href="#faq">FAQ</a></li>
+          <!-- Selector de Idiomas -->
+          <li style="display: flex; gap: 6px; font-size: 0.82rem; margin-left: 8px;">
+            <a href="../index.html">ES</a>
+            <span style="color: var(--text-dim);">|</span>
+            <a href="index.html" style="color: var(--volt-green); font-weight: 800;">EN</a>
+            <span style="color: var(--text-dim);">|</span>
+            <a href="../pt/index.html">PT</a>
+          </li>
+        </ul>
       </div>
     </div>
   </header>
 
-  <main>
-    <!-- Hero Section -->
-    <section class="hero">
-      <div class="container">
-        <div class="badge-pill">
-          <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#10b981; box-shadow:0 0 8px #10b981;"></span>
-          Adaptive Omni-Routing Mesh Network v2.14
-        </div>
-        <div>
-          <div class="sovereign-banner">
-            ⚡️ <strong>Zero Personal Data:</strong> No name · No phone number · No email — Instant account generated on your device
-          </div>
-        </div>
-        <h1>Omni-Routing P2P Messaging<br><span>Fast online, unstoppable mesh.</span></h1>
-        <p>
-          Communicate without corporate servers, censorship, or <strong>handing over any personal information</strong>. No phone number, name, or email required: your sovereign cryptographic identity is generated instantly on your device the moment you open the app. Chax seamlessly switches between open Internet (Nostr), direct P2P radio links, and local mesh networks.
+  <!-- HERO SECTION: RÁPIDO ONLINE, IMPARABLE MESH -->
+  <section class="hero-section">
+    <div class="container">
+      <div class="hero-pill">
+        <span class="hero-pill-dot"></span>
+        <span>Sovereign P2P Messaging • Your everyday app with superpowers</span>
+      </div>
+
+      <h1 class="hero-title">
+        Fast online.<br>
+        <span class="highlight-green">Unstoppable</span> <span class="highlight-coral">mesh.</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        The sovereign messaging app built for your daily life: <strong>Push-To-Talk Walkie-Talkie</strong>, <strong>Mapax tactical satellite maps</strong>, high-definition encrypted photos, and <strong>decentralized groups</strong>. Blazing fast over the Internet, and whenever you are at a crowded festival, trekking remote peaks, or facing network blackouts, <strong>keep chatting via Bluetooth Mesh with zero cell towers and zero servers</strong>.
+      </p>
+
+      <div class="hero-actions">
+        <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" rel="noopener" class="btn-primary">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 3.5c.61-.75 1.04-1.8 1.01-2.85-.92.04-2.03.62-2.67 1.37-.58.67-1.08 1.74-1.01 2.78.98.08 2.06-.55 2.67-1.3z"/>
+          </svg>
+          Download Free on TestFlight
+        </a>
+        <a href="#superpoderes" class="btn-secondary">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 16 14"></polyline>
+          </svg>
+          Explore All Features
+        </a>
+      </div>
+
+      <!-- Pastillas de Valor Destacadas -->
+      <div class="hero-value-pills">
+        <span class="val-pill">⚡ Ultra-Fast Nostr Network</span>
+        <span class="val-pill">🎙️ PTT Walkie-Talkie</span>
+        <span class="val-pill">🗺️ Offline Satellite Mapax</span>
+        <span class="val-pill">🛡️ Zero Phone Numbers</span>
+        <span class="val-pill">📶 Mesh Fallback Network</span>
+      </div>
+
+      <!-- Aviso Corporativo de Pre-instalación -->
+      <div class="hero-advisory">
+        <span class="advisory-badge">Operational Note</span>
+        <span class="advisory-text">We recommend installing Chax in advance: without cellular coverage it cannot be downloaded. Its footprint on battery and storage is negligible.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       BENTO GRID: SUPERPODERES Y FUNCIONALIDADES COMPLETAS
+       ========================================================================== -->
+  <section class="bento-section" id="superpoderes">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-badge">Complete Feature Suite</span>
+        <h2 class="section-title">Features that transform how you communicate</h2>
+        <p class="section-subtitle">
+          Much more than a simple text chat. Chax combines navigation tech, military-grade audio, and sovereign cryptography in an elegant, intuitive interface.
         </p>
-        <div class="hero-actions">
-          <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" class="btn btn-primary">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.85c.62-.77 1.05-1.84.93-2.91-.94.04-2.03.64-2.67 1.4-.57.67-.99 1.77-.86 2.81 1.05.08 2.05-.56 2.6-1.3z"/></svg>
-            Apple (iOS / Mac)
+      </div>
+
+      <div class="bento-grid">
+        <!-- CARD 1: MAPAX SATELITAL & RADAR (SPAN 2 COLUMNAS) -->
+        <div class="bento-card span-2 highlight-green">
+          <div>
+            <span class="bento-icon-badge green">🗺️ EXCLUSIVE TO CHAX • OFFLINE</span>
+            <h3 class="bento-title">Mapax: Satellite Cartography & Proximity Mesh Radar</h3>
+            <p class="bento-desc">
+              View high-resolution satellite and terrain maps cached locally without consuming a single megabyte of data. Proximity radar calculates real-time bearing and exact distance in meters to nearby contacts. Mark tactical rally points, campsites, or danger zones for your whole group.
+            </p>
+          </div>
+
+          <div class="radar-mini-display">
+            <div style="display: flex; align-items: center; gap: 14px;">
+              <div style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--volt-green); display: flex; align-items: center; justify-content: center; position: relative;">
+                <div style="width: 8px; height: 8px; background: var(--volt-green); border-radius: 50%;"></div>
+                <div style="position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 1px dashed rgba(0,245,155,0.4);" class="pulse-signal-wave"></div>
+              </div>
+              <div>
+                <div style="font-weight: 800; font-size: 1rem; color: #fff;">Active Mesh Radar</div>
+                <div class="radar-target-stat" style="color: var(--volt-green);">Peer detected: Javier (Mac Studio) • 42m Bearing 312° NW</div>
+              </div>
+            </div>
+            <span style="font-size: 0.8rem; background: rgba(0,0,0,0.5); padding: 4px 10px; border-radius: var(--radius-pill); border: 1px solid var(--border-light);">GPS + BLE</span>
+          </div>
+        </div>
+
+        <!-- CARD 2: AUDIO PTT WALKIE-TALKIE -->
+        <div class="bento-card">
+          <div>
+            <span class="bento-icon-badge green">🎙️ INSTANT AUDIO</span>
+            <h3 class="bento-title">Push-To-Talk (PTT) Walkie-Talkie</h3>
+            <p class="bento-desc">
+              Hold to talk and release to send voice notes instantly—no waiting, no cloud uploads. On-device smart transcription.
+            </p>
+          </div>
+
+          <div class="bento-ptt-player">
+            <button id="pttPlayBtn" class="ptt-play-btn" title="Test tactical audio">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                <polygon points="5 3 19 12 5 21 5 3"/>
+              </svg>
+            </button>
+            <div class="audio-bars-wrap">
+              <div class="audio-bar"></div>
+              <div class="audio-bar"></div>
+              <div class="audio-bar"></div>
+              <div class="audio-bar"></div>
+              <div class="audio-bar"></div>
+              <div class="audio-bar"></div>
+              <div class="audio-bar"></div>
+              <div class="audio-bar"></div>
+              <div class="audio-bar"></div>
+              <div class="audio-bar"></div>
+            </div>
+            <span id="pttTimer" style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--volt-green); font-weight: 700;">00:06</span>
+          </div>
+        </div>
+
+        <!-- CARD 3: IDENTIDAD SOBERANA -->
+        <div class="bento-card highlight-purple">
+          <div>
+            <span class="bento-icon-badge purple">🔐 TOTAL SOVEREIGNTY</span>
+            <h3 class="bento-title">Zero Phone Numbers. Zero Accounts. Zero Spying.</h3>
+            <p class="bento-desc">
+              Your identity is generated inside your device Secure Enclave (X25519 & Ed25519 keys). Nobody can suspend your account, demand your phone number, or harvest your metadata. Share your contact with a universal QR code.
+            </p>
+          </div>
+          <div style="font-size: 0.82rem; color: #cbd5e1; background: rgba(0,0,0,0.3); padding: 12px; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.06); font-family: var(--font-mono);">
+            🔑 FP: A416...BDE5 • E2EE Asymmetric Encryption
+          </div>
+        </div>
+
+        <!-- CARD 4: GRUPOS DESCENTRALIZADOS -->
+        <div class="bento-card">
+          <div>
+            <span class="bento-icon-badge blue">👥 NO CENTRAL ADMIN</span>
+            <h3 class="bento-title">Decentralized Groups & Community Channels</h3>
+            <p class="bento-desc">
+              Create group rooms and community channels that cannot be censored or intercepted by any corporation. Ideal for neighborhoods, backcountry expeditions, and trusted circles.
+            </p>
+          </div>
+          <div style="display: flex; gap: 8px; margin-top: 16px;">
+            <span style="background: rgba(56, 189, 248, 0.12); color: #38bdf8; font-size: 0.8rem; font-weight: 700; padding: 4px 10px; border-radius: var(--radius-pill);">Neighborhood Mesh Channel</span>
+            <span style="background: rgba(0, 245, 155, 0.12); color: var(--volt-green); font-size: 0.8rem; font-weight: 700; padding: 4px 10px; border-radius: var(--radius-pill);">SOS Alerts</span>
+          </div>
+        </div>
+
+        <!-- CARD 5: FOTOS Y MULTIMEDIA CIFRADAS -->
+        <div class="bento-card">
+          <div>
+            <span class="bento-icon-badge orange">📸 DIRECT MULTIMEDIA</span>
+            <h3 class="bento-title">High-Definition Photos & P2P Files</h3>
+            <p class="bento-desc">
+              Send uncompressed, full-quality photos and files directly to your peers. All traffic travels in end-to-end encrypted packets that no third party can intercept.
+            </p>
+          </div>
+          <div style="font-size: 0.85rem; color: #ffab91; font-weight: 700; display: flex; align-items: center; gap: 6px;">
+            <span>✓ Zero public cloud storage</span>
+          </div>
+        </div>
+
+        <!-- CARD 6: ECOSISTEMA NATIVO APPLE -->
+        <div class="bento-card span-2" style="background: linear-gradient(135deg, rgba(15,23,42,0.85) 0%, rgba(8,12,20,0.95) 100%);">
+          <div>
+            <span class="bento-icon-badge green">💻 COMPLETE ECOSYSTEM</span>
+            <h3 class="bento-title">100% Native Experience on iPhone, iPad & Mac</h3>
+            <p class="bento-desc">
+              Engineered with pure Swift and SwiftUI to unleash Apple Silicon performance, maximize battery life via Bluetooth Low Energy, and provide native keyboard shortcuts and background notifications.
+            </p>
+          </div>
+          <div style="display: flex; gap: 16px; flex-wrap: wrap;">
+            <span style="color: var(--text-muted); font-size: 0.88rem;">📱 iOS 17+</span>
+            <span style="color: var(--text-muted); font-size: 0.88rem;">📲 iPadOS 17+</span>
+            <span style="color: var(--text-muted); font-size: 0.88rem;">💻 macOS Sonoma / Sequoia</span>
+          </div>
+        </div>
+
+        <!-- CARD 7: EL SUPERPODER OFFLINE -->
+        <div class="bento-card highlight-green">
+          <div>
+            <span class="bento-icon-badge green">⚡ THE ACE UP YOUR SLEEVE</span>
+            <h3 class="bento-title">When the Signal Drops: Automatic Mesh Mode</h3>
+            <p class="bento-desc">
+              No toggle needed. The millisecond your Internet connection drops, Chax invisibly switches to multi-hop Bluetooth Mesh.
+            </p>
+          </div>
+          <a href="#diagramas" style="color: var(--volt-green); font-weight: 750; font-size: 0.9rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+            See how the packet travels →
           </a>
-          <a href="#downloads" class="btn btn-secondary">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-            Android & PC
-          </a>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Screenshots Showcase Section -->
-    <section id="screenshots" class="screenshots-section">
-      <div class="container">
-        <div class="section-title">
-          <h2>The Chax Experience on iOS</h2>
-          <p>Sovereign cryptographic power wrapped in a fluid, high-performance native dark interface.</p>
-        </div>
-        <div class="screenshots-scroll">
-          <div class="screenshot-card">
-            <div class="screenshot-img-wrapper">
-              <img src="../assets/screenshots/01_conversaciones.png" alt="Conversations Feed and Channels" loading="lazy">
-            </div>
-            <div class="screenshot-info">
-              <h4>Conversations Feed</h4>
-              <p>Direct chats and community groups with high-speed offline-first synchronization.</p>
+  <!-- ==========================================================================
+       DIAGRAMAS Y DIAPOSITIVAS INTERACTIVAS: PROPAGACIÓN DE PAQUETES
+       ========================================================================== -->
+  <section class="diagram-section" id="diagramas">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-badge">Protocol Mechanics</span>
+        <h2 class="section-title">How does a message travel without signal?</h2>
+        <p class="section-subtitle">
+          Explore interactive slides step by step: from fan-out multi-hop mesh propagation, to cloud relay bridges and emergency community swarms.
+        </p>
+      </div>
+
+      <!-- Selector de Diapositivas / Pestañas -->
+      <div class="diagram-tabs">
+        <button class="diagram-tab-btn active" data-diagram="diagramCard1">
+          <span>📡 1. Mesh Propagation (1 → 2 → 4 → Destination)</span>
+        </button>
+        <button class="diagram-tab-btn" data-diagram="diagramCard2">
+          <span>🌐 2. Internet Bridge (Nostr Relay)</span>
+        </button>
+        <button class="diagram-tab-btn" data-diagram="diagramCard3">
+          <span>🚨 3. SOS Disaster Swarm</span>
+        </button>
+      </div>
+
+      <!-- DIAPOSITIVA 1: MESH MULTI-SALTO 1 -> 2 -> 4 -> DESTINO -->
+      <div class="diagram-card active" id="diagramCard1">
+        <div class="diagram-body">
+          <div>
+            <span class="bento-icon-badge green">DECENTRALIZED BLUETOOTH RELAY</span>
+            <h3 class="bento-title" style="margin-top: 8px;">From 1 phone to 2, from 2 to 4... to its destination</h3>
+            <p class="bento-desc">
+              Each packet carries a cryptographic payload sealed with the recipient public key (X25519) and a hop counter (TTL). Intermediate relays cannot open it or know who sent it.
+            </p>
+
+            <div class="diagram-stepper">
+              <div class="stepper-step active" data-step="1">
+                <h5>1. Initial Broadcast (Origin Node)</h5>
+                <p>Your iPhone encrypts the packet and broadcasts it via Bluetooth Low Energy within a 100-meter local radius.</p>
+              </div>
+              <div class="stepper-step" data-step="2">
+                <h5>2. First Hop: 2 Phones in Range</h5>
+                <p>Two nearby devices capture the packet, verify it is not a duplicate, and decrement TTL by 1.</p>
+              </div>
+              <div class="stepper-step" data-step="3">
+                <h5>3. Second Hop: Expansion to 4 Nodes</h5>
+                <p>Both phones simultaneously retransmit in a fan-out pattern, reaching 4 new devices in the crowd.</p>
+              </div>
+              <div class="stepper-step" data-step="4">
+                <h5>4. Delivery to Final Recipient</h5>
+                <p>One path reaches your friend. Their device validates the Ed25519 signature, decrypts the message, and confirms delivery ✓✓.</p>
+              </div>
             </div>
           </div>
 
-          <div class="screenshot-card">
-            <div class="screenshot-img-wrapper">
-              <img src="../assets/screenshots/02_chat_directo.png" alt="Encrypted Direct Chat with Reactions" loading="lazy">
-            </div>
-            <div class="screenshot-info">
-              <h4>Military-Grade E2EE</h4>
-              <p>Antenna-to-antenna radio delivery with instant emoji reactions and on-device AI voice note transcription.</p>
-            </div>
-          </div>
+          <div class="diagram-svg-wrap">
+            <svg viewBox="0 0 520 380" width="100%" height="100%">
+              <defs>
+                <linearGradient id="linkGlow" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#38bdf8"/>
+                  <stop offset="100%" stop-color="#00f59b"/>
+                </linearGradient>
+                <filter id="glowGreen" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="4" result="blur" />
+                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
+              </defs>
 
-          <div class="screenshot-card">
-            <div class="screenshot-img-wrapper">
-              <img src="../assets/screenshots/03_radar_mesh.png" alt="Live Mesh Radar" loading="lazy">
-            </div>
-            <div class="screenshot-info">
-              <h4>Live Mesh Radar</h4>
-              <p>Discover nearby peers in real time over Bluetooth and Wi-Fi Direct without any cellular coverage.</p>
-            </div>
-          </div>
+              <!-- Enlaces / Caminos de Malla (Paso 1 -> Paso 2 -> Paso 3 -> Paso 4) -->
+              <!-- Origen a Salto 1 (N1 y N2) -->
+              <path d="M 70 190 Q 130 145 180 120" stroke="#38bdf8" stroke-width="2.5" fill="none" stroke-dasharray="6 4" class="mesh-link-dash" data-diag-step="1"/>
+              <path d="M 70 190 Q 130 235 180 260" stroke="#38bdf8" stroke-width="2.5" fill="none" stroke-dasharray="6 4" class="mesh-link-dash" data-diag-step="1"/>
 
-          <div class="screenshot-card">
-            <div class="screenshot-img-wrapper">
-              <img src="../assets/screenshots/04_identidad.png" alt="Sovereign Identity and QR Card" loading="lazy">
-            </div>
-            <div class="screenshot-info">
-              <h4>Sovereign Identity</h4>
-              <p>Ed25519 cryptographic keys in your iOS Keychain and instant in-person pairing via GPU-rendered dynamic QR.</p>
-            </div>
-          </div>
+              <!-- Salto 1 (N1 y N2) a Salto 2 (4 nodos: M1, M2, M3, M4) -->
+              <path d="M 180 120 Q 240 85 300 70" stroke="#38bdf8" stroke-width="2" fill="none" stroke-dasharray="5 4" class="mesh-link-dash" data-diag-step="2"/>
+              <path d="M 180 120 Q 240 140 300 150" stroke="#38bdf8" stroke-width="2" fill="none" stroke-dasharray="5 4" class="mesh-link-dash" data-diag-step="2"/>
+              <path d="M 180 260 Q 240 230 300 230" stroke="#38bdf8" stroke-width="2" fill="none" stroke-dasharray="5 4" class="mesh-link-dash" data-diag-step="2"/>
+              <path d="M 180 260 Q 240 285 300 310" stroke="#38bdf8" stroke-width="2" fill="none" stroke-dasharray="5 4" class="mesh-link-dash" data-diag-step="2"/>
 
-          <div class="screenshot-card">
-            <div class="screenshot-img-wrapper">
-              <img src="../assets/screenshots/05_ajustes_red.png" alt="Network Settings and Nostr Relays" loading="lazy">
-            </div>
-            <div class="screenshot-info">
-              <h4>Adaptive Routing</h4>
-              <p>Configure Mobile Courier, Super-Relay Mac links, and decentralized Nostr WebSockets relays.</p>
-            </div>
+              <!-- Salto 2 hacia Destino (Camino ganador por M2/M3) -->
+              <path d="M 300 150 Q 380 170 440 190" stroke="url(#linkGlow)" stroke-width="3" fill="none" stroke-dasharray="6 4" class="mesh-link-dash" data-diag-step="3"/>
+              <path d="M 300 230 Q 380 210 440 190" stroke="url(#linkGlow)" stroke-width="3" fill="none" stroke-dasharray="6 4" class="mesh-link-dash" data-diag-step="3"/>
+              <!-- PAQUETES DE DATOS EN MOVIMIENTO REAL (ANIMATEMOTION) -->
+              <circle r="4.5" fill="#00f59b" filter="url(#glowGreen)">
+                <animateMotion path="M 70 190 Q 130 145 180 120 Q 240 140 300 150 Q 380 170 440 190" dur="2.4s" repeatCount="indefinite"/>
+              </circle>
+              <circle r="4.5" fill="#38bdf8" filter="url(#glowGreen)">
+                <animateMotion path="M 70 190 Q 130 235 180 260 Q 240 230 300 230 Q 380 210 440 190" dur="2.4s" repeatCount="indefinite" begin="0.5s"/>
+              </circle>
+
+
+              <!-- NODO 1: EMISOR (X=70, Y=190) -->
+              <g transform="translate(70, 190)" data-diag-step="1">
+                <circle cx="0" cy="0" r="30" fill="rgba(0, 245, 155, 0.15)" stroke="#00f59b" stroke-width="1.5" class="pulse-signal-wave"/>
+                <circle cx="0" cy="0" r="20" fill="#064e3b" stroke="#00f59b" stroke-width="2.5" filter="url(#glowGreen)"/>
+                <text x="0" y="5" fill="#fff" font-size="14" font-weight="900" text-anchor="middle">📱</text>
+                <text x="0" y="38" fill="#00f59b" font-size="11" font-weight="bold" text-anchor="middle">1. Sender</text>
+                <text x="0" y="51" fill="#94a3b8" font-size="9" text-anchor="middle">TTL=7</text>
+              </g>
+
+              <!-- NODOS PASO 2: 2 TELÉFONOS INTERMEDIOS (X=180, Y=120 y Y=260) -->
+              <g transform="translate(180, 120)" data-diag-step="2">
+                <circle cx="0" cy="0" r="18" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+                <text x="0" y="5" fill="#fff" font-size="12" text-anchor="middle">📱</text>
+                <text x="0" y="-24" fill="#38bdf8" font-size="10" font-weight="bold" text-anchor="middle">Node A (Hop 1)</text>
+              </g>
+
+              <g transform="translate(180, 260)" data-diag-step="2">
+                <circle cx="0" cy="0" r="18" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+                <text x="0" y="5" fill="#fff" font-size="12" text-anchor="middle">📱</text>
+                <text x="0" y="32" fill="#38bdf8" font-size="10" font-weight="bold" text-anchor="middle">Node B (Hop 1)</text>
+              </g>
+
+              <!-- NODOS PASO 3: 4 TELÉFONOS EN PERIFERIA (X=300, Y=70, 150, 230, 310) -->
+              <g transform="translate(300, 70)" data-diag-step="3">
+                <circle cx="0" cy="0" r="16" fill="#0b1320" stroke="#64748b" stroke-width="1.5"/>
+                <text x="0" y="4" fill="#94a3b8" font-size="11" text-anchor="middle">📱</text>
+                <text x="0" y="-22" fill="#94a3b8" font-size="9" text-anchor="middle">Hop 2 (a)</text>
+              </g>
+
+              <g transform="translate(300, 150)" data-diag-step="3">
+                <circle cx="0" cy="0" r="17" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+                <text x="0" y="4" fill="#fff" font-size="11" text-anchor="middle">📱</text>
+                <text x="0" y="-22" fill="#38bdf8" font-size="9" font-weight="bold" text-anchor="middle">Hop 2 (b)</text>
+              </g>
+
+              <g transform="translate(300, 230)" data-diag-step="3">
+                <circle cx="0" cy="0" r="17" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+                <text x="0" y="4" fill="#fff" font-size="11" text-anchor="middle">📱</text>
+                <text x="0" y="28" fill="#38bdf8" font-size="9" font-weight="bold" text-anchor="middle">Hop 2 (c)</text>
+              </g>
+
+              <g transform="translate(300, 310)" data-diag-step="3">
+                <circle cx="0" cy="0" r="16" fill="#0b1320" stroke="#64748b" stroke-width="1.5"/>
+                <text x="0" y="4" fill="#94a3b8" font-size="11" text-anchor="middle">📱</text>
+                <text x="0" y="28" fill="#94a3b8" font-size="9" text-anchor="middle">Hop 2 (d)</text>
+              </g>
+
+              <!-- NODO 4: DESTINATARIO (X=440, Y=190) -->
+              <g transform="translate(440, 190)" data-diag-step="4">
+                <circle cx="0" cy="0" r="32" fill="rgba(0, 245, 155, 0.2)" stroke="#00f59b" stroke-width="2" class="pulse-signal-wave"/>
+                <circle cx="0" cy="0" r="22" fill="#064e3b" stroke="#00f59b" stroke-width="3" filter="url(#glowGreen)"/>
+                <text x="0" y="5" fill="#fff" font-size="15" text-anchor="middle">🎯</text>
+                <text x="0" y="40" fill="#00f59b" font-size="11" font-weight="bold" text-anchor="middle">4. Recipient</text>
+                <text x="0" y="53" fill="#38bdf8" font-size="9" font-weight="bold" text-anchor="middle">✓✓ Delivered</text>
+              </g>
+
+              <!-- Badge Criptográfico de Seguridad -->
+              <rect x="130" y="10" width="260" height="30" rx="15" fill="rgba(0,0,0,0.7)" stroke="rgba(0,245,155,0.4)" stroke-width="1"/>
+              <text x="260" y="29" fill="#00f59b" font-size="10.5" font-weight="bold" text-anchor="middle">🔒 E2EE Encryption • Intermediate nodes blind</text>
+            </svg>
           </div>
         </div>
       </div>
-    </section>
 
-    <!-- Architecture Section -->
-    <section id="architecture" style="padding: 40px 0;">
-      <div class="container">
-        <div class="section-title">
-          <h2>Intelligent Hybrid Routing</h2>
-          <p>The network does not live on a distant corporate server. It lives on your device and adapts instantly.</p>
-        </div>
+      <!-- DIAPOSITIVA 2: PUENTE RELAY A INTERNET -->
+      <div class="diagram-card" id="diagramCard2">
+        <div class="diagram-body">
+          <div>
+            <span class="bento-icon-badge blue">GLOBAL HYBRID ROUTING</span>
+            <h3 class="bento-title" style="margin-top: 8px;">The Mesh Bridge to Global Internet Relays</h3>
+            <p class="bento-desc">
+              If your recipient is across the globe and you are underground in the subway or at a concert with zero cell data, all it takes is for <em>one single</em> phone in the mesh to have signal to act as an automatic gateway to worldwide relays.
+            </p>
 
-        <div class="grid-3">
-          <div class="card">
-            <div class="card-icon">🌐</div>
-            <h3>Global Internet (Nostr)</h3>
-            <p>Lightning-fast connections through decentralized Nostr WebSockets relays. No corporate monopolies, no prior censorship, and no servers owning your messages.</p>
+            <div class="diagram-stepper">
+              <div class="stepper-step active" data-step="1">
+                <h5>1. Broadcast in Dead Zone (No Signal)</h5>
+                <p>You are in a basement or packed stadium. Your packet departs over local Bluetooth Mesh radio.</p>
+              </div>
+              <div class="stepper-step" data-step="2">
+                <h5>2. Gateway Bridge Node (Hybrid Link)</h5>
+                <p>A peer near an exit or connected to WiFi captures the packet and immediately pushes it to the Internet without being able to read its content.</p>
+              </div>
+              <div class="stepper-step" data-step="3">
+                <h5>3. Global Nostr Swarm & Instant Delivery</h5>
+                <p>The packet syncs across decentralized worldwide relays and arrives on your contact phone in milliseconds.</p>
+              </div>
+            </div>
           </div>
 
-          <div class="card">
-            <div class="card-icon">⚡️</div>
-            <h3>Direct P2P Link</h3>
-            <p>If your contact is nearby, packets travel via radio frequency (Bluetooth and local Wi-Fi) directly from antenna to antenna. Zero mobile data, zero intermediaries.</p>
-          </div>
+          <div class="diagram-svg-wrap">
+            <svg viewBox="0 0 520 380" width="100%" height="100%">
+              <defs>
+                <linearGradient id="bridgeFlow" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#ff7a00"/>
+                  <stop offset="50%" stop-color="#38bdf8"/>
+                  <stop offset="100%" stop-color="#00f59b"/>
+                </linearGradient>
+              </defs>
 
-          <div class="card">
-            <div class="card-icon">🛰️</div>
-            <h3>Community Mesh Network</h3>
-            <p>In stadiums, emergencies, or cellular blackouts, devices relay encrypted packets hop-by-hop like a human chain protected by blind cryptography.</p>
+              <!-- Zona Offline (Izquierda) -->
+              <rect x="20" y="40" width="180" height="300" rx="14" fill="rgba(15, 23, 42, 0.6)" stroke="rgba(239, 68, 68, 0.4)" stroke-width="1.5" stroke-dasharray="4 4"/>
+              <text x="110" y="65" fill="#f87171" font-size="11" font-weight="bold" text-anchor="middle">NO SIGNAL ZONE 🚫</text>
+              <text x="110" y="80" fill="#94a3b8" font-size="9" text-anchor="middle">Tunnel / Basement / Festival</text>
+
+              <!-- Teléfono Offline Sender -->
+              <g transform="translate(70, 200)">
+                <circle cx="0" cy="0" r="22" fill="#1e1b4b" stroke="#ff7a00" stroke-width="2"/>
+                <text x="0" y="5" fill="#fff" font-size="13" text-anchor="middle">📱</text>
+                <text x="0" y="36" fill="#ff7a00" font-size="10" font-weight="bold" text-anchor="middle">Offline Sender</text>
+              </g>
+
+              <!-- Nodo Mesh Relevo -->
+              <g transform="translate(150, 150)">
+                <circle cx="0" cy="0" r="18" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
+                <text x="0" y="4" fill="#fff" font-size="11" text-anchor="middle">📱</text>
+                <text x="0" y="-24" fill="#38bdf8" font-size="9" text-anchor="middle">BLE Hop</text>
+              </g>
+
+              <path d="M 70 200 Q 110 160 150 150" stroke="#38bdf8" stroke-width="2.5" fill="none" stroke-dasharray="5 3" class="mesh-link-dash"/>
+              <path d="M 150 150 Q 200 160 260 190" stroke="#38bdf8" stroke-width="2.5" fill="none" stroke-dasharray="5 3" class="mesh-link-dash"/>
+
+              <!-- NODO PUENTE (GATEWAY BRIDGE) -->
+              <g transform="translate(260, 190)">
+                <circle cx="0" cy="0" r="30" fill="rgba(56, 189, 248, 0.2)" stroke="#38bdf8" stroke-width="2" class="pulse-signal-wave"/>
+                <rect x="-18" y="-24" width="36" height="48" rx="8" fill="#041426" stroke="#38bdf8" stroke-width="2.5"/>
+                <text x="0" y="-2" fill="#fff" font-size="13" text-anchor="middle">📶</text>
+                <circle cx="0" cy="14" r="3" fill="#00f59b"/>
+                <text x="0" y="42" fill="#38bdf8" font-size="11" font-weight="bold" text-anchor="middle">Bridge Node</text>
+                <text x="0" y="55" fill="#00f59b" font-size="9" font-weight="bold" text-anchor="middle">BLE + 5G Active</text>
+              </g>
+
+              <!-- Conexión hacia la Nube Nostr -->
+              <path d="M 285 190 Q 340 170 380 150" stroke="url(#bridgeFlow)" stroke-width="3" fill="none" stroke-dasharray="6 4" class="mesh-link-dash"/>
+
+              <!-- NUBE NOSTR MUNDIAL -->
+              <g transform="translate(390, 140)">
+                <ellipse cx="20" cy="20" rx="45" ry="26" fill="rgba(124, 58, 237, 0.25)" stroke="#c084fc" stroke-width="2"/>
+                <text x="20" y="16" fill="#c084fc" font-size="10" font-weight="900" text-anchor="middle">NOSTR NETWORK</text>
+                <text x="20" y="28" fill="#e2e8f0" font-size="8.5" text-anchor="middle">Global Relays</text>
+              </g>
+
+              <!-- Enlace a Destinatario Remoto -->
+              <path d="M 425 150 Q 460 170 470 230" stroke="#00f59b" stroke-width="2.5" fill="none" stroke-dasharray="5 3" class="mesh-link-dash"/>
+              <!-- PAQUETE EN MOVIMIENTO REAL (ANIMATEMOTION) -->
+              <circle r="4.5" fill="#00f59b" filter="url(#glowGreen)">
+                <animateMotion path="M 70 200 Q 110 160 150 150 Q 200 160 260 190 Q 340 170 380 150 Q 430 150 470 250" dur="2.6s" repeatCount="indefinite"/>
+              </circle>
+
+
+              <!-- DESTINATARIO REMOTO (Cualquier lugar del mundo) -->
+              <g transform="translate(470, 250)">
+                <circle cx="0" cy="0" r="24" fill="#052e16" stroke="#00f59b" stroke-width="2.5"/>
+                <text x="0" y="5" fill="#fff" font-size="13" text-anchor="middle">🌍</text>
+                <text x="0" y="38" fill="#00f59b" font-size="10" font-weight="bold" text-anchor="middle">Remote Contact</text>
+                <text x="0" y="50" fill="#94a3b8" font-size="8.5" text-anchor="middle">Tokyo / Madrid (120ms)</text>
+              </g>
+            </svg>
           </div>
         </div>
       </div>
-    </section>
 
-    <!-- Features Section -->
-    <section id="features" style="padding: 40px 0;">
-      <div class="container">
-        <div class="section-title">
-          <h2>Engineered for Real Life</h2>
-          <p>The mathematical strength of modern cryptography wrapped in an elegant and fast user experience.</p>
+      <!-- DIAPOSITIVA 3: RED COMUNITARIA SOS EN CATÁSTROFES -->
+      <div class="diagram-card" id="diagramCard3">
+        <div class="diagram-body">
+          <div>
+            <span class="bento-icon-badge orange">COMMUNITY RESILIENCE</span>
+            <h3 class="bento-title" style="margin-top: 8px;">Autonomous Emergency & Disaster Mesh</h3>
+            <p class="bento-desc">
+              When an earthquake, hurricane, or power blackout knocks down city towers, neighbors instantly form an emergency lifeline without cables, SIM cards, or paid subscriptions.
+            </p>
+
+            <div class="diagram-stepper">
+              <div class="stepper-step active" data-step="1">
+                <h5>1. Cell Tower Collapse & Power Blackout</h5>
+                <p>Commercial mobile carriers shut down. Internet and centralized apps become completely unreachable.</p>
+              </div>
+              <div class="stepper-step" data-step="2">
+                <h5>2. Automatic Neighbor Discovery (BLE Swarm)</h5>
+                <p>Chax devices in each home passively detect one another, building a resilient neighborhood relay swarm.</p>
+              </div>
+              <div class="stepper-step" data-step="3">
+                <h5>3. Survival Beacons & Relief Points on Mapax</h5>
+                <p>Status alerts ("Family safe"), rescue requests, and GPS coordinates are broadcast across town without mobile data.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="diagram-svg-wrap">
+            <svg viewBox="0 0 520 380" width="100%" height="100%">
+              <!-- Fondo Ciudad / Escombros estilizados -->
+              <rect x="40" y="240" width="60" height="90" fill="#1e293b" rx="4"/>
+              <rect x="120" y="210" width="70" height="120" fill="#0f172a" rx="4"/>
+              <rect x="220" y="260" width="80" height="70" fill="#1e293b" rx="4"/>
+              <rect x="330" y="200" width="65" height="130" fill="#0f172a" rx="4"/>
+              <rect x="420" y="250" width="70" height="80" fill="#1e293b" rx="4"/>
+
+              <!-- Antena Celular Derribada / Inoperativa -->
+              <g transform="translate(70, 70)">
+                <line x1="10" y1="10" x2="40" y2="70" stroke="#ef4444" stroke-width="2.5"/>
+                <line x1="5" y1="70" x2="45" y2="70" stroke="#ef4444" stroke-width="2"/>
+                <line x1="0" y1="20" x2="40" y2="20" stroke="#ef4444" stroke-width="2" transform="rotate(30 20 20)"/>
+                <text x="50" y="45" fill="#f87171" font-size="10" font-weight="bold">TOWER DOWN ⚡</text>
+              </g>
+
+              <!-- Baliza SOS Ciudadano 1 (Casa A) -->
+              <g transform="translate(150, 160)">
+                <circle cx="0" cy="0" r="24" fill="rgba(239, 68, 68, 0.25)" stroke="#ef4444" stroke-width="1.5" class="pulse-signal-wave"/>
+                <circle cx="0" cy="0" r="16" fill="#7f1d1d" stroke="#ef4444" stroke-width="2"/>
+                <text x="0" y="4" fill="#fff" font-size="11" text-anchor="middle">🚨</text>
+                <text x="0" y="32" fill="#fca5a5" font-size="9" font-weight="bold" text-anchor="middle">SOS Beacon (Family)</text>
+              </g>
+
+              <!-- Relevo Casa Vecina (Casa B) -->
+              <g transform="translate(260, 200)">
+                <circle cx="0" cy="0" r="18" fill="#064e3b" stroke="#00f59b" stroke-width="2"/>
+                <text x="0" y="4" fill="#fff" font-size="11" text-anchor="middle">🏠</text>
+                <text x="0" y="32" fill="#00f59b" font-size="9" font-weight="bold" text-anchor="middle">Neighbor Relay</text>
+              </g>
+
+              <!-- Relevo Mac en Refugio (Casa C) -->
+              <g transform="translate(360, 150)">
+                <circle cx="0" cy="0" r="18" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+                <text x="0" y="4" fill="#fff" font-size="11" text-anchor="middle">💻</text>
+                <text x="0" y="-24" fill="#38bdf8" font-size="9" font-weight="bold" text-anchor="middle">Shelter Mac</text>
+              </g>
+
+              <!-- Brigada de Rescate / Puesto Médico -->
+              <g transform="translate(450, 210)">
+                <circle cx="0" cy="0" r="26" fill="rgba(0, 245, 155, 0.25)" stroke="#00f59b" stroke-width="2" class="pulse-signal-wave"/>
+                <circle cx="0" cy="0" r="18" fill="#064e3b" stroke="#00f59b" stroke-width="2.5"/>
+                <text x="0" y="5" fill="#fff" font-size="12" text-anchor="middle">🚑</text>
+                <text x="0" y="36" fill="#00f59b" font-size="10" font-weight="bold" text-anchor="middle">Rescue Team</text>
+                <text x="0" y="48" fill="#e2e8f0" font-size="8.5" text-anchor="middle">Mapax GPS Located</text>
+              </g>
+
+              <!-- Líneas de Malla SOS Interconectadas -->
+              <path d="M 150 160 Q 200 190 260 200" stroke="#00f59b" stroke-width="2.5" fill="none" stroke-dasharray="5 3" class="mesh-link-dash"/>
+              <path d="M 260 200 Q 310 160 360 150" stroke="#00f59b" stroke-width="2.5" fill="none" stroke-dasharray="5 3" class="mesh-link-dash"/>
+              <path d="M 360 150 Q 400 190 450 210" stroke="#00f59b" stroke-width="2.5" fill="none" stroke-dasharray="5 3" class="mesh-link-dash"/>
+
+              <rect x="140" y="335" width="240" height="26" rx="13" fill="rgba(0,0,0,0.8)" stroke="#00f59b" stroke-width="1"/>
+              <text x="260" y="352" fill="#00f59b" font-size="10" font-weight="bold" text-anchor="middle">⚡ Neighborhood Mesh Active • 0% Power Grid Reliance</text>
+            </svg>
+          </div>
         </div>
+      </div>
+    </div>
+  </section>
 
-        <div class="features-grid">
-          <div class="feature-item">
-            <h4>⚡️ Instant Account (Zero Data)</h4>
-            <p><strong>No name, no phone number, no email.</strong> Say goodbye to registration forms, passwords, and SMS codes. When you open Chax, your iPhone generates your Ed25519 key pair in milliseconds—100% sovereign and private.</p>
+  <!-- ==========================================================================
+       ESCENARIOS Y PERSONAJES ANIMADOS ("MUÑEQUITOS")
+       ========================================================================== -->
+  <section class="scenarios-section" id="problemas">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-badge">Critical Use Cases</span>
+        <h2 class="section-title">Where does Chax save you? Real-life situations</h2>
+        <p class="section-subtitle">
+          Crucial moments where no other messaging app can help because conventional infrastructure collapses.
+        </p>
+      </div>
+
+      <!-- ESCENARIO 1: CONCIERTO MASIVO / FESTIVAL -->
+      <div class="scenario-block">
+        <div class="scenario-content">
+          <span class="scenario-meta-tag concert">Scenario 01 • Festivals & Concerts</span>
+          <h3 class="scenario-heading">60,000 fans at the festival. 5G network collapsed. You can't find your group.</h3>
+          
+          <div class="scenario-problem-box">
+            <strong>The Typical Problem</strong>
+            <p>You went to grab drinks or find restrooms. Returning, the crowd is endless. You check your phone: <em>"No Service"</em> or full bars with WhatsApp stuck on the endless spinning clock ⏱️. You are completely cut off.</p>
           </div>
 
-          <div class="feature-item">
-            <h4>📻 Live Push-to-Talk (PTT) Walkie-Talkie</h4>
-            <p>Instant streaming voice communication Nextel-style. Hold to talk with haptic kickback and classic radio beeps. Smart speaker/earpiece auto-routing using the proximity sensor when held to your ear.</p>
-          </div>
-
-          <div class="feature-item">
-            <h4>🚗 "Read to Me" (Hands-Free Mode)</h4>
-            <p>Continuous conversation reader with neural text-to-speech (TTS). Listen to incoming texts and voice notes sequentially without touching the screen while driving or exercising.</p>
-          </div>
-
-          <div class="feature-item">
-            <h4>📸 QuickCamera & Video Bubbles</h4>
-            <p>Integrated tactile shutter: tap once for instant photo capture, hold to record video. Seamless native video playback embedded directly inside the conversation bubbles.</p>
-          </div>
-
-          <div class="feature-item">
-            <h4>📁 Universal File Selector</h4>
-            <p>Share documents, PDF files, audio clips, and uncompressed high-resolution images directly from Apple Files, iCloud Drive, or macOS Finder.</p>
-          </div>
-
-          <div class="feature-item">
-            <h4>🎙️ On-Device AI Transcription</h4>
-            <p>Convert voice notes to text in real time using your device's Apple neural engine without sending a single byte to external cloud servers, guaranteeing total privacy.</p>
-          </div>
-
-          <div class="feature-item">
-            <h4>📇 Sovereign Address Book & Search</h4>
-            <p>Intuitive separation between saved contacts and nearby mesh radar nodes. Add contacts directly from cards and search chat history instantly.</p>
-          </div>
-
-          <div class="feature-item">
-            <h4>🛡️ Military-Grade E2EE</h4>
-            <p>Unbreakable cryptography using Curve25519 and ChaCha20-Poly1305. Neither transport nodes nor Nostr relays can decrypt or read your messages.</p>
-          </div>
-
-          <div class="feature-item">
-            <h4>🔋 Battery Efficiency & Offline Mesh</h4>
-            <p>Engineered with Apple native frameworks to deliver maximum radio frequency mesh range (Bluetooth & Wi-Fi Direct) with negligible impact on battery life.</p>
-          </div>
-        </div>
-
-        <!-- Privacy Box -->
-        <div class="privacy-banner">
-          <span class="privacy-badge">Privacy by Design</span>
-          <h3>Your data never leaves your control</h3>
-          <p>
-            Chax does not ask for your name, phone number, or email to operate. We run zero collection servers, use no third-party tracking SDKs (no Firebase, no Google trackers), and never log activity. On the App Store, we hold the official distinction: <strong>"Data Not Collected"</strong>.
+          <p class="scenario-solution-text">
+            <strong>The Chax Solution:</strong> Your packet does not reach for a congested, distant cell tower. It hops in milliseconds from phone to phone among the people around you via encrypted Bluetooth Mesh.
           </p>
-          <a href="../privacy.html" class="btn btn-secondary">Read Full Privacy Policy</a>
+
+          <ul class="scenario-keypoints">
+            <li>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              <span><strong>The denser the crowd, the faster the mesh:</strong> Every phone with Chax acts as an invisible repeater.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              <span><strong>Shielded privacy:</strong> Intermediate devices only forward sealed packets; they cannot inspect your chats.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              <span><strong>Meeting point:</strong> Share tactical coordinates and navigate to your group with radar without data.</span>
+            </li>
+          </ul>
         </div>
 
-        <!-- Final TestFlight CTA Banner -->
-        <div class="testflight-banner" style="text-align: center; margin: 60px 0 20px; padding: 40px 20px; background: linear-gradient(180deg, rgba(18, 24, 38, 0.4), rgba(18, 24, 38, 0.8)); border: 1px solid var(--border); border-radius: 24px;">
-          <h2 style="font-size: 2.2rem; font-weight: 800; margin-bottom: 12px;">Join the Sovereign Beta</h2>
-          <p style="color: var(--text-muted); max-width: 580px; margin: 0 auto 24px; font-size: 1.05rem;">Install Chax on your iPhone or Mac via TestFlight and communicate freely without relying on corporate infrastructure.</p>
-          <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" class="btn btn-primary" style="font-size: 1.15rem; padding: 16px 36px;">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.85c.62-.77 1.05-1.84.93-2.91-.94.04-2.03.64-2.67 1.4-.57.67-.99 1.77-.86 2.81 1.05.08 2.05-.56 2.6-1.3z"/></svg>
-            Install Chax on TestFlight
+        <div class="scenario-visual">
+          <svg viewBox="0 0 500 350" width="100%" height="100%">
+  <defs>
+    <linearGradient id="phoneBodyGrad1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#1e293b"/>
+      <stop offset="100%" stop-color="#090d16"/>
+    </linearGradient>
+    <linearGradient id="laserBeamGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#7c3aed" stop-opacity="0"/>
+    </linearGradient>
+    <filter id="glowGreenS1" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3.5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Atmósfera del Concierto (Láseres sutiles en perspectiva) -->
+  <polygon points="250,20 20,290 100,290" fill="url(#laserBeamGrad)"/>
+  <polygon points="250,20 400,290 480,290" fill="url(#laserBeamGrad)"/>
+
+  <!-- Estado de Torre 5G Saturada (Arriba Centro) -->
+  <g transform="translate(130, 20)">
+    <rect x="0" y="0" width="240" height="24" rx="12" fill="rgba(239, 68, 68, 0.12)" stroke="rgba(239, 68, 68, 0.4)" stroke-width="1"/>
+    <text x="120" y="16" fill="#f87171" font-size="8.5" font-weight="800" text-anchor="middle">⚠️ 5G NETWORK SATURATED • 0 BPS (TOWER DOWN)</text>
+  </g>
+
+  <!-- TELÉFONO IZQUIERDA: LEO (EMISOR) -->
+  <g class="device-float-subtle" transform="translate(25, 58)">
+    <!-- Chasis iPhone -->
+    <rect x="0" y="0" width="136" height="230" rx="22" fill="url(#phoneBodyGrad1)" stroke="rgba(255,255,255,0.18)" stroke-width="1.5"/>
+    <rect x="5" y="6" width="126" height="218" rx="17" fill="#040711"/>
+    <!-- Dynamic Island -->
+    <rect x="47" y="12" width="42" height="7" rx="3.5" fill="#000"/>
+    <!-- Header App -->
+    <circle cx="22" cy="34" r="8" fill="#0284c7"/>
+    <text x="22" y="37" fill="#fff" font-size="8" font-weight="900" text-anchor="middle">L</text>
+    <text x="35" y="32" fill="#fff" font-size="9" font-weight="800">Leo (iPhone 15 Pro)</text>
+    <text x="35" y="42" fill="#00f59b" font-size="7.5" font-weight="600">BLE Mesh Active</text>
+    <!-- Burbuja enviada -->
+    <rect x="10" y="60" width="112" height="62" rx="10" fill="rgba(0, 245, 155, 0.12)" stroke="#00f59b" stroke-width="1"/>
+    <text x="18" y="77" fill="#00f59b" font-size="10" font-weight="800">Where are you? 📍</text>
+    <text x="18" y="93" fill="#f1f5f9" font-size="8.5">Stage Tower 4</text>
+    <text x="18" y="112" fill="#94a3b8" font-size="7.5">BLE • TTL: 7 • 12:42</text>
+    <!-- Footer Estado Offline -->
+    <rect x="14" y="196" width="104" height="20" rx="6" fill="rgba(255,255,255,0.05)"/>
+    <text x="66" y="210" fill="#94a3b8" font-size="7.5" font-weight="700" text-anchor="middle">📶 No Signal • Mesh OK</text>
+  </g>
+
+  <!-- MULTITUD / RELAYS MESH INTERMEDIOS -->
+  <!-- Relay 1 -->
+  <g transform="translate(195, 130)">
+    <circle cx="16" cy="16" r="22" fill="none" stroke="#00f59b" stroke-width="1.2" class="beacon-pulse-ring"/>
+    <rect x="4" y="2" width="24" height="38" rx="6" fill="#0f172a" stroke="#00f59b" stroke-width="1.5"/>
+    <rect x="7" y="6" width="18" height="28" rx="3" fill="#040d1a"/>
+    <circle cx="16" cy="20" r="3.5" fill="#00f59b"/>
+    <text x="16" y="52" fill="#38bdf8" font-size="8" font-weight="800" text-anchor="middle">Relay 1</text>
+  </g>
+
+  <!-- Relay 2 -->
+  <g transform="translate(250, 185)">
+    <circle cx="16" cy="16" r="22" fill="none" stroke="#00f59b" stroke-width="1.2" class="beacon-pulse-ring" style="animation-delay: 0.8s;"/>
+    <rect x="4" y="2" width="24" height="38" rx="6" fill="#0f172a" stroke="#00f59b" stroke-width="1.5"/>
+    <rect x="7" y="6" width="18" height="28" rx="3" fill="#040d1a"/>
+    <circle cx="16" cy="20" r="3.5" fill="#00f59b"/>
+    <text x="16" y="52" fill="#38bdf8" font-size="8" font-weight="800" text-anchor="middle">Relay 2</text>
+  </g>
+
+  <!-- Relay 3 -->
+  <g transform="translate(305, 130)">
+    <circle cx="16" cy="16" r="22" fill="none" stroke="#00f59b" stroke-width="1.2" class="beacon-pulse-ring" style="animation-delay: 1.5s;"/>
+    <rect x="4" y="2" width="24" height="38" rx="6" fill="#0f172a" stroke="#00f59b" stroke-width="1.5"/>
+    <rect x="7" y="6" width="18" height="28" rx="3" fill="#040d1a"/>
+    <circle cx="16" cy="20" r="3.5" fill="#00f59b"/>
+    <text x="16" y="52" fill="#38bdf8" font-size="8" font-weight="800" text-anchor="middle">Relay 3</text>
+  </g>
+
+  <!-- CAMINO MESH DE SALTOS MULTI-HOP -->
+  <path d="M 160 148 Q 185 135 210 148 Q 235 200 265 200 Q 295 135 320 148 Q 335 145 345 148" stroke="#00f59b" stroke-width="2.5" fill="none" class="mesh-link-dash"/>
+
+  <!-- PAQUETE DE DATOS EN MOVIMIENTO REAL (ANIMATEMOTION) -->
+  <circle r="5" fill="#00f59b" filter="url(#glowGreenS1)">
+    <animateMotion path="M 160 148 Q 185 135 210 148 Q 235 200 265 200 Q 295 135 320 148 Q 335 145 345 148" dur="2.4s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- TELÉFONO DERECHA: SOFÍA (RECEPTOR) -->
+  <g class="device-float-alt" transform="translate(340, 58)">
+    <!-- Chasis iPhone -->
+    <rect x="0" y="0" width="136" height="230" rx="22" fill="url(#phoneBodyGrad1)" stroke="rgba(0, 245, 155, 0.4)" stroke-width="1.5"/>
+    <rect x="5" y="6" width="126" height="218" rx="17" fill="#040711"/>
+    <!-- Dynamic Island -->
+    <rect x="47" y="12" width="42" height="7" rx="3.5" fill="#000"/>
+    <!-- Header App -->
+    <circle cx="22" cy="34" r="8" fill="#7c3aed"/>
+    <text x="22" y="37" fill="#fff" font-size="8" font-weight="900" text-anchor="middle">S</text>
+    <text x="35" y="32" fill="#fff" font-size="9" font-weight="800">Sofia (iPhone 15 Pro)</text>
+    <text x="35" y="42" fill="#00f59b" font-size="7.5" font-weight="600">Online via Mesh</text>
+    <!-- Mensaje Entrante -->
+    <rect x="10" y="55" width="112" height="34" rx="8" fill="rgba(255,255,255,0.06)"/>
+    <text x="18" y="76" fill="#cbd5e1" font-size="8.5">Where are you? 📍</text>
+    <!-- Mensaje de Respuesta Entregado -->
+    <rect x="10" y="96" width="112" height="54" rx="10" fill="rgba(0, 245, 155, 0.16)" stroke="#00f59b" stroke-width="1"/>
+    <text x="18" y="115" fill="#fff" font-size="9.5" font-weight="800">By Tower 4! 🎉</text>
+    <text x="18" y="137" fill="#00f59b" font-size="8" font-weight="800">✓✓ Delivered in 0.4s</text>
+    <!-- Footer Mesh -->
+    <rect x="14" y="196" width="104" height="20" rx="6" fill="rgba(0,245,155,0.1)"/>
+    <text x="66" y="210" fill="#00f59b" font-size="7.5" font-weight="800" text-anchor="middle">⚡ Salto P2P Exitoso</text>
+  </g>
+
+  <!-- BADGE INFERIOR TÁCTICO -->
+  <rect x="110" y="306" width="280" height="28" rx="14" fill="rgba(0,245,155,0.12)" stroke="#00f59b" stroke-width="1"/>
+  <text x="250" y="324" fill="#00f59b" font-size="9.5" font-weight="800" text-anchor="middle">⚡ P2P Hop in 0.4s • 3 BLE Mesh Nodes</text>
+</svg>
+        </div>
+      </div>
+
+      <!-- ESCENARIO 2: TREKKING & MONTAÑA -->
+      <div class="scenario-block reverse">
+        <div class="scenario-content">
+          <span class="scenario-meta-tag trekking">Scenario 02 • Mountain, Trekking & Adventure</span>
+          <h3 class="scenario-heading">In the canyon, backcountry, or deep wilderness. Zero cell signal. Every meter counts.</h3>
+          
+          <div class="scenario-problem-box">
+            <strong>The Typical Problem</strong>
+            <p>You headed out with friends to summit a peak or ride gravel trails. A fork in the trail or sudden mountain fog separates you. There are no cellular towers for miles. How do you know which way to hike or if someone was injured?</p>
+          </div>
+
+          <p class="scenario-solution-text">
+            <strong>The Chax Solution with Mapax:</strong> Open your offline tactical satellite map. The radar detects your friends' signals, shows their exact compass heading, distance in meters, and lets you speak via <strong>Push-To-Talk PTT Walkie-Talkie</strong> without cellular plans or expensive satellite communicators.
+          </p>
+
+          <ul class="scenario-keypoints">
+            <li>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              <span><strong>Offline Satellite Mapax:</strong> Cached terrain maps with zero connectivity required.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              <span><strong>Proximity Radar & Compass:</strong> Real-time directional heading arrows and straight-line distances.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              <span><strong>Instant PTT Voice Notes:</strong> Transmit your voice like a military tactical radio.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="scenario-visual">
+          <svg viewBox="0 0 500 350" width="100%" height="100%">
+  <defs>
+    <radialGradient id="radarSweepGrad2" cx="0%" cy="0%" r="100%">
+      <stop offset="0%" stop-color="#00f59b" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#00f59b" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="mountGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1e293b" stop-opacity="0.7"/>
+      <stop offset="100%" stop-color="#0b111e" stop-opacity="0.95"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Siluetas Topográficas de Montaña en Fondo -->
+  <polygon points="10,280 130,120 250,280" fill="url(#mountGrad)"/>
+  <polygon points="180,280 310,95 440,280" fill="url(#mountGrad)" opacity="0.6"/>
+
+  <!-- PANEL IZQUIERDO: HUD MAPAX TELEMETRÍA -->
+  <g class="device-float-subtle" transform="translate(25, 48)">
+    <rect x="0" y="0" width="135" height="240" rx="16" fill="rgba(15, 23, 42, 0.9)" stroke="rgba(56, 189, 248, 0.35)" stroke-width="1.2"/>
+    <text x="67" y="24" fill="#38bdf8" font-size="10" font-weight="800" text-anchor="middle">🗺️ Satellite Mapax</text>
+    
+    <!-- Brújula / Rosa de los Vientos -->
+    <g transform="translate(67, 72)">
+      <circle cx="0" cy="0" r="32" fill="#040d1a" stroke="rgba(56, 189, 248, 0.3)" stroke-width="1.2"/>
+      <circle cx="0" cy="0" r="2" fill="#38bdf8"/>
+      <text x="0" y="-22" fill="#94a3b8" font-size="7" font-weight="bold" text-anchor="middle">N</text>
+      <text x="22" y="2.5" fill="#94a3b8" font-size="7" font-weight="bold" text-anchor="middle">E</text>
+      <text x="0" y="27" fill="#94a3b8" font-size="7" font-weight="bold" text-anchor="middle">S</text>
+      <text x="-22" y="2.5" fill="#94a3b8" font-size="7" font-weight="bold" text-anchor="middle">W</text>
+      <!-- Aguja de Rumbo -->
+      <polygon points="0,0 -4,-18 0,-24 4,-18" fill="#ef4444" transform="rotate(-76)"/>
+      <polygon points="0,0 -3,16 0,22 3,16" fill="#94a3b8" transform="rotate(-76)"/>
+    </g>
+
+    <!-- Telemetría -->
+    <g transform="translate(14, 122)">
+      <rect x="0" y="0" width="107" height="22" rx="5" fill="rgba(56, 189, 248, 0.1)"/>
+      <text x="8" y="15" fill="#38bdf8" font-size="8" font-weight="800">🧭 Bearing: 284° NW</text>
+
+      <rect x="0" y="27" width="107" height="22" rx="5" fill="rgba(0, 245, 155, 0.1)"/>
+      <text x="8" y="42" fill="#00f59b" font-size="8" font-weight="800">📏 Distance: 48m</text>
+
+      <rect x="0" y="54" width="107" height="22" rx="5" fill="rgba(255, 255, 255, 0.05)"/>
+      <text x="8" y="69" fill="#cbd5e1" font-size="8" font-weight="700">⛰️ Altitude: 2,450m</text>
+
+      <text x="53" y="102" fill="#94a3b8" font-size="7.5" font-weight="700" text-anchor="middle">Offline GPS • No Cell</text>
+    </g>
+  </g>
+
+  <!-- RADAR CENTRAL MAPAX DE PROXIMIDAD -->
+  <g transform="translate(250, 165)">
+    <!-- Anillos Concéntricos de Distancia -->
+    <circle cx="0" cy="0" r="76" fill="rgba(6, 78, 59, 0.18)" stroke="#00f59b" stroke-width="1.5"/>
+    <circle cx="0" cy="0" r="50" fill="none" stroke="#00f59b" stroke-width="1" stroke-dasharray="3 3"/>
+    <circle cx="0" cy="0" r="25" fill="none" stroke="#00f59b" stroke-width="0.8"/>
+    <!-- Ejes en Cruz -->
+    <line x1="0" y1="-76" x2="0" y2="76" stroke="#00f59b" stroke-width="0.8" opacity="0.4"/>
+    <line x1="-76" y1="0" x2="76" y2="0" stroke="#00f59b" stroke-width="0.8" opacity="0.4"/>
+    <!-- Etiquetas de Radio -->
+    <text x="4" y="-52" fill="#00f59b" font-size="6.5" opacity="0.7">50m</text>
+    <text x="4" y="-27" fill="#00f59b" font-size="6.5" opacity="0.7">25m</text>
+
+    <!-- Brazo Giratorio del Radar con Animación Nativa SVG 360 Grados -->
+    <g>
+      <path d="M 0 0 L 70 -30 A 76 76 0 0 1 76 0 Z" fill="url(#radarSweepGrad2)"/>
+      <line x1="0" y1="0" x2="76" y2="0" stroke="#00f59b" stroke-width="1.8"/>
+      <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="3.5s" repeatCount="indefinite"/>
+    </g>
+
+    <!-- Blip Central (Tú) -->
+    <circle cx="0" cy="0" r="4.5" fill="#38bdf8"/>
+    <text x="0" y="16" fill="#94a3b8" font-size="7.5" font-weight="700" text-anchor="middle">Mateo (You)</text>
+
+    <!-- Blip Objetivo Elena (48m Rumbo NO) -->
+    <g transform="translate(42, -34)">
+      <circle cx="0" cy="0" r="14" fill="none" stroke="#00f59b" stroke-width="1.2" class="beacon-pulse-ring"/>
+      <circle cx="0" cy="0" r="4.5" fill="#00f59b"/>
+      <rect x="8" y="-12" width="62" height="18" rx="4" fill="rgba(6, 78, 59, 0.9)" stroke="#00f59b" stroke-width="1"/>
+      <text x="39" y="0" fill="#fff" font-size="7.5" font-weight="800" text-anchor="middle">Elena (48m)</text>
+    </g>
+  </g>
+
+  <!-- PANEL DERECHO: PTT WALKIE-TALKIE VOZ CIFRADA -->
+  <g class="device-float-alt" transform="translate(340, 48)">
+    <rect x="0" y="0" width="135" height="240" rx="16" fill="rgba(15, 23, 42, 0.9)" stroke="rgba(0, 245, 155, 0.35)" stroke-width="1.2"/>
+    <text x="67" y="24" fill="#00f59b" font-size="10" font-weight="800" text-anchor="middle">🎙️ PTT Walkie-Talkie</text>
+    <text x="67" y="38" fill="#94a3b8" font-size="7" text-anchor="middle">Live Audio Stream</text>
+
+    <!-- Barras Dinámicas de Ecualizador de Audio -->
+    <g transform="translate(20, 52)">
+      <rect x="0" y="15" width="5" height="25" rx="2" fill="#00f59b" class="soundwave-bar"/>
+      <rect x="10" y="10" width="5" height="35" rx="2" fill="#00f59b" class="soundwave-bar" style="animation-delay: 0.2s;"/>
+      <rect x="20" y="5" width="5" height="45" rx="2" fill="#00f59b" class="soundwave-bar" style="animation-delay: 0.4s;"/>
+      <rect x="30" y="18" width="5" height="20" rx="2" fill="#00f59b" class="soundwave-bar" style="animation-delay: 0.1s;"/>
+      <rect x="40" y="8" width="5" height="38" rx="2" fill="#00f59b" class="soundwave-bar" style="animation-delay: 0.3s;"/>
+      <rect x="50" y="2" width="5" height="48" rx="2" fill="#00f59b" class="soundwave-bar" style="animation-delay: 0.5s;"/>
+      <rect x="60" y="12" width="5" height="30" rx="2" fill="#00f59b" class="soundwave-bar" style="animation-delay: 0.2s;"/>
+      <rect x="70" y="7" width="5" height="42" rx="2" fill="#00f59b" class="soundwave-bar" style="animation-delay: 0.4s;"/>
+      <rect x="80" y="16" width="5" height="22" rx="2" fill="#00f59b" class="soundwave-bar" style="animation-delay: 0.15s;"/>
+      <rect x="90" y="20" width="5" height="15" rx="2" fill="#00f59b" class="soundwave-bar" style="animation-delay: 0.35s;"/>
+    </g>
+
+    <!-- Nota de Voz Recibida -->
+    <g transform="translate(10, 122)">
+      <rect x="0" y="0" width="115" height="60" rx="10" fill="rgba(0, 245, 155, 0.12)" stroke="#00f59b" stroke-width="1"/>
+      <text x="10" y="20" fill="#fff" font-size="8.5" font-weight="800">"Meet you at the river!"</text>
+      <text x="10" y="36" fill="#00f59b" font-size="7.5" font-weight="700">Encrypted Audio • 0.3s</text>
+      <text x="10" y="50" fill="#94a3b8" font-size="7">✓✓ Received via P2P</text>
+    </g>
+
+    <!-- Botón PTT Listo -->
+    <rect x="14" y="200" width="107" height="22" rx="11" fill="rgba(0,245,155,0.2)" stroke="#00f59b" stroke-width="1"/>
+    <text x="67" y="214" fill="#00f59b" font-size="8" font-weight="900" text-anchor="middle">PTT LISTO • 0.3s</text>
+  </g>
+
+  <!-- BADGE INFERIOR -->
+  <rect x="100" y="306" width="300" height="28" rx="14" fill="rgba(0,245,155,0.12)" stroke="#00f59b" stroke-width="1"/>
+  <text x="250" y="324" fill="#00f59b" font-size="9.5" font-weight="800" text-anchor="middle">🏔️ MAPAX • BEARING 284° NW • GPS &amp; PTT OFFLINE</text>
+</svg>
+        </div>
+      </div>
+
+      <!-- ESCENARIO 3: PRIVACIDAD SOBERANA & CERO CENTRALIZACIÓN -->
+      <div class="scenario-block">
+        <div class="scenario-content">
+          <span class="scenario-meta-tag privacy">Scenario 03 • Privacy & Zero Centralization</span>
+          <h3 class="scenario-heading">Your conversations belong to you. Not a central server or an advertising monopoly.</h3>
+          
+          <div class="scenario-problem-box">
+            <strong>The Typical Problem</strong>
+            <p>Traditional apps demand your private phone number, upload your address book to their servers, and harvest your metadata. When their servers suffer global outages, half the planet goes silent.</p>
+          </div>
+
+          <p class="scenario-solution-text">
+            <strong>The Chax Solution:</strong> Your sovereign identity is generated inside your device Secure Enclave (X25519 & Ed25519 keys). Nobody can deplatform you, block you, or intercept your packets.
+          </p>
+
+          <ul class="scenario-keypoints">
+            <li>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              <span><strong>Zero phone numbers:</strong> Connect via universal QR codes or unique cryptographic public keys.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              <span><strong>No central database:</strong> There is no central honeypot for hackers or corporations to exploit.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              <span><strong>Military-Grade E2EE Encryption:</strong> Only your friend's physical device holds the key to decrypt your message.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="scenario-visual">
+          <svg viewBox="0 0 500 350" width="100%" height="100%">
+  <defs>
+    <filter id="glowGreenS3" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- NUBE CENTRAL CAÍDA (CENTRO ARRIBA) -->
+  <g transform="translate(130, 22)">
+    <rect x="0" y="0" width="240" height="50" rx="10" fill="#1a0c10" stroke="#ef4444" stroke-width="1.4"/>
+    <text x="120" y="22" fill="#ef4444" font-size="8.5" font-weight="900" text-anchor="middle">🔴 500 SERVER DOWN • CENTRAL CLOUD OUTAGE</text>
+    <text x="120" y="38" fill="#fca5a5" font-size="7.5" text-anchor="middle">✕ Cloud Services Unreachable</text>
+    <!-- Líneas rojas bloqueadas que intentan llegar a la nube -->
+    <line x1="-15" y1="65" x2="30" y2="45" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <line x1="255" y1="65" x2="210" y2="45" stroke="#ef4444" stroke-width="1.5" stroke-dasharray="3 3"/>
+    <circle cx="30" cy="45" r="4" fill="#ef4444"/>
+    <circle cx="210" cy="45" r="4" fill="#ef4444"/>
+  </g>
+
+  <!-- DISPOSITIVO EMISOR (IZQUIERDA) -->
+  <g class="device-float-subtle" transform="translate(25, 78)">
+    <rect x="0" y="0" width="138" height="205" rx="16" fill="rgba(15, 23, 42, 0.92)" stroke="rgba(56, 189, 248, 0.35)" stroke-width="1.2"/>
+    <text x="69" y="24" fill="#38bdf8" font-size="9.5" font-weight="800" text-anchor="middle">💻 Sender Terminal</text>
+    
+    <!-- Contenedor de Cifrado Soberano -->
+    <g transform="translate(10, 40)">
+      <rect x="0" y="0" width="118" height="88" rx="8" fill="#061224" stroke="rgba(56, 189, 248, 0.25)"/>
+      <text x="10" y="20" fill="#fff" font-size="8.5" font-weight="800">📄 Confidential Payload</text>
+      <text x="10" y="38" fill="#00f59b" font-size="7.5" font-weight="700">🔒 Encrypted: X25519 (E2EE)</text>
+      <text x="10" y="55" fill="#38bdf8" font-size="7.5" font-weight="700">✍️ Ed25519 Signature: OK</text>
+      <text x="10" y="74" fill="#94a3b8" font-size="7">🛡️ Zero Cloud • Zero Metadata</text>
+    </g>
+
+    <!-- Estado Emisor -->
+    <rect x="10" y="142" width="118" height="26" rx="6" fill="rgba(0,245,155,0.12)" stroke="#00f59b" stroke-width="1"/>
+    <text x="69" y="159" fill="#00f59b" font-size="8" font-weight="800" text-anchor="middle">Llave Privada en Enclave</text>
+  </g>
+
+  <!-- ESCUDO CRIPTOGRÁFICO CENTRAL & TÚNEL SOBERANO P2P -->
+  <g class="shield-glow-pulse" transform="translate(225, 125)">
+    <!-- Escudo Heráldico Criptográfico -->
+    <path d="M 25 5 L 48 16 L 48 48 C 48 70, 25 86, 25 86 C 25 86, 2 70, 2 48 L 2 16 Z" fill="rgba(6, 78, 59, 0.6)" stroke="#00f59b" stroke-width="2.2"/>
+    <!-- Candado E2EE -->
+    <rect x="17" y="38" width="16" height="13" rx="3" fill="#041208" stroke="#00f59b" stroke-width="1.8"/>
+    <path d="M 20 38 L 20 31 A 5 5 0 0 1 30 31 L 30 38" fill="none" stroke="#00f59b" stroke-width="1.8"/>
+    <circle cx="25" cy="44" r="1.8" fill="#00f59b"/>
+
+    <text x="25" y="104" fill="#00f59b" font-size="8.5" font-weight="900" text-anchor="middle">DIRECT P2P TUNNEL</text>
+    <text x="25" y="117" fill="#38bdf8" font-size="7.5" font-weight="800" text-anchor="middle">0% METADATA</text>
+  </g>
+
+  <!-- LÍNEA DIRECTA P2P ENTRE EMISOR Y RECEPTOR -->
+  <line x1="163" y1="168" x2="337" y2="168" stroke="#00f59b" stroke-width="2.5" class="mesh-link-dash"/>
+
+  <!-- PAQUETE CIFRADO EN MOVIMIENTO REAL (ANIMATEMOTION) -->
+  <circle r="5" fill="#00f59b" filter="url(#glowGreenS3)">
+    <animateMotion path="M 163 168 L 337 168" dur="1.8s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- DISPOSITIVO RECEPTOR (DERECHA) -->
+  <g class="device-float-alt" transform="translate(337, 78)">
+    <rect x="0" y="0" width="138" height="205" rx="16" fill="rgba(15, 23, 42, 0.92)" stroke="rgba(0, 245, 155, 0.35)" stroke-width="1.2"/>
+    <text x="69" y="24" fill="#00f59b" font-size="9.5" font-weight="800" text-anchor="middle">📱 Receiver Terminal</text>
+
+    <!-- Contenedor Recibido -->
+    <g transform="translate(10, 40)">
+      <rect x="0" y="0" width="118" height="88" rx="8" fill="#04140c" stroke="rgba(0, 245, 155, 0.35)"/>
+      <text x="10" y="22" fill="#fff" font-size="9" font-weight="800">✓✓ Received Directly</text>
+      <text x="10" y="40" fill="#cbd5e1" font-size="7.5">No Cloud Intermediaries</text>
+      <text x="10" y="58" fill="#00f59b" font-size="7.5" font-weight="700">✓ Keys Verified Locally</text>
+      <text x="10" y="76" fill="#38bdf8" font-size="7.5">🔐 100% E2EE Encrypted</text>
+    </g>
+
+    <!-- Estado Conexión Soberana -->
+    <rect x="10" y="142" width="118" height="26" rx="6" fill="rgba(124,58,237,0.15)" stroke="#7c3aed" stroke-width="1"/>
+    <text x="69" y="159" fill="#c084fc" font-size="8" font-weight="800" text-anchor="middle">Sin Servidores Centrales</text>
+  </g>
+
+  <!-- BADGE INFERIOR -->
+  <rect x="90" y="306" width="320" height="28" rx="14" fill="rgba(124,58,237,0.18)" stroke="#7c3aed" stroke-width="1"/>
+  <text x="250" y="324" fill="#c084fc" font-size="9.5" font-weight="800" text-anchor="middle">🛡️ 100% SOVEREIGN • IMMUNE TO SERVER OUTAGES</text>
+</svg>
+        </div>
+      </div>
+
+      <!-- ESCENARIO 4: EMERGENCIAS NATURALES, SISMOS & HURACANES -->
+      <div class="scenario-block reverse">
+        <div class="scenario-content">
+          <span class="scenario-meta-tag emergency">Scenario 04 • Natural Emergencies, Earthquakes & Hurricanes</span>
+          <h3 class="scenario-heading">Major earthquake or hurricane. Total power blackout and fallen cell towers.</h3>
+          
+          <div class="scenario-problem-box" style="border-left-color: #ef4444; background: rgba(239, 68, 68, 0.08);">
+            <strong style="color: #f87171;">El Problema Típico</strong>
+            <p>Tras un terremoto o fenómeno meteorológico severo, los postes caen, las subestaciones colapsan y las baterías de las antenas celulares se agotan en minutos. Cientos de miles de personas quedan angustiadas sin saber si sus familias están bien, y los servicios de emergencia se saturan.</p>
+          </div>
+
+          <p class="scenario-solution-text">
+            <strong>The Chax Solution:</strong> Your phone becomes a survival beacon and an autonomous relay. Using Bluetooth Low Energy, your message with GPS coordinates in <strong>Mapax</strong> hops from home to home and shelter to shelter until it reaches your loved ones or emergency rescue squads.
+          </p>
+
+          <ul class="scenario-keypoints">
+            <li>
+              <svg viewBox="0 0 24 24" fill="currentColor" color="#ef4444"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              <span><strong>Community SOS Beacon:</strong> Broadcast status reports ("Family safe", "Need medical assistance") that ripple across town without Internet.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="currentColor" color="#00f59b"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              <span><strong>Decentralized Neighborhood Mesh:</strong> If 10 neighbors run Chax, the entire street shares robust P2P coverage.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="currentColor" color="#38bdf8"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              <span><strong>Mapax with Tactical Shelters:</strong> Offline cached satellite cartography to pinpoint hospitals, supply depots, and muster points.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="scenario-visual">
+          <svg viewBox="0 0 500 350" width="100%" height="100%">
+  <defs>
+    <filter id="glowRedS4" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3.5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- BANNER DE INFRAESTRUCTURA CAÍDA (ARRIBA CENTRO) -->
+  <g transform="translate(95, 20)">
+    <rect x="0" y="0" width="310" height="26" rx="13" fill="rgba(239, 68, 68, 0.15)" stroke="rgba(239, 68, 68, 0.45)" stroke-width="1.2"/>
+    <text x="155" y="17" fill="#f87171" font-size="8" font-weight="900" text-anchor="middle">⚠️ CELLULAR TOWERS &amp; ELECTRIC GRID INOPERATIVE</text>
+  </g>
+
+  <!-- DISPOSITIVO EMISOR SOS (IZQUIERDA) -->
+  <g class="device-float-subtle" transform="translate(25, 65)">
+    <rect x="0" y="0" width="138" height="220" rx="18" fill="rgba(15, 23, 42, 0.92)" stroke="rgba(239, 68, 68, 0.4)" stroke-width="1.4"/>
+    <text x="69" y="24" fill="#ef4444" font-size="9.5" font-weight="900" text-anchor="middle">🚨 Urgent SOS Beacon</text>
+
+    <!-- Ondas expansivas SOS -->
+    <g transform="translate(69, 78)">
+      <circle cx="0" cy="0" r="26" fill="none" stroke="#ef4444" stroke-width="1.5" class="beacon-pulse-ring"/>
+      <circle cx="0" cy="0" r="8" fill="#ef4444"/>
+    </g>
+
+    <!-- Reporte de Estado -->
+    <g transform="translate(10, 115)">
+      <rect x="0" y="0" width="118" height="66" rx="8" fill="#1c0d12" stroke="rgba(239, 68, 68, 0.35)"/>
+      <text x="10" y="20" fill="#fff" font-size="8.5" font-weight="800">"Family is safe!"</text>
+      <text x="10" y="35" fill="#fca5a5" font-size="7.5">Supplies &amp; Shelter OK</text>
+      <text x="10" y="52" fill="#38bdf8" font-size="7" font-weight="700">GPS: 19.4326°N, 99.1332°W</text>
+    </g>
+
+    <text x="69" y="202" fill="#94a3b8" font-size="7.5" font-weight="700" text-anchor="middle">Battery: 88% • BLE Mesh</text>
+  </g>
+
+  <!-- NODOS MESH DE LA COMUNIDAD (CASAS Y VECINOS) -->
+  <!-- Relevo A -->
+  <g transform="translate(200, 125)">
+    <circle cx="20" cy="20" r="24" fill="none" stroke="#00f59b" stroke-width="1.2" class="beacon-pulse-ring"/>
+    <rect x="0" y="0" width="40" height="40" rx="10" fill="#0f172a" stroke="#00f59b" stroke-width="1.4"/>
+    <text x="20" y="24" fill="#fff" font-size="14" text-anchor="middle">🏠</text>
+    <text x="20" y="54" fill="#00f59b" font-size="7.5" font-weight="800" text-anchor="middle">Home Relay A</text>
+  </g>
+
+  <!-- Relevo B -->
+  <g transform="translate(270, 185)">
+    <circle cx="20" cy="20" r="24" fill="none" stroke="#00f59b" stroke-width="1.2" class="beacon-pulse-ring" style="animation-delay: 0.9s;"/>
+    <rect x="0" y="0" width="40" height="40" rx="10" fill="#0f172a" stroke="#00f59b" stroke-width="1.4"/>
+    <text x="20" y="24" fill="#fff" font-size="14" text-anchor="middle">📻</text>
+    <text x="20" y="54" fill="#00f59b" font-size="7.5" font-weight="800" text-anchor="middle">Community Node B</text>
+  </g>
+
+  <!-- CAMINO MESH DE EMERGENCIA -->
+  <path d="M 163 150 Q 185 140 200 145 Q 235 205 270 205 Q 310 155 337 150" stroke="#00f59b" stroke-width="2.5" fill="none" class="mesh-link-dash"/>
+
+  <!-- PAQUETE SOS EN MOVIMIENTO REAL (ANIMATEMOTION) -->
+  <circle r="5" fill="#ef4444" filter="url(#glowRedS4)">
+    <animateMotion path="M 163 150 Q 185 140 200 145 Q 235 205 270 205 Q 310 155 337 150" dur="2.2s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- DISPOSITIVO RECEPTOR: BRIGADA / RESCATISTA -->
+  <g class="device-float-alt" transform="translate(337, 65)">
+    <rect x="0" y="0" width="138" height="220" rx="18" fill="rgba(15, 23, 42, 0.92)" stroke="rgba(0, 245, 155, 0.4)" stroke-width="1.4"/>
+    <text x="69" y="24" fill="#00f59b" font-size="9.5" font-weight="900" text-anchor="middle">🚑 Rescue Brigade</text>
+
+    <!-- Radar Mini de Ubicación de Emergencia -->
+    <g transform="translate(69, 75)">
+      <circle cx="0" cy="0" r="28" fill="#061220" stroke="rgba(0, 245, 155, 0.3)" stroke-width="1"/>
+      <circle cx="0" cy="0" r="14" fill="none" stroke="rgba(0, 245, 155, 0.2)" stroke-dasharray="2 2"/>
+      <line x1="-28" y1="0" x2="28" y2="0" stroke="rgba(0, 245, 155, 0.2)"/>
+      <line x1="0" y1="-28" x2="0" y2="28" stroke="rgba(0, 245, 155, 0.2)"/>
+      <circle cx="12" cy="10" r="4.5" fill="#ef4444"/>
+    </g>
+
+    <!-- Telemetría de Rescate -->
+    <g transform="translate(10, 115)">
+      <rect x="0" y="0" width="118" height="66" rx="8" fill="#061a12" stroke="rgba(0, 245, 155, 0.3)"/>
+      <text x="10" y="20" fill="#00f59b" font-size="8.5" font-weight="800">Alert Received ✓✓</text>
+      <text x="10" y="35" fill="#f1f5f9" font-size="7.5">📏 Distance: 180 meters</text>
+      <text x="10" y="52" fill="#38bdf8" font-size="7.5" font-weight="700">🧭 Mapax Bearing: 142° SE</text>
+    </g>
+
+    <text x="69" y="202" fill="#00f59b" font-size="7.5" font-weight="800" text-anchor="middle">✓ En Route to Assist</text>
+  </g>
+
+  <!-- BADGE INFERIOR -->
+  <rect x="85" y="306" width="330" height="28" rx="14" fill="rgba(239,68,68,0.18)" stroke="#ef4444" stroke-width="1"/>
+  <text x="250" y="324" fill="#fca5a5" font-size="9" font-weight="800" text-anchor="middle">🚨 AUTONOMOUS NEIGHBORHOOD MESH • MAPAX RESCUE SOS</text>
+</svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       ARQUITECTURA TÉCNICA: ENRUTAMIENTO HÍBRIDO INTELIGENTE
+       ========================================================================== -->
+  <section class="scenarios-section" id="arquitectura" style="padding-top: 30px;">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-badge">Cryptography & Infrastructure</span>
+        <h2 class="section-title">Intelligent Hybrid Routing</h2>
+        <p class="section-subtitle">
+          Chax automatically selects the best physical transport channel every millisecond without compromising your privacy.
+        </p>
+      </div>
+
+      <div class="urgency-grid" style="text-align: left; margin-bottom: 0;">
+        <div class="urgency-item" style="border-color: rgba(56, 189, 248, 0.3);">
+          <div class="urgency-item-icon">🌐</div>
+          <h4 style="color: #38bdf8;">1. Global Internet (Nostr Relays)</h4>
+          <p>
+            When connected, messages travel across concurrent WebSockets to decentralized relays (NIP-01/04). Zero proprietary servers, zero bottlenecks, and millisecond delivery speeds.
+          </p>
+        </div>
+
+        <div class="urgency-item" style="border-color: rgba(0, 245, 155, 0.35);">
+          <div class="urgency-item-icon">📡</div>
+          <h4 style="color: var(--volt-green);">2. Direct P2P Link (BLE & Bonjour)</h4>
+          <p>
+            For nearby devices (0 to 100 meters), Chax establishes direct peer-to-peer radio links via Bluetooth Low Energy and Apple Multipeer. Traffic never touches the Internet or remote logs.
+          </p>
+        </div>
+
+        <div class="urgency-item" style="border-color: rgba(139, 92, 246, 0.35);">
+          <div class="urgency-item-icon">⚡</div>
+          <h4 style="color: #c084fc;">3. Multi-Hop Mesh Network</h4>
+          <p>
+            If the recipient is outside direct range, the packet hops from phone to phone with Time-To-Live (TTL) and cryptographic deduplication. Nobody along the path can decrypt the content.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       LA COMUNIDAD MESH: "MEJOR TENERLA LISTA ANTES"
+       ========================================================================== -->
+  <section class="urgency-deep-section" id="urgencia">
+    <div class="container">
+      <div class="urgency-card">
+        <span class="urgency-badge">Community & Resilience</span>
+        <h2 class="urgency-title">
+          Better have it installed beforehand.<br>
+          <span class="highlight-green">Without signal</span>, you can't download it.
+        </h2>
+        <p class="urgency-p">
+          Chax is extremely lightweight: it rests in deep sleep and takes up virtually no storage. As a mesh node, you naturally contribute a few bytes and microwatts that you won't even notice to help forward encrypted packets for others, and in return, everyone gains a community network that never goes dark. When everyone pitches in, no one is left stranded.
+        </p>
+
+        <div class="urgency-grid">
+          <div class="urgency-item">
+            <div class="urgency-item-icon">🔋</div>
+            <h4>Near-Zero Battery Impact</h4>
+            <p>Bluetooth Low Energy stays in ultra-low idle. Relaying a packet consumes less energy than turning on your screen for one second.</p>
+          </div>
+
+          <div class="urgency-item">
+            <div class="urgency-item-icon">🤝</div>
+            <h4>A Few Bytes for the Greater Good</h4>
+            <p>You lend an invisible thread of local data so someone's packet arrives. Everyone in the network does the exact same for you.</p>
+          </div>
+
+          <div class="urgency-item">
+            <div class="urgency-item-icon">📲</div>
+            <h4>Install Today and Rest Easy</h4>
+            <p>At a crowded concert, on a remote trail, or during a blackout, there is no way to download it. Install it now and have it ready when it matters most.</p>
+          </div>
+        </div>
+
+        <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" rel="noopener" class="btn-primary" style="font-size: 1.15rem; padding: 18px 40px;">
+          Download Free on TestFlight →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       TU MENSAJERO DE TODOS LOS DÍAS & TABLA COMPARATIVA
+       ========================================================================== -->
+  <section class="everyday-section" id="diario">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-badge">Everyday Messenger</span>
+        <h2 class="section-title">Use it daily over Internet. Seamlessly switches when signal drops.</h2>
+        <p class="section-subtitle">
+          Not a clunky emergency tool. Chax is a polished, fast, full-featured messenger for your everyday routine with built-in offline superpowers.
+        </p>
+      </div>
+
+      <div class="comparison-card">
+        <div class="table-responsive">
+          <table class="compare-table">
+            <thead>
+              <tr>
+                <th>Capability</th>
+                <th class="col-chax">CHAX</th>
+                <th>WhatsApp</th>
+                <th>Telegram</th>
+                <th>Signal</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Works without an Internet connection?</strong></td>
+                <td class="col-chax"><span class="check-icon">✓ YES (Bluetooth Mesh)</span></td>
+                <td><span class="cross-icon">✕ No (Fails)</span></td>
+                <td><span class="cross-icon">✕ No (Fails)</span></td>
+                <td><span class="cross-icon">✕ No (Fails)</span></td>
+              </tr>
+              <tr>
+                <td><strong>Requires phone number?</strong></td>
+                <td class="col-chax"><span class="check-icon">✓ NEVER (Sovereign Identity)</span></td>
+                <td><span class="cross-icon">✕ Mandatory</span></td>
+                <td><span class="cross-icon">✕ Mandatory</span></td>
+                <td><span class="cross-icon">✕ Mandatory</span></td>
+              </tr>
+              <tr>
+                <td><strong>Offline Tactical Maps (Mapax)</strong></td>
+                <td class="col-chax"><span class="check-icon">✓ Built-in without mobile plan</span></td>
+                <td><span class="cross-icon">✕ Not supported</span></td>
+                <td><span class="cross-icon">✕ Not supported</span></td>
+                <td><span class="cross-icon">✕ Not supported</span></td>
+              </tr>
+              <tr>
+                <td><strong>Push-To-Talk Voice Notes (PTT)</strong></td>
+                <td class="col-chax"><span class="check-icon">✓ Direct Offline P2P</span></td>
+                <td><span class="cross-icon">✕ Requires cloud</span></td>
+                <td><span class="cross-icon">✕ Requires cloud</span></td>
+                <td><span class="cross-icon">✕ Requires cloud</span></td>
+              </tr>
+              <tr>
+                <td><strong>Resilience to Global Outages</strong></td>
+                <td class="col-chax"><span class="check-icon">✓ Immune (Decentralized)</span></td>
+                <td><span class="cross-icon">✕ Single central server</span></td>
+                <td><span class="cross-icon">✕ Single central server</span></td>
+                <td><span class="cross-icon">✕ Central server</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SHOWCASE MULTIDISPOSITIVO (IPHONE / IPAD / MAC)
+       ========================================================================== -->
+  <section class="showcase-section" id="capturas">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-badge">Full Apple Ecosystem</span>
+        <h2 class="section-title">The same seamless experience on iPhone, iPad, and Mac</h2>
+        <p class="section-subtitle">
+          Engineered with native Swift to fully leverage the hardware and Bluetooth radios of your Apple devices.
+        </p>
+      </div>
+
+      <div class="device-tabs">
+        <button class="device-tab-btn active" data-device="iphone">
+          📱 iPhone
+        </button>
+        <button class="device-tab-btn" data-device="ipad">
+          📲 iPad
+        </button>
+        <button class="device-tab-btn" data-device="mac">
+          💻 Mac (macOS)
+        </button>
+      </div>
+
+      <div class="screenshots-carousel" id="screenshotsCarousel">
+        <!-- Renderizado dinámicamente por app.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       SECCIÓN DE DESCARGAS MULTIPLATAFORMA
+       ========================================================================== -->
+  <section class="scenarios-section" id="descargas" style="padding-top: 20px;">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-badge">Instant Installation</span>
+        <h2 class="section-title">Download Chax on Your Devices</h2>
+        <p class="section-subtitle">
+          Available on TestFlight for iPhone, iPad, and Mac.
+        </p>
+      </div>
+
+      <div class="urgency-grid" style="text-align: left;">
+        <!-- Card iOS -->
+        <div class="urgency-item" style="border-color: rgba(0, 245, 155, 0.4); background: rgba(14, 20, 32, 0.9);">
+          <div class="urgency-item-icon">📱</div>
+          <h4 style="font-size: 1.15rem; color: #fff;">iPhone & iPad</h4>
+          <p style="margin-bottom: 20px;">
+            Official native Swift/SwiftUI app for iOS and iPadOS. Bluetooth Low Energy, local Bonjour, and Mapax tactical cartography.
+          </p>
+          <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" rel="noopener" class="btn-primary" style="padding: 10px 22px; font-size: 0.9rem;">
+            Install on TestFlight →
+          </a>
+        </div>
+
+        <!-- Card Mac -->
+        <div class="urgency-item" style="border-color: rgba(56, 189, 248, 0.35); background: rgba(14, 20, 32, 0.9);">
+          <div class="urgency-item-icon">💻</div>
+          <h4 style="font-size: 1.15rem; color: #fff;">Chax for Mac</h4>
+          <p style="margin-bottom: 20px;">
+            Universal native build for Apple Silicon (M1/M2/M3/M4) and Intel on macOS Sonoma & Sequoia.
+          </p>
+          <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" rel="noopener" class="btn-secondary" style="padding: 10px 20px; font-size: 0.9rem; border-color: rgba(56, 189, 248, 0.4);">
+            Install on TestFlight for Mac →
+          </a>
+        </div>
+
+        <!-- Card Privacidad Soberana -->
+        <div class="urgency-item" style="border-color: rgba(139, 92, 246, 0.35); background: rgba(14, 20, 32, 0.9);">
+          <div class="urgency-item-icon">🛡️</div>
+          <h4 style="font-size: 1.15rem; color: #fff;">Privacy & Secure Enclave</h4>
+          <p style="margin-bottom: 20px;">
+            Zero phone logs, zero metadata harvesting, and local E2EE encryption. Your keys never leave your physical device.
+          </p>
+          <a href="../privacy.html" class="btn-secondary" style="padding: 10px 20px; font-size: 0.9rem; border-color: rgba(139, 92, 246, 0.4);">
+            Privacy Policy →
           </a>
         </div>
       </div>
-    </section>
 
-    <!-- Multiplatform Downloads Section -->
-    <section id="downloads" class="downloads-section">
-      <div class="container">
-        <div class="section-title">
-          <h2>Download Chax for All Your Devices</h2>
-          <p>The sovereign omni-channel messaging network is available across all platforms with real-time digital twin synchronization.</p>
-        </div>
-
-        <div class="downloads-grid">
-          <!-- Card iOS / iPadOS -->
-          <div class="download-card highlight">
-            <div>
-              <div class="download-header">
-                <div class="download-icon">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.85c.62-.77 1.05-1.84.93-2.91-.94.04-2.03.64-2.67 1.4-.57.67-.99 1.77-.86 2.81 1.05.08 2.05-.56 2.6-1.3z"/></svg>
-                </div>
-                <span class="download-badge" style="background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3);">Official v2.14 TestFlight</span>
-              </div>
-              <h3>iPhone & iPad</h3>
-              <p>Official native Swift/SwiftUI app for iOS and iPadOS. Bonjour LAN mesh, low-energy Bluetooth LE, and Nostr relays backup.</p>
-            </div>
-            <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" class="btn btn-primary">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.85c.62-.77 1.05-1.84.93-2.91-.94.04-2.03.64-2.67 1.4-.57.67-.99 1.77-.86 2.81 1.05.08 2.05-.56 2.6-1.3z"/></svg>
-              Install via TestFlight
-            </a>
-          </div>
-
-          <!-- Card macOS -->
-          <div class="download-card highlight">
-            <div>
-              <div class="download-header">
-                <div class="download-icon">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
-                </div>
-                <span class="download-badge" style="background: rgba(34, 197, 94, 0.15); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3);">Official v2.14 TestFlight Mac</span>
-              </div>
-              <h3>Chax for Mac</h3>
-              <p>Official native macOS app verified by Apple. Seamless installation with automatic updates via TestFlight for Mac.</p>
-            </div>
-            <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" class="btn btn-primary">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.85c.62-.77 1.05-1.84.93-2.91-.94.04-2.03.64-2.67 1.4-.57.67-.99 1.77-.86 2.81 1.05.08 2.05-.56 2.6-1.3z"/></svg>
-              Install via TestFlight (Mac)
-            </a>
-          </div>
-
-          <!-- Card Android -->
-          <div class="download-card">
-            <div>
-              <div class="download-header">
-                <div class="download-icon">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5902 8.4111 13.8533 8.077 12 8.077c-1.8533 0-3.5902.3341-5.1368.8727L4.8409 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/></svg>
-                </div>
-                <span class="download-badge" style="background: rgba(148, 163, 184, 0.15); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.3);">Coming Soon</span>
-              </div>
-              <h3>Android</h3>
-              <p>In active development. Coming soon to Google Play Store and direct APK download.</p>
-            </div>
-            <button type="button" onclick="alert('📱 Chax for Android will be available shortly following the completion of the official Apple test phase. Thank you for your patience!')" class="btn btn-secondary" style="border-color: rgba(148, 163, 184, 0.3); color: #94a3b8;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-              Coming Soon on Android
-            </button>
-          </div>
-
-          <!-- Card Windows & Linux -->
-          <div class="download-card">
-            <div>
-              <div class="download-header">
-                <div class="download-icon">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
-                </div>
-                <span class="download-badge" style="background: rgba(148, 163, 184, 0.15); color: #94a3b8; border: 1px solid rgba(148, 163, 184, 0.3);">Coming Soon</span>
-              </div>
-              <h3>PC Desktop (Windows / Linux)</h3>
-              <p>In active development. Official installers for Windows (.exe) and Linux distributions coming soon.</p>
-            </div>
-            <button type="button" onclick="alert('💻 Chax for Windows and Linux will be available soon. Thank you for your patience!')" class="btn btn-secondary" style="border-color: rgba(148, 163, 184, 0.3); color: #94a3b8;">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-              Coming Soon on PC
-            </button>
-          </div>
+      <!-- Protocolo Corporativo de Disponibilidad -->
+      <div class="corporate-callout">
+        <div class="corporate-callout-icon">💡</div>
+        <div class="corporate-callout-content">
+          <strong>Readiness Protocol:</strong> Install Chax before heading into remote areas, crowded events, or network blackouts. Once disconnected, app stores cannot be reached for download.
         </div>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Donations & Project Support Section (Temporarily hidden; addresses left blank) -->
-    <!--
-    <section id="donate" class="donations-section" style="display: none;">
-      <div class="container">
-        <div class="section-title">
-          <h2>Support Sovereign and Censorship-Resistant Development</h2>
-          <p>Chax is 100% independent, with zero venture capital, zero trackers, and zero corporate advertising. Your contribution directly funds public relay infrastructure and unstoppable open-source communication.</p>
+  <!-- ==========================================================================
+       PREGUNTAS FRECUENTES (FAQ)
+       ========================================================================== -->
+  <section class="faq-section" id="faq">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-badge">FAQ</span>
+        <h2 class="section-title">Frequently Asked Questions</h2>
+        <p class="section-subtitle">Everything you need to know about how Chax operates.</p>
+      </div>
+
+      <div class="faq-grid">
+        <div class="faq-item">
+          <h4>Do I need to buy extra antennas or hardware?</h4>
+          <p>No. Chax runs directly on the built-in Bluetooth and Wi-Fi radios already inside your iPhone, iPad, or Mac computer. No external dongles, radios, or cables needed.</p>
         </div>
-        <div class="donations-grid">
-          <div class="donation-card">
-            <div class="donation-header">
-              <div class="donation-icon-badge">
-                <div class="donation-icon btc">₿</div>
-                <div><h3>Bitcoin</h3><span class="crypto-tag">BTC (Native SegWit)</span></div>
-              </div>
-            </div>
-            <p class="donation-desc">Direct on-chain donations to the Bitcoin main network.</p>
-            <div class="crypto-box"><span class="crypto-label">BTC Address</span><div class="crypto-address"></div></div>
-          </div>
-          <div class="donation-card">
-            <div class="donation-header">
-              <div class="donation-icon-badge">
-                <div class="donation-icon evm">Ξ</div>
-                <div><h3>EVM Multichain</h3><span class="crypto-tag">ETH · USDT · USDC</span></div>
-              </div>
-            </div>
-            <p class="donation-desc">Compatible with Ethereum, Arbitrum, Optimism, Polygon, BSC, and Base.</p>
-            <div class="crypto-box"><span class="crypto-label">EVM Address (0x)</span><div class="crypto-address"></div></div>
-          </div>
-          <div class="donation-card">
-            <div class="donation-header">
-              <div class="donation-icon-badge">
-                <div class="donation-icon sol">◎</div>
-                <div><h3>Solana</h3><span class="crypto-tag">SOL · USDC (SPL)</span></div>
-              </div>
-            </div>
-            <p class="donation-desc">High-speed, ultra-low fee transfers on the Solana network.</p>
-            <div class="crypto-box"><span class="crypto-label">Solana Address</span><div class="crypto-address"></div></div>
-          </div>
+
+        <div class="faq-item">
+          <h4>What is the communication range?</h4>
+          <p>Direct line-of-sight range between two phones reaches up to 100 meters outdoors. But thanks to multi-hop mesh routing, packets leap from phone to phone covering miles if other users are in the area.</p>
+        </div>
+
+        <div class="faq-item">
+          <h4>How do friends add me without a phone number?</h4>
+          <p>In person, the fastest way is simply selecting your friend on the Chax <strong>P2P Radar</strong> or showing your <strong>QR code</strong> to scan in a second. For long-distance contacts, share your unique <strong>universal link</strong> (<code>chax://...</code>) or connect through a <strong>mutual Chaxter</strong> (a shared trusted peer who acts as an encrypted introduction bridge).</p>
+        </div>
+
+        <div class="faq-item">
+          <h4>Does Chax drain battery if left running?</h4>
+          <p>To be candid, it uses a tiny amount, but let's be real: it is a mutual lifeline for the whole community. By keeping Chax active, you contribute a handful of microwatts and bytes to forward encrypted packets for people around you, and in turn, everyone in the mesh does the exact same for you—providing coverage and saving you when cell service fails. It runs on Bluetooth Low Energy (BLE) to keep draw negligible, but the collective safety net you gain is priceless.</p>
         </div>
       </div>
-    </section>
-    -->
-  </main>
+    </div>
+  </section>
 
-  <!-- Footer -->
+  <!-- FOOTER -->
   <footer>
     <div class="container">
-      <div class="footer-inner">
-        <div class="brand">
-          <img src="../assets/logo.png" alt="Chax Logo">
-          <span>Chax Network</span>
+      <div class="footer-top">
+        <div class="brand-wrap">
+          <div class="brand-icon-box">
+            <img src="../assets/app-icon.png" alt="Chax Logo" />
+          </div>
+          <span>Chax Messenger</span>
         </div>
+
         <ul class="footer-links">
-          <li><a href="../support.html">Support</a></li>
           <li><a href="../privacy.html">Privacy</a></li>
-          <li><a href="../terms.html">Terms of Service / EULA</a></li>
+          <li><a href="../terms.html">Terms</a></li>
+          <li><a href="../support.html">Support</a></li>
+          <!-- Idiomas en Footer -->
+          <li><a href="../index.html">Español</a></li>
+          <li><a href="index.html" style="color: var(--volt-green); font-weight: 750;">English</a></li>
+          <li><a href="../pt/index.html">Português</a></li>
         </ul>
-        <div class="copyright">
-          © 2026 Chax Network. Sovereign and decentralized software.
-        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 Chax Messenger. Fast online, unstoppable mesh. Sovereign and free communications network.</div>
+        <div style="font-size: 0.8rem; color: var(--text-dim);">Built to connect people when everything else fails.</div>
       </div>
     </div>
   </footer>
 
-  <script>
-    const canvas = document.getElementById('meshCanvas');
-    const ctx = canvas.getContext('2d');
-    let width, height, points = [];
-
-    function resize() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    }
-
-    window.addEventListener('resize', resize);
-    resize();
-
-    const POINT_COUNT = Math.min(Math.floor(window.innerWidth / 25), 45);
-    const MAX_DIST = 140;
-
-    for (let i = 0; i < POINT_COUNT; i++) {
-      points.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.6,
-        vy: (Math.random() - 0.5) * 0.6,
-        radius: Math.random() * 2 + 1.5
-      });
-    }
-
-    function animate() {
-      ctx.clearRect(0, 0, width, height);
-
-      for (let i = 0; i < points.length; i++) {
-        const p = points[i];
-        p.x += p.vx;
-        p.y += p.vy;
-
-        if (p.x < 0 || p.x > width) p.vx *= -1;
-        if (p.y < 0 || p.y > height) p.vy *= -1;
-
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = '#38bdf8';
-        ctx.fill();
-
-        for (let j = i + 1; j < points.length; j++) {
-          const p2 = points[j];
-          const dx = p.x - p2.x;
-          const dy = p.y - p2.y;
-          const dist = Math.sqrt(dx * dx + dy * dy);
-
-          if (dist < MAX_DIST) {
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y);
-            ctx.lineTo(p2.x, p2.y);
-            ctx.strokeStyle = `rgba(56, 189, 248, ${0.35 * (1 - dist / MAX_DIST)})`;
-            ctx.lineWidth = 1;
-            ctx.stroke();
-          }
-        }
-      }
-
-      requestAnimationFrame(animate);
-    }
-
-    animate();
-
-    function toggleMobileMenu() {
-      const nav = document.getElementById('mainNav');
-      if (nav) nav.classList.toggle('open');
-    }
-
-    document.querySelectorAll('#mainNav a').forEach(link => {
-      link.addEventListener('click', () => {
-        const nav = document.getElementById('mainNav');
-        if (nav) nav.classList.remove('open');
-      });
-    });
-
-    function copyCryptoAddress(address, btn) {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(address).then(() => {
-          showCopySuccess(btn);
-        }).catch(() => {
-          fallbackCopyText(address, btn);
-        });
-      } else {
-        fallbackCopyText(address, btn);
-      }
-    }
-
-    function fallbackCopyText(text, btn) {
-      const textarea = document.createElement('textarea');
-      textarea.value = text;
-      textarea.style.position = 'fixed';
-      textarea.style.opacity = '0';
-      document.body.appendChild(textarea);
-      textarea.select();
-      try {
-        document.execCommand('copy');
-        showCopySuccess(btn);
-      } catch (err) {
-        prompt('Copy address manually:', text);
-      }
-      document.body.removeChild(textarea);
-    }
-
-    function showCopySuccess(btn) {
-      const origHtml = btn.innerHTML;
-      btn.classList.add('copied');
-      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Copied!';
-      setTimeout(() => {
-        btn.classList.remove('copied');
-        btn.innerHTML = origHtml;
-      }, 2200);
-    }
-  </script>
+  <!-- Scripts -->
+  <script src="../assets/app.js"></script>
 </body>
 </html>

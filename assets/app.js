@@ -228,27 +228,103 @@ function initDeviceTabs() {
   const isSubdir = window.location.pathname.includes('/2') || window.location.pathname.includes('/en') || window.location.pathname.includes('/pt');
   const basePath = isSubdir ? '../assets/screenshots/' : 'assets/screenshots/';
 
+  const lang = (document.documentElement.lang || 'es').toLowerCase();
+
+  const captionsByLang = {
+    es: {
+      iphone: [
+        "01. Mensajería Instantánea Cifrada",
+        "02. Chat E2EE & Notas de Voz PTT",
+        "03. Mapax: Mapa Táctico Satelital Offline",
+        "04. Radar Mesh de Nodos Cercanos",
+        "05. Identidad Soberana sin Servidor"
+      ],
+      ipad: [
+        "01. Vista Multipanel iPadOS",
+        "02. Conversación de Alta Definición",
+        "03. Mapax Táctico en Pantalla Completa",
+        "04. Radar Mesh y Llaves Soberanas",
+        "05. Configuración de Red Soberana"
+      ],
+      mac: [
+        "01. Chax Nativo macOS para Escritorio",
+        "02. Chat E2EE con Soporte de Teclado",
+        "03. Mapax: Cartografía Satelital en Mac",
+        "04. Radar Mesh de Nodos de Escritorio",
+        "05. Ajustes y Bóveda Criptográfica"
+      ]
+    },
+    en: {
+      iphone: [
+        "01. Encrypted Instant Messaging",
+        "02. E2EE Chat & Tactical PTT Voice",
+        "03. Mapax: Offline Satellite Tactical Maps",
+        "04. Mesh Radar of Nearby Peers",
+        "05. Sovereign Identity Without Servers"
+      ],
+      ipad: [
+        "01. Multi-Panel iPadOS View",
+        "02. High-Definition Conversation",
+        "03. Tactical Mapax Fullscreen",
+        "04. Mesh Radar and Sovereign Keys",
+        "05. Sovereign Network Configuration"
+      ],
+      mac: [
+        "01. Native macOS Desktop Chax",
+        "02. E2EE Chat with Full Keyboard Support",
+        "03. Mapax: Satellite Cartography on Mac",
+        "04. Mesh Radar for Desktop Peers",
+        "05. Settings & Cryptographic Vault"
+      ]
+    },
+    pt: {
+      iphone: [
+        "01. Mensagens Instantâneas Criptografadas",
+        "02. Chat E2EE & Notas de Voz PTT",
+        "03. Mapax: Mapa Tático Satelital Offline",
+        "04. Radar Mesh de Nodos Próximos",
+        "05. Identidade Soberana sem Servidor"
+      ],
+      ipad: [
+        "01. Visualização Multipainel iPadOS",
+        "02. Conversas em Alta Resolução",
+        "03. Mapax Tático em Tela Cheia",
+        "04. Radar Mesh e Chaves Soberanas",
+        "05. Configuração de Rede Soberana"
+      ],
+      mac: [
+        "01. Chax Nativo macOS para Desktop",
+        "02. Chat E2EE com Suporte de Teclado",
+        "03. Mapax: Cartografia Satelital no Mac",
+        "04. Radar Mesh de Nodos Desktop",
+        "05. Ajustes e Cofre Criptográfico"
+      ]
+    }
+  };
+
+  const currentCaps = captionsByLang[lang] || captionsByLang.es;
+
   const screenshotsData = {
     iphone: [
-      { src: `${basePath}iphone/01_conversaciones.png`, caption: "01. Mensajería Instantánea Cifrada" },
-      { src: `${basePath}iphone/02_chat_directo.png`, caption: "02. Chat E2EE & Notas de Voz PTT" },
-      { src: `${basePath}iphone/03_mapax.png`, caption: "03. Mapax: Mapa Táctico Satelital Offline" },
-      { src: `${basePath}iphone/04_radar_mesh.png`, caption: "04. Radar Mesh de Nodos Cercanos" },
-      { src: `${basePath}iphone/05_ajustes_red.png`, caption: "05. Identidad Soberana sin Servidor" }
+      { src: `${basePath}iphone/01_conversaciones.png`, caption: currentCaps.iphone[0] },
+      { src: `${basePath}iphone/02_chat_directo.png`, caption: currentCaps.iphone[1] },
+      { src: `${basePath}iphone/03_mapax.png`, caption: currentCaps.iphone[2] },
+      { src: `${basePath}iphone/04_radar_mesh.png`, caption: currentCaps.iphone[3] },
+      { src: `${basePath}iphone/05_ajustes_red.png`, caption: currentCaps.iphone[4] }
     ],
     ipad: [
-      { src: `${basePath}ipad/01_conversaciones.png`, caption: "01. Vista Multipanel iPadOS" },
-      { src: `${basePath}ipad/02_chat_directo.png`, caption: "02. Conversación de Alta Definición" },
-      { src: `${basePath}ipad/03_mapax.png`, caption: "03. Mapax Táctico en Pantalla Completa" },
-      { src: `${basePath}ipad/04_identidad.png`, caption: "04. Radar Mesh y Llaves Soberanas" },
-      { src: `${basePath}ipad/05_ajustes_red.png`, caption: "05. Configuración de Red Soberana" }
+      { src: `${basePath}ipad/01_conversaciones.png`, caption: currentCaps.ipad[0] },
+      { src: `${basePath}ipad/02_chat_directo.png`, caption: currentCaps.ipad[1] },
+      { src: `${basePath}ipad/03_mapax.png`, caption: currentCaps.ipad[2] },
+      { src: `${basePath}ipad/04_identidad.png`, caption: currentCaps.ipad[3] },
+      { src: `${basePath}ipad/05_ajustes_red.png`, caption: currentCaps.ipad[4] }
     ],
     mac: [
-      { src: `${basePath}mac/01_conversaciones.png`, caption: "01. Chax Nativo macOS para Escritorio", isMac: true },
-      { src: `${basePath}mac/02_chat_directo.png`, caption: "02. Chat E2EE con Soporte de Teclado", isMac: true },
-      { src: `${basePath}mac/03_mapax.png`, caption: "03. Mapax: Cartografía Satelital en Mac", isMac: true },
-      { src: `${basePath}mac/04_radar_mesh.png`, caption: "04. Radar Mesh de Nodos de Escritorio", isMac: true },
-      { src: `${basePath}mac/05_ajustes_red.png`, caption: "05. Ajustes y Bóveda Criptográfica", isMac: true }
+      { src: `${basePath}mac/01_conversaciones.png`, caption: currentCaps.mac[0], isMac: true },
+      { src: `${basePath}mac/02_chat_directo.png`, caption: currentCaps.mac[1], isMac: true },
+      { src: `${basePath}mac/03_mapax.png`, caption: currentCaps.mac[2], isMac: true },
+      { src: `${basePath}mac/04_radar_mesh.png`, caption: currentCaps.mac[3], isMac: true },
+      { src: `${basePath}mac/05_ajustes_red.png`, caption: currentCaps.mac[4], isMac: true }
     ]
   };
 

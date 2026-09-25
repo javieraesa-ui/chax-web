@@ -834,18 +834,28 @@ input:checked + .slider:before {
   overflow: hidden;
 }
 
-/* Animaciones de Personajes */
+/* Animaciones de Personajes Estilizados y Atractivos */
 .character-float {
-  animation: charFloat 3.6s infinite ease-in-out;
+  animation: charFloat 3.8s infinite ease-in-out;
 }
 
 .character-float-alt {
-  animation: charFloat 4.2s infinite ease-in-out reverse;
+  animation: charFloat 4.4s infinite ease-in-out 0.6s reverse;
 }
 
 @keyframes charFloat {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-8px); }
+  50% { transform: translateY(-7px); }
+}
+
+.bubble-pop {
+  animation: bubblePop 3.4s infinite ease-in-out;
+  transform-origin: center bottom;
+}
+
+@keyframes bubblePop {
+  0%, 100% { transform: scale(1) translateY(0); }
+  50% { transform: scale(1.03) translateY(-3px); }
 }
 
 .pulse-signal-wave {
@@ -856,6 +866,26 @@ input:checked + .slider:before {
 @keyframes wavePulse {
   0% { transform: scale(0.6); opacity: 0.8; }
   100% { transform: scale(1.6); opacity: 0; }
+}
+
+.beacon-pulse-ring {
+  animation: beaconPulse 2.5s infinite cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: center;
+}
+
+@keyframes beaconPulse {
+  0% { transform: scale(0.3); opacity: 0.9; }
+  100% { transform: scale(2.4); opacity: 0; }
+}
+
+.soundwave-bar {
+  animation: soundwaveAnim 1.2s infinite ease-in-out alternate;
+  transform-origin: center bottom;
+}
+
+@keyframes soundwaveAnim {
+  0% { transform: scaleY(0.4); opacity: 0.5; }
+  100% { transform: scaleY(1.3); opacity: 1; }
 }
 
 .mesh-link-dash {
@@ -870,13 +900,43 @@ input:checked + .slider:before {
 
 /* Radar Sweep */
 .radar-sweep-arm {
-  transform-origin: 150px 150px;
+  transform-origin: 80px 80px;
   animation: radarRotate 4s linear infinite;
 }
 
 @keyframes radarRotate {
   from { transform: rotate(0deg); }
   to { transform: rotate(360deg); }
+}
+
+.shield-glow-pulse {
+  animation: shieldPulse 3s infinite ease-in-out;
+  transform-origin: center;
+}
+
+@keyframes shieldPulse {
+  0%, 100% { filter: drop-shadow(0 0 6px rgba(0, 245, 155, 0.4)); opacity: 0.95; }
+  50% { filter: drop-shadow(0 0 18px rgba(0, 245, 155, 0.85)); opacity: 1; }
+}
+
+.sos-pulse-ring {
+  animation: sosPulse 2s infinite cubic-bezier(0.16, 1, 0.3, 1);
+  transform-origin: center;
+}
+
+@keyframes sosPulse {
+  0% { transform: scale(0.3); opacity: 0.95; }
+  100% { transform: scale(2.6); opacity: 0; }
+}
+
+.deflect-spark {
+  animation: sparkFlicker 1.8s infinite ease-in-out;
+  transform-origin: center;
+}
+
+@keyframes sparkFlicker {
+  0%, 100% { opacity: 0.4; transform: scale(0.9); }
+  50% { opacity: 1; transform: scale(1.25); }
 }
 
 /* ==========================================================================

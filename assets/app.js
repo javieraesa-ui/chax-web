@@ -7,10 +7,11 @@ document.addEventListener("DOMContentLoaded", () => {
   initSignalSimulator();
   initDeviceTabs();
   initPttPlayer();
+  initDiagramSlideshow();
 });
 
 /* ==========================================================================
-   1. FONDO DE MALLA DINÁMICA (CANVAS OPTIMIZADO)
+   1. FONDO DE MALLA POR CLUSTERS E ISLAS INTERCONECTADAS
    ========================================================================== */
 function initMeshCanvas() {
   const canvas = document.getElementById("meshBackground");
@@ -18,65 +19,122 @@ function initMeshCanvas() {
   const ctx = canvas.getContext("2d");
 
   let width, height;
-  let nodes = [];
-  const NODE_COUNT = window.innerWidth < 768 ? 30 : 65;
-  const MAX_DISTANCE = 140;
+  let clusters = [];
 
   function resize() {
     width = canvas.width = window.innerWidth;
     height = canvas.height = window.innerHeight;
+    initClusters();
   }
   window.addEventListener("resize", resize);
-  resize();
 
-  for (let i = 0; i < NODE_COUNT; i++) {
-    nodes.push({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      vx: (Math.random() - 0.5) * 0.45,
-      vy: (Math.random() - 0.5) * 0.45,
-      radius: Math.random() * 2 + 1.2,
-      isRelay: Math.random() > 0.8
-    });
+  function initClusters() {
+    clusters = [];
+    const numClusters = width < 768 ? 3 : 5;
+    const nodesPerCluster = width < 768 ? 10 : 14;
+
+    for (let c = 0; c < numClusters; c++) {
+      const cx = (width * (c + 0.5)) / numClusters + (Math.random() - 0.5) * 80;
+      const cy = (height * 0.15) + Math.random() * (height * 0.7);
+      const clusterNodes = [];
+
+      for (let i = 0; i < nodesPerCluster; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const dist = Math.random() * (width < 768 ? 65 : 100);
+        clusterNodes.push({
+          x: cx + Math.cos(angle) * dist,
+          y: cy + Math.sin(angle) * dist,
+          ox: cx + Math.cos(angle) * dist,
+          oy: cy + Math.sin(angle) * dist,
+          vx: (Math.random() - 0.5) * 0.35,
+          vy: (Math.random() - 0.5) * 0.35,
+          radius: Math.random() * 2 + 1.2,
+          isGateway: i === 0
+        });
+      }
+      clusters.push({ cx, cy, nodes: clusterNodes });
+    }
   }
 
+  resize();
+
+  let frame = 0;
   function draw() {
+    frame++;
     ctx.clearRect(0, 0, width, height);
 
-    for (let i = 0; i < nodes.length; i++) {
-      const a = nodes[i];
-      for (let j = i + 1; j < nodes.length; j++) {
-        const b = nodes[j];
-        const dx = a.x - b.x;
-        const dy = a.y - b.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
+    // 1. Dibujar conexiones internas dentro de cada cluster
+    for (let c = 0; c < clusters.length; c++) {
+      const nodes = clusters[c].nodes;
 
-        if (dist < MAX_DISTANCE) {
-          const alpha = (1 - dist / MAX_DISTANCE) * 0.22;
-          ctx.strokeStyle = a.isRelay || b.isRelay 
-            ? `rgba(0, 245, 155, ${alpha * 1.5})` 
-            : `rgba(56, 189, 248, ${alpha})`;
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(a.x, a.y);
-          ctx.lineTo(b.x, b.y);
-          ctx.stroke();
+      for (let i = 0; i < nodes.length; i++) {
+        const a = nodes[i];
+        a.x += a.vx;
+        a.y += a.vy;
+
+        // Mantener dentro del área del cluster
+        const dx = a.x - a.ox;
+        const dy = a.y - a.oy;
+        if (Math.abs(dx) > 35) a.vx *= -1;
+        if (Math.abs(dy) > 35) a.vy *= -1;
+
+        for (let j = i + 1; j < nodes.length; j++) {
+          const b = nodes[j];
+          const dist = Math.hypot(a.x - b.x, a.y - b.y);
+          if (dist < 95) {
+            const alpha = (1 - dist / 95) * 0.28;
+            ctx.strokeStyle = `rgba(56, 189, 248, ${alpha})`;
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.stroke();
+          }
         }
       }
     }
 
-    for (let i = 0; i < nodes.length; i++) {
-      const n = nodes[i];
-      n.x += n.vx;
-      n.y += n.vy;
+    // 2. Conectar clusters vecinos con puentes inter-cluster dinámicos
+    for (let c = 0; c < clusters.length; c++) {
+      const nextCluster = clusters[(c + 1) % clusters.length];
+      const gwA = clusters[c].nodes.find(n => n.isGateway) || clusters[c].nodes[0];
+      const gwB = nextCluster.nodes.find(n => n.isGateway) || nextCluster.nodes[0];
 
-      if (n.x < 0 || n.x > width) n.vx *= -1;
-      if (n.y < 0 || n.y > height) n.vy *= -1;
+      const bridgeDist = Math.hypot(gwA.x - gwB.x, gwA.y - gwB.y);
+      if (bridgeDist < 500) {
+        const alpha = Math.max(0.12, (1 - bridgeDist / 500) * 0.4);
+        ctx.strokeStyle = `rgba(0, 245, 155, ${alpha})`;
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([5, 5]);
+        ctx.beginPath();
+        ctx.moveTo(gwA.x, gwA.y);
+        ctx.lineTo(gwB.x, gwB.y);
+        ctx.stroke();
+        ctx.setLineDash([]);
 
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, n.radius, 0, Math.PI * 2);
-      ctx.fillStyle = n.isRelay ? "#00f59b" : "#38bdf8";
-      ctx.fill();
+        // Paquete luminoso viajando por el puente
+        const t = ((frame * 0.012) % 1);
+        const px = gwA.x + (gwB.x - gwA.x) * t;
+        const py = gwA.y + (gwB.y - gwA.y) * t;
+        ctx.beginPath();
+        ctx.arc(px, py, 3.5, 0, Math.PI * 2);
+        ctx.fillStyle = "#00f59b";
+        ctx.shadowColor = "#00f59b";
+        ctx.shadowBlur = 10;
+        ctx.fill();
+        ctx.shadowBlur = 0;
+      }
+    }
+
+    // 3. Dibujar nodos
+    for (let c = 0; c < clusters.length; c++) {
+      for (let i = 0; i < clusters[c].nodes.length; i++) {
+        const n = clusters[c].nodes[i];
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.isGateway ? n.radius + 1.4 : n.radius, 0, Math.PI * 2);
+        ctx.fillStyle = n.isGateway ? "#00f59b" : "#38bdf8";
+        ctx.fill();
+      }
     }
 
     requestAnimationFrame(draw);
@@ -398,3 +456,66 @@ function initPttPlayer() {
     }
   }
 }
+
+/* ==========================================================================
+   5. DIAPOSITIVAS INTERACTIVAS Y DIAGRAMAS DE PROPAGACIÓN
+   ========================================================================== */
+function initDiagramSlideshow() {
+  const tabBtns = document.querySelectorAll(".diagram-tab-btn");
+  const cards = document.querySelectorAll(".diagram-card");
+  if (!tabBtns.length || !cards.length) return;
+
+  tabBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const targetId = btn.getAttribute("data-diagram");
+      
+      tabBtns.forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      cards.forEach(card => {
+        card.classList.remove("active");
+        if (card.id === targetId) {
+          card.classList.add("active");
+        }
+      });
+    });
+  });
+
+  // Animación de pasos interactivos dentro de cada diagrama
+  const stepperSteps = document.querySelectorAll(".stepper-step");
+  stepperSteps.forEach(step => {
+    step.addEventListener("click", () => {
+      const parent = step.closest(".diagram-stepper");
+      if (!parent) return;
+      parent.querySelectorAll(".stepper-step").forEach(s => s.classList.remove("active"));
+      step.classList.add("active");
+
+      const stepNum = step.getAttribute("data-step");
+      const card = step.closest(".diagram-card");
+      if (card && stepNum) {
+        highlightDiagramElements(card, stepNum);
+      }
+    });
+  });
+
+  function highlightDiagramElements(card, stepNum) {
+    const svg = card.querySelector("svg");
+    if (!svg) return;
+
+    // Resaltar elementos correspondientes al paso
+    const allStepEls = svg.querySelectorAll("[data-diag-step]");
+    if (!allStepEls.length) return;
+
+    allStepEls.forEach(el => {
+      const elStep = el.getAttribute("data-diag-step");
+      if (parseInt(elStep, 10) <= parseInt(stepNum, 10)) {
+        el.style.opacity = "1";
+        el.style.filter = elStep === stepNum ? "drop-shadow(0 0 8px #00f59b)" : "none";
+      } else {
+        el.style.opacity = "0.2";
+        el.style.filter = "none";
+      }
+    });
+  }
+}
+

@@ -35,14 +35,14 @@
       <div class="nav-bar">
         <a href="index.html" class="brand-wrap">
           <div class="brand-icon-box">
-            <img src="assets/logo.png" alt="Chax Logo" />
+            <img src="assets/app-icon.png" alt="Chax Logo" />
           </div>
           <span>Chax</span>
-          <span class="brand-tag">2.0 Táctico</span>
         </a>
 
         <ul class="nav-links">
           <li><a href="#superpoderes">Superpoderes</a></li>
+          <li><a href="#diagramas">¿Cómo Funciona?</a></li>
           <li><a href="#simulador">Simulador en Vivo</a></li>
           <li><a href="#problemas">Escenarios Reales</a></li>
           <li><a href="#arquitectura">Arquitectura</a></li>
@@ -58,13 +58,6 @@
             <a href="pt/index.html">PT</a>
           </li>
         </ul>
-
-        <a href="https://apps.apple.com/app/chax/id6751280620" target="_blank" rel="noopener" class="nav-cta">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 3.5c.61-.75 1.04-1.8 1.01-2.85-.92.04-2.03.62-2.67 1.37-.58.67-1.08 1.74-1.01 2.78.98.08 2.06-.55 2.67-1.3z"/>
-          </svg>
-          Instalar en iOS & Mac
-        </a>
       </div>
     </div>
   </header>
@@ -255,6 +248,335 @@
           <a href="#simulador" style="color: var(--volt-green); font-weight: 750; font-size: 0.9rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
             Probar simulador interactivo →
           </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       DIAGRAMAS Y DIAPOSITIVAS INTERACTIVAS: PROPAGACIÓN DE PAQUETES
+       ========================================================================== -->
+  <section class="diagram-section" id="diagramas">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-badge">Física del Protocolo</span>
+        <h2 class="section-title">¿Cómo viaja un mensaje sin señal?</h2>
+        <p class="section-subtitle">
+          Explora paso a paso las diapositivas interactivas: desde la propagación multi-salto en abanico, hasta el salto a la nube por relevo y las redes comunitarias de emergencia.
+        </p>
+      </div>
+
+      <!-- Selector de Diapositivas / Pestañas -->
+      <div class="diagram-tabs">
+        <button class="diagram-tab-btn active" data-diagram="diagramCard1">
+          <span>📡 1. Propagación Mesh (1 → 2 → 4 → Destino)</span>
+        </button>
+        <button class="diagram-tab-btn" data-diagram="diagramCard2">
+          <span>🌐 2. Puente a Internet (Relay Nostr)</span>
+        </button>
+        <button class="diagram-tab-btn" data-diagram="diagramCard3">
+          <span>🚨 3. Enjambre SOS en Catástrofes</span>
+        </button>
+      </div>
+
+      <!-- DIAPOSITIVA 1: MESH MULTI-SALTO 1 -> 2 -> 4 -> DESTINO -->
+      <div class="diagram-card active" id="diagramCard1">
+        <div class="diagram-body">
+          <div>
+            <span class="bento-icon-badge green">RELEVO BLUETOOTH DESCENTRALIZADO</span>
+            <h3 class="bento-title" style="margin-top: 8px;">De 1 teléfono a 2, de 2 a 4... hasta su destino</h3>
+            <p class="bento-desc">
+              Cada paquete contiene una carga criptográfica cerrada con la llave pública del destinatario (X25519) y un contador de saltos (TTL). Ningún intermediario puede abrirlo ni saber de quién proviene.
+            </p>
+
+            <div class="diagram-stepper">
+              <div class="stepper-step active" data-step="1">
+                <h5>1. Emisión Inicial (Nodo Origen)</h5>
+                <p>Tu iPhone cifra el mensaje y lo emite por Bluetooth Low Energy en un radio local de 100 metros.</p>
+              </div>
+              <div class="stepper-step" data-step="2">
+                <h5>2. Primer Salto: 2 Teléfonos en Rango</h5>
+                <p>Dos dispositivos cercanos capturan el paquete, verifican que no sea repetido y restan 1 al TTL.</p>
+              </div>
+              <div class="stepper-step" data-step="3">
+                <h5>3. Segundo Salto: Expansión a 4 Nodos</h5>
+                <p>Los 2 teléfonos retransmiten simultáneamente en abanico, alcanzando a 4 nuevos dispositivos en la multitud.</p>
+              </div>
+              <div class="stepper-step" data-step="4">
+                <h5>4. Entrega al Destinatario Final</h5>
+                <p>Uno de los caminos alcanza a tu amigo. Su teléfono valida la firma Ed25519, descifra el chat y confirma la entrega ✓✓.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="diagram-svg-wrap">
+            <svg viewBox="0 0 520 380" width="100%" height="100%">
+              <defs>
+                <linearGradient id="linkGlow" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#38bdf8"/>
+                  <stop offset="100%" stop-color="#00f59b"/>
+                </linearGradient>
+                <filter id="glowGreen" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="4" result="blur" />
+                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
+              </defs>
+
+              <!-- Enlaces / Caminos de Malla (Paso 1 -> Paso 2 -> Paso 3 -> Paso 4) -->
+              <!-- Origen a Salto 1 (N1 y N2) -->
+              <path d="M 70 190 Q 130 145 180 120" stroke="#38bdf8" stroke-width="2.5" fill="none" stroke-dasharray="6 4" class="mesh-link-dash" data-diag-step="1"/>
+              <path d="M 70 190 Q 130 235 180 260" stroke="#38bdf8" stroke-width="2.5" fill="none" stroke-dasharray="6 4" class="mesh-link-dash" data-diag-step="1"/>
+
+              <!-- Salto 1 (N1 y N2) a Salto 2 (4 nodos: M1, M2, M3, M4) -->
+              <path d="M 180 120 Q 240 85 300 70" stroke="#38bdf8" stroke-width="2" fill="none" stroke-dasharray="5 4" class="mesh-link-dash" data-diag-step="2"/>
+              <path d="M 180 120 Q 240 140 300 150" stroke="#38bdf8" stroke-width="2" fill="none" stroke-dasharray="5 4" class="mesh-link-dash" data-diag-step="2"/>
+              <path d="M 180 260 Q 240 230 300 230" stroke="#38bdf8" stroke-width="2" fill="none" stroke-dasharray="5 4" class="mesh-link-dash" data-diag-step="2"/>
+              <path d="M 180 260 Q 240 285 300 310" stroke="#38bdf8" stroke-width="2" fill="none" stroke-dasharray="5 4" class="mesh-link-dash" data-diag-step="2"/>
+
+              <!-- Salto 2 hacia Destino (Camino ganador por M2/M3) -->
+              <path d="M 300 150 Q 380 170 440 190" stroke="url(#linkGlow)" stroke-width="3" fill="none" stroke-dasharray="6 4" class="mesh-link-dash" data-diag-step="3"/>
+              <path d="M 300 230 Q 380 210 440 190" stroke="url(#linkGlow)" stroke-width="3" fill="none" stroke-dasharray="6 4" class="mesh-link-dash" data-diag-step="3"/>
+
+              <!-- NODO 1: EMISOR (X=70, Y=190) -->
+              <g transform="translate(70, 190)" data-diag-step="1">
+                <circle cx="0" cy="0" r="30" fill="rgba(0, 245, 155, 0.15)" stroke="#00f59b" stroke-width="1.5" class="pulse-signal-wave"/>
+                <circle cx="0" cy="0" r="20" fill="#064e3b" stroke="#00f59b" stroke-width="2.5" filter="url(#glowGreen)"/>
+                <text x="0" y="5" fill="#fff" font-size="14" font-weight="900" text-anchor="middle">📱</text>
+                <text x="0" y="38" fill="#00f59b" font-size="11" font-weight="bold" text-anchor="middle">1. Emisor</text>
+                <text x="0" y="51" fill="#94a3b8" font-size="9" text-anchor="middle">TTL=7</text>
+              </g>
+
+              <!-- NODOS PASO 2: 2 TELÉFONOS INTERMEDIOS (X=180, Y=120 y Y=260) -->
+              <g transform="translate(180, 120)" data-diag-step="2">
+                <circle cx="0" cy="0" r="18" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+                <text x="0" y="5" fill="#fff" font-size="12" text-anchor="middle">📱</text>
+                <text x="0" y="-24" fill="#38bdf8" font-size="10" font-weight="bold" text-anchor="middle">Nodo A (Salto 1)</text>
+              </g>
+
+              <g transform="translate(180, 260)" data-diag-step="2">
+                <circle cx="0" cy="0" r="18" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+                <text x="0" y="5" fill="#fff" font-size="12" text-anchor="middle">📱</text>
+                <text x="0" y="32" fill="#38bdf8" font-size="10" font-weight="bold" text-anchor="middle">Nodo B (Salto 1)</text>
+              </g>
+
+              <!-- NODOS PASO 3: 4 TELÉFONOS EN PERIFERIA (X=300, Y=70, 150, 230, 310) -->
+              <g transform="translate(300, 70)" data-diag-step="3">
+                <circle cx="0" cy="0" r="16" fill="#0b1320" stroke="#64748b" stroke-width="1.5"/>
+                <text x="0" y="4" fill="#94a3b8" font-size="11" text-anchor="middle">📱</text>
+                <text x="0" y="-22" fill="#94a3b8" font-size="9" text-anchor="middle">Salto 2 (a)</text>
+              </g>
+
+              <g transform="translate(300, 150)" data-diag-step="3">
+                <circle cx="0" cy="0" r="17" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+                <text x="0" y="4" fill="#fff" font-size="11" text-anchor="middle">📱</text>
+                <text x="0" y="-22" fill="#38bdf8" font-size="9" font-weight="bold" text-anchor="middle">Salto 2 (b)</text>
+              </g>
+
+              <g transform="translate(300, 230)" data-diag-step="3">
+                <circle cx="0" cy="0" r="17" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+                <text x="0" y="4" fill="#fff" font-size="11" text-anchor="middle">📱</text>
+                <text x="0" y="28" fill="#38bdf8" font-size="9" font-weight="bold" text-anchor="middle">Salto 2 (c)</text>
+              </g>
+
+              <g transform="translate(300, 310)" data-diag-step="3">
+                <circle cx="0" cy="0" r="16" fill="#0b1320" stroke="#64748b" stroke-width="1.5"/>
+                <text x="0" y="4" fill="#94a3b8" font-size="11" text-anchor="middle">📱</text>
+                <text x="0" y="28" fill="#94a3b8" font-size="9" text-anchor="middle">Salto 2 (d)</text>
+              </g>
+
+              <!-- NODO 4: DESTINATARIO (X=440, Y=190) -->
+              <g transform="translate(440, 190)" data-diag-step="4">
+                <circle cx="0" cy="0" r="32" fill="rgba(0, 245, 155, 0.2)" stroke="#00f59b" stroke-width="2" class="pulse-signal-wave"/>
+                <circle cx="0" cy="0" r="22" fill="#064e3b" stroke="#00f59b" stroke-width="3" filter="url(#glowGreen)"/>
+                <text x="0" y="5" fill="#fff" font-size="15" text-anchor="middle">🎯</text>
+                <text x="0" y="40" fill="#00f59b" font-size="11" font-weight="bold" text-anchor="middle">4. Destinatario</text>
+                <text x="0" y="53" fill="#38bdf8" font-size="9" font-weight="bold" text-anchor="middle">✓✓ Entregado</text>
+              </g>
+
+              <!-- Badge Criptográfico de Seguridad -->
+              <rect x="130" y="10" width="260" height="30" rx="15" fill="rgba(0,0,0,0.7)" stroke="rgba(0,245,155,0.4)" stroke-width="1"/>
+              <text x="260" y="29" fill="#00f59b" font-size="10.5" font-weight="bold" text-anchor="middle">🔒 Cifrado E2EE • Nodos intermedios a ciegas</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIAPOSITIVA 2: PUENTE RELAY A INTERNET -->
+      <div class="diagram-card" id="diagramCard2">
+        <div class="diagram-body">
+          <div>
+            <span class="bento-icon-badge blue">ENRUTAMIENTO HÍBRIDO GLOBAL</span>
+            <h3 class="bento-title" style="margin-top: 8px;">El Puente Mesh hacia los Relés de Internet</h3>
+            <p class="bento-desc">
+              Si el destinatario está al otro lado del planeta y tú estás bajo tierra en el metro o en un concierto sin datos, basta con que <em>un solo</em> teléfono de la malla tenga conexión para actuar como puente automático hacia los relés mundiales.
+            </p>
+
+            <div class="diagram-stepper">
+              <div class="stepper-step active" data-step="1">
+                <h5>1. Emisión en Zona Ciega (Sin Señal)</h5>
+                <p>Estás en el sótano o festival masivo. Tu mensaje sale por radio local Bluetooth Mesh.</p>
+              </div>
+              <div class="stepper-step" data-step="2">
+                <h5>2. Nodo Puente Gateway (Conexión Híbrida)</h5>
+                <p>Un usuario cerca de la salida o con WiFi capta el paquete e inmediatamente lo inyecta a Internet sin poder leer su contenido.</p>
+              </div>
+              <div class="stepper-step" data-step="3">
+                <h5>3. Enjambre Global Nostr & Recepción Instantánea</h5>
+                <p>El paquete se sincroniza a través de relés mundiales descentralizados y aterriza en el teléfono de tu contacto en milisegundos.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="diagram-svg-wrap">
+            <svg viewBox="0 0 520 380" width="100%" height="100%">
+              <defs>
+                <linearGradient id="bridgeFlow" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#ff7a00"/>
+                  <stop offset="50%" stop-color="#38bdf8"/>
+                  <stop offset="100%" stop-color="#00f59b"/>
+                </linearGradient>
+              </defs>
+
+              <!-- Zona Offline (Izquierda) -->
+              <rect x="20" y="40" width="180" height="300" rx="14" fill="rgba(15, 23, 42, 0.6)" stroke="rgba(239, 68, 68, 0.4)" stroke-width="1.5" stroke-dasharray="4 4"/>
+              <text x="110" y="65" fill="#f87171" font-size="11" font-weight="bold" text-anchor="middle">ZONA SIN SEÑAL 🚫</text>
+              <text x="110" y="80" fill="#94a3b8" font-size="9" text-anchor="middle">Túnel / Sótano / Festival</text>
+
+              <!-- Teléfono Emisor Offline -->
+              <g transform="translate(70, 200)">
+                <circle cx="0" cy="0" r="22" fill="#1e1b4b" stroke="#ff7a00" stroke-width="2"/>
+                <text x="0" y="5" fill="#fff" font-size="13" text-anchor="middle">📱</text>
+                <text x="0" y="36" fill="#ff7a00" font-size="10" font-weight="bold" text-anchor="middle">Emisor Offline</text>
+              </g>
+
+              <!-- Nodo Mesh Relevo -->
+              <g transform="translate(150, 150)">
+                <circle cx="0" cy="0" r="18" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
+                <text x="0" y="4" fill="#fff" font-size="11" text-anchor="middle">📱</text>
+                <text x="0" y="-24" fill="#38bdf8" font-size="9" text-anchor="middle">Salto BLE</text>
+              </g>
+
+              <path d="M 70 200 Q 110 160 150 150" stroke="#38bdf8" stroke-width="2.5" fill="none" stroke-dasharray="5 3" class="mesh-link-dash"/>
+              <path d="M 150 150 Q 200 160 260 190" stroke="#38bdf8" stroke-width="2.5" fill="none" stroke-dasharray="5 3" class="mesh-link-dash"/>
+
+              <!-- NODO PUENTE (GATEWAY BRIDGE) -->
+              <g transform="translate(260, 190)">
+                <circle cx="0" cy="0" r="30" fill="rgba(56, 189, 248, 0.2)" stroke="#38bdf8" stroke-width="2" class="pulse-signal-wave"/>
+                <rect x="-18" y="-24" width="36" height="48" rx="8" fill="#041426" stroke="#38bdf8" stroke-width="2.5"/>
+                <text x="0" y="-2" fill="#fff" font-size="13" text-anchor="middle">📶</text>
+                <circle cx="0" cy="14" r="3" fill="#00f59b"/>
+                <text x="0" y="42" fill="#38bdf8" font-size="11" font-weight="bold" text-anchor="middle">Nodo Puente</text>
+                <text x="0" y="55" fill="#00f59b" font-size="9" font-weight="bold" text-anchor="middle">BLE + 5G Activo</text>
+              </g>
+
+              <!-- Conexión hacia la Nube Nostr -->
+              <path d="M 285 190 Q 340 170 380 150" stroke="url(#bridgeFlow)" stroke-width="3" fill="none" stroke-dasharray="6 4" class="mesh-link-dash"/>
+
+              <!-- NUBE NOSTR MUNDIAL -->
+              <g transform="translate(390, 140)">
+                <ellipse cx="20" cy="20" rx="45" ry="26" fill="rgba(124, 58, 237, 0.25)" stroke="#c084fc" stroke-width="2"/>
+                <text x="20" y="16" fill="#c084fc" font-size="10" font-weight="900" text-anchor="middle">RED NOSTR</text>
+                <text x="20" y="28" fill="#e2e8f0" font-size="8.5" text-anchor="middle">Relés Mundiales</text>
+              </g>
+
+              <!-- Enlace a Destinatario Remoto -->
+              <path d="M 425 150 Q 460 170 470 230" stroke="#00f59b" stroke-width="2.5" fill="none" stroke-dasharray="5 3" class="mesh-link-dash"/>
+
+              <!-- DESTINATARIO REMOTO (Cualquier lugar del mundo) -->
+              <g transform="translate(470, 250)">
+                <circle cx="0" cy="0" r="24" fill="#052e16" stroke="#00f59b" stroke-width="2.5"/>
+                <text x="0" y="5" fill="#fff" font-size="13" text-anchor="middle">🌍</text>
+                <text x="0" y="38" fill="#00f59b" font-size="10" font-weight="bold" text-anchor="middle">Contacto Remoto</text>
+                <text x="0" y="50" fill="#94a3b8" font-size="8.5" text-anchor="middle">Tokio / Madrid (120ms)</text>
+              </g>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIAPOSITIVA 3: RED COMUNITARIA SOS EN CATÁSTROFES -->
+      <div class="diagram-card" id="diagramCard3">
+        <div class="diagram-body">
+          <div>
+            <span class="bento-icon-badge orange">RESILIENCIA COMUNITARIA</span>
+            <h3 class="bento-title" style="margin-top: 8px;">Malla Autónoma de Emergencia & Sismos</h3>
+            <p class="bento-desc">
+              Cuando un terremoto, huracán o apagón eléctrico apaga las antenas de la ciudad, los vecinos forman instantáneamente una red de auxilio sin cables, sin SIM y sin pagar servicio telefónico.
+            </p>
+
+            <div class="diagram-stepper">
+              <div class="stepper-step active" data-step="1">
+                <h5>1. Colapso de Antenas & Pérdida de Electricidad</h5>
+                <p>Las redes comerciales dejan de funcionar. La App Store y WhatsApp quedan inaccesibles.</p>
+              </div>
+              <div class="stepper-step" data-step="2">
+                <h5>2. Detección Automática de Vecinos (BLE Swarm)</h5>
+                <p>Los dispositivos Chax en cada hogar se reconocen de forma pasiva construyendo un enjambre de relevos barriales.</p>
+              </div>
+              <div class="stepper-step" data-step="3">
+                <h5>3. Balizas de Supervivencia & Puntos de Auxilio en Mapax</h5>
+                <p>Se difunden mensajes de salud ("Familia a salvo"), solicitudes de rescate y coordenadas GPS sin gastar datos.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="diagram-svg-wrap">
+            <svg viewBox="0 0 520 380" width="100%" height="100%">
+              <!-- Fondo Ciudad / Escombros estilizados -->
+              <rect x="40" y="240" width="60" height="90" fill="#1e293b" rx="4"/>
+              <rect x="120" y="210" width="70" height="120" fill="#0f172a" rx="4"/>
+              <rect x="220" y="260" width="80" height="70" fill="#1e293b" rx="4"/>
+              <rect x="330" y="200" width="65" height="130" fill="#0f172a" rx="4"/>
+              <rect x="420" y="250" width="70" height="80" fill="#1e293b" rx="4"/>
+
+              <!-- Antena Celular Derribada / Inoperativa -->
+              <g transform="translate(70, 70)">
+                <line x1="10" y1="10" x2="40" y2="70" stroke="#ef4444" stroke-width="2.5"/>
+                <line x1="5" y1="70" x2="45" y2="70" stroke="#ef4444" stroke-width="2"/>
+                <line x1="0" y1="20" x2="40" y2="20" stroke="#ef4444" stroke-width="2" transform="rotate(30 20 20)"/>
+                <text x="50" y="45" fill="#f87171" font-size="10" font-weight="bold">ANTENA CAÍDA ⚡</text>
+              </g>
+
+              <!-- Baliza SOS Ciudadano 1 (Casa A) -->
+              <g transform="translate(150, 160)">
+                <circle cx="0" cy="0" r="24" fill="rgba(239, 68, 68, 0.25)" stroke="#ef4444" stroke-width="1.5" class="pulse-signal-wave"/>
+                <circle cx="0" cy="0" r="16" fill="#7f1d1d" stroke="#ef4444" stroke-width="2"/>
+                <text x="0" y="4" fill="#fff" font-size="11" text-anchor="middle">🚨</text>
+                <text x="0" y="32" fill="#fca5a5" font-size="9" font-weight="bold" text-anchor="middle">Baliza SOS (Familia)</text>
+              </g>
+
+              <!-- Relevo Casa Vecina (Casa B) -->
+              <g transform="translate(260, 200)">
+                <circle cx="0" cy="0" r="18" fill="#064e3b" stroke="#00f59b" stroke-width="2"/>
+                <text x="0" y="4" fill="#fff" font-size="11" text-anchor="middle">🏠</text>
+                <text x="0" y="32" fill="#00f59b" font-size="9" font-weight="bold" text-anchor="middle">Relevo Vecino</text>
+              </g>
+
+              <!-- Relevo Mac en Refugio (Casa C) -->
+              <g transform="translate(360, 150)">
+                <circle cx="0" cy="0" r="18" fill="#0f172a" stroke="#38bdf8" stroke-width="2"/>
+                <text x="0" y="4" fill="#fff" font-size="11" text-anchor="middle">💻</text>
+                <text x="0" y="-24" fill="#38bdf8" font-size="9" font-weight="bold" text-anchor="middle">Mac Refugio</text>
+              </g>
+
+              <!-- Brigada de Rescate / Puesto Médico -->
+              <g transform="translate(450, 210)">
+                <circle cx="0" cy="0" r="26" fill="rgba(0, 245, 155, 0.25)" stroke="#00f59b" stroke-width="2" class="pulse-signal-wave"/>
+                <circle cx="0" cy="0" r="18" fill="#064e3b" stroke="#00f59b" stroke-width="2.5"/>
+                <text x="0" y="5" fill="#fff" font-size="12" text-anchor="middle">🚑</text>
+                <text x="0" y="36" fill="#00f59b" font-size="10" font-weight="bold" text-anchor="middle">Brigada de Auxilio</text>
+                <text x="0" y="48" fill="#e2e8f0" font-size="8.5" text-anchor="middle">Mapax GPS Localizado</text>
+              </g>
+
+              <!-- Líneas de Malla SOS Interconectadas -->
+              <path d="M 150 160 Q 200 190 260 200" stroke="#00f59b" stroke-width="2.5" fill="none" stroke-dasharray="5 3" class="mesh-link-dash"/>
+              <path d="M 260 200 Q 310 160 360 150" stroke="#00f59b" stroke-width="2.5" fill="none" stroke-dasharray="5 3" class="mesh-link-dash"/>
+              <path d="M 360 150 Q 400 190 450 210" stroke="#00f59b" stroke-width="2.5" fill="none" stroke-dasharray="5 3" class="mesh-link-dash"/>
+
+              <rect x="140" y="335" width="240" height="26" rx="13" fill="rgba(0,0,0,0.8)" stroke="#00f59b" stroke-width="1"/>
+              <text x="260" y="352" fill="#00f59b" font-size="10" font-weight="bold" text-anchor="middle">⚡ Malla Barrial Activa • 0% Dependencia Eléctrica</text>
+            </svg>
+          </div>
         </div>
       </div>
     </div>
@@ -654,6 +976,107 @@
           </svg>
         </div>
       </div>
+
+      <!-- ESCENARIO 4: EMERGENCIAS NATURALES, SISMOS & HURACANES -->
+      <div class="scenario-block reverse">
+        <div class="scenario-content">
+          <span class="scenario-meta-tag emergency">Escenario 04 • Emergencias Naturales, Terremotos & Huracanes</span>
+          <h3 class="scenario-heading">Sismo de alta magnitud o huracán. Apagón general de electricidad y antenas caídas.</h3>
+          
+          <div class="scenario-problem-box" style="border-left-color: #ef4444; background: rgba(239, 68, 68, 0.08);">
+            <strong style="color: #f87171;">El Problema Típico</strong>
+            <p>Tras un terremoto o fenómeno meteorológico severo, los postes caen, las subestaciones colapsan y las baterías de las antenas celulares se agotan en minutos. Cientos de miles de personas quedan angustiadas sin saber si sus familias están bien, y los servicios de emergencia se saturan.</p>
+          </div>
+
+          <p class="scenario-solution-text">
+            <strong>La Solución Chax:</strong> Tu teléfono se convierte en una baliza de supervivencia y un repetidor autónomo. Mediante Bluetooth Low Energy, tu mensaje con coordenadas GPS en <strong>Mapax</strong> salta de casa en casa y de refugio en refugio hasta encontrar a los tuyos o alcanzar a las brigadas de auxilio.
+          </p>
+
+          <ul class="scenario-keypoints">
+            <li>
+              <svg viewBox="0 0 24 24" fill="currentColor" color="#ef4444"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              <span><strong>Baliza SOS Comunitaria:</strong> Envía reportes de estado ("A salvo", "Necesito auxilio médico") que rebotan por la ciudad sin internet.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="currentColor" color="#00f59b"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              <span><strong>Malla Barrial sin Centrales:</strong> Si 10 vecinos tienen Chax, el barrio completo tiene cobertura P2P entre sí.</span>
+            </li>
+            <li>
+              <svg viewBox="0 0 24 24" fill="currentColor" color="#38bdf8"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+              <span><strong>Mapax con Refugios Tácticos:</strong> Cartografía satelital guardada en caché para localizar hospitales y centros de acopio.</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="scenario-visual">
+          <svg viewBox="0 0 440 340" width="100%" height="100%">
+            <!-- Fondo Urbano y Grieta Sísmica -->
+            <polygon points="10,260 430,260 430,340 10,340" fill="#0b1320"/>
+            <path d="M 120 260 L 160 290 L 140 340 M 160 290 L 210 320" stroke="#ef4444" stroke-width="2" fill="none" opacity="0.6"/>
+
+            <!-- Edificio / Casa 1 Dañada -->
+            <rect x="30" y="160" width="70" height="100" rx="3" fill="#1e293b"/>
+            <rect x="42" y="180" width="14" height="18" rx="2" fill="#0f172a"/>
+            <rect x="70" y="180" width="14" height="18" rx="2" fill="#0f172a"/>
+            <rect x="42" y="215" width="14" height="18" rx="2" fill="#0f172a"/>
+
+            <!-- Antena Caída / Rayo de Colapso -->
+            <g transform="translate(45, 80)">
+              <line x1="20" y1="80" x2="55" y2="20" stroke="#ef4444" stroke-width="2"/>
+              <circle cx="55" cy="20" r="4" fill="#ef4444"/>
+              <text x="65" y="24" fill="#ef4444" font-size="10" font-weight="bold">ANTENAS CAÍDAS ⚡</text>
+            </g>
+
+            <!-- Muñequito 1: Ciudadano en Refugio emitiendo SOS -->
+            <g class="character-float" transform="translate(130, 180)">
+              <ellipse cx="25" cy="85" rx="18" ry="5" fill="rgba(0,0,0,0.5)"/>
+              <rect x="12" y="35" width="24" height="38" rx="6" fill="#dc2626"/>
+              <circle cx="24" cy="20" r="14" fill="#fed7aa"/>
+              <rect x="28" y="38" width="12" height="20" rx="2" fill="#000" stroke="#00f59b" stroke-width="1.5"/>
+              <circle cx="34" cy="48" r="2" fill="#00f59b"/>
+
+              <!-- Globo de Diálogo SOS -->
+              <rect x="-30" y="-22" width="115" height="26" rx="6" fill="#7f1d1d" stroke="#ef4444" stroke-width="1.5"/>
+              <text x="28" y="-5" fill="#fff" font-size="9.5" font-weight="bold" text-anchor="middle">🚨 "¡Familia a salvo!"</text>
+            </g>
+
+            <!-- Nodo Mesh Intermedio (Vecino en Casa) -->
+            <g transform="translate(240, 205)">
+              <circle cx="15" cy="25" r="12" fill="#334155"/>
+              <rect x="5" y="38" width="20" height="35" rx="5" fill="#1e293b"/>
+              <circle cx="15" cy="35" r="4" fill="#00f59b" class="pulse-signal-wave"/>
+              <rect x="10" y="30" width="8" height="14" rx="2" fill="#000" stroke="#00f59b" stroke-width="1"/>
+              <text x="15" y="85" fill="#00f59b" font-size="8.5" text-anchor="middle">Salto BLE</text>
+            </g>
+
+            <!-- Muñequito 2: Rescatista / Brigada con Botiquín y Mapax -->
+            <g class="character-float-alt" transform="translate(325, 175)">
+              <ellipse cx="25" cy="90" rx="20" ry="6" fill="rgba(0,0,0,0.5)"/>
+              <rect x="12" y="35" width="26" height="42" rx="7" fill="#0284c7"/>
+              <circle cx="25" cy="18" r="15" fill="#fed7aa"/>
+              <!-- Casco de Rescatista Blanco con Cruz Roja -->
+              <path d="M 8 18 C 8 3, 42 3, 42 18 Z" fill="#f8fafc"/>
+              <rect x="23" y="6" width="4" height="10" fill="#ef4444"/>
+              <rect x="20" y="9" width="10" height="4" fill="#ef4444"/>
+              <!-- Teléfono con Mapax -->
+              <rect x="4" y="36" width="14" height="24" rx="3" fill="#000" stroke="#00f59b" stroke-width="2"/>
+              <circle cx="11" cy="48" r="3" fill="#00f59b"/>
+
+              <!-- Globo de Diálogo de Rescate -->
+              <rect x="-35" y="-22" width="125" height="26" rx="6" fill="#064e3b" stroke="#00f59b" stroke-width="1.5"/>
+              <text x="27" y="-5" fill="#00f59b" font-size="9" font-weight="bold" text-anchor="middle">🚑 "Ubicado a 180m"</text>
+            </g>
+
+            <!-- Ondas y Caminos Mesh Animados -->
+            <path d="M 166 225 Q 200 230 240 230" stroke="#00f59b" stroke-width="2.5" fill="none" class="mesh-link-dash"/>
+            <path d="M 260 230 Q 290 220 330 220" stroke="#00f59b" stroke-width="2.5" fill="none" class="mesh-link-dash"/>
+
+            <!-- Badge Inferior -->
+            <rect x="90" y="300" width="260" height="28" rx="14" fill="rgba(239,68,68,0.18)" stroke="#ef4444" stroke-width="1"/>
+            <text x="220" y="318" fill="#fca5a5" font-size="10.5" font-weight="bold" text-anchor="middle">🚨 MALLA DE EMERGENCIA SOS • MAPAX GPS</text>
+          </svg>
+        </div>
+      </div>
     </div>
   </section>
 
@@ -758,7 +1181,7 @@
             <thead>
               <tr>
                 <th>Capacidad</th>
-                <th class="col-chax">CHAX 2.0</th>
+                <th class="col-chax">CHAX</th>
                 <th>WhatsApp</th>
                 <th>Telegram</th>
                 <th>Signal</th>

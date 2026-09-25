@@ -162,18 +162,32 @@ header {
 }
 
 .brand-icon-box {
-  width: 40px;
-  height: 40px;
-  border-radius: 10px;
+  width: 52px;
+  height: 52px;
+  background: #000000;
+  border-radius: 14px;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 0 16px var(--volt-green-glow);
+  box-shadow: 0 4px 22px rgba(0, 0, 0, 0.95), 0 0 20px rgba(0, 245, 155, 0.3);
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  flex-shrink: 0;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+}
+
+.brand-wrap:hover .brand-icon-box {
+  transform: scale(1.05);
+  box-shadow: 0 6px 26px rgba(0, 0, 0, 1), 0 0 28px rgba(0, 245, 155, 0.5);
+  border-color: var(--volt-green);
 }
 
 .brand-icon-box img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 .brand-tag {
@@ -1191,36 +1205,37 @@ footer {
    BENTO GRID DE FUNCIONALIDADES & SUPERPODERES
    ========================================================================== */
 .bento-section {
-  padding: 80px 0;
+  padding: 110px 0;
   position: relative;
 }
 
 .bento-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 24px;
-  margin-top: 48px;
+  gap: 32px;
+  margin-top: 56px;
 }
 
 .bento-card {
   background: var(--bg-card);
   border: 1px solid var(--border-light);
   border-radius: var(--radius-xl);
-  padding: 36px 32px;
+  padding: 42px 36px;
+  min-height: 310px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   box-shadow: var(--shadow-card);
   backdrop-filter: blur(16px);
-  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
   position: relative;
   overflow: hidden;
 }
 
 .bento-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(0, 245, 155, 0.35);
-  box-shadow: 0 20px 50px -10px rgba(0, 245, 155, 0.15);
+  transform: translateY(-6px);
+  border-color: rgba(0, 245, 155, 0.4);
+  box-shadow: 0 24px 60px -10px rgba(0, 245, 155, 0.18);
 }
 
 .bento-card.span-2 {
@@ -1383,10 +1398,137 @@ footer {
   gap: 8px;
 }
 
+.scenario-meta-tag.emergency {
+  background: rgba(239, 68, 68, 0.18);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.35);
+}
+
+/* ==========================================================================
+   DIAGRAMAS Y DIAPOSITIVAS INTERACTIVAS: PROPAGACIÓN DE PAQUETES
+   ========================================================================== */
+.diagram-section {
+  padding: 90px 0;
+  position: relative;
+}
+
+.diagram-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+}
+
+.diagram-tab-btn {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-muted);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-pill);
+  padding: 12px 24px;
+  font-size: 0.95rem;
+  font-weight: 750;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s ease;
+}
+
+.diagram-tab-btn:hover {
+  color: #fff;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.diagram-tab-btn.active {
+  background: var(--volt-green-dim);
+  color: var(--volt-green);
+  border-color: var(--volt-green);
+  box-shadow: 0 0 16px var(--volt-green-glow);
+}
+
+.diagram-card {
+  background: radial-gradient(circle at top, rgba(16, 25, 42, 0.9) 0%, rgba(8, 12, 20, 0.98) 100%);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-xl);
+  padding: 44px;
+  box-shadow: var(--shadow-card);
+  position: relative;
+  overflow: hidden;
+  display: none;
+}
+
+.diagram-card.active {
+  display: block;
+  animation: fadeInDiagram 0.4s ease forwards;
+}
+
+@keyframes fadeInDiagram {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.diagram-body {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 40px;
+  align-items: center;
+}
+
+.diagram-stepper {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.stepper-step {
+  background: rgba(255, 255, 255, 0.03);
+  border-left: 3px solid rgba(255, 255, 255, 0.15);
+  padding: 14px 18px;
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  transition: all 0.25s ease;
+}
+
+.stepper-step.active {
+  border-left-color: var(--volt-green);
+  background: rgba(0, 245, 155, 0.08);
+}
+
+.stepper-step h5 {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.stepper-step p {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.diagram-svg-wrap {
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid var(--border-light);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  min-height: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 /* ==========================================================================
    RESPONSIVE DESIGN (MOBILE & TABLET)
    ========================================================================== */
 @media (max-width: 900px) {
+  .diagram-body {
+    grid-template-columns: 1fr;
+  }
   .bento-grid {
     grid-template-columns: 1fr;
   }

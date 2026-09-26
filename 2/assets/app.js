@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initDeviceTabs();
   initPttPlayer();
   initDiagramSlideshow();
+  initAppleStagesSubnav();
 });
 
 /* ==========================================================================
@@ -774,5 +775,39 @@ function initDiagramSlideshow() {
       }
     });
   }
+}
+
+/* ==========================================================================
+   6. SUBNAVEGACIÓN INTERACTIVA APPLE STAGES (SCROLL SPY)
+   ========================================================================== */
+function initAppleStagesSubnav() {
+  const links = document.querySelectorAll(".apple-subnav-item");
+  const sections = document.querySelectorAll(".apple-fullscreen-section");
+  if (!links.length || !sections.length) return;
+
+  function onScroll() {
+    let currentId = "";
+    const scrollPos = window.scrollY + 220;
+
+    sections.forEach(sec => {
+      const top = sec.offsetTop;
+      const height = sec.offsetHeight;
+      if (scrollPos >= top && scrollPos < top + height) {
+        currentId = sec.id;
+      }
+    });
+
+    if (currentId) {
+      links.forEach(l => {
+        l.classList.remove("active");
+        if (l.getAttribute("href") === `#${currentId}`) {
+          l.classList.add("active");
+        }
+      });
+    }
+  }
+
+  window.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
 }
 

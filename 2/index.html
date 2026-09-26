@@ -104,166 +104,536 @@
     </div>
   </section>
 
+  <!-- Anchor para navegación a superpoderes -->
+  <div id="superpoderes"></div>
+
   <!-- ==========================================================================
-       BENTO GRID: SUPERPODERES Y FUNCIONALIDADES COMPLETAS
+       SUBNAVEGACIÓN FLOTANTE ESTILO APPLE ("QUE BAJES Y SEA LA QUE SIGUE")
        ========================================================================== -->
-  <section class="bento-section" id="superpoderes">
-    <div class="container">
-      <div class="section-head">
-        <span class="section-badge">La Suite Más Completa</span>
-        <h2 class="section-title">Funciones que transforman tu manera de comunicarte</h2>
-        <p class="section-subtitle">
-          Mucho más que un simple chat de texto. Chax integra tecnología de navegación, audio militar y criptografía soberana en una interfaz simple y elegante.
+  <div class="apple-subnav-sticky">
+    <nav class="apple-subnav-bar">
+      <a href="#feature-mapax" class="apple-subnav-item active">🗺️ Mapax Satelital</a>
+      <a href="#feature-ptt" class="apple-subnav-item">🎙️ Walkie-Talkie PTT</a>
+      <a href="#feature-vision" class="apple-subnav-item">✨ Vision ML Stickers</a>
+      <a href="#feature-soberania" class="apple-subnav-item">🔐 Enclave Seguro</a>
+      <a href="#feature-grupos" class="apple-subnav-item">👥 Grupos & Mac</a>
+      <a href="#feature-enrutamiento" class="apple-subnav-item">⚡ Modo Mesh</a>
+    </nav>
+  </div>
+
+  <!-- ==========================================================================
+       STAGE 1: MAPAX SATELITAL, ESTELAS Y PROPAGACIÓN MESH
+       ========================================================================== -->
+  <section class="apple-fullscreen-section" id="feature-mapax">
+    <div class="apple-stage-container">
+      <div class="apple-stage-head">
+        <div class="apple-badge green">🗺️ EXCLUSIVO CHAX • CARTOGRAFÍA SATELITAL SOBERANA</div>
+        <h2 class="apple-stage-title">
+          Satélite en alta definición.<br>
+          <span class="highlight-green">Estelas históricas vivas.</span> Y mapas compartidos por radio.
+        </h2>
+        <p class="apple-stage-desc">
+          Visualiza mapas satelitales y de relieve descargados en tu chip sin consumir megas celulares. Incluye <strong>estelas de movimiento con decaimiento temporal</strong> (de 1h a infinito), <strong>poda inteligente de memoria LRU</strong> (<em>"Borrando partes del mapa poco usadas"</em>) para que nunca se interrumpa una descarga, y <strong>propagación de teselas de teléfono a teléfono</strong> por la malla Bluetooth Mesh.
         </p>
+        <div class="apple-pills-row">
+          <span class="apple-pill-item">🛰️ 0 KB de Datos Celulares</span>
+          <span class="apple-pill-item">🧭 Radar Mesh: Rumbo y Distancia Directa</span>
+          <span class="apple-pill-item">⏳ Estelas con Retención Configurable (1h - ∞)</span>
+          <span class="apple-pill-item">🧹 Auto-Poda LRU Continua</span>
+          <span class="apple-pill-item">📡 Propagación P2P de Teselas Satelitales</span>
+        </div>
       </div>
 
-      <div class="bento-grid">
-        <!-- CARD 1: MAPAX SATELITAL, ESTELAS Y PROPAGACIÓN MESH (SPAN 2 COLUMNAS) -->
-        <div class="bento-card span-2 highlight-green">
-          <div>
-            <span class="bento-icon-badge green">🗺️ EXCLUSIVO CHAX • CARTOGRAFÍA TÁCTICA OFFLINE</span>
-            <h3 class="bento-title">Mapax: Satélite Offline, Estelas Activas y Propagación Mesh</h3>
-            <p class="bento-desc">
-              Visualiza mapas satelitales y de relieve en alta definición almacenados en tu dispositivo. Incluye <strong>estelas de movimiento histórico</strong> con leyenda de colores y retención configurable (desde 1 hora hasta infinito). Con su <strong>gestión inteligente LRU</strong>, la app nunca deja de descargar mapas al llegar al tope de memoria: poda de forma transparente las zonas menos usadas (<em>"Borrando partes del mapa poco usadas"</em>). Además, <strong>los mapas se comparten de teléfono a teléfono</strong> por la malla Bluetooth sin gastar datos celulares.
-            </p>
+      <!-- Ventana Majestuosa Mapax -->
+      <div class="apple-showcase-window">
+        <div class="apple-window-header">
+          <div class="apple-window-dots">
+            <div class="apple-window-dot red"></div>
+            <div class="apple-window-dot yellow"></div>
+            <div class="apple-window-dot green"></div>
+          </div>
+          <div class="apple-window-title">Mapax v2.77 • HUD Táctico Satelital • Enjambre BLE Activo</div>
+          <div class="apple-window-tag">GPS + BLE OFFLINE</div>
+        </div>
+
+        <div class="mapax-cockpit-grid">
+          <!-- Radar Visual Satelital Grande con Barrido e Historial -->
+          <div style="background: rgba(4, 10, 20, 0.7); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: var(--radius-lg); padding: 24px; position: relative; overflow: hidden; min-height: 380px; display: flex; align-items: center; justify-content: center;">
+            <svg viewBox="0 0 460 340" width="100%" height="100%">
+              <defs>
+                <radialGradient id="radarSweepMapax" cx="0%" cy="0%" r="100%">
+                  <stop offset="0%" stop-color="#00f59b" stop-opacity="0.45"/>
+                  <stop offset="100%" stop-color="#00f59b" stop-opacity="0"/>
+                </radialGradient>
+                <filter id="glowGreenMapax">
+                  <feGaussianBlur stdDeviation="3" result="blur" />
+                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
+              </defs>
+
+              <!-- Cuadrícula Topográfica de Fondo -->
+              <g stroke="rgba(56, 189, 248, 0.12)" stroke-width="1" stroke-dasharray="3 4">
+                <line x1="20" y1="85" x2="440" y2="85"/>
+                <line x1="20" y1="170" x2="440" y2="170"/>
+                <line x1="20" y1="255" x2="440" y2="255"/>
+                <line x1="110" y1="20" x2="110" y2="320"/>
+                <line x1="230" y1="20" x2="230" y2="320"/>
+                <line x1="350" y1="20" x2="350" y2="320"/>
+              </g>
+
+              <!-- Curvas de Nivel / Topografía de Montaña -->
+              <ellipse cx="230" cy="170" rx="190" ry="130" fill="none" stroke="rgba(0, 245, 155, 0.15)" stroke-width="1.2"/>
+              <ellipse cx="230" cy="170" rx="140" ry="95" fill="none" stroke="rgba(0, 245, 155, 0.2)" stroke-width="1.2"/>
+              <ellipse cx="230" cy="170" rx="85" ry="60" fill="none" stroke="rgba(0, 245, 155, 0.3)" stroke-width="1.2"/>
+
+              <!-- Anillos del Radar Mesh -->
+              <circle cx="230" cy="170" r="130" fill="rgba(6, 78, 59, 0.1)" stroke="#00f59b" stroke-width="1.2"/>
+              <circle cx="230" cy="170" r="85" fill="none" stroke="#00f59b" stroke-width="1" stroke-dasharray="4 4"/>
+              <circle cx="230" cy="170" r="40" fill="none" stroke="#00f59b" stroke-width="0.8"/>
+              <line x1="230" y1="40" x2="230" y2="300" stroke="#00f59b" stroke-width="0.8" opacity="0.3"/>
+              <line x1="100" y1="170" x2="360" y2="170" stroke="#00f59b" stroke-width="0.8" opacity="0.3"/>
+
+              <!-- Brazo Giratorio del Radar 360° -->
+              <g transform="translate(230, 170)">
+                <line x1="0" y1="0" x2="0" y2="-130" stroke="#00f59b" stroke-width="2" opacity="0.85">
+                  <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="4s" repeatCount="indefinite"/>
+                </line>
+                <polygon points="0,0 0,-130 90,-90" fill="url(#radarSweepMapax)">
+                  <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="4s" repeatCount="indefinite"/>
+                </polygon>
+              </g>
+
+              <!-- Estela Histórica Activa (Decaimiento de color por antigüedad) -->
+              <path d="M 80 260 Q 130 230 170 190 T 260 140 T 330 110" stroke="#00f59b" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="6 3" opacity="0.85"/>
+              <circle cx="80" cy="260" r="4.5" fill="#38bdf8" opacity="0.45"/>
+              <circle cx="170" cy="190" r="5" fill="#38bdf8" opacity="0.7"/>
+              <circle cx="260" cy="140" r="5.5" fill="#00f59b" opacity="0.85"/>
+              <circle cx="330" cy="110" r="7" fill="#00f59b" filter="url(#glowGreenMapax)"/>
+              
+              <text x="80" y="280" fill="#94a3b8" font-size="8" text-anchor="middle">Hace 4h</text>
+              <text x="170" y="210" fill="#94a3b8" font-size="8" text-anchor="middle">Hace 2h</text>
+              <text x="260" y="125" fill="#38bdf8" font-size="8.5" font-weight="bold" text-anchor="middle">Hace 45m</text>
+              <text x="330" y="95" fill="#00f59b" font-size="9" font-weight="900" text-anchor="middle">Javier (Ahora)</text>
+
+              <!-- Tu Posición Central -->
+              <circle cx="230" cy="170" r="7" fill="#38bdf8" stroke="#fff" stroke-width="2"/>
+              <circle cx="230" cy="170" r="18" fill="none" stroke="#38bdf8" stroke-width="1.5" class="pulse-signal-wave"/>
+              <text x="230" y="196" fill="#fff" font-size="9" font-weight="800" text-anchor="middle">Tú (iPhone 16 Pro)</text>
+            </svg>
           </div>
 
-          <div class="radar-mini-display">
-            <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
-              <div style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--volt-green); display: flex; align-items: center; justify-content: center; position: relative;">
-                <div style="width: 8px; height: 8px; background: var(--volt-green); border-radius: 50%;"></div>
-                <div style="position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 1px dashed rgba(0,245,155,0.4);" class="pulse-signal-wave"></div>
-              </div>
+          <!-- Panel de Telemetría Táctica Mapax -->
+          <div class="mapax-telemetry-panel">
+            <div class="mapax-metric-card">
               <div>
-                <div style="font-weight: 800; font-size: 1rem; color: #fff;">Radar Mesh & Estela Activa</div>
-                <div class="radar-target-stat" style="color: var(--volt-green);">Javier (Mac Studio) • 42m Rumbo 312° NO • Estela: 2.4 km</div>
+                <div class="mapax-metric-label">Contacto Detectado</div>
+                <div class="mapax-metric-val" style="color: var(--volt-green);">Javier (Mac Studio)</div>
               </div>
+              <span style="font-size: 1.2rem;">📡</span>
             </div>
-            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-              <span style="font-size: 0.78rem; background: rgba(0,245,155,0.12); color: var(--volt-green); padding: 4px 10px; border-radius: var(--radius-pill); border: 1px solid rgba(0,245,155,0.3);">Teselas P2P Compartidas</span>
-              <span style="font-size: 0.78rem; background: rgba(0,0,0,0.5); padding: 4px 10px; border-radius: var(--radius-pill); border: 1px solid var(--border-light);">Poda LRU Continua</span>
+
+            <div class="mapax-metric-card">
+              <div>
+                <div class="mapax-metric-label">Azimut y Distancia Directa</div>
+                <div class="mapax-metric-val">42 metros • Rumbo 312° NO</div>
+              </div>
+              <span style="font-size: 1.2rem;">🧭</span>
+            </div>
+
+            <div class="mapax-metric-card">
+              <div>
+                <div class="mapax-metric-label">Estela Histórica Activa</div>
+                <div class="mapax-metric-val" style="color: #38bdf8;">2.4 km recorridos • Retención 24h</div>
+              </div>
+              <span style="font-size: 1.2rem;">⏳</span>
+            </div>
+
+            <div class="mapax-metric-card">
+              <div>
+                <div class="mapax-metric-label">Propagación Mesh de Teselas</div>
+                <div class="mapax-metric-val" style="color: var(--volt-green);">142/142 Bloques Sincronizados</div>
+              </div>
+              <span style="font-size: 1.2rem;">🗺️</span>
+            </div>
+
+            <div class="mapax-metric-card" style="border-color: rgba(0, 245, 155, 0.3); background: rgba(0, 245, 155, 0.05);">
+              <div>
+                <div class="mapax-metric-label">Gestión de Memoria Continua</div>
+                <div class="mapax-metric-val" style="font-size: 0.95rem; color: #fff;">"Borrando partes del mapa poco usadas"</div>
+              </div>
+              <span style="font-size: 1.2rem;">🧹</span>
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
 
-        <!-- CARD 2: AUDIO PTT WALKIE-TALKIE CON HAPTIC & SPINNER -->
-        <div class="bento-card">
-          <div>
-            <span class="bento-icon-badge green">🎙️ AUDIO TÁCTICO EN 0.3s</span>
-            <h3 class="bento-title">Walkie-Talkie PTT con Respuesta Háptica</h3>
-            <p class="bento-desc">
-              Toca para hablar con confirmación háptica inmediata y micro-indicador de enlace en el chirp de radio. Audio militar ultra-comprimido por Bluetooth Mesh sin esperas en la nube.
-            </p>
+  <!-- ==========================================================================
+       STAGE 2: AUDIO PTT WALKIE-TALKIE CON HÁPTICA Y SPINNER
+       ========================================================================== -->
+  <section class="apple-fullscreen-section" id="feature-ptt">
+    <div class="apple-stage-container">
+      <div class="apple-stage-head">
+        <div class="apple-badge green">🎙️ AUDIO TÁCTICO EN 0.3s • RESPUESTA HÁPTICA</div>
+        <h2 class="apple-stage-title">
+          Pulsa. Siente el clic háptico.<br>
+          <span class="highlight-green">Habla al instante</span> sin esperas en la nube.
+        </h2>
+        <p class="apple-stage-desc">
+          El audio más veloz del mundo en una red soberana. Al tocar el botón PTT recibes <strong>confirmación háptica inmediata</strong> y un <strong>micro-spinner durante el chirp de radio</strong> de dos tonos (880 Hz y 1240 Hz). La voz viaja comprimida militarmente con el códec Opus vía Bluetooth Mesh sin tocar servidores.
+        </p>
+        <div class="apple-pills-row">
+          <span class="apple-pill-item">⚡ 0.3s de Latencia Total</span>
+          <span class="apple-pill-item">📳 Haptic Touch Táctil Inmediato</span>
+          <span class="apple-pill-item">📻 Doble Chirp de Enlace Militar (880 / 1240 Hz)</span>
+          <span class="apple-pill-item">🔒 Cifrado E2EE por Paquete</span>
+          <span class="apple-pill-item">🔋 Cero Consumo en Reposo</span>
+        </div>
+      </div>
+
+      <!-- Ventana Majestuosa PTT Cockpit -->
+      <div class="apple-showcase-window">
+        <div class="apple-window-header">
+          <div class="apple-window-dots">
+            <div class="apple-window-dot red"></div>
+            <div class="apple-window-dot yellow"></div>
+            <div class="apple-window-dot green"></div>
+          </div>
+          <div class="apple-window-title">Cockpit Táctico PTT • Canal de Audio P2P • Códec Opus BLE</div>
+          <div class="apple-window-tag">LATENCIA 0.3s</div>
+        </div>
+
+        <div class="ptt-cockpit-deck">
+          <!-- Espectro Visualizador de Ondas Sonoras -->
+          <div class="ptt-big-deck-bars">
+            <div class="audio-bar" style="height: 38px;"></div>
+            <div class="audio-bar" style="height: 60px;"></div>
+            <div class="audio-bar" style="height: 85px;"></div>
+            <div class="audio-bar" style="height: 44px;"></div>
+            <div class="audio-bar" style="height: 72px;"></div>
+            <div class="audio-bar" style="height: 95px;"></div>
+            <div class="audio-bar" style="height: 58px;"></div>
+            <div class="audio-bar" style="height: 82px;"></div>
+            <div class="audio-bar" style="height: 34px;"></div>
+            <div class="audio-bar" style="height: 66px;"></div>
+            <div class="audio-bar" style="height: 90px;"></div>
+            <div class="audio-bar" style="height: 48px;"></div>
           </div>
 
-          <div class="bento-ptt-player">
-            <button id="pttPlayBtn" class="ptt-play-btn" title="Probar audio táctico">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <!-- Reproductor Interactivo con Botón Háptico y Spinner -->
+          <div style="display: flex; align-items: center; gap: 20px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-pill); padding: 12px 28px;">
+            <button id="pttPlayBtn" class="ptt-play-btn" title="Probar audio táctico con chirp y háptica">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
                 <polygon points="5 3 19 12 5 21 5 3"/>
               </svg>
             </button>
-            <div class="audio-bars-wrap">
-              <div class="audio-bar"></div>
-              <div class="audio-bar"></div>
-              <div class="audio-bar"></div>
-              <div class="audio-bar"></div>
-              <div class="audio-bar"></div>
-              <div class="audio-bar"></div>
-              <div class="audio-bar"></div>
-              <div class="audio-bar"></div>
-              <div class="audio-bar"></div>
-              <div class="audio-bar"></div>
+            <div>
+              <div style="font-weight: 800; font-size: 1rem; color: #fff;">Toca para Probar Audio Táctico</div>
+              <div style="font-size: 0.8rem; color: var(--text-dim);">Chirp dual militar + vibración háptica</div>
             </div>
-            <span id="pttTimer" style="font-family: var(--font-mono); font-size: 0.85rem; color: var(--volt-green); font-weight: 700;">00:06</span>
+            <span id="pttTimer" style="font-family: var(--font-mono); font-size: 1.1rem; color: var(--volt-green); font-weight: 800; margin-left: 20px;">00:06</span>
+          </div>
+
+          <!-- Métricas de Audio -->
+          <div style="display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; font-size: 0.82rem; color: var(--text-dim); font-family: var(--font-mono);">
+            <span>📶 Ancho de Banda: 16 kbps Opus</span>
+            <span>•</span>
+            <span>🎚️ Nivel VU: -3.8 dB</span>
+            <span>•</span>
+            <span>🔒 Enclave Criptográfico: X25519 Activo</span>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
 
-        <!-- CARD 3: STICKERS SOBERANOS CON APPLE VISION ML -->
-        <div class="bento-card highlight-purple">
-          <div>
-            <span class="bento-icon-badge purple">✨ APPLE VISION ML LOCAL</span>
-            <h3 class="bento-title">Stickers con IA en el Dispositivo & GIF Dock</h3>
-            <p class="bento-desc">
-              Recorte instantáneo de sujetos con el Neural Engine de Apple al arrastrar cualquier foto. Crea stickers soberanos con fondo transparente que viajan por la malla Mesh sin tocar la nube.
-            </p>
+  <!-- ==========================================================================
+       STAGE 3: STICKERS SOBERANOS CON APPLE VISION ML
+       ========================================================================== -->
+  <section class="apple-fullscreen-section" id="feature-vision">
+    <div class="apple-stage-container">
+      <div class="apple-stage-head">
+        <div class="apple-badge purple">✨ APPLE NEURAL ENGINE • RECORTE IA EN EL CHIP</div>
+        <h2 class="apple-stage-title">
+          Recorte inteligente con IA local.<br>
+          <span class="highlight-purple">Stickers que vuelan</span> por la malla sin nube.
+        </h2>
+        <p class="apple-stage-desc">
+          Levanta el sujeto de cualquier fotografía con el framework Vision de Apple ejecutado directamente en tu procesador. Crea stickers transparentes soberanos que se transmiten de teléfono a teléfono vía Bluetooth Mesh sin enviar un solo pixel a servidores de terceros, complementado con un dock de GIFs sin rastreo.
+        </p>
+        <div class="apple-pills-row">
+          <span class="apple-pill-item">🧠 100% On-Device Neural Engine</span>
+          <span class="apple-pill-item">🛡️ Cero Almacenamiento en Nubes Públicas</span>
+          <span class="apple-pill-item">🎨 Fondo Alfa Transparente Automático</span>
+          <span class="apple-pill-item">📦 Transferencia P2P por la Malla</span>
+          <span class="apple-pill-item">🔍 Dock de GIFs sin Rastreo Comercial</span>
+        </div>
+      </div>
+
+      <!-- Ventana Majestuosa Vision ML -->
+      <div class="apple-showcase-window">
+        <div class="apple-window-header">
+          <div class="apple-window-dots">
+            <div class="apple-window-dot red"></div>
+            <div class="apple-window-dot yellow"></div>
+            <div class="apple-window-dot green"></div>
           </div>
-          <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px;">
-            <span style="background: rgba(139, 92, 246, 0.14); color: #c084fc; font-size: 0.78rem; font-weight: 700; padding: 4px 10px; border-radius: var(--radius-pill); border: 1px solid rgba(139, 92, 246, 0.3);">IA 100% On-Device</span>
-            <span style="background: rgba(255, 255, 255, 0.05); color: #cbd5e1; font-size: 0.78rem; font-weight: 700; padding: 4px 10px; border-radius: var(--radius-pill);">GIFs Sin Rastreo</span>
-          </div>
+          <div class="apple-window-title">Apple Vision.framework • CoreML Neural Engine • Extracción de Sujeto</div>
+          <div class="apple-window-tag" style="background: rgba(139, 92, 246, 0.15); color: #c084fc; border-color: rgba(139, 92, 246, 0.35);">48ms ON-DEVICE</div>
         </div>
 
-        <!-- CARD 4: IDENTIDAD SOBERANA -->
-        <div class="bento-card highlight-purple">
-          <div>
-            <span class="bento-icon-badge purple">🔐 SOBERANÍA TOTAL</span>
-            <h3 class="bento-title">Cero Teléfonos. Cero Cuentas. Cero Espionaje.</h3>
-            <p class="bento-desc">
-              Tu identidad se genera dentro del enclave seguro de tu propio chip (llaves X25519 y Ed25519). Nadie puede suspender tu cuenta, pedirte tu número ni espiar tus metadatos. Comparte tu contacto con un código QR universal.
-            </p>
+        <div class="vision-showcase-split">
+          <!-- Lado Izquierdo: Fotografía Original con Contorno Neón de IA -->
+          <div style="background: rgba(10, 15, 26, 0.7); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: var(--radius-lg); padding: 24px; text-align: center; position: relative;">
+            <div style="font-size: 0.85rem; font-weight: 800; color: #c084fc; margin-bottom: 14px;">1. Detección de Sujeto en Foto</div>
+            <div style="height: 200px; display: flex; align-items: center; justify-content: center; position: relative; background: radial-gradient(circle, rgba(139,92,246,0.12) 0%, transparent 70%); border-radius: 14px;">
+              <span style="font-size: 5rem; filter: drop-shadow(0 0 16px rgba(139,92,246,0.5));">🧗‍♂️</span>
+              <div style="position: absolute; border: 2px dashed #c084fc; border-radius: 50%; width: 140px; height: 140px; animation: spin 10s linear infinite;"></div>
+            </div>
+            <div style="margin-top: 14px; font-family: var(--font-mono); font-size: 0.8rem; color: #94a3b8;">Apple Neural Engine • VNGeneratePersonSegmentationRequest</div>
           </div>
-          <div style="font-size: 0.82rem; color: #cbd5e1; background: rgba(0,0,0,0.3); padding: 12px; border-radius: var(--radius-sm); border: 1px solid rgba(255,255,255,0.06); font-family: var(--font-mono);">
-            🔑 FP: A416...BDE5 • Cifrado Asimétrico E2EE
+
+          <!-- Lado Derecho: Sticker Soberano Transparente en el Chat Mesh -->
+          <div style="background: rgba(10, 15, 26, 0.7); border: 1px solid rgba(0, 245, 155, 0.3); border-radius: var(--radius-lg); padding: 24px; text-align: center; position: relative;">
+            <div style="font-size: 0.85rem; font-weight: 800; color: var(--volt-green); margin-bottom: 14px;">2. Sticker P2P Enviado por la Malla</div>
+            <div style="height: 200px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; background: rgba(0,0,0,0.4); border-radius: 14px;">
+              <div style="background: rgba(0, 245, 155, 0.12); border: 1px solid #00f59b; border-radius: 18px; padding: 12px 24px; display: inline-flex; align-items: center; gap: 12px;">
+                <span style="font-size: 3.5rem; filter: drop-shadow(0 0 12px rgba(0,245,155,0.6));">🧗‍♂️</span>
+                <div style="text-align: left;">
+                  <div style="font-weight: 850; font-size: 0.95rem; color: #fff;">Sticker Soberano</div>
+                  <div style="font-size: 0.78rem; color: var(--volt-green);">✓✓ BLE Mesh • Cero Nube</div>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top: 14px; font-family: var(--font-mono); font-size: 0.8rem; color: #00f59b;">Payload: 22 KB WebP Alfa • Entregado en 0.2s</div>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
 
-        <!-- CARD 5: GRUPOS DESCENTRALIZADOS, PRIVATE REPLY & MAC SHARE SHEET -->
-        <div class="bento-card">
-          <div>
-            <span class="bento-icon-badge blue">👥 GRUPOS SIN SERVIDOR CENTRAL</span>
-            <h3 class="bento-title">Salas Grupales, Respuestas Privadas y Mac Share</h3>
-            <p class="bento-desc">
-              Canales comunitarios con <strong>timestamp maestro del emisor</strong> para orden cronológico inmutable. Responde en privado a cualquier miembro de un grupo (<em>Private Reply</em>) y comparte enlaces o fotos desde el <strong>menú Compartir nativo de macOS</strong>.
-            </p>
+  <!-- ==========================================================================
+       STAGE 4: IDENTIDAD SOBERANA EN EL ENCLAVE SEGURO
+       ========================================================================== -->
+  <section class="apple-fullscreen-section" id="feature-soberania">
+    <div class="apple-stage-container">
+      <div class="apple-stage-head">
+        <div class="apple-badge purple">🔐 SECURE ENCLAVE • CRIPTOGRAFÍA DE HARDWARE</div>
+        <h2 class="apple-stage-title">
+          Cero números de teléfono.<br>
+          <span class="highlight-purple">Cero cuentas.</span> Cero puntos de control corporativo.
+        </h2>
+        <p class="apple-stage-desc">
+          Tu identidad no depende de un SMS, un servidor centralizado ni una operadora telefónica. Se genera dentro del enclave seguro de tu propio chip Apple mediante llaves criptográficas X25519 y Ed25519. Nadie puede bloquearte, espiar tus metadatos ni suspender tu cuenta.
+        </p>
+        <div class="apple-pills-row">
+          <span class="apple-pill-item">🔑 Llaves Criptográficas X25519 & Ed25519</span>
+          <span class="apple-pill-item">🚫 Cero Números Telefónicos Exigidos</span>
+          <span class="apple-pill-item">🛡️ Inmune a Intervención de SIM / Operadores</span>
+          <span class="apple-pill-item">📱 Enlace Universal chax:// y Código QR</span>
+          <span class="apple-pill-item">🔒 Metadatos 100% Protegidos</span>
+        </div>
+      </div>
+
+      <!-- Ventana Majestuosa Enclave Criptográfico -->
+      <div class="apple-showcase-window">
+        <div class="apple-window-header">
+          <div class="apple-window-dots">
+            <div class="apple-window-dot red"></div>
+            <div class="apple-window-dot yellow"></div>
+            <div class="apple-window-dot green"></div>
           </div>
-          <div style="display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap;">
-            <span style="background: rgba(56, 189, 248, 0.12); color: #38bdf8; font-size: 0.78rem; font-weight: 700; padding: 4px 10px; border-radius: var(--radius-pill);">Private Reply en Grupo</span>
-            <span style="background: rgba(0, 245, 155, 0.12); color: var(--volt-green); font-size: 0.78rem; font-weight: 700; padding: 4px 10px; border-radius: var(--radius-pill);">macOS Share Sheet</span>
-          </div>
+          <div class="apple-window-title">Apple Silicon Secure Enclave • Bóveda Criptográfica Soberana</div>
+          <div class="apple-window-tag" style="background: rgba(139, 92, 246, 0.15); color: #c084fc; border-color: rgba(139, 92, 246, 0.35);">HARDWARE-BACKED</div>
         </div>
 
-        <!-- CARD 6: FOTOS Y MULTIMEDIA CIFRADAS -->
-        <div class="bento-card">
-          <div>
-            <span class="bento-icon-badge orange">📸 MULTIMEDIA DIRECTA</span>
-            <h3 class="bento-title">Fotos en Alta Definición y Archivos P2P</h3>
-            <p class="bento-desc">
-              Envía fotografías sin compresión abusiva y archivos directamente a tus pares. Todo el tráfico se transporta en paquetes cifrados de extremo a extremo que ningún tercero puede interceptar.
-            </p>
+        <div class="vault-security-deck">
+          <div style="background: rgba(6, 10, 20, 0.7); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: var(--radius-lg); padding: 32px; display: flex; flex-direction: column; gap: 20px;">
+            <div style="display: flex; align-items: center; gap: 16px;">
+              <div style="width: 52px; height: 52px; border-radius: 14px; background: rgba(139, 92, 246, 0.15); border: 1px solid #8b5cf6; display: flex; align-items: center; justify-content: center; font-size: 1.6rem;">
+                🔐
+              </div>
+              <div>
+                <div style="font-weight: 850; font-size: 1.15rem; color: #fff;">Llaves Cifradas en Silicio</div>
+                <div style="font-size: 0.85rem; color: #c084fc;">Aislamiento total del sistema operativo</div>
+              </div>
+            </div>
+
+            <div style="background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: 16px; font-family: var(--font-mono); font-size: 0.82rem; color: #94a3b8; line-height: 1.6;">
+              <span style="color: #c084fc;">ID Soberano:</span> npub1chax79d4k2z9e8x...3m9q<br>
+              <span style="color: var(--volt-green);">Cifrado E2EE:</span> Curve25519 (X25519) + ChaCha20-Poly1305<br>
+              <span style="color: #38bdf8;">Firmas Digitales:</span> Ed25519 Hardware-Protected<br>
+              <span style="color: #f59e0b;">Estado de Cuenta:</span> Inmune a bloqueos y censura
+            </div>
           </div>
-          <div style="font-size: 0.85rem; color: #ffab91; font-weight: 700; display: flex; align-items: center; gap: 6px;">
-            <span>✓ Cero almacenamiento en nubes públicas</span>
+
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div class="mapax-metric-card">
+              <div>
+                <div class="mapax-metric-label">Identificador Telefónico</div>
+                <div class="mapax-metric-val" style="color: var(--volt-green);">0% Requerido</div>
+              </div>
+              <span>📵</span>
+            </div>
+            <div class="mapax-metric-card">
+              <div>
+                <div class="mapax-metric-label">Intermediarios Centrales</div>
+                <div class="mapax-metric-val" style="color: #38bdf8;">Ninguno (P2P Puro)</div>
+              </div>
+              <span>🚫</span>
+            </div>
+            <div class="mapax-metric-card">
+              <div>
+                <div class="mapax-metric-label">Emparejamiento Táctico</div>
+                <div class="mapax-metric-val" style="color: #c084fc;">QR Offline / Radar BLE</div>
+              </div>
+              <span>📲</span>
+            </div>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
 
-        <!-- CARD 7: ECOSISTEMA NATIVO APPLE -->
-        <div class="bento-card span-2" style="background: linear-gradient(135deg, rgba(15,23,42,0.85) 0%, rgba(8,12,20,0.95) 100%);">
-          <div>
-            <span class="bento-icon-badge green">💻 ECOSISTEMA COMPLETO</span>
-            <h3 class="bento-title">Experiencia 100% Nativa en iPhone, iPad y Mac</h3>
-            <p class="bento-desc">
-              Construido con tecnología Swift pura y SwiftUI para exprimir el rendimiento de tu procesador Apple Silicon, optimizar la batería al mínimo mediante Bluetooth Low Energy y ofrecer atajos de teclado y notificaciones en segundo plano.
-            </p>
+  <!-- ==========================================================================
+       STAGE 5: GRUPOS DESCENTRALIZADOS, PRIVATE REPLY & MAC SHARE SHEET
+       ========================================================================== -->
+  <section class="apple-fullscreen-section" id="feature-grupos">
+    <div class="apple-stage-container">
+      <div class="apple-stage-head">
+        <div class="apple-badge blue">👥 COMUNIDADES SIN SERVIDOR • macOS NATIVO</div>
+        <h2 class="apple-stage-title">
+          Canales grupales sin admin.<br>
+          <span class="highlight-blue">Respuestas privadas</span> y fluidez total en Mac.
+        </h2>
+        <p class="apple-stage-desc">
+          Crea salas grupales respaldadas por <strong>timestamps maestros inmutables</strong> que garantizan el orden cronológico estricto sin necesidad de un servidor central. Responde en privado a cualquier autor citando su mensaje con 1 toque (<em>Private Reply</em>) y comparte fotos o enlaces directamente desde el <strong>menú Compartir nativo de macOS</strong>.
+        </p>
+        <div class="apple-pills-row">
+          <span class="apple-pill-item">⏱️ Timestamp Maestro del Emisor</span>
+          <span class="apple-pill-item">💬 Private Reply Citado en Grupo</span>
+          <span class="apple-pill-item">💻 Menú Compartir Nativo en macOS</span>
+          <span class="apple-pill-item">📲 Sincronización Inmutable sin Servidor Central</span>
+        </div>
+      </div>
+
+      <!-- Ventana Majestuosa Grupos & Mac -->
+      <div class="apple-showcase-window">
+        <div class="apple-window-header">
+          <div class="apple-window-dots">
+            <div class="apple-window-dot red"></div>
+            <div class="apple-window-dot yellow"></div>
+            <div class="apple-window-dot green"></div>
           </div>
-          <div style="display: flex; gap: 16px; flex-wrap: wrap;">
-            <span style="color: var(--text-muted); font-size: 0.88rem;">📱 iOS 17+</span>
-            <span style="color: var(--text-muted); font-size: 0.88rem;">📲 iPadOS 17+</span>
-            <span style="color: var(--text-muted); font-size: 0.88rem;">💻 macOS Sonoma / Sequoia</span>
-          </div>
+          <div class="apple-window-title">Chax para macOS & iOS • Mensajería Grupal Autónoma • Share Extension</div>
+          <div class="apple-window-tag" style="background: rgba(56, 189, 248, 0.12); color: #38bdf8; border-color: rgba(56, 189, 248, 0.35);">macOS + iOS</div>
         </div>
 
-        <!-- CARD 8: EL SUPERPODER OFFLINE -->
-        <div class="bento-card highlight-green">
-          <div>
-            <span class="bento-icon-badge green">⚡ ENRUTAMIENTO INVISIBLE</span>
-            <h3 class="bento-title">Y cuando se va la red: Modo Mesh Automático</h3>
-            <p class="bento-desc">
-              No tienes que activar nada. En el milisegundo en que pierdes la conexión o tus contactos están cerca, Chax conmuta de manera invisible a Bluetooth Mesh multi-salto.
-            </p>
+        <div class="vision-showcase-split">
+          <!-- Mockup Chat Grupal con Private Reply -->
+          <div style="background: rgba(8, 14, 24, 0.7); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: var(--radius-lg); padding: 22px;">
+            <div style="font-size: 0.85rem; font-weight: 800; color: #38bdf8; margin-bottom: 14px;">Canal Mesh Vecinal (18 Nodos en Rango)</div>
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+              <div style="background: rgba(255, 255, 255, 0.05); padding: 10px 14px; border-radius: 12px; font-size: 0.85rem;">
+                <div style="color: #38bdf8; font-weight: 800; font-size: 0.75rem;">Carlos (Mac mini):</div>
+                ¿Quién tiene el generador de emergencia activo?
+              </div>
+              <!-- Private Reply Overlay -->
+              <div style="background: rgba(0, 245, 155, 0.12); border: 1px solid var(--volt-green); padding: 12px 14px; border-radius: 12px; font-size: 0.85rem;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                  <span style="color: var(--volt-green); font-weight: 850; font-size: 0.75rem;">🔒 Private Reply a Carlos:</span>
+                  <span style="font-size: 0.7rem; color: #94a3b8;">Túnel P2P Cifrado</span>
+                </div>
+                "Lo tengo yo en casa, ven por gasolina si hace falta."
+              </div>
+            </div>
           </div>
-          <a href="#diagramas" style="color: var(--volt-green); font-weight: 750; font-size: 0.9rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
-            Ver cómo viaja el mensaje →
-          </a>
+
+          <!-- Mockup macOS Share Sheet -->
+          <div style="background: rgba(8, 14, 24, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-lg); padding: 22px;">
+            <div style="font-size: 0.85rem; font-weight: 800; color: #fff; margin-bottom: 14px;">Integración de Sistema macOS Sonoma / Sequoia</div>
+            <div style="background: rgba(0, 0, 0, 0.4); border-radius: 12px; padding: 16px; display: flex; align-items: center; gap: 16px;">
+              <div style="font-size: 2.2rem;">📂</div>
+              <div>
+                <div style="font-weight: 800; font-size: 0.95rem; color: #fff;">Compartir desde Safari o Finder</div>
+                <div style="font-size: 0.8rem; color: var(--text-dim); margin-top: 2px;">Envía fotos, documentos y mapas a Chax con 1 clic sin abrir la app.</div>
+              </div>
+            </div>
+            <div style="margin-top: 14px; display: flex; gap: 8px;">
+              <span style="font-size: 0.75rem; background: rgba(56, 189, 248, 0.12); color: #38bdf8; padding: 4px 10px; border-radius: var(--radius-pill);">Share Extension Nativa</span>
+              <span style="font-size: 0.75rem; background: rgba(0, 245, 155, 0.12); color: var(--volt-green); padding: 4px 10px; border-radius: var(--radius-pill);">Universal Binary (Apple Silicon)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       STAGE 6: ENRUTAMIENTO HÍBRIDO 100% AUTOMÁTICO E INVISIBLE
+       ========================================================================== -->
+  <section class="apple-fullscreen-section" id="feature-enrutamiento">
+    <div class="apple-stage-container">
+      <div class="apple-stage-head">
+        <div class="apple-badge green">⚡ ENRUTAMIENTO INVISIBLE • 0% PREOCUPACIONES</div>
+        <h2 class="apple-stage-title">
+          Aquí no te preocupas por nada.<br>
+          <span class="highlight-green">Si hay red sale por Internet.</span> Si estás cerca, directo por P2P.
+        </h2>
+        <p class="apple-stage-desc">
+          Chax selecciona de forma totalmente automática el mejor canal físico de transporte en cada milisegundo: Internet veloz con relés descentralizados cuando hay señal, enlace directo por radio a corta distancia, y malla Bluetooth Mesh multi-salto cuando se cae la cobertura celular o colapsa la infraestructura eléctrica.
+        </p>
+        <div class="apple-pills-row">
+          <span class="apple-pill-item">🌐 Conmutación Híbrida Imperceptible</span>
+          <span class="apple-pill-item">📡 100m BLE Directo + Saltos Infinitos</span>
+          <span class="apple-pill-item">⚡ Respaldo Total ante Apagones</span>
+          <span class="apple-pill-item">🔋 Cero Desgaste Inútil de Batería</span>
+        </div>
+      </div>
+
+      <!-- Ventana Majestuosa Enrutamiento Cockpit -->
+      <div class="apple-showcase-window">
+        <div class="apple-window-header">
+          <div class="apple-window-dots">
+            <div class="apple-window-dot red"></div>
+            <div class="apple-window-dot yellow"></div>
+            <div class="apple-window-dot green"></div>
+          </div>
+          <div class="apple-window-title">Matriz de Enrutamiento Híbrido Automático • Selección Física Concurrente</div>
+          <div class="apple-window-tag">100% AUTOMÁTICO</div>
+        </div>
+
+        <div class="routing-channels-deck">
+          <!-- Canal 1: Internet Global -->
+          <div class="routing-channel-box" style="border-color: rgba(56, 189, 248, 0.3);">
+            <div class="routing-channel-icon">🌐</div>
+            <div class="routing-channel-title" style="color: #38bdf8;">1. Internet Global</div>
+            <div class="routing-channel-desc">
+              WebSockets concurrentes contra relés descentralizados Nostr. Velocidad instantánea en milisegundos cuando tienes WiFi o 5G sin tocar servidores corporativos cerrados.
+            </div>
+            <span style="font-size: 0.75rem; color: #38bdf8; font-family: var(--font-mono); margin-top: auto;">Latencia: 18ms</span>
+          </div>
+
+          <!-- Canal 2: Enlace Directo P2P -->
+          <div class="routing-channel-box" style="border-color: rgba(0, 245, 155, 0.4); background: rgba(0, 245, 155, 0.04);">
+            <div class="routing-channel-icon">📡</div>
+            <div class="routing-channel-title" style="color: var(--volt-green);">2. Enlace Directo P2P</div>
+            <div class="routing-channel-desc">
+              Si tus contactos están en el mismo espacio (0 a 100 metros), los paquetes saltan directo por radio Bluetooth Low Energy sin gastar datos ni dejar registros en ningún lado.
+            </div>
+            <span style="font-size: 0.75rem; color: var(--volt-green); font-family: var(--font-mono); margin-top: auto;">Rango: 0-100m • 0 KB Datos</span>
+          </div>
+
+          <!-- Canal 3: Malla Mesh Multi-Salto -->
+          <div class="routing-channel-box" style="border-color: rgba(139, 92, 246, 0.3);">
+            <div class="routing-channel-icon">⚡</div>
+            <div class="routing-channel-title" style="color: #c084fc;">3. Malla Multi-Salto</div>
+            <div class="routing-channel-desc">
+              Si no hay señal y el destinatario está lejos, el mensaje avanza de teléfono en teléfono con contador de saltos (TTL) cifrado hasta encontrar a tu amigo o un puente con red.
+            </div>
+            <span style="font-size: 0.75rem; color: #c084fc; font-family: var(--font-mono); margin-top: auto;">Inmune a Cortes Eléctricos</span>
+          </div>
         </div>
       </div>
     </div>

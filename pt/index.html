@@ -118,38 +118,41 @@
       </div>
 
       <div class="bento-grid">
-        <!-- CARD 1: MAPAX SATELITAL & RADAR (SPAN 2 COLUMNAS) -->
+        <!-- CARD 1: MAPAX SATELITAL, TRILHAS E PROPAGAÇÃO MESH (SPAN 2 COLUNAS) -->
         <div class="bento-card span-2 highlight-green">
           <div>
-            <span class="bento-icon-badge green">🗺️ EXCLUSIVO CHAX • OFFLINE</span>
-            <h3 class="bento-title">Mapax: Cartografia Satelital & Radar Mesh de Proximidade</h3>
+            <span class="bento-icon-badge green">🗺️ EXCLUSIVO CHAX • CARTOGRAFIA TÁTICA OFFLINE</span>
+            <h3 class="bento-title">Mapax: Satélite Offline, Trilhas Ativas e Propagação Mesh</h3>
             <p class="bento-desc">
-              Visualize mapas satelitais e de terreno em alta resolução salvos em cache local sem consumir nenhum dado móvel. O radar de proximidade calcula o rumo em tempo real e a distância exata em metros até seus contatos próximos. Marque pontos táticos de encontro, acampamento ou áreas de interesse para todo o seu grupo.
+              Visualize mapas satelitais e topográficos em alta definição salvos localmente. Inclui <strong>trilhas de movimento histórico</strong> com código de cores e retenção ajustável (de 1 hora a infinito). Com seu <strong>gerenciamento inteligente LRU</strong>, o app nunca para de baixar mapas ao atingir o limite de espaço: descarta de forma transparente as áreas menos visitadas (<em>"Limpando partes do mapa pouco usadas"</em>). Além disso, <strong>os mapas são compartilhados de telefone para telefone</strong> pela malha Bluetooth sem gastar dados.
             </p>
           </div>
 
           <div class="radar-mini-display">
-            <div style="display: flex; align-items: center; gap: 14px;">
+            <div style="display: flex; align-items: center; gap: 14px; flex-wrap: wrap;">
               <div style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--volt-green); display: flex; align-items: center; justify-content: center; position: relative;">
                 <div style="width: 8px; height: 8px; background: var(--volt-green); border-radius: 50%;"></div>
                 <div style="position: absolute; width: 100%; height: 100%; border-radius: 50%; border: 1px dashed rgba(0,245,155,0.4);" class="pulse-signal-wave"></div>
               </div>
               <div>
-                <div style="font-weight: 800; font-size: 1rem; color: #fff;">Radar Mesh Ativo</div>
-                <div class="radar-target-stat" style="color: var(--volt-green);">Nodo detectado: Javier (Mac Studio) • 42m Rumo 312° NO</div>
+                <div style="font-weight: 800; font-size: 1rem; color: #fff;">Radar Mesh & Trilha Ativa</div>
+                <div class="radar-target-stat" style="color: var(--volt-green);">Javier (Mac Studio) • 42m Rumo 312° NO • Trilha: 2.4 km</div>
               </div>
             </div>
-            <span style="font-size: 0.8rem; background: rgba(0,0,0,0.5); padding: 4px 10px; border-radius: var(--radius-pill); border: 1px solid var(--border-light);">GPS + BLE</span>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <span style="font-size: 0.78rem; background: rgba(0,245,155,0.12); color: var(--volt-green); padding: 4px 10px; border-radius: var(--radius-pill); border: 1px solid rgba(0,245,155,0.3);">Ladrilhos P2P Compartilhados</span>
+              <span style="font-size: 0.78rem; background: rgba(0,0,0,0.5); padding: 4px 10px; border-radius: var(--radius-pill); border: 1px solid var(--border-light);">Limpeza LRU Contínua</span>
+            </div>
           </div>
         </div>
 
-        <!-- CARD 2: AUDIO PTT WALKIE-TALKIE -->
+        <!-- CARD 2: AUDIO PTT WALKIE-TALKIE COM RESPOSTA HÁPTICA & SPINNER -->
         <div class="bento-card">
           <div>
-            <span class="bento-icon-badge green">🎙️ ÁUDIO INSTANTÂNEO</span>
-            <h3 class="bento-title">Walkie-Talkie Push-To-Talk (PTT)</h3>
+            <span class="bento-icon-badge green">🎙️ ÁUDIO TÁTICO EM 0.3s</span>
+            <h3 class="bento-title">Walkie-Talkie PTT com Resposta Háptica</h3>
             <p class="bento-desc">
-              Pressione para falar e solte para enviar notas de voz instantâneas, sem esperas nem envios para a nuvem. Transcrição inteligente direto no dispositivo.
+              Toque para falar com confirmação tátil imediata e micro-indicador de conexão durante o chirp do rádio. Áudio militar comprimido via Bluetooth Mesh sem servidores.
             </p>
           </div>
 
@@ -175,7 +178,22 @@
           </div>
         </div>
 
-        <!-- CARD 3: IDENTIDAD SOBERANA -->
+        <!-- CARD 3: STICKERS COM APPLE VISION ML -->
+        <div class="bento-card highlight-purple">
+          <div>
+            <span class="bento-icon-badge purple">✨ APPLE VISION ML LOCAL</span>
+            <h3 class="bento-title">Stickers com IA no Aparelho & Dock GIF</h3>
+            <p class="bento-desc">
+              Recorte instantâneo de pessoas e objetos com o Neural Engine da Apple ao arrastar qualquer foto. Crie stickers soberanos transparentes que viajam pela malha Bluetooth Mesh.
+            </p>
+          </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px;">
+            <span style="background: rgba(139, 92, 246, 0.14); color: #c084fc; font-size: 0.78rem; font-weight: 700; padding: 4px 10px; border-radius: var(--radius-pill); border: 1px solid rgba(139, 92, 246, 0.3);">IA 100% On-Device</span>
+            <span style="background: rgba(255, 255, 255, 0.05); color: #cbd5e1; font-size: 0.78rem; font-weight: 700; padding: 4px 10px; border-radius: var(--radius-pill);">GIFs Sem Rastreamento</span>
+          </div>
+        </div>
+
+        <!-- CARD 4: IDENTIDADE SOBERANA -->
         <div class="bento-card highlight-purple">
           <div>
             <span class="bento-icon-badge purple">🔐 SOBERANIA TOTAL</span>
@@ -189,22 +207,22 @@
           </div>
         </div>
 
-        <!-- CARD 4: GRUPOS DESCENTRALIZADOS -->
+        <!-- CARD 5: GRUPOS DESCENTRALIZADOS, PRIVATE REPLY & MAC SHARE SHEET -->
         <div class="bento-card">
           <div>
-            <span class="bento-icon-badge blue">👥 SEM ADMINISTRADOR CENTRAL</span>
-            <h3 class="bento-title">Grupos Descentralizados & Canais Comunitários</h3>
+            <span class="bento-icon-badge blue">👥 GRUPOS SEM SERVIDOR CENTRAL</span>
+            <h3 class="bento-title">Salas de Grupo, Respostas Privadas e Mac Share</h3>
             <p class="bento-desc">
-              Crie salas de grupo e canais comunitários que não podem ser censurados nem monitorados por nenhuma corporação. Ideais para vizinhanças, expedições e círculos de confiança.
+              Canais comunitários com <strong>timestamp mestre do emissor</strong> para ordem cronológica imutável. Responda em privado a qualquer participante de um grupo (<em>Private Reply</em>) e envie arquivos direto pelo <strong>menu Compartilhar do macOS</strong>.
             </p>
           </div>
-          <div style="display: flex; gap: 8px; margin-top: 16px;">
-            <span style="background: rgba(56, 189, 248, 0.12); color: #38bdf8; font-size: 0.8rem; font-weight: 700; padding: 4px 10px; border-radius: var(--radius-pill);">Canal Mesh Comunitário</span>
-            <span style="background: rgba(0, 245, 155, 0.12); color: var(--volt-green); font-size: 0.8rem; font-weight: 700; padding: 4px 10px; border-radius: var(--radius-pill);">Alertas SOS</span>
+          <div style="display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap;">
+            <span style="background: rgba(56, 189, 248, 0.12); color: #38bdf8; font-size: 0.78rem; font-weight: 700; padding: 4px 10px; border-radius: var(--radius-pill);">Private Reply no Grupo</span>
+            <span style="background: rgba(0, 245, 155, 0.12); color: var(--volt-green); font-size: 0.78rem; font-weight: 700; padding: 4px 10px; border-radius: var(--radius-pill);">macOS Share Sheet</span>
           </div>
         </div>
 
-        <!-- CARD 5: FOTOS Y MULTIMEDIA CIFRADAS -->
+        <!-- CARD 6: FOTOS Y MULTIMEDIA CIFRADAS -->
         <div class="bento-card">
           <div>
             <span class="bento-icon-badge orange">📸 MULTIMÍDIA DIRETA</span>
@@ -218,7 +236,7 @@
           </div>
         </div>
 
-        <!-- CARD 6: ECOSISTEMA NATIVO APPLE -->
+        <!-- CARD 7: ECOSISTEMA NATIVO APPLE -->
         <div class="bento-card span-2" style="background: linear-gradient(135deg, rgba(15,23,42,0.85) 0%, rgba(8,12,20,0.95) 100%);">
           <div>
             <span class="bento-icon-badge green">💻 ECOSSISTEMA COMPLETO</span>
@@ -234,13 +252,13 @@
           </div>
         </div>
 
-        <!-- CARD 7: EL SUPERPODER OFFLINE -->
+        <!-- CARD 8: EL SUPERPODER OFFLINE -->
         <div class="bento-card highlight-green">
           <div>
-            <span class="bento-icon-badge green">⚡ A CARTA NA MANGA</span>
+            <span class="bento-icon-badge green">⚡ ROTEAMENTO INVISÍVEL</span>
             <h3 class="bento-title">E quando cai o sinal: Modo Mesh Automático</h3>
             <p class="bento-desc">
-              Você não precisa ativar nada. No milissegundo em que a conexão cai, o Chax alterna de forma invisível para o Bluetooth Mesh multi-salto.
+              Você não precisa ativar nada. No milissegundo em que a conexão cai ou seus contatos estão próximos, o Chax alterna de forma invisível para o Bluetooth Mesh multi-salto.
             </p>
           </div>
           <a href="#diagramas" style="color: var(--volt-green); font-weight: 750; font-size: 0.9rem; text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
@@ -274,6 +292,9 @@
         </button>
         <button class="diagram-tab-btn" data-diagram="diagramCard3">
           <span>🚨 3. Enxame SOS em Catástrofes</span>
+        </button>
+        <button class="diagram-tab-btn" data-diagram="diagramCard4">
+          <span>🗺️ 4. Mapax P2P (Mapas Satelitais & Trilhas)</span>
         </button>
       </div>
 
@@ -586,6 +607,109 @@
 
               <rect x="140" y="335" width="240" height="26" rx="13" fill="rgba(0,0,0,0.8)" stroke="#00f59b" stroke-width="1"/>
               <text x="260" y="352" fill="#00f59b" font-size="10" font-weight="bold" text-anchor="middle">⚡ Rede Comunitária Ativa • 0% Dependência Elétrica</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- DIAPOSITIVA 4: MAPAX CARTOGRAFÍA SATELITAL & ESTELAS HISTÓRICAS P2P -->
+      <div class="diagram-card" id="diagramCard4">
+        <div class="diagram-body">
+          <div>
+            <span class="bento-icon-badge green">CARTOGRAFIA SATELITAL SOBERANA</span>
+            <h3 class="bento-title" style="margin-top: 8px;">Propagação Mesh de Mapas & Trilhas Ativas</h3>
+            <p class="bento-desc">
+              Se você baixou previamente o mapa satelital da região antes de sair em expedição, seu iPhone transmite automaticamente os blocos cartográficos (ladrilhos) via Bluetooth para seus companheiros sem sinal. Além disso, o Mapax desenha <strong>trilhas de movimento histórico</strong> com código de cores e tempo de retenção configurável.
+            </p>
+
+            <div class="diagram-stepper">
+              <div class="stepper-step active" data-step="1">
+                <h5>1. Cache Local & Gerenciamento LRU Inteligente</h5>
+                <p>O Mapax armazena as camadas satelitais no seu chip. Ao atingir o limite de espaço, descarta automaticamente as áreas antigas sem travar sua navegação (<em>"Limpando partes do mapa pouco usadas"</em>).</p>
+              </div>
+              <div class="stepper-step" data-step="2">
+                <h5>2. Sincronização P2P de Telefone para Telefone</h5>
+                <p>Ao encontrar outro dispositivo na trilha, o Chax identifica blocos ausentes e os transmite via BLE em segundo plano.</p>
+              </div>
+              <div class="stepper-step" data-step="3">
+                <h5>3. Trilhas Ativas de Amigos com Decaimento</h5>
+                <p>Visualize o rastro histórico deixado por seus amigos nas últimas horas para reencontro rápido sem gastar internet.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="diagram-svg-wrap">
+            <svg viewBox="0 0 520 380" width="100%" height="100%">
+              <defs>
+                <linearGradient id="mapTileGradPt" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#0284c7" stop-opacity="0.3"/>
+                  <stop offset="100%" stop-color="#064e3b" stop-opacity="0.5"/>
+                </linearGradient>
+                <filter id="glowGreenS5Pt" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur stdDeviation="3.5" result="blur" />
+                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                </filter>
+              </defs>
+
+              <!-- Fondo Cuadrícula Cartográfica Satelital -->
+              <rect x="30" y="30" width="460" height="290" rx="16" fill="rgba(8, 14, 26, 0.85)" stroke="rgba(56, 189, 248, 0.2)" stroke-width="1.2"/>
+              
+              <!-- Cuadrícula de Teselas (Tiles) -->
+              <g stroke="rgba(56, 189, 248, 0.15)" stroke-width="1" stroke-dasharray="2 4">
+                <line x1="30" y1="90" x2="490" y2="90"/>
+                <line x1="30" y1="150" x2="490" y2="150"/>
+                <line x1="30" y1="210" x2="490" y2="210"/>
+                <line x1="30" y1="270" x2="490" y2="270"/>
+                <line x1="145" y1="30" x2="145" y2="320"/>
+                <line x1="260" y1="30" x2="260" y2="320"/>
+                <line x1="375" y1="30" x2="375" y2="320"/>
+              </g>
+
+              <!-- Teselas Cartográficas Descargadas -->
+              <rect x="35" y="95" width="105" height="50" rx="6" fill="url(#mapTileGradPt)" stroke="#38bdf8" stroke-width="1" opacity="0.7"/>
+              <rect x="35" y="155" width="105" height="50" rx="6" fill="url(#mapTileGradPt)" stroke="#38bdf8" stroke-width="1" opacity="0.7"/>
+              <rect x="150" y="95" width="105" height="50" rx="6" fill="url(#mapTileGradPt)" stroke="#00f59b" stroke-width="1" opacity="0.6"/>
+
+              <!-- Estela Histórica Activa de Amigo (Trail) -->
+              <path d="M 90 240 Q 150 200 200 170 T 310 130 T 410 160" stroke="#00f59b" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="6 3" opacity="0.85"/>
+              <circle cx="90" cy="240" r="4" fill="#38bdf8" opacity="0.5"/>
+              <circle cx="200" cy="170" r="4.5" fill="#38bdf8" opacity="0.7"/>
+              <circle cx="310" cy="130" r="5" fill="#00f59b" opacity="0.9"/>
+              <text x="90" y="260" fill="#94a3b8" font-size="8" text-anchor="middle">Há 3h</text>
+              <text x="200" y="195" fill="#94a3b8" font-size="8" text-anchor="middle">Há 1h</text>
+              <text x="310" y="118" fill="#00f59b" font-size="8.5" font-weight="bold" text-anchor="middle">Há 15m</text>
+
+              <!-- Dispositivo Emisor A (Tiene teselas satelitales) -->
+              <g transform="translate(90, 120)">
+                <circle cx="0" cy="0" r="26" fill="rgba(2, 132, 199, 0.2)" stroke="#38bdf8" stroke-width="2" class="pulse-signal-wave"/>
+                <circle cx="0" cy="0" r="18" fill="#0c4a6e" stroke="#38bdf8" stroke-width="2"/>
+                <text x="0" y="5" fill="#fff" font-size="12" text-anchor="middle">📱</text>
+                <text x="0" y="32" fill="#38bdf8" font-size="9.5" font-weight="bold" text-anchor="middle">Nodo A (Com Mapa)</text>
+                <text x="0" y="44" fill="#94a3b8" font-size="7.5" text-anchor="middle">Cache Satelital 100%</text>
+              </g>
+
+              <!-- Transferencia P2P BLE de Teselas Cartográficas -->
+              <path d="M 90 120 Q 250 80 410 160" stroke="#00f59b" stroke-width="2.5" fill="none" stroke-dasharray="6 4" class="mesh-link-dash"/>
+              
+              <!-- Paquete de Teselas en Tránsito con AnimateMotion -->
+              <g filter="url(#glowGreenS5Pt)">
+                <rect x="-6" y="-6" width="12" height="12" rx="3" fill="#00f59b">
+                  <animateMotion path="M 90 120 Q 250 80 410 160" dur="2.0s" repeatCount="indefinite"/>
+                </rect>
+              </g>
+
+              <!-- Dispositivo Receptor B (Recibe teselas y ve la estela) -->
+              <g transform="translate(410, 160)">
+                <circle cx="0" cy="0" r="28" fill="rgba(0, 245, 155, 0.2)" stroke="#00f59b" stroke-width="2" class="pulse-signal-wave"/>
+                <circle cx="0" cy="0" r="20" fill="#064e3b" stroke="#00f59b" stroke-width="2.5"/>
+                <text x="0" y="5" fill="#fff" font-size="13" text-anchor="middle">🧭</text>
+                <text x="0" y="34" fill="#00f59b" font-size="9.5" font-weight="bold" text-anchor="middle">Nodo B (Sem Rede)</text>
+                <text x="0" y="46" fill="#38bdf8" font-size="8" font-weight="bold" text-anchor="middle">✓ Ladrilhos P2P OK</text>
+              </g>
+
+              <!-- Badge Inferior -->
+              <rect x="70" y="335" width="380" height="28" rx="14" fill="rgba(0,245,155,0.15)" stroke="#00f59b" stroke-width="1"/>
+              <text x="260" y="353" fill="#00f59b" font-size="9" font-weight="bold" text-anchor="middle">🗺️ MAPAX OFFLINE • PROPAGAÇÃO MESH DE MAPAS & TRILHAS</text>
             </svg>
           </div>
         </div>

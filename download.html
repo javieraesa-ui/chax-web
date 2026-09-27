@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Descargar Chax Oficial — Android APK, iOS y Escritorio</title>
+  <meta name="description" content="Descarga oficial de Chax para Android (APK Universal v0.5.2), iPhone y iPad (Apple TestFlight) y computadoras. Mensajería libre que funciona con o sin internet.">
+  <meta property="og:title" content="Descargar Chax Oficial — Android APK, iOS y Escritorio">
+  <meta property="og:description" content="Descarga directa del APK de Android, beta de iOS en TestFlight e instaladores de escritorio. Mensajería soberana y sin señal.">
+  <meta property="og:image" content="assets/logo.png">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/png" href="assets/app-icon.png">
+
+  <!-- Hojas de Estilo Base de Chax -->
+  <link rel="stylesheet" href="assets/style.css">
+
+  <!-- Privacy-friendly Web Analytics (GoatCounter) -->
+  <script data-goatcounter="https://chax.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+
+  <style>
+    /* Estilos Premium para la Página de Descargas */
+    .download-page {
+      padding-top: 100px;
+      padding-bottom: 80px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .dl-hero {
+      text-align: center;
+      max-width: 780px;
+      margin: 0 auto 50px;
+    }
+
+    .dl-hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 980px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      background: rgba(0, 245, 155, 0.12);
+      color: var(--volt-green);
+      border: 1px solid rgba(0, 245, 155, 0.3);
+      margin-bottom: 20px;
+    }
+
+    .dl-hero-title {
+      font-size: 2.8rem;
+      font-weight: 850;
+      color: #fff;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+    }
+
+    .dl-hero-sub {
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Grilla de Plataformas */
+    .dl-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 28px;
+      margin-bottom: 40px;
+    }
+
+    @media (max-width: 860px) {
+      .dl-grid {
+        grid-template-columns: 1fr;
+      }
+      .dl-hero-title {
+        font-size: 2.1rem;
+      }
+    }
+
+    .dl-card {
+      background: rgba(14, 20, 32, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      padding: 36px 32px;
+      display: flex;
+      flex-direction: column;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+
+    .dl-card:hover {
+      transform: translateY(-4px);
+    }
+
+    .dl-card.featured-android {
+      border-color: rgba(0, 245, 155, 0.4);
+      background: linear-gradient(180deg, rgba(0, 245, 155, 0.08) 0%, rgba(14, 20, 32, 0.92) 100%);
+      box-shadow: 0 20px 50px rgba(0, 245, 155, 0.12);
+    }
+
+    .dl-card.featured-ios {
+      border-color: rgba(56, 189, 248, 0.4);
+      background: linear-gradient(180deg, rgba(56, 189, 248, 0.08) 0%, rgba(14, 20, 32, 0.92) 100%);
+      box-shadow: 0 20px 50px rgba(56, 189, 248, 0.1);
+    }
+
+    .dl-platform-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      align-self: flex-start;
+      padding: 4px 12px;
+      border-radius: 980px;
+      font-size: 0.75rem;
+      font-weight: 750;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 20px;
+    }
+
+    .pill-android {
+      background: rgba(0, 245, 155, 0.2);
+      color: var(--volt-green);
+      border: 1px solid rgba(0, 245, 155, 0.4);
+    }
+
+    .pill-ios {
+      background: rgba(56, 189, 248, 0.2);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+    }
+
+    .dl-platform-title {
+      font-size: 1.75rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 10px;
+      letter-spacing: -0.02em;
+    }
+
+    .dl-platform-desc {
+      color: var(--text-muted);
+      font-size: 0.98rem;
+      line-height: 1.6;
+      margin-bottom: 24px;
+      flex-grow: 1;
+    }
+
+    .dl-action-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      padding: 16px 24px;
+      border-radius: 980px;
+      font-size: 1.05rem;
+      font-weight: 800;
+      text-decoration: none;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+
+    .dl-btn-green {
+      background: var(--volt-green);
+      color: #070a0f;
+      box-shadow: 0 8px 24px rgba(0, 245, 155, 0.35);
+    }
+
+    .dl-btn-green:hover {
+      box-shadow: 0 12px 36px rgba(0, 245, 155, 0.55);
+      transform: translateY(-2px);
+    }
+
+    .dl-btn-blue {
+      background: #1e293b;
+      color: #fff;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .dl-btn-blue:hover {
+      background: #334155;
+      border-color: #38bdf8;
+      transform: translateY(-2px);
+    }
+
+    .dl-btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      margin-top: 12px;
+      padding: 12px 20px;
+      border-radius: 980px;
+      font-size: 0.9rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .dl-btn-secondary:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.2);
+    }
+
+    /* Contenedor de Código QR */
+    .dl-qr-box {
+      margin-top: 26px;
+      padding-top: 24px;
+      border-top: 1px dashed rgba(255, 255, 255, 0.12);
+      text-align: center;
+    }
+
+    .dl-qr-label {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      margin-bottom: 12px;
+      font-weight: 600;
+    }
+
+    .dl-qr-wrapper {
+      display: inline-block;
+      background: #ffffff;
+      padding: 12px;
+      border-radius: 18px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      transition: transform 0.2s ease;
+    }
+
+    .dl-qr-wrapper:hover {
+      transform: scale(1.03);
+    }
+
+    .dl-qr-img {
+      display: block;
+      width: 160px;
+      height: 160px;
+      border-radius: 8px;
+    }
+
+    .dl-qr-hint {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      margin-top: 10px;
+    }
+
+    /* Guía de Instalación en Pasos */
+    .dl-steps-card {
+      background: rgba(14, 20, 32, 0.75);
+      border: 1px solid rgba(0, 245, 155, 0.25);
+      border-radius: 24px;
+      padding: 36px 32px;
+      margin-bottom: 40px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+    }
+
+    .dl-steps-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .dl-steps-header h3 {
+      font-size: 1.35rem;
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .dl-steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    @media (max-width: 768px) {
+      .dl-steps-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .dl-step-item {
+      background: rgba(7, 10, 15, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      border-radius: 16px;
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .dl-step-number {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--volt-green);
+      color: #070a0f;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 850;
+      font-size: 0.95rem;
+      margin-bottom: 14px;
+    }
+
+    .dl-step-item h4 {
+      color: #fff;
+      font-size: 1.05rem;
+      font-weight: 750;
+      margin-bottom: 8px;
+    }
+
+    .dl-step-item p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    /* Sección de Escritorio */
+    .dl-desktop-card {
+      background: rgba(14, 20, 32, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      padding: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-bottom: 40px;
+    }
+
+    .dl-desktop-info h4 {
+      font-size: 1.25rem;
+      color: #fff;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .dl-desktop-info p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      max-width: 520px;
+    }
+
+    .dl-desktop-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Fondo Interactivo de Malla en Canvas -->
+  <canvas id="meshBackground"></canvas>
+
+  <!-- NAVEGACIÓN SUPERIOR OFICIAL -->
+  <header>
+    <div class="container">
+      <div class="nav-bar">
+        <a href="index.html" class="brand-wrap">
+          <div class="brand-icon-box">
+            <img src="assets/app-icon.png" alt="Chax Logo" />
+          </div>
+          <span>Chax</span>
+        </a>
+
+        <ul class="nav-links">
+          <li><a href="index.html">Inicio</a></li>
+          <li><a href="index.html#superpoderes">Superpoderes</a></li>
+          <li><a href="index.html#diagramas">¿Cómo Funciona?</a></li>
+          <li><a href="index.html#problemas">Escenarios</a></li>
+          <li><a href="index.html#capturas">Dispositivos</a></li>
+          <li><a href="index.html#faq">Preguntas</a></li>
+          <!-- Selector de Idiomas -->
+          <li style="display: flex; gap: 6px; font-size: 0.82rem; margin-left: 8px;">
+            <a href="index.html" style="color: var(--volt-green); font-weight: 800;">ES</a>
+            <span style="color: var(--text-dim);">|</span>
+            <a href="en/index.html">EN</a>
+            <span style="color: var(--text-dim);">|</span>
+            <a href="pt/index.html">PT</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <!-- CONTENIDO PRINCIPAL -->
+  <main class="download-page">
+    <div class="container">
+
+      <!-- Hero de Descargas -->
+      <div class="dl-hero">
+        <div class="dl-hero-badge">
+          <span>📦</span>
+          <span>Centro Oficial de Descargas Chax</span>
+        </div>
+        <h1 class="dl-hero-title">
+          Instala Chax en tu dispositivo.
+        </h1>
+        <p class="dl-hero-sub">
+          Mensajería soberana y privada que vuela a toda velocidad por Internet y sigue comunicándote de teléfono a teléfono por Bluetooth cuando se corta la señal celular.
+        </p>
+      </div>
+
+      <!-- Grilla de Plataformas Móviles -->
+      <div class="dl-grid">
+
+        <!-- TARJETA ANDROID: APK UNIVERSAL -->
+        <div class="dl-card featured-android">
+          <span class="dl-platform-pill pill-android">🤖 Android • APK Directo</span>
+          <h2 class="dl-platform-title">Android (APK Universal)</h2>
+          <p class="dl-platform-desc">
+            Instalación directa sin intermediarios. Compatible con Android 7.0 o superior. Incluye núcleo nativo ultrarrápido en Rust, cifrado militar de extremo a extremo y soporte completo para Malla Bluetooth sin conexión a internet.
+          </p>
+
+          <!-- Botón de Descarga Directa -->
+          <a href="https://github.com/javieraesa-ui/chax/releases/latest/download/chax-android-universal.apk" class="dl-action-btn dl-btn-green" download="chax-android-universal.apk">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M17.523 15.3414c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.551 0 .9993.4482.9993.9993.0001.5511-.4483.9997-.9993.9997m-11.046 0c-.5511 0-.9993-.4486-.9993-.9997s.4482-.9993.9993-.9993c.5511 0 .9993.4482.9993.9993 0 .5511-.4482.9997-.9993.9997m11.4045-6.02l1.9973-3.4592a.416.416 0 00-.1521-.5676.416.416 0 00-.5676.1521l-2.0223 3.503C15.5802 8.411 13.844 8.127 12 8.127c-1.844 0-3.5802.284-5.1368.8227L4.8409 5.4467a.4161.4161 0 00-.5677-.1521.4157.4157 0 00-.1521.5676l1.9973 3.4592C2.6889 11.1867.3432 14.6589 0 18.761h24c-.3432-4.1021-2.6889-7.5743-6.1185-9.4396"/>
+            </svg>
+            <span>Descargar APK Universal (v0.5.2)</span>
+          </a>
+
+          <!-- Enlace Alternativo a GitHub Releases -->
+          <a href="https://github.com/javieraesa-ui/chax/releases/tag/v0.5.2" target="_blank" rel="noopener" class="dl-btn-secondary">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+            </svg>
+            <span>Ver Release v0.5.2 y Sumas SHA-256 en GitHub</span>
+          </a>
+
+          <!-- Código QR Android -->
+          <div class="dl-qr-box">
+            <div class="dl-qr-label">O escanea con la cámara de tu Android:</div>
+            <div class="dl-qr-wrapper">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=https://github.com/javieraesa-ui/chax/releases/latest/download/chax-android-universal.apk" alt="QR Descarga APK Android" class="dl-qr-img">
+            </div>
+            <div class="dl-qr-hint">Descarga directa al teléfono sin abrir tiendas de apps</div>
+          </div>
+        </div>
+
+        <!-- TARJETA APPLE: IOS TESTFLIGHT -->
+        <div class="dl-card featured-ios">
+          <span class="dl-platform-pill pill-ios">🍎 Apple TestFlight Beta</span>
+          <h2 class="dl-platform-title">iPhone & iPad</h2>
+          <p class="dl-platform-desc">
+            Desarrollo nativo en Swift para iOS 16+. Con Walkie-Talkie en vivo, Mapax con cartografía satelital offline, stickers automáticos con un toque y soporte multi-salto con Bluetooth Multipeer.
+          </p>
+
+          <!-- Botón de Descarga TestFlight -->
+          <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" rel="noopener" class="dl-action-btn dl-btn-blue">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 3.5c.61-.75 1.04-1.8 1.01-2.85-.92.04-2.03.62-2.67 1.37-.58.67-1.08 1.74-1.01 2.78.98.08 2.06-.55 2.67-1.3z"/>
+            </svg>
+            <span>Unirse a la Beta en TestFlight (v2.90)</span>
+          </a>
+
+          <div style="height: 48px;"></div>
+
+          <!-- Código QR iOS -->
+          <div class="dl-qr-box">
+            <div class="dl-qr-label">Escanea con la cámara de tu iPhone o iPad:</div>
+            <div class="dl-qr-wrapper">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=https://testflight.apple.com/join/hmfhvFdf" alt="QR Descarga TestFlight iOS" class="dl-qr-img">
+            </div>
+            <div class="dl-qr-hint">Instalación segura gestionada directamente por Apple</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- GUÍA RÁPIDA: INSTALACIÓN EN 2 PASOS EN ANDROID -->
+      <div class="dl-steps-card">
+        <div class="dl-steps-header">
+          <span style="font-size: 1.6rem;">📲</span>
+          <h3>Instalación rápida en Android en 2 sencillos pasos</h3>
+        </div>
+
+        <div class="dl-steps-grid">
+          <div class="dl-step-item">
+            <div class="dl-step-number">1</div>
+            <h4>Descarga el APK</h4>
+            <p>Pulsa el botón verde o escanea el código QR desde tu teléfono. Tu navegador te preguntará si deseas conservar el archivo: pulsa <em>«Descargar de todos modos»</em>.</p>
+          </div>
+
+          <div class="dl-step-item">
+            <div class="dl-step-number">2</div>
+            <h4>Autoriza e Instala</h4>
+            <p>Toca la notificación de descarga o abre el archivo en tu carpeta Descargas. Si tu teléfono muestra un aviso de seguridad, pulsa <em>«Ajustes»</em> y activa <em>«Permitir desde esta fuente»</em>.</p>
+          </div>
+
+          <div class="dl-step-item">
+            <div class="dl-step-number">✓</div>
+            <h4>¡Listo para Chatear!</h4>
+            <p>Abre Chax. Tu identidad soberana se crea en tu propio teléfono en un segundo, sin pedirte número de teléfono, correo ni contraseñas. ¡Comunícate libremente!</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECCIÓN COMPUTADORAS (MAC, WINDOWS, LINUX) -->
+      <div class="dl-desktop-card">
+        <div class="dl-desktop-info">
+          <h4>💻 Chax para Computadoras de Escritorio</h4>
+          <p>
+            Chatea con comodidad usando teclado físico. Disponible para <strong>Mac</strong> (Apple Silicon e Intel vía TestFlight), y compilaciones para <strong>Windows</strong> (.msi / .exe) y <strong>Linux</strong> (.deb / .AppImage).
+          </p>
+        </div>
+        <div class="dl-desktop-actions">
+          <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" rel="noopener" class="btn-secondary" style="font-size: 0.88rem; padding: 10px 18px;">
+            🍏 Mac (TestFlight)
+          </a>
+          <a href="https://github.com/javieraesa-ui/chax/releases/tag/v0.5.2" target="_blank" rel="noopener" class="btn-secondary" style="font-size: 0.88rem; padding: 10px 18px;">
+            🪟 Windows (.msi/.exe)
+          </a>
+          <a href="https://github.com/javieraesa-ui/chax/releases/tag/v0.5.2" target="_blank" rel="noopener" class="btn-secondary" style="font-size: 0.88rem; padding: 10px 18px;">
+            🐧 Linux (.deb/.AppImage)
+          </a>
+        </div>
+      </div>
+
+      <!-- Aviso Importante de Pre-instalación -->
+      <div class="corporate-callout" style="margin-bottom: 20px;">
+        <div class="corporate-callout-icon">💡</div>
+        <div class="corporate-callout-content">
+          <strong>Recomendación importante:</strong> Instala Chax antes de salir de viaje, acampar o entrar a conciertos multitudinarios. Una vez que te quedes sin cobertura celular, no podrás acceder a internet para descargar la aplicación.
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- PIE DE PÁGINA OFICIAL -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="brand-wrap">
+            <div class="brand-icon-box">
+              <img src="assets/app-icon.png" alt="Chax Logo" />
+            </div>
+            <span>Chax</span>
+          </div>
+          <p class="footer-desc">
+            Mensajería para tu día a día: habla en directo, comparte mapas sin señal y comunícate con amigos incluso si se corta internet.
+          </p>
+          <div class="footer-status-pill">
+            <span class="status-indicator"></span>
+            <span>Red Activa y Autónoma</span>
+          </div>
+        </div>
+
+        <div class="footer-col">
+          <div class="footer-col-title">Funciones</div>
+          <ul class="footer-links">
+            <li><a href="index.html#feature-mapax">Mapas sin Señal</a></li>
+            <li><a href="index.html#feature-ptt">Walkie-Talkie en Vivo</a></li>
+            <li><a href="index.html#feature-vision">Stickers Fáciles</a></li>
+            <li><a href="index.html#feature-soberania">Privacidad Total</a></li>
+            <li><a href="index.html#feature-grupos">Grupos y Mac</a></li>
+            <li><a href="index.html#feature-enrutamiento">Envío Automático</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <div class="footer-col-title">Legal & Soporte</div>
+          <ul class="footer-links">
+            <li><a href="privacy.html">Privacidad</a></li>
+            <li><a href="terms.html">Términos</a></li>
+            <li><a href="support.html">Soporte</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <div class="footer-col-title">Idiomas</div>
+          <ul class="footer-links">
+            <li><a href="index.html" style="color: var(--volt-green); font-weight: 750;">Español</a></li>
+            <li><a href="en/index.html">English</a></li>
+            <li><a href="pt/index.html">Português</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>© 2026 Chax Messenger. Rápido online, imparable mesh. Red de comunicaciones libres y soberanas.</div>
+        <div style="font-size: 0.8rem; color: var(--text-dim);">Hecho para conectar personas cuando todo lo demás falla.</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="assets/app.js"></script>
+</body>
+</html>

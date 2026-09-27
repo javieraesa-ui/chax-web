@@ -1561,10 +1561,143 @@ footer {
   border: 1px solid rgba(0, 245, 155, 0.25);
 }
 
+/* ==========================================================================
+   MARCOS DE DISPOSITIVOS Y SCREENSHOTS REALES ESTILO APPLE
+   ========================================================================== */
+.apple-device-mockup {
+  position: relative;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.iphone-mockup-frame {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  border-radius: 48px;
+  padding: 10px;
+  background: linear-gradient(145deg, #2d3748 0%, #0f172a 40%, #1e293b 100%);
+  box-shadow: 
+    0 25px 60px -15px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(255, 255, 255, 0.12),
+    0 0 35px rgba(0, 245, 155, 0.1);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+
+.iphone-mockup-frame:hover {
+  transform: translateY(-5px) scale(1.015);
+  box-shadow: 
+    0 35px 80px -15px rgba(0, 0, 0, 0.95),
+    0 0 0 1px rgba(0, 245, 155, 0.35),
+    0 0 50px rgba(0, 245, 155, 0.2);
+}
+
+.iphone-mockup-screen {
+  border-radius: 38px;
+  overflow: hidden;
+  background: #000;
+  position: relative;
+  border: 1px solid rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.6);
+  display: block;
+}
+
+.iphone-mockup-screen img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 37px;
+}
+
+.iphone-mockup-island {
+  position: absolute;
+  top: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 88px;
+  height: 24px;
+  background: #000;
+  border-radius: 20px;
+  z-index: 10;
+  pointer-events: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.85);
+}
+
+/* Marco macOS Desktop */
+.mac-mockup-frame {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #0b1120;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow: 0 25px 65px -15px rgba(0, 0, 0, 0.9), 0 0 0 1px rgba(56, 189, 248, 0.2);
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.mac-mockup-frame:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 35px 85px -15px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(56, 189, 248, 0.4);
+}
+
+.mac-mockup-header {
+  height: 34px;
+  background: rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  padding: 0 14px;
+  gap: 8px;
+}
+
+.mac-mockup-dots {
+  display: flex;
+  gap: 7px;
+}
+.mac-mockup-dot {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+}
+.mac-mockup-dot.red { background: #ff5f56; }
+.mac-mockup-dot.yellow { background: #ffbd2e; }
+.mac-mockup-dot.green { background: #27c93f; }
+
+.mac-mockup-title {
+  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  color: var(--text-dim);
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.mac-mockup-screen {
+  overflow: hidden;
+  background: #000;
+}
+
+.mac-mockup-screen img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.ptt-stage-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 36px;
+  align-items: center;
+  width: 100%;
+}
+
 /* Contenido Específico de Cada Escenario */
 .mapax-cockpit-grid {
   display: grid;
-  grid-template-columns: 1.3fr 1fr;
+  grid-template-columns: 1.1fr 1fr;
   gap: 32px;
   align-items: center;
 }
@@ -1639,9 +1772,25 @@ footer {
 
 .vault-security-deck {
   display: grid;
-  grid-template-columns: 1.2fr 1fr;
-  gap: 32px;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 36px;
   align-items: center;
+}
+
+.mac-stage-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: 36px;
+  align-items: center;
+  width: 100%;
+}
+
+.routing-stage-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 36px;
+  align-items: center;
+  width: 100%;
 }
 
 .routing-channels-deck {
@@ -1651,14 +1800,21 @@ footer {
   margin-top: 10px;
 }
 
+.routing-stage-grid .routing-channels-deck {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 0;
+}
+
 .routing-channel-box {
   background: rgba(0, 0, 0, 0.4);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: var(--radius-lg);
-  padding: 28px 24px;
+  padding: 24px 22px;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 10px;
   transition: all 0.3s ease;
 }
 
@@ -1668,20 +1824,20 @@ footer {
 }
 
 .routing-channel-icon {
-  font-size: 2rem;
-  margin-bottom: 6px;
+  font-size: 1.8rem;
+  margin-bottom: 2px;
 }
 
 .routing-channel-title {
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   font-weight: 850;
   color: #fff;
 }
 
 .routing-channel-desc {
-  font-size: 0.88rem;
+  font-size: 0.86rem;
   color: var(--text-muted);
-  line-height: 1.55;
+  line-height: 1.5;
 }
 
 /* ==========================================================================
@@ -2017,11 +2173,23 @@ footer {
     grid-template-columns: 1fr;
     gap: 24px;
   }
+  .ptt-stage-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
   .vision-showcase-split {
     grid-template-columns: 1fr;
     gap: 24px;
   }
+  .mac-stage-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
   .vault-security-deck {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+  .routing-stage-grid {
     grid-template-columns: 1fr;
     gap: 24px;
   }

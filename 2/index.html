@@ -154,74 +154,19 @@
             <div class="apple-window-dot yellow"></div>
             <div class="apple-window-dot green"></div>
           </div>
-          <div class="apple-window-title">Mapax • HUD Táctico Offline & Satélite • Enjambre BLE Activo</div>
-          <div class="apple-window-tag">OSM + SATÉLITE + BLE MESH</div>
+          <div class="apple-window-title">Mapax • Interfaz Real de Cartografía • Enjambre BLE Activo</div>
+          <div class="apple-window-tag">INTERFAZ REAL iOS</div>
         </div>
 
         <div class="mapax-cockpit-grid">
-          <!-- Radar Visual Satelital Grande con Barrido e Historial -->
-          <div style="background: rgba(4, 10, 20, 0.7); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: var(--radius-lg); padding: 24px; position: relative; overflow: hidden; min-height: 380px; display: flex; align-items: center; justify-content: center;">
-            <svg viewBox="0 0 460 340" width="100%" height="100%">
-              <defs>
-                <radialGradient id="radarSweepMapax" cx="0%" cy="0%" r="100%">
-                  <stop offset="0%" stop-color="#00f59b" stop-opacity="0.45"/>
-                  <stop offset="100%" stop-color="#00f59b" stop-opacity="0"/>
-                </radialGradient>
-                <filter id="glowGreenMapax">
-                  <feGaussianBlur stdDeviation="3" result="blur" />
-                  <feComposite in="SourceGraphic" in2="blur" operator="over" />
-                </filter>
-              </defs>
-
-              <!-- Cuadrícula Topográfica de Fondo -->
-              <g stroke="rgba(56, 189, 248, 0.12)" stroke-width="1" stroke-dasharray="3 4">
-                <line x1="20" y1="85" x2="440" y2="85"/>
-                <line x1="20" y1="170" x2="440" y2="170"/>
-                <line x1="20" y1="255" x2="440" y2="255"/>
-                <line x1="110" y1="20" x2="110" y2="320"/>
-                <line x1="230" y1="20" x2="230" y2="320"/>
-                <line x1="350" y1="20" x2="350" y2="320"/>
-              </g>
-
-              <!-- Curvas de Nivel / Topografía de Montaña -->
-              <ellipse cx="230" cy="170" rx="190" ry="130" fill="none" stroke="rgba(0, 245, 155, 0.15)" stroke-width="1.2"/>
-              <ellipse cx="230" cy="170" rx="140" ry="95" fill="none" stroke="rgba(0, 245, 155, 0.2)" stroke-width="1.2"/>
-              <ellipse cx="230" cy="170" rx="85" ry="60" fill="none" stroke="rgba(0, 245, 155, 0.3)" stroke-width="1.2"/>
-
-              <!-- Anillos del Radar Mesh -->
-              <circle cx="230" cy="170" r="130" fill="rgba(6, 78, 59, 0.1)" stroke="#00f59b" stroke-width="1.2"/>
-              <circle cx="230" cy="170" r="85" fill="none" stroke="#00f59b" stroke-width="1" stroke-dasharray="4 4"/>
-              <circle cx="230" cy="170" r="40" fill="none" stroke="#00f59b" stroke-width="0.8"/>
-              <line x1="230" y1="40" x2="230" y2="300" stroke="#00f59b" stroke-width="0.8" opacity="0.3"/>
-              <line x1="100" y1="170" x2="360" y2="170" stroke="#00f59b" stroke-width="0.8" opacity="0.3"/>
-
-              <!-- Brazo Giratorio del Radar 360° -->
-              <g transform="translate(230, 170)">
-                <line x1="0" y1="0" x2="0" y2="-130" stroke="#00f59b" stroke-width="2" opacity="0.85">
-                  <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="4s" repeatCount="indefinite"/>
-                </line>
-                <polygon points="0,0 0,-130 90,-90" fill="url(#radarSweepMapax)">
-                  <animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="4s" repeatCount="indefinite"/>
-                </polygon>
-              </g>
-
-              <!-- Estela Histórica Activa (Decaimiento de color por antigüedad) -->
-              <path d="M 80 260 Q 130 230 170 190 T 260 140 T 330 110" stroke="#00f59b" stroke-width="3" fill="none" stroke-linecap="round" stroke-dasharray="6 3" opacity="0.85"/>
-              <circle cx="80" cy="260" r="4.5" fill="#38bdf8" opacity="0.45"/>
-              <circle cx="170" cy="190" r="5" fill="#38bdf8" opacity="0.7"/>
-              <circle cx="260" cy="140" r="5.5" fill="#00f59b" opacity="0.85"/>
-              <circle cx="330" cy="110" r="7" fill="#00f59b" filter="url(#glowGreenMapax)"/>
-              
-              <text x="80" y="280" fill="#94a3b8" font-size="8" text-anchor="middle">Hace 4h</text>
-              <text x="170" y="210" fill="#94a3b8" font-size="8" text-anchor="middle">Hace 2h</text>
-              <text x="260" y="125" fill="#38bdf8" font-size="8.5" font-weight="bold" text-anchor="middle">Hace 45m</text>
-              <text x="330" y="95" fill="#00f59b" font-size="9" font-weight="900" text-anchor="middle">Javier (Ahora)</text>
-
-              <!-- Tu Posición Central -->
-              <circle cx="230" cy="170" r="7" fill="#38bdf8" stroke="#fff" stroke-width="2"/>
-              <circle cx="230" cy="170" r="18" fill="none" stroke="#38bdf8" stroke-width="1.5" class="pulse-signal-wave"/>
-              <text x="230" y="196" fill="#fff" font-size="9" font-weight="800" text-anchor="middle">Tú (iPhone 16 Pro)</text>
-            </svg>
+          <!-- Captura Real de Software: Mapax Satelital en iPhone 16 Pro Frame -->
+          <div class="apple-device-mockup">
+            <div class="iphone-mockup-frame">
+              <div class="iphone-mockup-island"></div>
+              <div class="iphone-mockup-screen">
+                <img src="assets/screenshots/mapax_iphone.webp" alt="Mapax: Cartografía Táctica y Satélite en iPhone" loading="lazy" />
+              </div>
+            </div>
           </div>
 
           <!-- Panel de Telemetría Táctica Mapax -->
@@ -302,48 +247,79 @@
             <div class="apple-window-dot yellow"></div>
             <div class="apple-window-dot green"></div>
           </div>
-          <div class="apple-window-title">Cockpit Táctico PTT • Canal de Audio P2P • Códec Opus BLE</div>
-          <div class="apple-window-tag">LATENCIA 0.3s</div>
+          <div class="apple-window-title">Walkie-Talkie PTT • Interfaz Real de Chat y Transmisión Directa</div>
+          <div class="apple-window-tag">STREAMING EN DIRECTO</div>
         </div>
 
-        <div class="ptt-cockpit-deck">
-          <!-- Espectro Visualizador de Ondas Sonoras -->
-          <div class="ptt-big-deck-bars">
-            <div class="audio-bar" style="height: 38px;"></div>
-            <div class="audio-bar" style="height: 60px;"></div>
-            <div class="audio-bar" style="height: 85px;"></div>
-            <div class="audio-bar" style="height: 44px;"></div>
-            <div class="audio-bar" style="height: 72px;"></div>
-            <div class="audio-bar" style="height: 95px;"></div>
-            <div class="audio-bar" style="height: 58px;"></div>
-            <div class="audio-bar" style="height: 82px;"></div>
-            <div class="audio-bar" style="height: 34px;"></div>
-            <div class="audio-bar" style="height: 66px;"></div>
-            <div class="audio-bar" style="height: 90px;"></div>
-            <div class="audio-bar" style="height: 48px;"></div>
-          </div>
-
-          <!-- Reproductor Interactivo con Botón Háptico y Spinner -->
-          <div style="display: flex; align-items: center; gap: 20px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-pill); padding: 12px 28px;">
-            <button id="pttPlayBtn" class="ptt-play-btn" title="Probar audio táctico con chirp y háptica">
-              <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-                <polygon points="5 3 19 12 5 21 5 3"/>
-              </svg>
-            </button>
-            <div>
-              <div style="font-weight: 800; font-size: 1rem; color: #fff;">Toca para Probar Audio Táctico</div>
-              <div style="font-size: 0.8rem; color: var(--text-dim);">Chirp dual militar + vibración háptica</div>
+        <div class="ptt-stage-grid">
+          <!-- Captura Real de Software: Chat con Botón PTT en iPhone 16 Pro Frame -->
+          <div class="apple-device-mockup">
+            <div class="iphone-mockup-frame">
+              <div class="iphone-mockup-island"></div>
+              <div class="iphone-mockup-screen">
+                <img src="assets/screenshots/chat_ptt_iphone.webp" alt="Chat Cifrado con Botón PTT Walkie-Talkie en iPhone" loading="lazy" />
+              </div>
             </div>
-            <span id="pttTimer" style="font-family: var(--font-mono); font-size: 1.1rem; color: var(--volt-green); font-weight: 800; margin-left: 20px;">00:06</span>
           </div>
 
-          <!-- Métricas de Audio -->
-          <div style="display: flex; gap: 24px; flex-wrap: wrap; justify-content: center; font-size: 0.82rem; color: var(--text-dim); font-family: var(--font-mono);">
-            <span>📶 Ancho de Banda: 16 kbps Opus</span>
-            <span>•</span>
-            <span>🎚️ Nivel VU: -3.8 dB</span>
-            <span>•</span>
-            <span>🔒 Enclave Criptográfico: X25519 Activo</span>
+          <!-- Deck Interactivo de Audio PTT -->
+          <div style="display: flex; flex-direction: column; gap: 24px; align-items: center;">
+            <!-- Espectro Visualizador de Ondas Sonoras -->
+            <div class="ptt-big-deck-bars">
+              <div class="audio-bar" style="height: 38px;"></div>
+              <div class="audio-bar" style="height: 60px;"></div>
+              <div class="audio-bar" style="height: 85px;"></div>
+              <div class="audio-bar" style="height: 44px;"></div>
+              <div class="audio-bar" style="height: 72px;"></div>
+              <div class="audio-bar" style="height: 95px;"></div>
+              <div class="audio-bar" style="height: 58px;"></div>
+              <div class="audio-bar" style="height: 82px;"></div>
+              <div class="audio-bar" style="height: 34px;"></div>
+              <div class="audio-bar" style="height: 66px;"></div>
+              <div class="audio-bar" style="height: 90px;"></div>
+              <div class="audio-bar" style="height: 48px;"></div>
+            </div>
+
+            <!-- Reproductor Interactivo con Botón Háptico y Spinner -->
+            <div style="display: flex; align-items: center; gap: 18px; background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); border-radius: var(--radius-pill); padding: 12px 28px; width: 100%; max-width: 480px; justify-content: space-between;">
+              <div style="display: flex; align-items: center; gap: 14px;">
+                <button id="pttPlayBtn" class="ptt-play-btn" title="Probar audio táctico con chirp y háptica">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                    <polygon points="5 3 19 12 5 21 5 3"/>
+                  </svg>
+                </button>
+                <div>
+                  <div style="font-weight: 800; font-size: 0.95rem; color: #fff;">Toca para Probar Audio PTT</div>
+                  <div style="font-size: 0.78rem; color: var(--text-dim);">Chirp dual táctico + vibración háptica</div>
+                </div>
+              </div>
+              <span id="pttTimer" style="font-family: var(--font-mono); font-size: 1.1rem; color: var(--volt-green); font-weight: 800;">00:06</span>
+            </div>
+
+            <!-- Métricas de Audio y Transcripción -->
+            <div style="display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 480px;">
+              <div class="mapax-metric-card" style="padding: 12px 18px;">
+                <div>
+                  <div class="mapax-metric-label">Modo de Transmisión</div>
+                  <div class="mapax-metric-val" style="color: var(--volt-green); font-size: 0.95rem;">Streaming en Vivo (Voxer-style)</div>
+                </div>
+                <span>📻</span>
+              </div>
+              <div class="mapax-metric-card" style="padding: 12px 18px;">
+                <div>
+                  <div class="mapax-metric-label">Transcripción de Voz a Texto</div>
+                  <div class="mapax-metric-val" style="color: #38bdf8; font-size: 0.95rem;">100% On-Device (Cero Nube)</div>
+                </div>
+                <span>🗣️</span>
+              </div>
+              <div class="mapax-metric-card" style="padding: 12px 18px;">
+                <div>
+                  <div class="mapax-metric-label">Cifrado de Paquete de Audio</div>
+                  <div class="mapax-metric-val" style="color: #c084fc; font-size: 0.95rem;">ChaCha20-Poly1305 E2EE</div>
+                </div>
+                <span>🔒</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -451,46 +427,59 @@
         </div>
 
         <div class="vault-security-deck">
-          <div style="background: rgba(6, 10, 20, 0.7); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: var(--radius-lg); padding: 32px; display: flex; flex-direction: column; gap: 20px;">
-            <div style="display: flex; align-items: center; gap: 16px;">
-              <div style="width: 52px; height: 52px; border-radius: 14px; background: rgba(139, 92, 246, 0.15); border: 1px solid #8b5cf6; display: flex; align-items: center; justify-content: center; font-size: 1.6rem;">
-                🔐
+          <!-- Mockup iPhone Identidad Soberana -->
+          <div class="apple-device-mockup">
+            <div class="iphone-mockup-frame" style="max-width: 290px;">
+              <div class="iphone-mockup-island"></div>
+              <div class="iphone-mockup-screen">
+                <img src="assets/screenshots/identidad_iphone.webp" alt="Identidad Soberana Chax en Secure Enclave" loading="lazy">
               </div>
-              <div>
-                <div style="font-weight: 850; font-size: 1.15rem; color: #fff;">Llaves Cifradas en Silicio</div>
-                <div style="font-size: 0.85rem; color: #c084fc;">Aislamiento total del sistema operativo</div>
-              </div>
-            </div>
-
-            <div style="background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: 16px; font-family: var(--font-mono); font-size: 0.82rem; color: #94a3b8; line-height: 1.6;">
-              <span style="color: #c084fc;">ID Soberano:</span> npub1chax79d4k2z9e8x...3m9q<br>
-              <span style="color: var(--volt-green);">Cifrado E2EE:</span> Curve25519 (X25519) + ChaCha20-Poly1305<br>
-              <span style="color: #38bdf8;">Firmas Digitales:</span> Ed25519 Hardware-Protected<br>
-              <span style="color: #f59e0b;">Estado de Cuenta:</span> Inmune a bloqueos y censura
             </div>
           </div>
 
-          <div style="display: flex; flex-direction: column; gap: 14px;">
-            <div class="mapax-metric-card">
-              <div>
-                <div class="mapax-metric-label">Identificador Telefónico</div>
-                <div class="mapax-metric-val" style="color: var(--volt-green);">0% Requerido</div>
+          <!-- Lado Derecho: Telemetría Criptográfica & Hardware Enclave -->
+          <div style="display: flex; flex-direction: column; gap: 20px;">
+            <div style="background: rgba(6, 10, 20, 0.7); border: 1px solid rgba(139, 92, 246, 0.3); border-radius: var(--radius-lg); padding: 24px; display: flex; flex-direction: column; gap: 16px;">
+              <div style="display: flex; align-items: center; gap: 16px;">
+                <div style="width: 48px; height: 48px; border-radius: 14px; background: rgba(139, 92, 246, 0.15); border: 1px solid #8b5cf6; display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">
+                  🔐
+                </div>
+                <div>
+                  <div style="font-weight: 850; font-size: 1.1rem; color: #fff;">Llaves Cifradas en Silicio</div>
+                  <div style="font-size: 0.82rem; color: #c084fc;">Aislamiento total del sistema operativo</div>
+                </div>
               </div>
-              <span>📵</span>
+
+              <div style="background: rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-md); padding: 14px; font-family: var(--font-mono); font-size: 0.8rem; color: #94a3b8; line-height: 1.6;">
+                <span style="color: #c084fc;">ID Soberano:</span> npub1chax79d4k2z9e8x...3m9q<br>
+                <span style="color: var(--volt-green);">Cifrado E2EE:</span> Curve25519 (X25519) + ChaCha20-Poly1305<br>
+                <span style="color: #38bdf8;">Firmas Digitales:</span> Ed25519 Hardware-Protected<br>
+                <span style="color: #f59e0b;">Estado de Cuenta:</span> Inmune a bloqueos y censura
+              </div>
             </div>
-            <div class="mapax-metric-card">
-              <div>
-                <div class="mapax-metric-label">Intermediarios Centrales</div>
-                <div class="mapax-metric-val" style="color: #38bdf8;">Ninguno (P2P Puro)</div>
+
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <div class="mapax-metric-card" style="padding: 12px 18px;">
+                <div>
+                  <div class="mapax-metric-label">Identificador Telefónico</div>
+                  <div class="mapax-metric-val" style="color: var(--volt-green); font-size: 0.95rem;">0% Requerido</div>
+                </div>
+                <span>📵</span>
               </div>
-              <span>🚫</span>
-            </div>
-            <div class="mapax-metric-card">
-              <div>
-                <div class="mapax-metric-label">Emparejamiento Táctico</div>
-                <div class="mapax-metric-val" style="color: #c084fc;">QR Offline / Radar BLE</div>
+              <div class="mapax-metric-card" style="padding: 12px 18px;">
+                <div>
+                  <div class="mapax-metric-label">Intermediarios Centrales</div>
+                  <div class="mapax-metric-val" style="color: #38bdf8; font-size: 0.95rem;">Ninguno (P2P Puro)</div>
+                </div>
+                <span>🚫</span>
               </div>
-              <span>📲</span>
+              <div class="mapax-metric-card" style="padding: 12px 18px;">
+                <div>
+                  <div class="mapax-metric-label">Emparejamiento Táctico</div>
+                  <div class="mapax-metric-val" style="color: #c084fc; font-size: 0.95rem;">QR Offline / Radar BLE</div>
+                </div>
+                <span>📲</span>
+              </div>
             </div>
           </div>
         </div>
@@ -533,39 +522,60 @@
           <div class="apple-window-tag" style="background: rgba(56, 189, 248, 0.12); color: #38bdf8; border-color: rgba(56, 189, 248, 0.35);">macOS + iOS</div>
         </div>
 
-        <div class="vision-showcase-split">
-          <!-- Mockup Chat Grupal con Private Reply -->
-          <div style="background: rgba(8, 14, 24, 0.7); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: var(--radius-lg); padding: 22px;">
-            <div style="font-size: 0.85rem; font-weight: 800; color: #38bdf8; margin-bottom: 14px;">Canal Mesh Vecinal (18 Nodos en Rango)</div>
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-              <div style="background: rgba(255, 255, 255, 0.05); padding: 10px 14px; border-radius: 12px; font-size: 0.85rem;">
-                <div style="color: #38bdf8; font-weight: 800; font-size: 0.75rem;">Carlos (Mac mini):</div>
-                ¿Quién tiene el generador de emergencia activo?
-              </div>
-              <!-- Private Reply Overlay -->
-              <div style="background: rgba(0, 245, 155, 0.12); border: 1px solid var(--volt-green); padding: 12px 14px; border-radius: 12px; font-size: 0.85rem;">
-                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
-                  <span style="color: var(--volt-green); font-weight: 850; font-size: 0.75rem;">🔒 Private Reply a Carlos:</span>
-                  <span style="font-size: 0.7rem; color: #94a3b8;">Túnel P2P Cifrado</span>
+        <div class="mac-stage-grid">
+          <!-- Mockup macOS Chax Desktop -->
+          <div class="apple-device-mockup">
+            <div class="mac-mockup-frame">
+              <div class="mac-mockup-header">
+                <div class="mac-mockup-dots">
+                  <div class="mac-mockup-dot red"></div>
+                  <div class="mac-mockup-dot yellow"></div>
+                  <div class="mac-mockup-dot green"></div>
                 </div>
-                "Lo tengo yo en casa, ven por gasolina si hace falta."
+                <div class="mac-mockup-title">Chax Desktop • macOS Sonoma / Sequoia</div>
+              </div>
+              <div class="mac-mockup-screen">
+                <img src="assets/screenshots/chat_mac.webp" alt="Chax en macOS Desktop Relay y Canales" loading="lazy">
               </div>
             </div>
           </div>
 
-          <!-- Mockup macOS Share Sheet -->
-          <div style="background: rgba(8, 14, 24, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-lg); padding: 22px;">
-            <div style="font-size: 0.85rem; font-weight: 800; color: #fff; margin-bottom: 14px;">Integración de Sistema macOS Sonoma / Sequoia</div>
-            <div style="background: rgba(0, 0, 0, 0.4); border-radius: 12px; padding: 16px; display: flex; align-items: center; gap: 16px;">
-              <div style="font-size: 2.2rem;">📂</div>
-              <div>
-                <div style="font-weight: 800; font-size: 0.95rem; color: #fff;">Compartir desde Safari o Finder</div>
-                <div style="font-size: 0.8rem; color: var(--text-dim); margin-top: 2px;">Envía fotos, documentos y mapas a Chax con 1 clic sin abrir la app.</div>
+          <!-- Lado Derecho: Funcionalidades Grupales y macOS -->
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <div style="background: rgba(8, 14, 24, 0.7); border: 1px solid rgba(56, 189, 248, 0.25); border-radius: var(--radius-lg); padding: 18px 20px;">
+              <div style="font-size: 0.95rem; font-weight: 850; color: #38bdf8; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
+                <span>🛡️</span> 3 Modos de Control Grupal
+              </div>
+              <div style="font-size: 0.84rem; color: var(--text-dim); line-height: 1.5;">
+                Configura canales en modo <strong>Abierto</strong> (todos participan), <strong>Moderado</strong> (con control administrativo) o <strong>Canal de Anuncios</strong> con sello inmutable.
               </div>
             </div>
-            <div style="margin-top: 14px; display: flex; gap: 8px;">
-              <span style="font-size: 0.75rem; background: rgba(56, 189, 248, 0.12); color: #38bdf8; padding: 4px 10px; border-radius: var(--radius-pill);">Share Extension Nativa</span>
-              <span style="font-size: 0.75rem; background: rgba(0, 245, 155, 0.12); color: var(--volt-green); padding: 4px 10px; border-radius: var(--radius-pill);">Universal Binary (Apple Silicon)</span>
+
+            <div style="background: rgba(8, 14, 24, 0.7); border: 1px solid rgba(0, 245, 155, 0.25); border-radius: var(--radius-lg); padding: 18px 20px;">
+              <div style="font-size: 0.95rem; font-weight: 850; color: var(--volt-green); margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
+                <span>⏳</span> Historias Efímeras de 24 Horas
+              </div>
+              <div style="font-size: 0.84rem; color: var(--text-dim); line-height: 1.5;">
+                Actualizaciones temporales que caducan sin rastro tras 24h, con métricas locales de lectura (<em>"Visto por..."</em>) procesadas sin telemetría externa.
+              </div>
+            </div>
+
+            <div style="background: rgba(8, 14, 24, 0.7); border: 1px solid rgba(139, 92, 246, 0.25); border-radius: var(--radius-lg); padding: 18px 20px;">
+              <div style="font-size: 0.95rem; font-weight: 850; color: #c084fc; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
+                <span>🖥️</span> Mac como Relay 24/7 & Gateway
+              </div>
+              <div style="font-size: 0.84rem; color: var(--text-dim); line-height: 1.5;">
+                Tu Mac en casa opera como nodo de retransmisión permanente y pasarela comunitaria para enlazar la malla local con Internet.
+              </div>
+            </div>
+
+            <div style="background: rgba(8, 14, 24, 0.7); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: var(--radius-lg); padding: 18px 20px;">
+              <div style="font-size: 0.95rem; font-weight: 850; color: #fff; margin-bottom: 4px; display: flex; align-items: center; gap: 8px;">
+                <span>🔒</span> Private Reply & Share Extension
+              </div>
+              <div style="font-size: 0.84rem; color: var(--text-dim); line-height: 1.5;">
+                Responde en privado dentro de grupos abriendo un túnel P2P individual, y comparte fotos o mapas desde Safari o Finder con 1 clic sin abrir la app.
+              </div>
             </div>
           </div>
         </div>
@@ -607,35 +617,57 @@
           <div class="apple-window-tag">100% AUTOMÁTICO</div>
         </div>
 
-        <div class="routing-channels-deck">
-          <!-- Canal 1: Internet Global -->
-          <div class="routing-channel-box" style="border-color: rgba(56, 189, 248, 0.3);">
-            <div class="routing-channel-icon">🌐</div>
-            <div class="routing-channel-title" style="color: #38bdf8;">1. Internet Global</div>
-            <div class="routing-channel-desc">
-              WebSockets concurrentes contra relés descentralizados Nostr. Velocidad instantánea en milisegundos cuando tienes WiFi o 5G sin tocar servidores corporativos cerrados.
+        <div class="routing-stage-grid">
+          <!-- Mockup iPhone Radar Mesh en Acción -->
+          <div class="apple-device-mockup">
+            <div class="iphone-mockup-frame">
+              <div class="iphone-mockup-island"></div>
+              <div class="iphone-mockup-screen">
+                <img src="assets/screenshots/radar_mesh_iphone.webp" alt="Radar de Nodos Mesh y Rango BLE en iPhone" loading="lazy">
+              </div>
             </div>
-            <span style="font-size: 0.75rem; color: #38bdf8; font-family: var(--font-mono); margin-top: auto;">Latencia: 18ms</span>
           </div>
 
-          <!-- Canal 2: Enlace Directo P2P -->
-          <div class="routing-channel-box" style="border-color: rgba(0, 245, 155, 0.4); background: rgba(0, 245, 155, 0.04);">
-            <div class="routing-channel-icon">📡</div>
-            <div class="routing-channel-title" style="color: var(--volt-green);">2. Enlace Directo P2P</div>
-            <div class="routing-channel-desc">
-              Si tus contactos están en el mismo espacio (0 a 100 metros), los paquetes saltan directo por radio Bluetooth Low Energy sin gastar datos ni dejar registros en ningún lado.
+          <!-- Lado Derecho: 3 Canales de Transporte Físico Concurrente -->
+          <div class="routing-channels-deck">
+            <!-- Canal 1: Internet Global -->
+            <div class="routing-channel-box" style="border-color: rgba(56, 189, 248, 0.3);">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div class="routing-channel-title" style="color: #38bdf8;">
+                  <span class="routing-channel-icon" style="margin-right: 6px;">🌐</span> 1. Internet Global
+                </div>
+                <span style="font-size: 0.75rem; color: #38bdf8; font-family: var(--font-mono); background: rgba(56, 189, 248, 0.12); padding: 3px 8px; border-radius: var(--radius-pill);">18ms Latencia</span>
+              </div>
+              <div class="routing-channel-desc">
+                WebSockets concurrentes contra relés descentralizados Nostr. Velocidad instantánea en milisegundos cuando tienes WiFi o 5G sin tocar servidores corporativos cerrados.
+              </div>
             </div>
-            <span style="font-size: 0.75rem; color: var(--volt-green); font-family: var(--font-mono); margin-top: auto;">Rango: 0-100m • 0 KB Datos</span>
-          </div>
 
-          <!-- Canal 3: Malla Mesh Multi-Salto -->
-          <div class="routing-channel-box" style="border-color: rgba(139, 92, 246, 0.3);">
-            <div class="routing-channel-icon">⚡</div>
-            <div class="routing-channel-title" style="color: #c084fc;">3. Malla Multi-Salto</div>
-            <div class="routing-channel-desc">
-              Si no hay señal y el destinatario está lejos, el mensaje avanza de teléfono en teléfono con contador de saltos (TTL) cifrado hasta encontrar a tu amigo o un puente con red.
+            <!-- Canal 2: Enlace Directo P2P -->
+            <div class="routing-channel-box" style="border-color: rgba(0, 245, 155, 0.4); background: rgba(0, 245, 155, 0.04);">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div class="routing-channel-title" style="color: var(--volt-green);">
+                  <span class="routing-channel-icon" style="margin-right: 6px;">📡</span> 2. Enlace Directo P2P
+                </div>
+                <span style="font-size: 0.75rem; color: var(--volt-green); font-family: var(--font-mono); background: rgba(0, 245, 155, 0.12); padding: 3px 8px; border-radius: var(--radius-pill);">0 - 100m • 0 KB Datos</span>
+              </div>
+              <div class="routing-channel-desc">
+                Si tus contactos están en el mismo espacio (0 a 100 metros), los paquetes saltan directo por radio Bluetooth Low Energy sin gastar datos ni dejar registros en ningún lado.
+              </div>
             </div>
-            <span style="font-size: 0.75rem; color: #c084fc; font-family: var(--font-mono); margin-top: auto;">Inmune a Cortes Eléctricos</span>
+
+            <!-- Canal 3: Malla Mesh Multi-Salto -->
+            <div class="routing-channel-box" style="border-color: rgba(139, 92, 246, 0.3);">
+              <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div class="routing-channel-title" style="color: #c084fc;">
+                  <span class="routing-channel-icon" style="margin-right: 6px;">⚡</span> 3. Malla Multi-Salto
+                </div>
+                <span style="font-size: 0.75rem; color: #c084fc; font-family: var(--font-mono); background: rgba(139, 92, 246, 0.12); padding: 3px 8px; border-radius: var(--radius-pill);">Inmune a Apagones</span>
+              </div>
+              <div class="routing-channel-desc">
+                Si no hay señal y el destinatario está lejos, el mensaje avanza de teléfono en teléfono con contador de saltos (TTL) cifrado hasta encontrar a tu amigo o un puente con red.
+              </div>
+            </div>
           </div>
         </div>
       </div>

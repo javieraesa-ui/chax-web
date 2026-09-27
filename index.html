@@ -297,6 +297,29 @@
     }
     .feature-card.full .feature-card-body { align-items: center; max-width: 700px; margin: 0 auto; }
 
+    /* Feature Duo Grid (2 columns on desktop, 1 on mobile) */
+    .feature-duo {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 24px;
+    }
+    .feature-duo .feature-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 520px;
+      margin-bottom: 0;
+    }
+    .feature-duo .feature-card-body {
+      padding: 48px 44px 20px;
+      flex: 1;
+    }
+    .feature-duo .feature-visual {
+      min-height: 240px;
+      padding: 20px;
+    }
+
     .feature-tag {
       display: inline-flex; align-items: center; gap: 6px;
       font-size: 0.72rem; font-weight: 700;
@@ -819,7 +842,11 @@
     @media (max-width: 900px) {
       .feature-card { grid-template-columns: 1fr; min-height: auto; }
       .feature-card.reverse { direction: ltr; }
-      .feature-visual { min-height: 300px; }
+      .feature-visual { min-height: 280px; }
+      .feature-duo { grid-template-columns: 1fr; gap: 24px; }
+      .feature-duo .feature-card { min-height: auto; }
+      .feature-duo .feature-card-body { padding: 40px 32px 20px; }
+      .feature-duo .feature-visual { min-height: 240px; }
       .steps-grid { grid-template-columns: 1fr; gap: 2px; }
       .scenarios-grid { grid-template-columns: 1fr; }
       .routes-grid { grid-template-columns: 1fr; }
@@ -828,12 +855,20 @@
     }
 
     @media (max-width: 600px) {
-      .feature-card-body { padding: 36px 28px; }
-      .hero { padding: 80px 24px 60px; }
-      .cta-section { padding: 80px 24px; }
-      section { padding: 70px 0; }
-      .screenshot-item img { height: 360px; }
-      .screenshot-item.mac img { height: 240px; }
+      .wrap { padding: 0 16px; }
+      .feature-card { border-radius: var(--r-lg); }
+      .feature-card-body { padding: 36px 20px 20px; }
+      .feature-visual { min-height: 240px; }
+      .feature-duo { gap: 16px; margin-bottom: 16px; }
+      .feature-duo .feature-card-body { padding: 32px 20px 16px; }
+      .feature-duo .feature-visual { min-height: 220px; padding: 16px; }
+      .hero { padding: 70px 16px 50px; }
+      .cta-section { padding: 70px 16px; }
+      section { padding: 60px 0; }
+      .screenshot-item img { height: 340px; }
+      .screenshot-item.mac img { height: 220px; }
+      .float-bubble { padding: 8px 12px; font-size: 0.72rem; max-width: 140px; }
+      .float-bubble .bubble-value { font-size: 0.78rem; }
     }
   </style>
 </head>
@@ -993,22 +1028,22 @@
       </div>
     </div>
 
-    <!-- FEATURE 3 + 4 side by side -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:24px" class="fade-up" id="feature-extras">
+    <!-- FEATURE 3 + 4 (Duo Grid: 2 cols en Desktop, 1 col en Móvil) -->
+    <div class="feature-duo fade-up" id="feature-extras">
 
       <!-- PRIVACIDAD -->
-      <div class="feature-card" id="feature-privacidad" style="min-height:460px">
+      <div class="feature-card" id="feature-privacidad">
         <div class="feature-card-body">
           <div class="feature-tag tag-purple">🔐 Privacidad total</div>
           <h3 class="feature-headline" style="font-size:clamp(1.3rem,2.5vw,1.9rem)">Sin pedir tu número. Sin correo. Sin contraseña.</h3>
           <p class="feature-desc">Tu cuenta se crea en tu propio teléfono. Nadie puede bloquearte, nadie puede cerrar tu cuenta y nadie puede vender tus datos porque no existen en ningún servidor.</p>
           <ul class="feature-list">
-            <li>Agrégrate con <strong>código QR</strong></li>
+            <li>Agrégate con <strong>código QR</strong></li>
             <li><strong>Nadie puede cancelar</strong> tu cuenta</li>
             <li>Conversaciones <strong>cifradas punto a punto</strong></li>
           </ul>
         </div>
-        <div class="feature-visual" style="min-height:220px">
+        <div class="feature-visual">
           <div class="blob" style="width:200px;height:200px;background:radial-gradient(circle,rgba(167,139,250,0.2),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
           <div class="phone-mock float-a" style="width:160px">
             <div class="phone-island" style="width:54px;height:8px"></div>
@@ -1020,7 +1055,7 @@
       </div>
 
       <!-- STICKERS -->
-      <div class="feature-card" id="feature-stickers" style="min-height:460px">
+      <div class="feature-card" id="feature-stickers">
         <div class="feature-card-body">
           <div class="feature-tag tag-amber">✨ Stickers al instante</div>
           <h3 class="feature-headline" style="font-size:clamp(1.3rem,2.5vw,1.9rem)">Toca y mantén. Tu iPhone recorta solo. Lo envías sin internet.</h3>
@@ -1031,7 +1066,7 @@
             <li>Se envía <strong>de teléfono a teléfono</strong></li>
           </ul>
         </div>
-        <div class="feature-visual" style="min-height:220px">
+        <div class="feature-visual">
           <div class="blob" style="width:200px;height:200px;background:radial-gradient(circle,rgba(251,191,36,0.15),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
           <!-- Sticker visual placeholder -->
           <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:16px;">
@@ -1061,7 +1096,7 @@
         <div class="blob" style="width:300px;height:300px;background:radial-gradient(circle,rgba(56,189,248,0.15),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
         <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:16px;">
           <!-- Mac mockup simplified -->
-          <div style="background:#0d0d12;border:1.5px solid rgba(255,255,255,0.12);border-radius:14px;overflow:hidden;width:340px;box-shadow:0 24px 60px rgba(0,0,0,0.6)">
+          <div style="background:#0d0d12;border:1.5px solid rgba(255,255,255,0.12);border-radius:14px;overflow:hidden;width:100%;max-width:340px;box-shadow:0 24px 60px rgba(0,0,0,0.6)">
             <div style="background:#1a1a1f;padding:10px 14px;display:flex;align-items:center;gap:8px">
               <span style="width:10px;height:10px;border-radius:50%;background:#ff5f57;display:inline-block"></span>
               <span style="width:10px;height:10px;border-radius:50%;background:#febc2e;display:inline-block"></span>

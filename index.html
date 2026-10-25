@@ -3,13 +3,49 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chax — Mensajería sin límites. Sin internet. Sin número.</title>
-  <meta name="description" content="Chax: La única app que te comunica cuando el mundo se queda sin señal. Walkie-Talkie en vivo, mapas offline, red mesh. Sin pedir tu número. Gratis.">
-  <meta property="og:title" content="Chax — Mensajería que no muere">
-  <meta property="og:description" content="Habla como walkie-talkie, comparte mapas sin internet, comunícate cuando todo lo demás falla.">
+  <title>Chax — Mensajería siempre funcional. Sin internet. Sin número.</title>
+  <meta name="description" content="Chax: La app que se mantiene siempre funcional cuando no hay señal celular. Walkie-Talkie en vivo, mapas offline, radio LoRa de 30 km y red mesh directa. Sin pedir tu número. Gratis.">
+  <meta property="og:title" content="Chax — Mensajería siempre funcional">
+  <meta property="og:description" content="Habla como walkie-talkie, comparte mapas sin internet, viaja hasta 30 km con radio LoRa y comunícate con total independencia.">
   <meta property="og:image" content="assets/app-icon.png">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/png" href="assets/app-icon.png">
+
+  <!-- Detección y Redirección Inteligente de Idioma (ES / EN / PT) -->
+  <script>
+    (function() {
+      try {
+        var pref = localStorage.getItem('chax_lang_pref');
+        if (pref === 'en') {
+          window.location.replace('en/index.html');
+          return;
+        }
+        if (pref === 'pt') {
+          window.location.replace('pt/index.html');
+          return;
+        }
+        if (pref === 'es') {
+          return;
+        }
+
+        var navLangs = navigator.languages || [navigator.language || navigator.userLanguage || ''];
+        for (var i = 0; i < navLangs.length; i++) {
+          var lang = (navLangs[i] || '').toLowerCase();
+          if (lang.indexOf('en') === 0) {
+            window.location.replace('en/index.html');
+            return;
+          }
+          if (lang.indexOf('pt') === 0) {
+            window.location.replace('pt/index.html');
+            return;
+          }
+          if (lang.indexOf('es') === 0) {
+            return;
+          }
+        }
+      } catch (e) {}
+    })();
+  </script>
 
   <!-- Privacy-friendly analytics -->
   <script data-goatcounter="https://chax.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
@@ -104,6 +140,54 @@
       transition: color .2s;
     }
     .nav-links a:hover { color: var(--text); }
+    .nav-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    .lang-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: var(--r-pill);
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      font-size: 0.78rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    .lang-pill:hover {
+      background: rgba(255, 255, 255, 0.09);
+      border-color: rgba(0, 245, 155, 0.35);
+    }
+    .lang-globe-icon {
+      color: var(--green);
+      opacity: 0.85;
+      flex-shrink: 0;
+    }
+    .lang-item {
+      color: var(--text-dim);
+      text-decoration: none;
+      transition: color 0.15s ease;
+      letter-spacing: 0.02em;
+      padding: 2px 2px;
+    }
+    .lang-item:hover {
+      color: var(--text);
+    }
+    .lang-item.active {
+      color: var(--green);
+      font-weight: 700;
+    }
+    .lang-sep {
+      color: rgba(255, 255, 255, 0.18);
+      font-size: 0.7rem;
+    }
     .nav-cta {
       background: var(--green);
       color: #000 !important;
@@ -112,11 +196,11 @@
       padding: 7px 18px;
       border-radius: var(--r-pill);
       transition: opacity .2s !important;
+      text-decoration: none;
+      display: inline-block;
+      white-space: nowrap;
     }
     .nav-cta:hover { opacity: 0.85 !important; }
-    .nav-langs { display: flex; gap: 8px; font-size: 0.78rem; }
-    .nav-langs a { color: var(--text-dim); }
-    .nav-langs a.active { color: var(--green); font-weight: 700; }
 
     /* ==========================================
        HERO
@@ -563,7 +647,7 @@
     ========================================== */
     .routes-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(4, 1fr);
       gap: 16px;
     }
     .route-card {
@@ -840,6 +924,9 @@
     /* ==========================================
        RESPONSIVE
     ========================================== */
+    @media (max-width: 1080px) {
+      .routes-grid { grid-template-columns: repeat(2, 1fr); }
+    }
     @media (max-width: 900px) {
       .feature-card { grid-template-columns: 1fr; min-height: auto; }
       .feature-card.reverse { direction: ltr; }
@@ -852,7 +939,14 @@
       .scenarios-grid { grid-template-columns: 1fr; }
       .routes-grid { grid-template-columns: 1fr; }
       .nav-links { display: none; }
+      .nav-right { gap: 8px; }
+      .nav-cta { padding: 6px 12px; font-size: 0.76rem !important; }
+      .lang-pill { padding: 4px 10px; font-size: 0.74rem; gap: 5px; }
       .compare-table th, .compare-table td { padding: 12px 14px; font-size: 0.78rem; }
+    }
+
+    @media (max-width: 480px) {
+      .nav-cta { display: none; }
     }
 
     @media (max-width: 600px) {
@@ -893,16 +987,22 @@
       <li><a href="#escenarios">Escenarios</a></li>
       <li><a href="#capturas">Dispositivos</a></li>
       <li><a href="#faq">FAQ</a></li>
-      <li class="nav-langs">
-        <a href="index.html" class="active">ES</a>
-        <span style="color:var(--text-dim)">|</span>
-        <a href="en/index.html">EN</a>
-        <span style="color:var(--text-dim)">|</span>
-        <a href="pt/index.html">PT</a>
-      </li>
-      <li><a href="#descargas" class="nav-cta">Descargar gratis</a></li>
     </ul>
-    <a href="#descargas" class="btn-primary" style="display:none" id="nav-cta-mobile">↓ Descargar</a>
+    <div class="nav-right">
+      <div class="lang-pill" id="langSelector">
+        <svg class="lang-globe-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="10"></circle>
+          <line x1="2" y1="12" x2="22" y2="12"></line>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
+        </svg>
+        <a href="index.html" class="lang-item active" data-lang="es" title="Español">ES</a>
+        <span class="lang-sep">|</span>
+        <a href="en/index.html" class="lang-item" data-lang="en" title="English">EN</a>
+        <span class="lang-sep">|</span>
+        <a href="pt/index.html" class="lang-item" data-lang="pt" title="Português">PT</a>
+      </div>
+      <a href="#descargas" class="nav-cta">Descargar gratis</a>
+    </div>
   </div>
 </nav>
 
@@ -910,22 +1010,25 @@
      HERO
 ================================================ -->
 <section class="hero">
-  <div class="hero-eyebrow">En TestFlight ahora · Gratis</div>
+  <div class="hero-eyebrow">En TestFlight (v3.253) · APK Android (v1.083) · Gratis</div>
 
   <h1 class="hero-title">
     El mensajero que<br>
-    <span class="accent-green">no muere</span><br>
-    <span style="color:var(--text-secondary)">sin señal.</span>
+    <span class="accent-green">se mantiene funcional</span><br>
+    <span style="color:var(--text-secondary)">con o sin señal.</span>
   </h1>
 
   <p class="hero-sub">
-    Habla en directo como un walkie-talkie. Comparte mapas que funcionan sin internet. Envía mensajes que saltan de teléfono en teléfono. Sin pedir tu número. Sin servidores que fallen.
+    Habla en directo como un walkie-talkie instantáneo. Conecta antenas de radio LoRa para enviar mensajes a más de 30 km sin operadoras. Comparte mapas offline y haz que tus notas salten de teléfono a teléfono de forma privada. Sin pedir tu número.
   </p>
 
   <div class="hero-actions">
     <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" rel="noopener" class="btn-primary">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 3.5c.61-.75 1.04-1.8 1.01-2.85-.92.04-2.03.62-2.67 1.37-.58.67-1.08 1.74-1.01 2.78.98.08 2.06-.55 2.67-1.3z"/></svg>
-      Descargar en TestFlight
+      Descargar en TestFlight (v3.253)
+    </a>
+    <a href="download/" class="btn-ghost">
+      🤖 APK Android (v1.083)
     </a>
     <a href="#funciones" class="btn-ghost">
       Ver funciones
@@ -936,9 +1039,10 @@
   <div class="hero-stats">
     <div class="stat-pill">⚡ <strong>Mensajes al instante</strong></div>
     <div class="stat-pill">🎙️ <strong>Walkie-Talkie en vivo</strong></div>
+    <div class="stat-pill">📻 <strong>Radio LoRa hasta 30 km</strong></div>
     <div class="stat-pill">🗺️ <strong>Mapas offline</strong></div>
     <div class="stat-pill">🚫 <strong>Sin número de teléfono</strong></div>
-    <div class="stat-pill">📡 <strong>Funciona sin red</strong></div>
+    <div class="stat-pill">🛡️ <strong>Siempre funcional</strong></div>
   </div>
 
   <div class="scroll-hint" aria-hidden="true">
@@ -955,7 +1059,7 @@
   <div class="wrap">
     <div class="section-head fade-up">
       <div class="section-label">Superpoderes</div>
-      <h2 class="section-title">Una app.<br>Cinco razones para no borrarla.</h2>
+      <h2 class="section-title">Una app.<br>Seis razones para no borrarla.</h2>
     </div>
 
     <!-- FEATURE 1: MAPAS OFFLINE -->
@@ -995,19 +1099,23 @@
       </div>
     </div>
 
-    <!-- FEATURE 2: WALKIE-TALKIE -->
+    <!-- FEATURE 2: WALKIE-TALKIE Y ESCUCHA TÁCTICA -->
     <div class="feature-card reverse fade-up" id="feature-ptt">
       <div class="feature-card-body">
-        <div class="feature-tag tag-coral">🎙️ Walkie-Talkie en vivo</div>
-        <h3 class="feature-headline">Te escuchan mientras hablas. Sin esperar que termine el audio.</h3>
+        <div class="feature-tag tag-coral">🎙️ Walkie-Talkie & Escucha Táctica</div>
+        <h3 class="feature-headline">Te escuchan mientras hablas.<br>Reproduce voz en directo incluso con pantalla bloqueada.</h3>
         <p class="feature-desc">
-          Mantén presionado y la otra persona te escucha en tiempo real, palabra por palabra. No hay archivos que subir ni esperar. Y si hay ruido alrededor, Chax convierte tu voz a texto automáticamente.
+          <strong>¿Cómo funciona?</strong> Mantén presionado el botón central y tu voz se transmite de inmediato, palabra por palabra. Olvídate de grabar audios pesados y esperar barras de carga: la otra persona te escucha al instante por Bluetooth, red local o Internet con latencia ultrabaja (~0.3s). Al soltar, el canal queda libre para responder.
+        </p>
+        <p class="feature-desc">
+          <strong>Modo Walkie-Talkie con Pantalla Bloqueada:</strong> Con la función de autoreproducción táctica activada, los mensajes de voz entrantes suenan automáticamente por el altavoz de tu teléfono incluso si está en el bolsillo, con la pantalla apagada o bloqueada. Tu teléfono se comporta exactamente igual que un radio Walkie-Talkie profesional.
         </p>
         <ul class="feature-list">
-          <li><strong>Audio en directo</strong> — no graba, transmite</li>
-          <li><strong>Voz a texto</strong> en pantalla al instante</li>
-          <li><strong>Modo manos libres</strong> para escuchar</li>
-          <li><strong>Tu voz viaja cifrada</strong> — privada y protegida</li>
+          <li><strong>Autoreproducción en segundo plano:</strong> Escucha los mensajes entrantes al instante sin desbloquear tu móvil</li>
+          <li><strong>Audio táctico en directo:</strong> Se transmite segundo a segundo sin esperar a que termine la grabación</li>
+          <li><strong>Transcripción automática en pantalla:</strong> Si estás en un sitio ruidoso, lee lo que dicen en tiempo real</li>
+          <li><strong>Modo manos libres para ruta:</strong> Ideal para expediciones en montaña, ciclismo, convoyes y emergencias</li>
+          <li><strong>Cifrado punto a punto (E2EE):</strong> Privacidad completa de tu voz garantizada, sin servidores intermediarios</li>
         </ul>
       </div>
       <div class="feature-visual">
@@ -1019,12 +1127,12 @@
           </div>
         </div>
         <div class="float-bubble fb-coral" style="top:18%;left:8%;animation:float-a 4s ease-in-out infinite;">
-          <div class="bubble-label">Latencia</div>
-          <div class="bubble-value">0.3 seg en vivo</div>
+          <div class="bubble-label">Pantalla bloqueada</div>
+          <div class="bubble-value">Autoreproducción ✓</div>
         </div>
         <div class="float-bubble" style="bottom:20%;right:8%;animation:float-b 5.5s ease-in-out infinite;">
-          <div class="bubble-label">Transcripción</div>
-          <div class="bubble-value">Automática ✓</div>
+          <div class="bubble-label">Latencia de voz</div>
+          <div class="bubble-value">0.3 seg en vivo</div>
         </div>
       </div>
     </div>
@@ -1109,6 +1217,36 @@
         </div>
       </div>
     </div>
+
+    <!-- FEATURE 6: AUTOPURGA Y RETENCIÓN CRIPTOGRÁFICA -->
+    <div class="feature-card reverse fade-up" id="feature-autopurga">
+      <div class="feature-card-body">
+        <div class="feature-tag tag-green">🛡️ Autopurga Antiforense</div>
+        <h3 class="feature-headline">Limpieza garantizada en memoria flash.<br>Sin rastros ni peritajes posibles.</h3>
+        <p class="feature-desc">
+          Tú decides cuánto tiempo se conservan tus mensajes: 1 Hora, 24 Horas o 7 Días. Cumplido el plazo, Chax los purga atómicamente de la memoria RAM, de la base de datos cifrada y del almacenamiento físico de tu dispositivo. Cero residuos forenses.
+        </p>
+        <ul class="feature-list">
+          <li><strong>Ventanas temporales:</strong> 1 hora táctica, 24 horas recomendadas o 7 días</li>
+          <li><strong>Control granular:</strong> Regla global o personalizada individualmente por cada chat</li>
+          <li><strong>Protocolo de Pánico:</strong> Borrado físico de emergencia con un solo toque</li>
+          <li><strong>Zero-Trust real:</strong> La purga ocurre físicamente en tu teléfono, sin depender de servidores externos</li>
+        </ul>
+      </div>
+      <div class="feature-visual">
+        <div class="blob" style="width:280px;height:280px;background:radial-gradient(circle,rgba(0,245,155,0.18),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+        <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(0,245,155,0.25);border-radius:20px;padding:26px 22px;max-width:280px;text-align:center;box-shadow:0 16px 40px rgba(0,0,0,0.5);">
+          <div style="font-size:3.2rem;line-height:1">⏱️</div>
+          <div style="font-weight:800;font-size:1.15rem;color:#fff">Autopurga Activa</div>
+          <div style="background:rgba(0,245,155,0.12);border:1px solid rgba(0,245,155,0.3);border-radius:10px;padding:6px 14px;font-size:0.75rem;color:var(--green);font-weight:700">Ventana: 24 Horas</div>
+          <div style="font-size:0.78rem;color:var(--text-muted);line-height:1.4">Eliminación física en memoria flash sin fragmentos recuperables.</div>
+        </div>
+        <div class="float-bubble fb-green" style="top:15%;right:8%;animation:float-a 4.5s ease-in-out infinite;">
+          <div class="bubble-label">Antiforense</div>
+          <div class="bubble-value">Zero-Trust ✓</div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1130,22 +1268,29 @@
         <div class="route-num" style="color:var(--blue)">Camino 01</div>
         <div class="route-icon">🌐</div>
         <div class="route-title">Por internet</div>
-        <div class="route-desc">Cuando tienes WiFi o datos, tus mensajes vuelan al instante a cualquier rincón del mundo. Sin pasar por un servidor central que pueda caerse.</div>
+        <div class="route-desc">Cuando tienes WiFi o datos, tus mensajes vuelan al instante a cualquier rincón del mundo. Sin servidores centrales que interrumpan el servicio.</div>
         <div class="route-badge" style="background:rgba(56,189,248,0.1);color:var(--blue)">Cuando hay señal</div>
       </div>
       <div class="route-card">
         <div class="route-num" style="color:var(--green)">Camino 02</div>
-        <div class="route-icon">📡</div>
+        <div class="route-icon">📱</div>
         <div class="route-title">De teléfono a teléfono</div>
-        <div class="route-desc">Si la otra persona está a menos de 100 metros, el mensaje viaja directo entre sus teléfonos por Bluetooth sin gastar datos ni tocar internet.</div>
+        <div class="route-desc">Si la otra persona está a menos de 100 metros, el mensaje viaja directo entre dispositivos por Bluetooth sin gastar datos ni tocar internet.</div>
         <div class="route-badge" style="background:rgba(0,245,155,0.1);color:var(--green)">Sin internet · 0 datos</div>
       </div>
       <div class="route-card">
         <div class="route-num" style="color:var(--purple)">Camino 03</div>
         <div class="route-icon">⚡</div>
-        <div class="route-title">Brincando por la red</div>
-        <div class="route-desc">Si no hay señal en toda la zona, el mensaje salta de forma segura entre teléfonos cercanos hasta llegar a su destino. Funciona en apagones y conciertos.</div>
-        <div class="route-badge" style="background:rgba(167,139,250,0.1);color:var(--purple)">Funciona en apagones</div>
+        <div class="route-title">Malla multi-salto</div>
+        <div class="route-desc">Si no hay señal en toda la zona, el mensaje salta de forma segura de teléfono en teléfono cercano hasta llegar a su destino. Siempre funcional en conciertos y eventos.</div>
+        <div class="route-badge" style="background:rgba(167,139,250,0.1);color:var(--purple)">Red vecinal autónoma</div>
+      </div>
+      <div class="route-card" style="border: 1px solid rgba(251, 146, 60, 0.4); background: linear-gradient(180deg, rgba(251, 146, 60, 0.08) 0%, var(--bg1) 100%);">
+        <div class="route-num" style="color:#fb923c">Camino 04</div>
+        <div class="route-icon">📻</div>
+        <div class="route-title">Radio LoRa de largo alcance</div>
+        <div class="route-desc">Con una pequeña antena LoRa portátil conectada a tu teléfono, tus mensajes viajan hasta 30 km a través de valles y montañas sin antenas de telefonía.</div>
+        <div class="route-badge" style="background:rgba(251,146,60,0.15);color:#fb923c">Hasta 30 km sin operadoras</div>
       </div>
     </div>
 
@@ -1214,6 +1359,68 @@
         </svg>
       </div>
     </div>
+
+    <!-- TARJETA DESTACADA LORA 30 KM -->
+    <div class="fade-up" style="margin-top:36px;background:linear-gradient(135deg, rgba(251,146,60,0.08) 0%, rgba(15,23,42,0.85) 100%);border:1px solid rgba(251,146,60,0.35);border-radius:var(--r-xl);padding:38px;position:relative;overflow:hidden;">
+      <div style="display:flex;flex-wrap:wrap;gap:32px;align-items:center;justify-content:space-between;">
+        <div style="flex:1;min-width:280px;max-width:620px;">
+          <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(251,146,60,0.15);border:1px solid rgba(251,146,60,0.4);border-radius:100px;padding:6px 14px;color:#fb923c;font-size:0.75rem;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:14px;">
+            📻 Súper Alcance de Radio • LoRa 915 / 868 MHz
+          </div>
+          <h3 style="font-size:clamp(1.35rem,2.8vw,1.95rem);font-weight:800;letter-spacing:-0.03em;color:#fff;line-height:1.2;margin-bottom:12px;">
+            Con una antena puedes viajar 30 km. Sin antenas celulares. Sin cuotas.
+          </h3>
+          <p style="font-size:0.92rem;color:var(--text-secondary);line-height:1.6;margin-bottom:20px;">
+            ¿Vas a cruzar cordilleras, navegar en mar abierto o adentrarte donde no llega ninguna empresa telefónica? Conecta un pequeño nodo de radio LoRa a Chax por Bluetooth. Tu teléfono adquiere al instante un canal de radiofrecuencia táctico propio que supera los 30 km en línea visual directa, transmitiendo mensajes y alertas GPS con cero consumo de datos.
+          </p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:14px;">
+            <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 16px;">
+              <div style="color:#fb923c;font-weight:800;font-size:1.05rem;margin-bottom:4px;">📡 30 km de Cobertura</div>
+              <div style="color:var(--text-muted);font-size:0.8rem;">Ondas de radio UHF de gran penetración sin torres ni satélites.</div>
+            </div>
+            <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 16px;">
+              <div style="color:var(--green);font-weight:800;font-size:1.05rem;margin-bottom:4px;">🔋 Días de Autonomía</div>
+              <div style="color:var(--text-muted);font-size:0.8rem;">Emisión en milivatios. El radio de bolsillo dura días con una sola carga.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ESQUEMA VISUAL LORA -->
+        <div style="flex:1;min-width:280px;max-width:390px;background:rgba(0,0,0,0.55);border:1px solid rgba(251,146,60,0.3);border-radius:18px;padding:24px;text-align:center;">
+          <div style="font-size:0.75rem;font-weight:800;color:#fb923c;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:16px;">Esquema de Transmisión LoRa</div>
+          
+          <div style="display:flex;align-items:center;justify-content:space-between;position:relative;margin:22px 0;">
+            <div style="text-align:center;">
+              <div style="width:48px;height:48px;border-radius:12px;background:rgba(56,189,248,0.15);border:1px solid #38bdf8;display:flex;align-items:center;justify-content:center;font-size:1.35rem;margin:0 auto 6px;">📱</div>
+              <div style="font-size:0.75rem;font-weight:700;color:#fff;">Tu Teléfono</div>
+              <div style="font-size:0.68rem;color:var(--text-dim);">Chax App</div>
+            </div>
+
+            <!-- Flecha BLE -->
+            <div style="font-size:0.68rem;color:#38bdf8;font-weight:800;">BLE ➔</div>
+
+            <div style="text-align:center;">
+              <div style="width:48px;height:48px;border-radius:12px;background:rgba(251,146,60,0.15);border:1px solid #fb923c;display:flex;align-items:center;justify-content:center;font-size:1.35rem;margin:0 auto 6px;">📻</div>
+              <div style="font-size:0.75rem;font-weight:700;color:#fb923c;">Antena LoRa</div>
+              <div style="font-size:0.68rem;color:var(--text-dim);">Bolsillo/Mochila</div>
+            </div>
+
+            <!-- Onda Radio 30km -->
+            <div style="font-size:0.68rem;color:#00f59b;font-weight:800;">⚡ ~30 km ➔</div>
+
+            <div style="text-align:center;">
+              <div style="width:48px;height:48px;border-radius:12px;background:rgba(0,245,155,0.15);border:1px solid #00f59b;display:flex;align-items:center;justify-content:center;font-size:1.35rem;margin:0 auto 6px;">🎯</div>
+              <div style="font-size:0.75rem;font-weight:700;color:#00f59b;">Receptor</div>
+              <div style="font-size:0.68rem;color:var(--text-dim);">Amigo o Base</div>
+            </div>
+          </div>
+
+          <div style="font-size:0.76rem;color:var(--text-secondary);background:rgba(255,255,255,0.03);padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.06);line-height:1.45;">
+            💡 <em>«Con una antena pequeña puedes viajar 30 km a través del horizonte; tu mensaje de texto o coordenadas de auxilio llegan directo y sin demoras.»</em>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1236,16 +1443,16 @@
       <div class="scenario-card">
         <div class="scenario-icon">🎵</div>
         <div class="scenario-label">Escenario 01 · Festivales y conciertos</div>
-        <h3 class="scenario-title">60,000 personas. Red 5G colapsada. No encuentras a tu grupo.</h3>
+        <h3 class="scenario-title">60,000 personas. Red 5G saturada. Encuentras a tu grupo al instante.</h3>
         <div class="scenario-problem">
-          <strong style="color:var(--coral)">El problema:</strong> Las barras del teléfono están llenas pero WhatsApp muestra el relojito infinito. Estás incomunicado en medio de la multitud.
+          <strong style="color:var(--coral)">El desafío habitual:</strong> Las barras del teléfono marcan cobertura pero las apps habituales muestran el relojito girando. Todo el tráfico celular compite por la misma antena.
         </div>
         <p class="scenario-solution">
-          <strong>Con Chax:</strong> Tu mensaje no busca una antena lejana saturada. Salta de teléfono en teléfono entre las personas que te rodean en milisegundos.
+          <strong>Con Chax:</strong> Tu mensaje no depende de antenas saturadas lejanas. Salta en milisegundos de teléfono a teléfono entre las personas que te rodean, manteniéndote siempre comunicado.
         </p>
         <ul class="scenario-bullets">
-          <li><span class="check">✓</span> <span><strong>A mayor multitud, más rápido viaja</strong> — cada teléfono con Chax ayuda</span></li>
-          <li><span class="check">✓</span> <span>Ubica a tu grupo con <strong>radar sin datos</strong></span></li>
+          <li><span class="check">✓</span> <span><strong>A mayor multitud, mayor alcance y fluidez</strong> — cada teléfono con Chax actúa como enlace</span></li>
+          <li><span class="check">✓</span> <span>Ubica a tu grupo con <strong>radar táctico sin consumir datos</strong></span></li>
         </ul>
       </div>
 
@@ -1272,31 +1479,31 @@
         <div class="scenario-label">Escenario 03 · Privacidad y control</div>
         <h3 class="scenario-title">Tus conversaciones son tuyas. No de servidores ni de empresas.</h3>
         <div class="scenario-problem">
-          <strong style="color:var(--coral)">El problema:</strong> Las apps habituales piden tu número, suben tu libreta de contactos y cuando sus servidores se caen, medio planeta se queda mudo.
+          <strong style="color:var(--coral)">El desafío habitual:</strong> Las plataformas convencionales exigen tu número, suben tus contactos a sus servidores y si sus centros de datos sufren interrupciones, el servicio se paraliza.
         </div>
         <p class="scenario-solution">
-          <strong>Con Chax:</strong> Tu cuenta vive en tu teléfono. Nadie puede bloquearte ni leer lo que escribes.
+          <strong>Con Chax:</strong> Tu identidad se resguarda en tu propio dispositivo. Se mantiene siempre funcional de forma autónoma y nadie puede bloquear tu comunicación.
         </p>
         <ul class="scenario-bullets">
-          <li><span class="check">✓</span> <span><strong>Sin número de teléfono</strong> — te conectas con QR</span></li>
-          <li><span class="check">✓</span> <span><strong>Sin base de datos central</strong> — tus datos no existen</span></li>
+          <li><span class="check">✓</span> <span><strong>Sin número de teléfono</strong> — te vinculas directamente mediante código QR</span></li>
+          <li><span class="check">✓</span> <span><strong>Arquitectura soberana</strong> — sin servidores centrales que almacenen tus mensajes</span></li>
         </ul>
       </div>
 
       <!-- Escenario 4 -->
       <div class="scenario-card" style="border-top:2px solid rgba(251,113,133,0.4)">
         <div class="scenario-icon">🚨</div>
-        <div class="scenario-label">Escenario 04 · Emergencias naturales</div>
-        <h3 class="scenario-title">Sismo o huracán. Apagón general. Antenas caídas.</h3>
+        <div class="scenario-label">Escenario 04 · Apagones y contingencias climáticas</div>
+        <h3 class="scenario-title">Tormenta severa o sismo. Apagón de luz. Tu red sigue activa.</h3>
         <div class="scenario-problem">
-          <strong style="color:var(--coral)">El problema:</strong> Las antenas celulares fallan en minutos. Cientos de miles de personas no saben si su familia está bien y los servicios de emergencia se saturan.
+          <strong style="color:var(--coral)">El desafío habitual:</strong> Las torres comerciales pierden energía o se congestionan rápidamente, dificultando confirmar si la familia se encuentra bien.
         </div>
         <p class="scenario-solution">
-          <strong>Con Chax:</strong> Tu teléfono se convierte en una baliza de supervivencia. Los mensajes saltan de casa en casa hasta encontrar a los tuyos.
+          <strong>Con Chax:</strong> Tu teléfono se mantiene operativo como nodo de enlace vecinal. Los mensajes saltan de casa en casa y con radio LoRa recorren hasta 30 km para avisar que todo está bien.
         </p>
         <ul class="scenario-bullets">
-          <li><span class="check">✓</span> <span><strong>Baliza SOS</strong> — envía "estamos bien" sin internet</span></li>
-          <li><span class="check">✓</span> <span><strong>Red vecinal</strong> — con 10 vecinos con Chax el barrio se comunica</span></li>
+          <li><span class="check">✓</span> <span><strong>Baliza SOS comunitaria:</strong> Envía "Estamos bien" y coordenadas sin requerir conexión a internet</span></li>
+          <li><span class="check">✓</span> <span><strong>Red de barrio resiliente:</strong> Vecinos conectados crean un puente de comunicación continuo</span></li>
         </ul>
       </div>
     </div>
@@ -1332,9 +1539,9 @@
             <tr>
               <td><strong>Funciona sin internet</strong></td>
               <td class="col-chax"><span class="yes">✓ De teléfono a teléfono</span></td>
-              <td><span class="no">✕ Sin red, muere</span></td>
-              <td><span class="no">✕ Sin red, muere</span></td>
-              <td><span class="no">✕ Sin red, muere</span></td>
+              <td><span class="no">✕ Requiere internet</span></td>
+              <td><span class="no">✕ Requiere internet</span></td>
+              <td><span class="no">✕ Requiere internet</span></td>
             </tr>
             <tr>
               <td><strong>Sin número de teléfono</strong></td>
@@ -1363,6 +1570,41 @@
               <td><span class="no">✕ Servidor único</span></td>
               <td><span class="no">✕ Servidor único</span></td>
               <td><span class="no">✕ Servidor central</span></td>
+            </tr>
+            <tr>
+              <td><strong>Autopurga antiforense en flash</strong></td>
+              <td class="col-chax"><span class="yes">✓ 1h, 24h, 7d sin rastros</span></td>
+              <td><span class="no">✕ Residuos en nube</span></td>
+              <td><span class="no">✕ Almacenado en servidor</span></td>
+              <td><span class="no">✕ Huellas en base local</span></td>
+            </tr>
+            <tr>
+              <td><strong>Video táctico sin conexión</strong></td>
+              <td class="col-chax"><span class="yes">✓ Presets tácticos BLE/Mesh</span></td>
+              <td><span class="no">✕ Requiere internet</span></td>
+              <td><span class="no">✕ Requiere internet</span></td>
+              <td><span class="no">✕ Requiere internet</span></td>
+            </tr>
+            <tr>
+              <td><strong>Stickers optimizados P2P</strong></td>
+              <td class="col-chax"><span class="yes">✓ Compresión ~25KB BLE</span></td>
+              <td><span class="no">✕ Requiere datos</span></td>
+              <td><span class="no">✕ Requiere datos</span></td>
+              <td><span class="no">✕ Requiere datos</span></td>
+            </tr>
+            <tr>
+              <td><strong>Enrutamiento Cognitivo y LoRa</strong></td>
+              <td class="col-chax"><span class="yes">✓ BLE + LAN + LoRa 915MHz</span></td>
+              <td><span class="no">✕ Incompatible</span></td>
+              <td><span class="no">✕ Incompatible</span></td>
+              <td><span class="no">✕ Incompatible</span></td>
+            </tr>
+            <tr>
+              <td><strong>Sincronización de Gemelos Soberanos</strong></td>
+              <td class="col-chax"><span class="yes">✓ E2EE sin número ni nube</span></td>
+              <td><span class="no">✕ Depende de servidor</span></td>
+              <td><span class="no">✕ En nube central</span></td>
+              <td><span class="no">✕ Requiere SIM</span></td>
             </tr>
           </tbody>
         </table>
@@ -1414,7 +1656,15 @@
           ¿Necesito comprar antenas o equipo extra?
           <span class="faq-icon">+</span>
         </button>
-        <div class="faq-a">No. Chax funciona directamente con la antena Bluetooth y WiFi que ya tiene tu iPhone, iPad o Mac. Sin radios externos ni cables adicionales.</div>
+        <div class="faq-a">No para su uso diario ni para la malla local. Chax funciona de forma nativa e inmediata con las antenas Bluetooth y WiFi que ya trae tu teléfono. Opcionalmente, si deseas un súper alcance de hasta 30 km en expediciones de montaña o emergencias, puedes vincular una pequeña antena de radio LoRa por Bluetooth.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          ¿Cómo funciona el súper alcance con radio LoRa (30 km)?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Al conectar un dispositivo LoRa portátil (como placas compatibles con frecuencias 915 MHz u 868 MHz), Chax conmuta automáticamente y permite enviar mensajes y reportes de ubicación a más de 30 km en línea visual directa, operando con milivatios de potencia y sin depender de antenas celulares ni satélites de pago.</div>
       </div>
 
       <div class="faq-item">
@@ -1446,7 +1696,15 @@
           ¿Funciona en Android?
           <span class="faq-icon">+</span>
         </button>
-        <div class="faq-a">Actualmente Chax está disponible para iPhone, iPad y Mac. La versión Android está en desarrollo. Puedes ver el APK experimental en nuestra página de descargas.</div>
+        <div class="faq-a">¡Sí! Chax cuenta con versión oficial para Android 7+ (v1.083) con núcleo nativo en Rust. Descarga el APK universal directo desde nuestra sección de descargas sin tiendas intermedias.</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-q">
+          ¿Qué es la Autopurga de Mensajes y Retención Criptográfica?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-a">Limpia y purga con seguridad tus mensajes de la memoria flash, RAM y caché tras 1 hora, 24 horas o 7 días (global o por chat). Cero residuos en el dispositivo para garantizar tu privacidad total.</div>
       </div>
 
       <div class="faq-item">
@@ -1487,11 +1745,11 @@
     </p>
     <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" rel="noopener" class="btn-primary" style="font-size:1.05rem;padding:16px 36px;margin:0 auto;display:inline-flex">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 3.5c.61-.75 1.04-1.8 1.01-2.85-.92.04-2.03.62-2.67 1.37-.58.67-1.08 1.74-1.01 2.78.98.08 2.06-.55 2.67-1.3z"/></svg>
-      Descargar en TestFlight — Gratis
+      Descargar en TestFlight (v3.253) — Gratis
     </a>
-    <div class="cta-note">iOS 16+ · iPhone, iPad y Mac (v3.037)</div>
+    <div class="cta-note">iOS 16+ · iPhone, iPad y Mac (v3.253)</div>
     <div style="margin-top:40px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap">
-      <a href="download/" class="btn-ghost" style="font-size:0.85rem;padding:10px 20px">🤖 APK Android (v1.051) →</a>
+      <a href="download/" class="btn-ghost" style="font-size:0.85rem;padding:10px 20px">🤖 APK Android (v1.083) →</a>
       <a href="download/" class="btn-ghost" style="font-size:0.85rem;padding:10px 20px">💻 App Mac/PC →</a>
     </div>
   </div>
@@ -1504,7 +1762,7 @@
   <div class="footer-inner">
     <div class="footer-brand">
       <img src="assets/app-icon.png" alt="Chax">
-      <span>Chax · v3.037</span>
+      <span>Chax · v3.253</span>
     </div>
     <div class="footer-links">
       <a href="support.html">Soporte</a>
@@ -1521,88 +1779,361 @@
      SCRIPTS
 ================================================ -->
 <script>
-// ── MESH BACKGROUND CANVAS ──────────────────────────
+// ── MESH BACKGROUND CANVAS (INTERCONNECTED CLUSTERS & MULTI-HOP PACKETS) ──
 (function () {
   const canvas = document.getElementById('bg-canvas');
   if (!canvas) return;
   const ctx = canvas.getContext('2d');
-  let W, H, nodes = [], pkts = [], raf;
+  let W, H, clusters = [], pkts = [], raf;
 
   function resize() {
     W = canvas.width = window.innerWidth;
     H = canvas.height = window.innerHeight;
-    buildNodes();
+    buildTopology();
   }
 
-  function buildNodes() {
-    const n = window.innerWidth < 768 ? 22 : 40;
-    nodes = Array.from({ length: n }, () => ({
-      x: Math.random() * W,
-      y: Math.random() * H,
-      vx: (Math.random() - 0.5) * 0.35,
-      vy: (Math.random() - 0.5) * 0.25,
-      r: 1.5 + Math.random() * 2
-    }));
+  function buildTopology() {
+    const isMobile = W < 768;
+    const specs = isMobile
+      ? [
+          { cx: 0.24, cy: 0.16, rx: 0.22, ry: 0.11, count: 6, color: '#00f59b', rgb: '0,245,155' },
+          { cx: 0.78, cy: 0.24, rx: 0.22, ry: 0.11, count: 6, color: '#00d9f5', rgb: '0,217,245' },
+          { cx: 0.22, cy: 0.50, rx: 0.22, ry: 0.11, count: 6, color: '#00f59b', rgb: '0,245,155' },
+          { cx: 0.78, cy: 0.58, rx: 0.22, ry: 0.11, count: 6, color: '#00d9f5', rgb: '0,217,245' },
+          { cx: 0.30, cy: 0.84, rx: 0.24, ry: 0.11, count: 6, color: '#00f59b', rgb: '0,245,155' },
+          { cx: 0.76, cy: 0.86, rx: 0.22, ry: 0.10, count: 5, color: '#00d9f5', rgb: '0,217,245' }
+        ]
+      : [
+          { cx: 0.16, cy: 0.20, rx: 0.12, ry: 0.13, count: 7, color: '#00f59b', rgb: '0,245,155' },
+          { cx: 0.48, cy: 0.16, rx: 0.13, ry: 0.12, count: 7, color: '#00d9f5', rgb: '0,217,245' },
+          { cx: 0.83, cy: 0.22, rx: 0.13, ry: 0.13, count: 7, color: '#00f59b', rgb: '0,245,155' },
+          { cx: 0.24, cy: 0.54, rx: 0.13, ry: 0.13, count: 7, color: '#00d9f5', rgb: '0,217,245' },
+          { cx: 0.68, cy: 0.50, rx: 0.14, ry: 0.13, count: 8, color: '#00f59b', rgb: '0,245,155' },
+          { cx: 0.17, cy: 0.84, rx: 0.13, ry: 0.12, count: 6, color: '#00f59b', rgb: '0,245,155' },
+          { cx: 0.52, cy: 0.82, rx: 0.13, ry: 0.12, count: 7, color: '#00d9f5', rgb: '0,217,245' },
+          { cx: 0.85, cy: 0.82, rx: 0.12, ry: 0.12, count: 6, color: '#00f59b', rgb: '0,245,155' }
+        ];
+
+    clusters = specs.map((s, cIdx) => {
+      const cx = s.cx * W;
+      const cy = s.cy * H;
+      const rx = Math.max(55, s.rx * W);
+      const ry = Math.max(48, s.ry * H);
+      const nodes = [];
+
+      // Nodo 0: Anchor / Gateway central del cúmulo
+      nodes.push({
+        clusterIdx: cIdx,
+        localIdx: 0,
+        isAnchor: true,
+        isGateway: true,
+        relX: 0,
+        relY: 0,
+        vx: 0,
+        vy: 0,
+        x: cx,
+        y: cy,
+        r: 3.4,
+        pulseR: 0,
+        pulseAlpha: 0,
+        color: s.color,
+        rgb: s.rgb
+      });
+
+      const satCount = s.count - 1;
+      for (let i = 0; i < satCount; i++) {
+        const angle = (i / satCount) * Math.PI * 2 + cIdx * 0.6 + (Math.random() - 0.5) * 0.35;
+        const distScale = 0.45 + Math.random() * 0.5;
+        const relX = Math.cos(angle) * rx * distScale;
+        const relY = Math.sin(angle) * ry * distScale;
+        nodes.push({
+          clusterIdx: cIdx,
+          localIdx: i + 1,
+          isAnchor: false,
+          isGateway: i % 2 === 0,
+          relX,
+          relY,
+          vx: (Math.random() - 0.5) * 0.28,
+          vy: (Math.random() - 0.5) * 0.28,
+          x: cx + relX,
+          y: cy + relY,
+          r: 1.8 + Math.random() * 1.1,
+          pulseR: 0,
+          pulseAlpha: 0,
+          color: s.color,
+          rgb: s.rgb
+        });
+      }
+
+      return {
+        cx,
+        cy,
+        baseCx: cx,
+        baseCy: cy,
+        rx,
+        ry,
+        phase: cIdx * 1.4,
+        color: s.color,
+        rgb: s.rgb,
+        nodes
+      };
+    });
+
     pkts = [];
+    for (let i = 0; i < (isMobile ? 7 : 12); i++) {
+      spawnPacket(true);
+    }
   }
 
-  function spawnPkt() {
-    if (pkts.length > 8) return;
-    const a = Math.floor(Math.random() * nodes.length);
-    let b;
-    do { b = Math.floor(Math.random() * nodes.length); } while (b === a);
-    pkts.push({ a, b, t: 0, speed: 0.008 + Math.random() * 0.006 });
+  function findClosestBridge(c1, c2) {
+    let best = null;
+    let minD = Infinity;
+    for (const a of c1.nodes) {
+      for (const b of c2.nodes) {
+        const d = Math.hypot(a.x - b.x, a.y - b.y);
+        if (d < minD) {
+          minD = d;
+          best = { a, b, d };
+        }
+      }
+    }
+    return best;
   }
 
+  function spawnPacket(randomProgress) {
+    if (!clusters.length || pkts.length >= (W < 768 ? 10 : 18)) return;
+
+    // 65% probabilidad de ruta multi-salto que sale de un cúmulo hacia otro cúmulo vecino
+    const c1Idx = Math.floor(Math.random() * clusters.length);
+    const c1 = clusters[c1Idx];
+
+    // Buscar cúmulo vecino más cercano
+    const neighbors = clusters
+      .map((c, idx) => ({ c, idx, d: Math.hypot(c.cx - c1.cx, c.cy - c1.cy) }))
+      .filter(item => item.idx !== c1Idx)
+      .sort((a, b) => a.d - b.d);
+
+    let path = [];
+    let isInterCluster = false;
+
+    if (neighbors.length > 0 && Math.random() < 0.68) {
+      const targetNeighbor = neighbors[Math.floor(Math.random() * Math.min(2, neighbors.length))].c;
+      const bridge = findClosestBridge(c1, targetNeighbor);
+      if (bridge) {
+        const startPeer = c1.nodes[Math.floor(Math.random() * c1.nodes.length)];
+        const endPeer = targetNeighbor.nodes[Math.floor(Math.random() * targetNeighbor.nodes.length)];
+        path = [c1.nodes[0]];
+        if (startPeer !== c1.nodes[0]) path.unshift(startPeer);
+        if (bridge.a !== path[path.length - 1]) path.push(bridge.a);
+        path.push(bridge.b);
+        if (targetNeighbor.nodes[0] !== bridge.b) path.push(targetNeighbor.nodes[0]);
+        if (endPeer !== path[path.length - 1]) path.push(endPeer);
+        isInterCluster = true;
+      }
+    }
+
+    if (path.length < 2) {
+      // Ruta multi-salto saliendo desde el núcleo del cúmulo hacia los bordes
+      const anchor = c1.nodes[0];
+      const n1 = c1.nodes[1 + Math.floor(Math.random() * (c1.nodes.length - 1))];
+      const n2 = c1.nodes[1 + Math.floor(Math.random() * (c1.nodes.length - 1))];
+      path = n1 !== n2 ? [anchor, n1, n2] : [anchor, n1];
+    }
+
+    if (path[0]) {
+      path[0].pulseR = 2;
+      path[0].pulseAlpha = 0.75;
+    }
+
+    pkts.push({
+      path,
+      seg: 0,
+      t: randomProgress ? Math.random() : 0,
+      speed: (isInterCluster ? 0.016 : 0.022) + Math.random() * 0.012,
+      color: isInterCluster ? '#00d9f5' : c1.color,
+      rgb: isInterCluster ? '0,217,245' : c1.rgb,
+      isInterCluster
+    });
+  }
+
+  let tick = 0;
   function draw() {
+    tick += 0.012;
     ctx.clearRect(0, 0, W, H);
-    const MAX_DIST = 160;
+    const isMobile = W < 768;
 
-    // Links
-    for (let i = 0; i < nodes.length; i++) {
-      for (let j = i + 1; j < nodes.length; j++) {
-        const dx = nodes[i].x - nodes[j].x, dy = nodes[i].y - nodes[j].y;
-        const d = Math.sqrt(dx * dx + dy * dy);
-        if (d < MAX_DIST) {
+    // 1. Actualizar física de cúmulos y nodos
+    for (const c of clusters) {
+      c.cx = c.baseCx + Math.sin(tick * 0.7 + c.phase) * 18;
+      c.cy = c.baseCy + Math.cos(tick * 0.55 + c.phase) * 14;
+
+      // Halo suave ambiental del cúmulo
+      const haloR = Math.max(c.rx, c.ry) * 1.15;
+      const grad = ctx.createRadialGradient(c.cx, c.cy, 2, c.cx, c.cy, haloR);
+      grad.addColorStop(0, `rgba(${c.rgb}, 0.055)`);
+      grad.addColorStop(0.6, `rgba(${c.rgb}, 0.018)`);
+      grad.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.arc(c.cx, c.cy, haloR, 0, Math.PI * 2);
+      ctx.fill();
+
+      for (const n of c.nodes) {
+        if (!n.isAnchor) {
+          n.relX += n.vx;
+          n.relY += n.vy;
+          const norm = (n.relX * n.relX) / (c.rx * c.rx) + (n.relY * n.relY) / (c.ry * c.ry);
+          if (norm > 1.0) {
+            n.vx -= (n.relX / c.rx) * 0.018;
+            n.vy -= (n.relY / c.ry) * 0.018;
+          }
+        }
+        n.x = c.cx + n.relX;
+        n.y = c.cy + n.relY;
+
+        if (n.pulseAlpha > 0.02) {
+          n.pulseR += 0.55;
+          n.pulseAlpha *= 0.93;
+        } else {
+          n.pulseAlpha = 0;
+        }
+      }
+    }
+
+    // 2. Enlaces intra-cúmulo (malla triangular densa en cada cúmulo)
+    for (const c of clusters) {
+      const maxIntra = Math.max(c.rx, c.ry) * 1.15;
+      for (let i = 0; i < c.nodes.length; i++) {
+        for (let j = i + 1; j < c.nodes.length; j++) {
+          const a = c.nodes[i], b = c.nodes[j];
+          const d = Math.hypot(a.x - b.x, a.y - b.y);
+          const isSpoke = i === 0 || j === 0;
+          if (isSpoke || d < maxIntra) {
+            const alpha = isSpoke ? 0.20 : Math.max(0.06, (1 - d / maxIntra) * 0.22);
+            ctx.beginPath();
+            ctx.moveTo(a.x, a.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.strokeStyle = `rgba(${c.rgb}, ${alpha})`;
+            ctx.lineWidth = isSpoke ? 1.05 : 0.85;
+            ctx.stroke();
+          }
+        }
+      }
+    }
+
+    // 3. Puentes inter-cúmulo (redes mesh que se interconectan)
+    const maxClusterDist = isMobile ? H * 0.46 : W * 0.44;
+    for (let i = 0; i < clusters.length; i++) {
+      for (let j = i + 1; j < clusters.length; j++) {
+        const c1 = clusters[i], c2 = clusters[j];
+        const cd = Math.hypot(c1.cx - c2.cx, c1.cy - c2.cy);
+        if (cd < maxClusterDist) {
+          const bridge = findClosestBridge(c1, c2);
+          if (bridge) {
+            const alpha = Math.max(0.08, (1 - cd / maxClusterDist) * 0.28);
+            ctx.save();
+            ctx.beginPath();
+            ctx.setLineDash([5, 6]);
+            ctx.lineDashOffset = -tick * 24;
+            ctx.moveTo(bridge.a.x, bridge.a.y);
+            ctx.lineTo(bridge.b.x, bridge.b.y);
+            ctx.strokeStyle = `rgba(0, 217, 245, ${alpha})`;
+            ctx.lineWidth = 1.0;
+            ctx.stroke();
+            ctx.restore();
+          }
+        }
+      }
+    }
+
+    // 4. Mensajes saliendo y saltando entre nodos y cúmulos (con estela de cometa)
+    for (let i = pkts.length - 1; i >= 0; i--) {
+      const p = pkts[i];
+      p.t += p.speed;
+      if (p.t >= 1) {
+        p.t = 0;
+        const arrived = p.path[p.seg + 1];
+        if (arrived) {
+          arrived.pulseR = 2.2;
+          arrived.pulseAlpha = 0.85;
+        }
+        p.seg++;
+        if (p.seg >= p.path.length - 1) {
+          pkts.splice(i, 1);
+          continue;
+        }
+      }
+
+      const a = p.path[p.seg];
+      const b = p.path[p.seg + 1];
+      if (!a || !b) continue;
+
+      const dx = b.x - a.x;
+      const dy = b.y - a.y;
+      const headX = a.x + dx * p.t;
+      const headY = a.y + dy * p.t;
+      const tailT = Math.max(0, p.t - 0.30);
+      const tailX = a.x + dx * tailT;
+      const tailY = a.y + dy * tailT;
+
+      // Iluminar arista activa
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.strokeStyle = `rgba(${p.rgb}, ${Math.sin(p.t * Math.PI) * 0.35})`;
+      ctx.lineWidth = 1.3;
+      ctx.stroke();
+
+      // Estela luminosa del mensaje
+      const trailGrad = ctx.createLinearGradient(tailX, tailY, headX, headY);
+      trailGrad.addColorStop(0, `rgba(${p.rgb}, 0)`);
+      trailGrad.addColorStop(0.7, `rgba(${p.rgb}, 0.65)`);
+      trailGrad.addColorStop(1, '#ffffff');
+      ctx.beginPath();
+      ctx.moveTo(tailX, tailY);
+      ctx.lineTo(headX, headY);
+      ctx.strokeStyle = trailGrad;
+      ctx.lineWidth = p.isInterCluster ? 2.2 : 1.8;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+
+      // Cabeza brillante del paquete
+      ctx.beginPath();
+      ctx.arc(headX, headY, p.isInterCluster ? 3.0 : 2.5, 0, Math.PI * 2);
+      ctx.fillStyle = '#ffffff';
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = p.color;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+
+    // 5. Dibujar nodos y ondas de transmisión RF
+    for (const c of clusters) {
+      for (const n of c.nodes) {
+        if (n.pulseAlpha > 0.03) {
           ctx.beginPath();
-          ctx.moveTo(nodes[i].x, nodes[i].y);
-          ctx.lineTo(nodes[j].x, nodes[j].y);
-          ctx.strokeStyle = `rgba(0,245,155,${(1 - d / MAX_DIST) * 0.15})`;
+          ctx.arc(n.x, n.y, n.r + n.pulseR, 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(${n.rgb}, ${n.pulseAlpha})`;
+          ctx.lineWidth = 1.2;
+          ctx.stroke();
+        }
+
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
+        ctx.fillStyle = n.isAnchor ? n.color : `rgba(${n.rgb}, 0.72)`;
+        ctx.fill();
+
+        if (n.isAnchor) {
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, n.r + 3.2, 0, Math.PI * 2);
+          ctx.strokeStyle = `rgba(${n.rgb}, 0.38)`;
           ctx.lineWidth = 1;
           ctx.stroke();
         }
       }
     }
 
-    // Nodes
-    nodes.forEach(n => {
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(0,245,155,0.5)';
-      ctx.fill();
-      n.x += n.vx; n.y += n.vy;
-      if (n.x < 0 || n.x > W) n.vx *= -1;
-      if (n.y < 0 || n.y > H) n.vy *= -1;
-    });
-
-    // Packets
-    pkts = pkts.filter(p => {
-      p.t += p.speed;
-      if (p.t >= 1) return false;
-      const a = nodes[p.a], b = nodes[p.b];
-      const x = a.x + (b.x - a.x) * p.t;
-      const y = a.y + (b.y - a.y) * p.t;
-      ctx.beginPath();
-      ctx.arc(x, y, 3, 0, Math.PI * 2);
-      ctx.fillStyle = '#00f59b';
-      ctx.shadowBlur = 8;
-      ctx.shadowColor = '#00f59b';
-      ctx.fill();
-      ctx.shadowBlur = 0;
-      return true;
-    });
-
-    if (Math.random() < 0.04) spawnPkt();
+    if (Math.random() < 0.14) spawnPacket(false);
     raf = requestAnimationFrame(draw);
   }
 
@@ -1685,13 +2216,15 @@
   });
 })();
 
-// ── MOBILE NAV CTA ────────────────────────────────────
+// ── SELECTOR DE IDIOMA Y PERSISTENCIA ────────────────
 (function () {
-  const cta = document.getElementById('nav-cta-mobile');
-  if (!cta) return;
-  if (window.innerWidth < 900) cta.style.display = 'inline-flex';
-  window.addEventListener('resize', () => {
-    cta.style.display = window.innerWidth < 900 ? 'inline-flex' : 'none';
+  document.querySelectorAll('.lang-item').forEach(function(el) {
+    el.addEventListener('click', function(e) {
+      var l = this.getAttribute('data-lang');
+      if (l) {
+        try { localStorage.setItem('chax_lang_pref', l); } catch(err) {}
+      }
+    });
   });
 })();
 </script>

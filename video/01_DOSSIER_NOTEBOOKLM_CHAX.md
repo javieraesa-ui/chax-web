@@ -89,7 +89,7 @@
 
 | Característica | CHAX | WhatsApp | Telegram | Signal |
 | :--- | :---: | :---: | :---: | :---: |
-| **¿Funciona sin conexión a Internet?** | **SÍ (Bluetooth Mesh)** | ❌ No (Muere) | ❌ No (Muere) | ❌ No (Muere) |
+| **¿Funciona sin conexión a Internet?** | **SÍ (Bluetooth Mesh)** | ❌ No (Requiere red) | ❌ No (Requiere red) | ❌ No (Requiere red) |
 | **¿Exige número telefónico?** | **NUNCA (Identidad Soberana)** | ❌ Obligatorio | ❌ Obligatorio | ❌ Obligatorio |
 | **Cartografía Táctica Offline (Mapax)** | **Integrado sin datos** | ❌ No existe | ❌ No existe | ❌ No existe |
 | **Walkie-Talkie Push-To-Talk Offline** | **Directo P2P local** | ❌ Requiere nube | ❌ Requiere nube | ❌ Requiere nube |

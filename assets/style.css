@@ -271,6 +271,62 @@ header {
   box-shadow: 0 6px 22px rgba(0, 245, 155, 0.55);
 }
 
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.lang-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  font-size: 0.8rem;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+.lang-pill:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(0, 245, 155, 0.35);
+}
+
+.lang-globe-icon {
+  color: var(--volt-green);
+  opacity: 0.85;
+  flex-shrink: 0;
+}
+
+.lang-item {
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+  letter-spacing: 0.02em;
+  padding: 2px 2px;
+}
+
+.lang-item:hover {
+  color: var(--text-main);
+}
+
+.lang-item.active {
+  color: var(--volt-green);
+  font-weight: 800;
+}
+
+.lang-sep {
+  color: rgba(255, 255, 255, 0.18);
+  font-size: 0.72rem;
+}
+
 /* ==========================================================================
    HERO SECTION: PROBLEMA DIRECTO & ALTO IMPACTO
    ========================================================================== */
@@ -1654,6 +1710,17 @@ footer {
   }
   .nav-links {
     display: none; /* Mobile menu */
+  }
+  .nav-right {
+    gap: 8px;
+  }
+  .lang-pill {
+    padding: 5px 10px;
+    font-size: 0.74rem;
+  }
+  .nav-cta {
+    padding: 6px 14px;
+    font-size: 0.78rem;
   }
   .screen-item.mac-screen {
     flex: 0 0 340px;

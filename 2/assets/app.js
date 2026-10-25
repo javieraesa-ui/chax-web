@@ -7,7 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
   initDeviceTabs();
   initPttPlayer();
   initDiagramSlideshow();
-  initAppleStagesSubnav();
 });
 
 /* ==========================================================================
@@ -175,33 +174,45 @@ function initMeshCanvas() {
       const inner1 = pick.c1.nodes[Math.floor(Math.random() * pick.c1.nodes.length)];
       const inner2 = pick.c2.nodes[Math.floor(Math.random() * pick.c2.nodes.length)];
 
+      if ( inner1 ) {
+        inner1.pulseRadius = 2.5;
+        inner1.pulseAlpha = 0.85;
+      }
+
       const path = [inner1, gw1, gw2, inner2];
       packets.push({
         path,
         currentSegment: 0,
         progress: 0,
-        speed: 0.024 + Math.random() * 0.012,
-        color: Math.random() > 0.3 ? "#00f59b" : "#38bdf8",
-        size: 3.4
+        speed: 0.022 + Math.random() * 0.014,
+        color: Math.random() > 0.35 ? "#00f59b" : "#38bdf8",
+        rgb: Math.random() > 0.35 ? "0, 245, 155" : "56, 189, 248",
+        size: 3.2
       });
     } else {
-      // Disparo interno dentro de un mismo cluster (multi-salto local)
+      // Disparo interno dentro de un mismo cluster (multi-salto local saliendo del cúmulo)
       const c = clusters[Math.floor(Math.random() * clusters.length)];
       if (c && c.nodes.length >= 4) {
         const n1 = c.nodes[0];
-        const n2 = c.nodes[1];
-        const n3 = c.nodes[2];
-        const n4 = c.nodes[3];
+        const n2 = c.nodes[1 + Math.floor(Math.random() * (c.nodes.length - 1))];
+        const n3 = c.nodes[1 + Math.floor(Math.random() * (c.nodes.length - 1))];
+        n1.pulseRadius = 2.5;
+        n1.pulseAlpha = 0.85;
         packets.push({
-          path: [n1, n2, n3, n4],
+          path: n2 !== n3 ? [n1, n2, n3] : [n1, n2],
           currentSegment: 0,
           progress: 0,
-          speed: 0.03,
+          speed: 0.026 + Math.random() * 0.012,
           color: "#00f59b",
-          size: 3.2
+          rgb: "0, 245, 155",
+          size: 3.0
         });
       }
     }
+  }
+
+  for (let initP = 0; initP < (isMobile ? 6 : 10); initP++) {
+    triggerMultiHopPacket();
   }
 
   let lastTime = performance.now();
@@ -217,11 +228,11 @@ function initMeshCanvas() {
 
     ctx.clearRect(0, 0, width, height);
 
-    // Temporizador de paquetes multi-salto
+    // Temporizador de paquetes multi-salto saliendo continuamente entre cúmulos
     packetTimer += dt;
-    if (packetTimer > (isMobile ? 2.2 : 1.6)) {
+    if (packetTimer > (isMobile ? 0.55 : 0.32)) {
       packetTimer = 0;
-      if (packets.length < 5) {
+      if (packets.length < (isMobile ? 9 : 16)) {
         triggerMultiHopPacket();
       }
     }
@@ -250,6 +261,17 @@ function initMeshCanvas() {
         cluster.cy = height - margin;
         cluster.cvy = -Math.abs(cluster.cvy);
       }
+
+      // Halo suave ambiental del cúmulo
+      const haloR = Math.max(cluster.semiMajor, cluster.semiMinor) * 1.15;
+      const haloGrad = ctx.createRadialGradient(cluster.cx, cluster.cy, 2, cluster.cx, cluster.cy, haloR);
+      haloGrad.addColorStop(0, "rgba(0, 245, 155, 0.045)");
+      haloGrad.addColorStop(0.65, "rgba(56, 189, 248, 0.015)");
+      haloGrad.addColorStop(1, "rgba(0, 0, 0, 0)");
+      ctx.fillStyle = haloGrad;
+      ctx.beginPath();
+      ctx.arc(cluster.cx, cluster.cy, haloR, 0, Math.PI * 2);
+      ctx.fill();
 
       // Actualizar nodos del cluster con topología no circular
       const nodes = cluster.nodes;
@@ -291,7 +313,7 @@ function initMeshCanvas() {
     }
 
     // 2. Dibujar enlaces de radio RF intra-cluster (Budget de enlace RF realista)
-    const rfRange = isMobile ? 80 : 100;
+    const rfRange = isMobile ? 88 : 112;
     for (let c = 0; c < clusters.length; c++) {
       const nodes = clusters[c].nodes;
       for (let i = 0; i < nodes.length; i++) {
@@ -303,16 +325,16 @@ function initMeshCanvas() {
           if (dist < rfRange) {
             // Modelo de atenuación de señal RF (de 1/d^2 a gradiente suave)
             const signalRatio = 1 - (dist / rfRange);
-            const alpha = signalRatio * signalRatio * 0.32;
+            const alpha = signalRatio * signalRatio * 0.34;
 
-            ctx.lineWidth = signalRatio > 0.5 ? 1.0 : 0.7;
+            ctx.lineWidth = signalRatio > 0.5 ? 1.05 : 0.75;
             
             // Enlace fuerte = Volt Green sólido; Enlace débil = Cyan punteado
             if (signalRatio > 0.55) {
               ctx.strokeStyle = `rgba(0, 245, 155, ${alpha})`;
               ctx.setLineDash([]);
             } else {
-              ctx.strokeStyle = `rgba(56, 189, 248, ${alpha * 0.8})`;
+              ctx.strokeStyle = `rgba(56, 189, 248, ${alpha * 0.85})`;
               ctx.setLineDash([4, 4]);
             }
 
@@ -327,7 +349,7 @@ function initMeshCanvas() {
     }
 
     // 3. Puentes dinámicos entre clusters cercanos (Inter-Cluster RF Bridge)
-    const proximityThreshold = isMobile ? 310 : 420;
+    const proximityThreshold = isMobile ? 340 : 460;
     for (let i = 0; i < clusters.length; i++) {
       for (let j = i + 1; j < clusters.length; j++) {
         const c1 = clusters[i];
@@ -351,10 +373,10 @@ function initMeshCanvas() {
             }
           }
 
-          if (bestPair && minD < (isMobile ? 210 : 280)) {
-            const bridgeAlpha = factor * 0.42;
+          if (bestPair && minD < (isMobile ? 240 : 320)) {
+            const bridgeAlpha = factor * 0.44;
             ctx.strokeStyle = `rgba(0, 245, 155, ${bridgeAlpha})`;
-            ctx.lineWidth = 1.2 + factor * 1.2;
+            ctx.lineWidth = 1.2 + factor * 1.1;
             ctx.setLineDash([6, 5]);
             ctx.beginPath();
             ctx.moveTo(bestPair.a.x, bestPair.a.y);
@@ -366,7 +388,7 @@ function initMeshCanvas() {
       }
     }
 
-    // 4. Paquetes multi-hop en tránsito
+    // 4. Paquetes multi-hop en tránsito con estela de cometa
     for (let p = packets.length - 1; p >= 0; p--) {
       const pkt = packets[p];
       pkt.progress += pkt.speed;
@@ -377,7 +399,7 @@ function initMeshCanvas() {
         const reachedNode = pkt.path[pkt.currentSegment + 1];
         if (reachedNode) {
           reachedNode.pulseRadius = 2.5;
-          reachedNode.pulseAlpha = 0.8;
+          reachedNode.pulseAlpha = 0.85;
         }
 
         pkt.currentSegment++;
@@ -388,16 +410,43 @@ function initMeshCanvas() {
         }
       }
 
-      // Calcular posición actual sobre el segmento activo
+      // Calcular posición actual y estela sobre el segmento activo
       const startNode = pkt.path[pkt.currentSegment];
       const endNode = pkt.path[pkt.currentSegment + 1];
       if (startNode && endNode) {
-        const px = startNode.x + (endNode.x - startNode.x) * pkt.progress;
-        const py = startNode.y + (endNode.y - startNode.y) * pkt.progress;
+        const dx = endNode.x - startNode.x;
+        const dy = endNode.y - startNode.y;
+        const px = startNode.x + dx * pkt.progress;
+        const py = startNode.y + dy * pkt.progress;
+        const tailT = Math.max(0, pkt.progress - 0.32);
+        const tx = startNode.x + dx * tailT;
+        const ty = startNode.y + dy * tailT;
+        const rgb = pkt.rgb || "0, 245, 155";
+
+        // Iluminar enlace activo
+        ctx.beginPath();
+        ctx.moveTo(startNode.x, startNode.y);
+        ctx.lineTo(endNode.x, endNode.y);
+        ctx.strokeStyle = `rgba(${rgb}, ${Math.sin(pkt.progress * Math.PI) * 0.35})`;
+        ctx.lineWidth = 1.4;
+        ctx.stroke();
+
+        // Estela luminosa
+        const trailGrad = ctx.createLinearGradient(tx, ty, px, py);
+        trailGrad.addColorStop(0, `rgba(${rgb}, 0)`);
+        trailGrad.addColorStop(0.7, `rgba(${rgb}, 0.7)`);
+        trailGrad.addColorStop(1, "#ffffff");
+        ctx.beginPath();
+        ctx.moveTo(tx, ty);
+        ctx.lineTo(px, py);
+        ctx.strokeStyle = trailGrad;
+        ctx.lineWidth = 2.1;
+        ctx.lineCap = "round";
+        ctx.stroke();
 
         ctx.beginPath();
-        ctx.arc(px, py, pkt.size, 0, Math.PI * 2);
-        ctx.fillStyle = pkt.color;
+        ctx.arc(px, py, pkt.size * 0.85, 0, Math.PI * 2);
+        ctx.fillStyle = "#ffffff";
         ctx.shadowColor = pkt.color;
         ctx.shadowBlur = 10;
         ctx.fill();
@@ -775,39 +824,5 @@ function initDiagramSlideshow() {
       }
     });
   }
-}
-
-/* ==========================================================================
-   6. SUBNAVEGACIÓN INTERACTIVA APPLE STAGES (SCROLL SPY)
-   ========================================================================== */
-function initAppleStagesSubnav() {
-  const links = document.querySelectorAll(".apple-subnav-item");
-  const sections = document.querySelectorAll(".apple-fullscreen-section");
-  if (!links.length || !sections.length) return;
-
-  function onScroll() {
-    let currentId = "";
-    const scrollPos = window.scrollY + 220;
-
-    sections.forEach(sec => {
-      const top = sec.offsetTop;
-      const height = sec.offsetHeight;
-      if (scrollPos >= top && scrollPos < top + height) {
-        currentId = sec.id;
-      }
-    });
-
-    if (currentId) {
-      links.forEach(l => {
-        l.classList.remove("active");
-        if (l.getAttribute("href") === `#${currentId}`) {
-          l.classList.add("active");
-        }
-      });
-    }
-  }
-
-  window.addEventListener("scroll", onScroll, { passive: true });
-  onScroll();
 }
 

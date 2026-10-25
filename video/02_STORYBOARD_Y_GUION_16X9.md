@@ -30,7 +30,7 @@ flowchart TD
   - La cámara hace un zoom suave hacia el título principal: *"Rápido online. Imparable mesh."*
   - Se iluminan las pastillas de valor: `⚡ Red Nostr Ultrarrápida`, `🎙️ Walkie-Talkie PTT`, `🗺️ Mapax Satelital Offline`, `🛡️ Cero Números`.
 - **Audio / Locución (Narrador o Host 1):**
-  > *"¿Cuántas veces has estado en un festival masivo, en una carretera sin cobertura o en medio de un apagón y tu app de mensajería simplemente se muere? WhatsApp, Telegram o Signal dependen al 100% de torres celulares e internet. Pero hoy existe una alternativa radical: se llama **Chax**. Una app ultrarrápida para tu día a día, pero con un as bajo la manga que nadie más tiene: una malla Bluetooth que sigue funcionando cuando el mundo se queda sin señal."*
+  > *"¿Cuántas veces has estado en un festival masivo, en una carretera sin cobertura o en medio de un apagón y tu app de mensajería simplemente deja de funcionar? WhatsApp, Telegram o Signal dependen al 100% de torres celulares e internet. Pero hoy existe una alternativa radical: se llama **Chax**. Una app ultrarrápida para tu día a día, pero con un as bajo la manga que nadie más tiene: una malla Bluetooth que sigue funcionando cuando el mundo se queda sin señal."*
 - **Texto en Pantalla (Lower-Third):**
   - `CHAX: Mensajería P2P de Nueva Generación`
   - `Rápido en Internet • Imparable por Bluetooth Mesh`
@@ -107,9 +107,9 @@ flowchart TD
   - Zoom en las columnas: WhatsApp (Cruz roja ✕), Telegram (Cruz roja ✕), Signal (Cruz roja ✕) frente a Chax (Check verde ✓ en todas las filas).
   - Efecto de destaque en: *¿Funciona sin internet? Solo Chax*, *¿Exige número? Cero en Chax*.
 - **Audio / Locución (Host 1):**
-  > *"Cuando comparas a Chax con WhatsApp, Telegram o Signal, la diferencia es abismal. Todas las demás mueren en cuanto se apaga el módem o te alejas de una antena. Ninguna otra tiene mapas satelitales ni Walkie-Talkie offline integrados. Chax es tu mensajero veloz de todos los días por internet, pero blindado para cuando todo lo demás falla."*
+  > *"Cuando comparas a Chax con WhatsApp, Telegram o Signal, la diferencia es abismal. Todas las demás se detienen en cuanto se apaga el módem o te alejas de una antena. Ninguna otra tiene mapas satelitales ni Walkie-Talkie offline integrados. Chax es tu mensajero veloz de todos los días por internet, pero blindado para cuando todo lo demás falla."*
 - **Texto en Pantalla (Overlay):**
-  - `WhatsApp, Telegram y Signal mueren sin conexión`
+  - `WhatsApp, Telegram y Signal requieren conexión fija`
   - `Chax: Autonomía Soberana Absoluta`
 
 ---

@@ -1,0 +1,962 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Chax Central Packet Observatory — Sniffer &amp; Auditoría Global</title>
+  <style>
+    :root {
+      --bg: #070b14;
+      --bg-card: #0f1626;
+      --bg-panel: #151f36;
+      --border: rgba(148, 163, 184, 0.16);
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --accent: #14b8a6;
+      --blue: #38bdf8;
+      --purple: #a855f7;
+      --green: #22c55e;
+      --orange: #f59e0b;
+      --red: #ef4444;
+      --font-mono: 'SF Mono', 'JetBrains Mono', Menlo, Consolas, monospace;
+      --font-sans: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: radial-gradient(circle at top right, #0f1d3a 0%, var(--bg) 55%);
+      color: var(--text);
+      font-family: var(--font-sans);
+      min-height: 100vh;
+      line-height: 1.45;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      backdrop-filter: blur(16px);
+      background: rgba(7, 11, 20, 0.86);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-badge {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #14b8a6, #0284c7);
+      display: grid;
+      place-items: center;
+      font-size: 20px;
+      box-shadow: 0 0 20px rgba(20, 184, 166, 0.35);
+    }
+
+    .brand h1 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+
+    .brand p {
+      font-size: 0.78rem;
+      color: var(--muted);
+      font-family: var(--font-mono);
+    }
+
+    .conn-indicators {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .conn-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.75rem;
+      font-family: var(--font-mono);
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+    }
+
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--orange);
+    }
+
+    .dot.online {
+      background: var(--green);
+      box-shadow: 0 0 8px var(--green);
+    }
+
+    main {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 20px 24px 60px;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(175px, 1fr));
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 16px;
+    }
+
+    .kpi-value {
+      font-family: var(--font-mono);
+      font-size: 1.65rem;
+      font-weight: 800;
+    }
+
+    .kpi-label {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 18px;
+    }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    button.btn {
+      background: var(--bg-panel);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 7px 12px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    button.btn:hover {
+      border-color: var(--accent);
+    }
+
+    button.btn.active {
+      background: rgba(20, 184, 166, 0.2);
+      border-color: var(--accent);
+      color: #5eead4;
+    }
+
+    button.btn-primary {
+      background: linear-gradient(135deg, #0d9488, #0284c7);
+      border: none;
+      color: #fff;
+    }
+
+    .search-input {
+      background: var(--bg-panel);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 8px 12px;
+      min-width: 270px;
+      font-size: 0.84rem;
+      font-family: var(--font-mono);
+    }
+
+    .packets-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .packet-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px 18px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25);
+    }
+
+    /* DO ONLY apply this class to items OUTSIDE the initial layout viewport */
+    .packet-card-deferred {
+      content-visibility: auto;
+      contain-intrinsic-size: auto none auto 280px;
+    }
+
+    .packet-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 14px;
+    }
+
+    .route-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .badge {
+      font-family: var(--font-mono);
+      font-size: 0.72rem;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 6px;
+      border: 1px solid transparent;
+    }
+
+    .badge-sym {
+      background: rgba(34, 197, 94, 0.14);
+      color: #4ade80;
+      border-color: rgba(34, 197, 94, 0.35);
+    }
+
+    .badge-asym {
+      background: rgba(245, 158, 11, 0.16);
+      color: #fbbf24;
+      border-color: rgba(245, 158, 11, 0.4);
+    }
+
+    .badge-pending {
+      background: rgba(239, 68, 68, 0.15);
+      color: #f87171;
+      border-color: rgba(239, 68, 68, 0.35);
+    }
+
+    .meta-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      color: var(--muted);
+    }
+
+    .mirror-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+
+    .mirror-box {
+      border-radius: 10px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+    }
+
+    .mirror-sender {
+      background: rgba(56, 189, 248, 0.06);
+      border-color: rgba(56, 189, 248, 0.25);
+    }
+
+    .mirror-receiver {
+      background: rgba(168, 85, 247, 0.06);
+      border-color: rgba(168, 85, 247, 0.25);
+    }
+
+    .mirror-title {
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .phases-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 12px;
+    }
+
+    .phase-box {
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+    }
+
+    .phase-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .attempt-item {
+      border-left: 3px solid var(--muted);
+      padding: 6px 10px;
+      margin-bottom: 7px;
+      background: rgba(7, 11, 20, 0.45);
+      border-radius: 0 6px 6px 0;
+      font-size: 0.78rem;
+    }
+
+    .attempt-item.ok { border-left-color: var(--green); }
+    .attempt-item.warn { border-left-color: var(--orange); }
+    .attempt-item.err { border-left-color: var(--red); }
+
+    .attempt-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 6px;
+      font-weight: 700;
+      font-family: var(--font-mono);
+      font-size: 0.74rem;
+    }
+
+    .attempt-reason {
+      color: var(--muted);
+      margin-top: 2px;
+      font-size: 0.74rem;
+    }
+
+    .notes-banner {
+      margin-top: 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      background: rgba(245, 158, 11, 0.12);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      color: #fcd34d;
+      font-size: 0.78rem;
+      font-family: var(--font-mono);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      background: var(--bg-card);
+      border: 1px dashed var(--border);
+      border-radius: 14px;
+      color: var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand">
+      <div class="brand-badge">🛰️</div>
+      <div>
+        <h1>Chax Central Packet Observatory</h1>
+        <p>Auditoría Forense Unificada de Paquetes, ACKs y Simetría de Telemetría</p>
+      </div>
+    </div>
+    <div class="conn-indicators">
+      <div class="conn-pill"><span id="dot-nostr" class="dot"></span> <span id="lbl-nostr">Nostr Relay: Conectando…</span></div>
+      <div class="conn-pill"><span id="dot-ntfy" class="dot"></span> <span id="lbl-ntfy">ntfy Stream: Conectando…</span></div>
+      <div class="conn-pill"><span id="dot-http" class="dot"></span> <span id="lbl-http">Repositorio HTTP: Sincronizando…</span></div>
+    </div>
+  </header>
+
+  <main>
+    <section class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-value" id="kpi-total" style="color: var(--blue)">0</div>
+        <div class="kpi-label">Paquetes Correlacionados</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value" id="kpi-sym" style="color: var(--green)">0</div>
+        <div class="kpi-label">Simétricos 100% (🟢)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value" id="kpi-asym" style="color: var(--orange)">0</div>
+        <div class="kpi-label">Asimetrías Detectadas (🟠)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value" id="kpi-pending" style="color: var(--red)">0</div>
+        <div class="kpi-label">Pendientes / Sin ACK (🔴)</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value" id="kpi-nodes" style="color: var(--purple)">0</div>
+        <div class="kpi-label">Chaxters Reportando</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-value" id="kpi-rtt" style="color: var(--accent)">—</div>
+        <div class="kpi-label">RTT Promedio ACK</div>
+      </div>
+    </section>
+
+    <section class="toolbar">
+      <div class="filters">
+        <button class="btn active" data-filter="ALL" onclick="setFilter('ALL')">Todos</button>
+        <button class="btn" data-filter="ASYM" onclick="setFilter('ASYM')">Asimetrías 🟠</button>
+        <button class="btn" data-filter="NOACK" onclick="setFilter('NOACK')">Sin ACK 🔴</button>
+        <button class="btn" data-filter="LORA" onclick="setFilter('LORA')">Radio LoRa 📻</button>
+        <button class="btn" data-filter="RELAY" onclick="setFilter('RELAY')">Con Pasarela 🌉</button>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px; align-items: center;">
+        <input id="searchBox" class="search-input" type="search" placeholder="Filtrar por alias, packetId, LoRa #msgId, canal…" oninput="renderPackets()" />
+        <button class="btn" onclick="syncAllSources()">🔄 Refrescar</button>
+        <button class="btn btn-primary" onclick="copyGlobalReport()">📋 Copiar Auditoría Global</button>
+      </div>
+    </section>
+
+    <section id="packetsContainer" class="packets-list"></section>
+  </main>
+
+  <script>
+    const CENTRAL_TELEMETRY_PUBKEY = "c4a8000000000000000000000000000000000000000000000000000000000001";
+    const NOSTR_RELAY_WSS = "wss://174-138-177-246.sslip.io/nostr";
+    const NTFY_TOPIC = "chax_telemetry_sniffer_v1";
+    const HTTP_REPO_URL = "https://174-138-177-246.sslip.io/telemetry?limit=400";
+
+    const eventsById = new Map();
+    let currentFilter = "ALL";
+
+    function decodeEnvelopeText(rawText) {
+      if (!rawText) return null;
+      const trimmed = rawText.trim();
+      const body = trimmed.startsWith("CHAX_SNIFFER_V1:") ? trimmed.slice("CHAX_SNIFFER_V1:".length) : trimmed;
+      try {
+        if (body.startsWith("{")) {
+          const obj = JSON.parse(body);
+          if (obj && obj.packetId && obj.stage) return obj;
+          if (obj && typeof obj.message === "string") return decodeEnvelopeText(obj.message);
+        }
+        const binStr = atob(body);
+        const bytes = Uint8Array.from(binStr, c => c.charCodeAt(0));
+        const utf8 = new TextDecoder().decode(bytes);
+        const parsed = JSON.parse(utf8);
+        if (parsed && parsed.packetId && parsed.stage) return parsed;
+      } catch (_) {}
+      return null;
+    }
+
+    function ingestEvent(ev) {
+      if (!ev || !ev.id || !ev.packetId) return false;
+      if (eventsById.has(ev.id)) return false;
+      eventsById.set(ev.id, ev);
+      return true;
+    }
+
+    function correlatePackets() {
+      const allEvents = Array.from(eventsById.values()).sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+      const loraToCanonical = new Map();
+      for (const ev of allEvents) {
+        if (ev.loraMsgId && !String(ev.packetId).startsWith("lora_msg_")) {
+          loraToCanonical.set(ev.loraMsgId, String(ev.packetId).toLowerCase());
+        }
+      }
+
+      const groups = new Map();
+      for (const ev of allEvents) {
+        let key = String(ev.packetId).toLowerCase();
+        if (ev.loraMsgId && loraToCanonical.has(ev.loraMsgId)) {
+          key = loraToCanonical.get(ev.loraMsgId);
+        }
+        if (!groups.has(key)) groups.set(key, []);
+        groups.get(key).push(ev);
+      }
+
+      const correlated = [];
+      for (const [key, list] of groups.entries()) {
+        const first = list[0];
+        const last = list[list.length - 1];
+        const pkt = {
+          id: key,
+          packetId: (list.find(e => !String(e.packetId).startsWith("lora_msg_")) || first).packetId,
+          loraMsgId: (list.find(e => e.loraMsgId != null) || {}).loraMsgId || null,
+          senderPubKeyHex: first.senderPubKeyHex || "",
+          senderAlias: (list.find(e => e.senderAlias) || {}).senderAlias || String(first.senderPubKeyHex || "").slice(0, 6),
+          recipientPubKeyHex: first.recipientPubKeyHex || "",
+          recipientAlias: (list.find(e => e.recipientAlias) || {}).recipientAlias || String(first.recipientPubKeyHex || "").slice(0, 6),
+          createdAt: new Date(first.timestamp),
+          lastUpdatedAt: new Date(last.timestamp),
+          events: list,
+          txAttempts: [],
+          relayEvents: [],
+          rxEvents: [],
+          ackAttempts: [],
+          duplicateCount: 0,
+          suppressedBridgeCount: 0,
+          gatewayAliases: [],
+          receiverTelemetry: null,
+          senderConsolidatedViaInternet: null,
+          senderConsolidatedViaLoRa: null,
+          senderConsolidatedHopCount: null,
+          rttMs: null,
+          reconciliationNotes: []
+        };
+
+        for (const ev of list) {
+          const attempts = Array.isArray(ev.channelAttempts) ? ev.channelAttempts : [];
+          if (ev.stage === "TX_DECISION") {
+            pkt.txAttempts.push(...attempts);
+            if (pkt.senderConsolidatedViaInternet === null) pkt.senderConsolidatedViaInternet = ev.effectiveViaInternet;
+            if (pkt.senderConsolidatedViaLoRa === null) pkt.senderConsolidatedViaLoRa = ev.effectiveViaLoRa;
+          } else if (ev.stage === "RELAY_BRIDGE") {
+            const activeAtts = attempts.filter(a => a.action !== "SUPPRESSED");
+            pkt.suppressedBridgeCount += attempts.filter(a => a.action === "SUPPRESSED").length;
+            if (activeAtts.length > 0) {
+              pkt.relayEvents.push({ ...ev, channelAttempts: activeAtts });
+              const gw = ev.reporterAlias || String(ev.reporterPubKeyHex || "").slice(0, 4);
+              if (gw && !pkt.gatewayAliases.includes(gw)) pkt.gatewayAliases.push(gw);
+            }
+          } else if (ev.stage === "RX_DELIVERED" || ev.stage === "RX_DUPLICATE") {
+            if (ev.stage === "RX_DUPLICATE") pkt.duplicateCount += 1;
+            for (const a of attempts) {
+              if (String(a.action).includes("DUPLICATE")) {
+                if (ev.stage !== "RX_DUPLICATE") pkt.duplicateCount += 1;
+              } else if (String(a.action).includes("RECEIVED")) {
+                pkt.rxEvents.push(a);
+              } else {
+                pkt.ackAttempts.push(a);
+              }
+            }
+            if (ev.receiverTelemetry) pkt.receiverTelemetry = ev.receiverTelemetry;
+          } else if (ev.stage === "ACK_TX_DECISION") {
+            pkt.ackAttempts.push(...attempts);
+            if (ev.receiverTelemetry) pkt.receiverTelemetry = ev.receiverTelemetry;
+          } else if (ev.stage === "ACK_RX_COMPLETE" || ev.stage === "ACK_SECONDARY" || ev.stage === "ACK_TIMEOUT") {
+            pkt.ackAttempts.push(...attempts);
+            if (ev.stage === "ACK_RX_COMPLETE") {
+              pkt.senderConsolidatedViaInternet = ev.effectiveViaInternet;
+              pkt.senderConsolidatedViaLoRa = ev.effectiveViaLoRa;
+              pkt.senderConsolidatedHopCount = ev.hopCount;
+              if (ev.rttMs != null) pkt.rttMs = ev.rttMs;
+              if (ev.receiverTelemetry) pkt.receiverTelemetry = ev.receiverTelemetry;
+            }
+          }
+          if (Array.isArray(ev.notes)) {
+            for (const n of ev.notes) {
+              if (!pkt.reconciliationNotes.includes(n)) pkt.reconciliationNotes.push(n);
+            }
+          }
+        }
+
+        const hasAckComplete = list.some(e => e.stage === "ACK_RX_COMPLETE");
+        const hasRxDelivered = list.some(e => e.stage === "RX_DELIVERED") || pkt.receiverTelemetry != null;
+        const hasAckTimeout = list.some(e => e.stage === "ACK_TIMEOUT");
+
+        if (hasAckComplete && pkt.receiverTelemetry) {
+          const rx = pkt.receiverTelemetry;
+          const netDiff = pkt.senderConsolidatedViaInternet != null && pkt.senderConsolidatedViaInternet !== rx.viaInternet;
+          const loraDiff = pkt.senderConsolidatedViaLoRa != null && pkt.senderConsolidatedViaLoRa !== rx.isViaLoRa;
+          const hopDiff = pkt.senderConsolidatedHopCount != null && pkt.senderConsolidatedHopCount !== rx.hopCount;
+          pkt.status = (netDiff || loraDiff || hopDiff) ? "ASYM" : "SYM";
+        } else if (hasAckComplete) {
+          pkt.status = "SYM";
+        } else if (hasRxDelivered && !hasAckComplete) {
+          const ageSec = (Date.now() - pkt.lastUpdatedAt.getTime()) / 1000;
+          pkt.status = (hasAckTimeout || ageSec > 20) ? "LOST_ACK" : "PENDING";
+        } else {
+          pkt.status = hasAckTimeout ? "LOST_ACK" : "PENDING";
+        }
+
+        correlated.push(pkt);
+      }
+
+      return correlated.sort((a, b) => b.lastUpdatedAt - a.lastUpdatedAt);
+    }
+
+    function setFilter(f) {
+      currentFilter = f;
+      document.querySelectorAll(".filters .btn").forEach(btn => {
+        btn.classList.toggle("active", btn.dataset.filter === f);
+      });
+      renderPackets();
+    }
+
+    function attemptClass(action) {
+      const up = String(action || "").toUpperCase();
+      if (up.includes("SENT") || up.includes("RECEIVED_PRIMARY") || up.includes("ACK_RECEIVED") || up.includes("BRIDGED") || up.includes("RELAYED")) return "ok";
+      if (up.includes("SUPPRESSED") || up.includes("QUEUED") || up.includes("DUPLICATE") || up.includes("SECONDARY") || up.includes("SKIPPED")) return "warn";
+      return "err";
+    }
+
+    function escapeHtml(str) {
+      return String(str ?? "").replace(/[&<>"']/g, ch => ({
+        "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+      }[ch]));
+    }
+
+    function symbolChannel(raw) {
+      const s = String(raw || "").toLowerCase();
+      if (s.includes("downlink") && s.includes("lora")) return "📡➔🔵";
+      if (s.includes("uplink") && s.includes("lora")) return "🔵➔📡";
+      if (s.includes("lora") && (s.includes("wan") || s.includes("nostr"))) return "📡➔🌐";
+      if (s.includes("ack") && s.includes("lora") && s.includes("ble")) return "📡✓✓➔🔵";
+      if (s.includes("pasarela") && (s.includes("internet") || s.includes("wan"))) return "🔵➔🌐";
+      if (s.includes("lora") || s.includes("meshtastic") || s.includes("915")) return "📡 LoRa";
+      if (s.includes("nostr") || s.includes("wss") || s.includes("internet") || s.includes("wan")) return "🌐 WAN";
+      if (s.includes("apns") || s.includes("push")) return "🔔 APNs";
+      if (s.includes("wi-fi") || s.includes("multipeer") || s.includes("p2p")) return "🛜 P2P";
+      if (s.includes("ble") || s.includes("bluetooth") || s.includes("malla")) return "🔵 BLE";
+      return "📻 " + String(raw || "").slice(0, 14);
+    }
+
+    function symbolAction(raw) {
+      const up = String(raw || "").toUpperCase();
+      if (up === "RECEIVED_PRIMARY") return "✅";
+      if (up.includes("ACK_RECEIVED")) return "🥇✓✓";
+      if (up.includes("ACK_SECONDARY")) return "🥈✓✓";
+      if (up.includes("ACK_SENT")) return "✓✓↗";
+      if (up.includes("BRIDGED_TO_BLE") || up.includes("DOWNLINK")) return "📡➔🔵";
+      if (up.includes("BRIDGED_TO_LORA") || up.includes("UPLINK")) return "🔵➔📡";
+      if (up.includes("BRIDGED_TO_WAN")) return "📡➔🌐";
+      if (up.includes("RELAYED")) return "🔁";
+      if (up.includes("DUPLICATE")) return "♻️";
+      if (up.includes("SUPPRESSED")) return "🛑";
+      if (up.includes("SKIPPED") || up.includes("QUEUED")) return "⏭️";
+      if (up.includes("TIMEOUT")) return "⏱️";
+      if (up.includes("SENT")) return "🚀";
+      return "•";
+    }
+
+    function symbolReason(raw, snr, rssi) {
+      const s = String(raw || "");
+      const low = s.toLowerCase();
+      let out = s;
+      if (low.includes("sin antena lora")) out = "Sin USB LoRa";
+      else if (low.includes("publicado en pool") || low.includes("deliveryreceipt publicado")) out = "Pool Nostr WSS";
+      else if (low.includes("broadcast preventivo") || low.includes("difundido en malla")) out = "Broadcast malla";
+      else if (low.includes("emisor cercano") || low.includes("destinatario cercano")) out = "Directo + malla";
+      else if (low.includes("token de pasarela otorgado")) {
+        const m = s.match(/\((\d+) tokens/);
+        out = m ? `🎫 ${m[1]}t rest.` : "🎫 Token OK";
+      } else if (low.includes("tasa de pasarela excedida")) out = "🛑 0 tok (Rate limit)";
+      else if (low.includes("copia duplicada descartada")) out = "Dup O(1) descartado";
+      else if (low.includes("copia compacta lora llegó después") || low.includes("lora tardío")) out = "LoRa tardío (ya entregado)";
+      else if (low.includes("copia secundaria") || low.includes("ya confirmado")) out = "2º ACK (ya entregado)";
+      else if (low.includes("ed25519 verificado")) out = "Firma Ed25519 OK";
+      else if (low.includes("entrega física confirmada")) out = "Entregado en destino";
+      else if (low.includes("sin token apns")) out = "Sin token Push";
+      else if (low.includes("pulso silencioso")) out = "Wakeup Push";
+      else if (s.length > 46) out = s.slice(0, 44) + "…";
+
+      if (snr != null || rssi != null) {
+        out += ` [📶${snr ?? "—"}dB/${rssi ?? "—"}dBm]`;
+      }
+      return out;
+    }
+
+    function buildSymbolicFlow(p) {
+      const sName = p.senderAlias || String(p.senderPubKeyHex || "").slice(0, 4);
+      const rName = (p.receiverTelemetry && p.receiverTelemetry.receiverAlias) || p.recipientAlias || String(p.recipientPubKeyHex || "").slice(0, 4);
+      const viaLoRa = p.senderConsolidatedViaLoRa === true || (p.receiverTelemetry && p.receiverTelemetry.isViaLoRa) || (p.loraMsgId != null && p.events.some(e => e.effectiveViaLoRa));
+      const viaWan = p.senderConsolidatedViaInternet === true || (p.receiverTelemetry && p.receiverTelemetry.viaInternet);
+      const medSym = viaLoRa ? (p.loraMsgId ? `📡#${p.loraMsgId}` : "📡") : (viaWan ? "🌐" : "🔵");
+      const gws = p.gatewayAliases || [];
+      const route = gws.length > 0
+        ? `📱${sName} ▸ 🌉${gws.length === 1 ? gws[0] : gws[0] + "+" + (gws.length - 1)} ▸ ${medSym} ▸ 🎯${rName}`
+        : `📱${sName} ──${medSym}──▶ 🎯${rName}`;
+      return p.rttMs != null ? `${route} · ✓✓${p.rttMs}ms` : route;
+    }
+
+    function renderAttemptList(list, emptyMsg) {
+      if (!list || list.length === 0) {
+        return `<div style="color: var(--muted); font-size: 0.75rem;">${escapeHtml(emptyMsg)}</div>`;
+      }
+      return list.slice(0, 6).map(a => {
+        const prefix = a._gateway ? `[🌉${escapeHtml(a._gateway)}] ` : "";
+        return `
+          <div class="attempt-item ${attemptClass(a.action)}">
+            <div class="attempt-head">
+              <span>${prefix}${escapeHtml(symbolChannel(a.channel))}</span>
+              <span>${escapeHtml(symbolAction(a.action))}</span>
+            </div>
+            <div class="attempt-reason">${escapeHtml(symbolReason(a.reason, a.snr, a.rssi))}</div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function renderPackets() {
+      const all = correlatePackets();
+      const symCount = all.filter(p => p.status === "SYM").length;
+      const asymCount = all.filter(p => p.status === "ASYM").length;
+      const pendingCount = all.filter(p => p.status === "PENDING" || p.status === "LOST_ACK").length;
+      const reporters = new Set();
+      const rtts = [];
+      all.forEach(p => {
+        if (p.rttMs != null && p.rttMs > 0) rtts.push(p.rttMs);
+        p.events.forEach(e => reporters.add(e.reporterAlias || e.reporterPubKeyHex));
+      });
+
+      document.getElementById("kpi-total").textContent = all.length;
+      document.getElementById("kpi-sym").textContent = symCount;
+      document.getElementById("kpi-asym").textContent = asymCount;
+      document.getElementById("kpi-pending").textContent = pendingCount;
+      document.getElementById("kpi-nodes").textContent = reporters.size;
+      document.getElementById("kpi-rtt").textContent = rtts.length
+        ? Math.round(rtts.reduce((a, b) => a + b, 0) / rtts.length) + " ms"
+        : "—";
+
+      const q = (document.getElementById("searchBox").value || "").trim().toLowerCase();
+      const filtered = all.filter(p => {
+        if (currentFilter === "ASYM" && p.status !== "ASYM") return false;
+        if (currentFilter === "NOACK" && p.status !== "PENDING" && p.status !== "LOST_ACK") return false;
+        if (currentFilter === "LORA") {
+          const isLora = p.loraMsgId != null || p.senderConsolidatedViaLoRa === true || (p.receiverTelemetry && p.receiverTelemetry.isViaLoRa);
+          if (!isLora) return false;
+        }
+        if (currentFilter === "RELAY" && p.relayEvents.length === 0) return false;
+        if (!q) return true;
+        return String(p.packetId).toLowerCase().includes(q) ||
+          String(p.loraMsgId || "").includes(q) ||
+          String(p.senderAlias || "").toLowerCase().includes(q) ||
+          String(p.recipientAlias || "").toLowerCase().includes(q) ||
+          JSON.stringify(p.txAttempts).toLowerCase().includes(q) ||
+          JSON.stringify(p.ackAttempts).toLowerCase().includes(q);
+      });
+
+      const container = document.getElementById("packetsContainer");
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <h3>Sin paquetes que coincidan con el filtro actual</h3>
+            <p style="margin-top: 6px; font-size: 0.85rem;">Envía un mensaje desde cualquier dispositivo Chax (iOS, macOS o Android) para ver en vivo qué canales evaluó el emisor, qué recibió el destino, por dónde regresó el ACK y el espejo bilateral de telemetría.</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map((p, index) => {
+        const badgeHtml = p.status === "SYM"
+          ? `<span class="badge badge-sym">🟢✓✓ Simétrica</span>`
+          : (p.status === "ASYM"
+              ? `<span class="badge badge-asym">🟠⚖️ Asimetría</span>`
+              : `<span class="badge badge-pending">🔴⏱️ ${p.status === "LOST_ACK" ? "Sin ACK" : "⏳ ACK"}</span>`);
+
+        const rx = p.receiverTelemetry;
+        const relayFlattened = p.relayEvents.flatMap(ev => (ev.channelAttempts || []).map(a => ({
+          ...a,
+          _gateway: ev.reporterAlias || "GW"
+        })));
+
+        const deferredClass = index >= 3 ? " packet-card-deferred" : "";
+        const flowStr = buildSymbolicFlow(p);
+
+        return `
+          <article class="packet-card${deferredClass}">
+            <div class="packet-header">
+              <div class="route-title">
+                <span style="font-family: var(--font-mono);">${escapeHtml(flowStr)}</span>
+                ${badgeHtml}
+              </div>
+              <div class="meta-strip">
+                <span>#${escapeHtml(String(p.packetId).slice(0, 8))}</span>
+                ${p.loraMsgId ? `<span style="color: var(--orange)">📡#${escapeHtml(p.loraMsgId)}</span>` : ""}
+                ${p.gatewayAliases.length ? `<span style="color: var(--purple)">🌉×${p.gatewayAliases.length}</span>` : ""}
+                ${p.duplicateCount > 0 ? `<span title="Copias duplicadas colapsadas">♻️×${p.duplicateCount}</span>` : ""}
+                ${p.suppressedBridgeCount > 0 ? `<span style="color: var(--red)" title="Pasarelas suprimidas por cuota">🛑×${p.suppressedBridgeCount}</span>` : ""}
+                <span>📦${p.events.length}</span>
+                <span>${p.lastUpdatedAt.toLocaleTimeString()}</span>
+                <button class="btn" style="padding: 3px 8px; font-size: 0.72rem;" onclick="copySinglePacket('${escapeHtml(p.id)}')">📋</button>
+              </div>
+            </div>
+
+            <div class="mirror-grid">
+              <div class="mirror-box mirror-sender">
+                <div class="mirror-title" style="color: var(--blue)">📤 ${escapeHtml(p.senderAlias)}</div>
+                <div style="font-size: 0.85rem; font-family: var(--font-mono);">
+                  🌐 ${p.senderConsolidatedViaInternet == null ? "⏳" : (p.senderConsolidatedViaInternet ? "✅" : "—")}
+                  &nbsp;·&nbsp;
+                  📡 ${p.senderConsolidatedViaLoRa == null ? "?" : (p.senderConsolidatedViaLoRa ? "✅" : "—")}
+                  &nbsp;·&nbsp;
+                  👣 ${p.senderConsolidatedHopCount ?? "—"}
+                </div>
+              </div>
+              <div class="mirror-box mirror-receiver">
+                <div class="mirror-title" style="color: var(--purple)">📥 ${escapeHtml(rx ? rx.receiverAlias : p.recipientAlias)}</div>
+                ${rx ? `
+                  <div style="font-size: 0.85rem; font-family: var(--font-mono);">
+                    ${escapeHtml(symbolChannel(rx.primaryRxMedium))}
+                    &nbsp;·&nbsp;
+                    🌐 ${rx.viaInternet ? "✅" : "—"}
+                    &nbsp;·&nbsp;
+                    📡 ${rx.isViaLoRa ? "✅" : "—"}
+                    &nbsp;·&nbsp;
+                    👣 ${rx.hopCount}
+                  </div>
+                ` : `<div style="font-size: 0.8rem; color: var(--muted); font-family: var(--font-mono);">⏳ Sin RX aún…</div>`}
+              </div>
+            </div>
+
+            <div class="phases-grid">
+              <div class="phase-box">
+                <div class="phase-title"><span style="color: var(--blue)">🚀 TX Emisor</span><span>${p.txAttempts.length}</span></div>
+                ${renderAttemptList(p.txAttempts, "—")}
+              </div>
+              <div class="phase-box">
+                <div class="phase-title"><span style="color: var(--orange)">🌉 Pasarelas</span><span>${relayFlattened.length}${p.suppressedBridgeCount ? ` (🛑×${p.suppressedBridgeCount})` : ""}</span></div>
+                ${renderAttemptList(relayFlattened, "Directo (0 puentes)")}
+              </div>
+              <div class="phase-box">
+                <div class="phase-title"><span style="color: var(--green)">🎯 RX Destino</span><span>${p.rxEvents.length}${p.duplicateCount ? ` (♻️×${p.duplicateCount})` : ""}</span></div>
+                ${renderAttemptList(p.rxEvents, p.duplicateCount > 0 ? `♻️×${p.duplicateCount} dup(s) descartados` : "—")}
+              </div>
+              <div class="phase-box">
+                <div class="phase-title"><span style="color: var(--accent)">✓✓ Retorno ACK</span><span>${p.ackAttempts.length}</span></div>
+                ${renderAttemptList(p.ackAttempts, "—")}
+              </div>
+            </div>
+
+            ${p.reconciliationNotes.length ? `
+              <div class="notes-banner">
+                ⚠️ ${p.reconciliationNotes.map(escapeHtml).join(" • ")}
+              </div>
+            ` : ""}
+          </article>
+        `;
+      }).join("");
+    }
+
+    function copySinglePacket(id) {
+      const pkt = correlatePackets().find(p => p.id === id);
+      if (!pkt) return;
+      navigator.clipboard.writeText(JSON.stringify(pkt, null, 2));
+    }
+
+    function copyGlobalReport() {
+      const all = correlatePackets().slice(0, 50);
+      navigator.clipboard.writeText(JSON.stringify(all, null, 2));
+    }
+
+    function setIndicator(kind, online, text) {
+      const dot = document.getElementById("dot-" + kind);
+      const lbl = document.getElementById("lbl-" + kind);
+      if (dot) dot.classList.toggle("online", !!online);
+      if (lbl) lbl.textContent = text;
+    }
+
+    function connectNostrRelay() {
+      try {
+        const ws = new WebSocket(NOSTR_RELAY_WSS);
+        ws.onopen = () => {
+          setIndicator("nostr", true, "Nostr Soberano: En Vivo");
+          ws.send(JSON.stringify([
+            "REQ",
+            "chax_sniffer_live",
+            { kinds: [30078], "#p": [CENTRAL_TELEMETRY_PUBKEY], limit: 400 }
+          ]));
+        };
+        ws.onmessage = (msg) => {
+          try {
+            const arr = JSON.parse(msg.data);
+            if (Array.isArray(arr) && arr[0] === "EVENT" && arr[2] && arr[2].content) {
+              const ev = decodeEnvelopeText(arr[2].content);
+              if (ev && ingestEvent(ev)) renderPackets();
+            }
+          } catch (_) {}
+        };
+        ws.onclose = () => {
+          setIndicator("nostr", false, "Nostr Relay: Reconectando…");
+          setTimeout(connectNostrRelay, 5000);
+        };
+      } catch (_) {}
+    }
+
+    function connectNtfyStream() {
+      try {
+        const ws = new WebSocket(`wss://ntfy.sh/${NTFY_TOPIC}/ws`);
+        ws.onopen = () => setIndicator("ntfy", true, "ntfy Bus: En Vivo");
+        ws.onmessage = (msg) => {
+          try {
+            const data = JSON.parse(msg.data);
+            if (data && data.event === "message" && data.message) {
+              const ev = decodeEnvelopeText(data.message);
+              if (ev && ingestEvent(ev)) renderPackets();
+            }
+          } catch (_) {}
+        };
+        ws.onclose = () => {
+          setIndicator("ntfy", false, "ntfy Bus: Reconectando…");
+          setTimeout(connectNtfyStream, 6000);
+        };
+      } catch (_) {}
+    }
+
+    async function syncAllSources() {
+      // 1. Poll ntfy 24h cache
+      try {
+        const res = await fetch(`https://ntfy.sh/${NTFY_TOPIC}/json?poll=1&since=24h`);
+        if (res.ok) {
+          const text = await res.text();
+          let added = false;
+          for (const line of text.split("\n")) {
+            if (!line.trim()) continue;
+            try {
+              const obj = JSON.parse(line);
+              const ev = decodeEnvelopeText(obj.message || line);
+              if (ev && ingestEvent(ev)) added = true;
+            } catch (_) {}
+          }
+          if (added) renderPackets();
+        }
+      } catch (_) {}
+
+      // 2. Poll PushServer HTTP Central Repository
+      try {
+        const res = await fetch(HTTP_REPO_URL);
+        if (res.ok) {
+          const data = await res.json();
+          const list = Array.isArray(data.events) ? data.events : [];
+          let added = false;
+          for (const item of list) {
+            const ev = typeof item === "string" ? decodeEnvelopeText(item) : item;
+            if (ev && ingestEvent(ev)) added = true;
+          }
+          setIndicator("http", true, `Repositorio HTTP: OK (${eventsById.size} ev)`);
+          if (added) renderPackets();
+        } else {
+          setIndicator("http", false, "Repositorio HTTP: Standby");
+        }
+      } catch (_) {
+        setIndicator("http", false, "Repositorio HTTP: Nostr/ntfy Activos");
+      }
+    }
+
+    connectNostrRelay();
+    connectNtfyStream();
+    syncAllSources();
+    renderPackets();
+  </script>
+</body>
+</html>

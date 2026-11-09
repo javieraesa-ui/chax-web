@@ -14,7 +14,7 @@ flowchart TD
     E2 --> E3["Escena 3: Walkie-Talkie PTT e Identidad Cero Datos (0:55 - 1:25)"]
     E3 --> E4["Escena 4: Física del Protocolo: Salto por Malla (1:25 - 1:55)"]
     E4 --> E5["Escena 5: Escenarios de la Vida Real (1:55 - 2:25)"]
-    E5 --> E6["Escena 6: Chax vs WhatsApp / Telegram (2:25 - 2:45)"]
+    E5 --> E6["Escena 6: Chax vs Mensajería Tradicional (2:25 - 2:45)"]
     E6 --> E7["Escena 7: Ecosistema Apple y Aviso TestFlight (2:45 - 3:05)"]
 ```
 
@@ -30,7 +30,7 @@ flowchart TD
   - La cámara hace un zoom suave hacia el título principal: *"Rápido online. Imparable mesh."*
   - Se iluminan las pastillas de valor: `⚡ Red Nostr Ultrarrápida`, `🎙️ Walkie-Talkie PTT`, `🗺️ Mapax Satelital Offline`, `🛡️ Cero Números`.
 - **Audio / Locución (Narrador o Host 1):**
-  > *"¿Cuántas veces has estado en un festival masivo, en una carretera sin cobertura o en medio de un apagón y tu app de mensajería simplemente deja de funcionar? WhatsApp, Telegram o Signal dependen al 100% de torres celulares e internet. Pero hoy existe una alternativa radical: se llama **Chax**. Una app ultrarrápida para tu día a día, pero con un as bajo la manga que nadie más tiene: una malla Bluetooth que sigue funcionando cuando el mundo se queda sin señal."*
+  > *"¿Cuántas veces has estado en un festival masivo, en una carretera sin cobertura o en medio de un apagón y tu app de mensajería simplemente deja de funcionar? Las apps de mensajería centralizadas dependen al 100% de torres celulares e internet. Pero hoy existe una alternativa radical: se llama **Chax**. Una app ultrarrápida para tu día a día, pero con un as bajo la manga que nadie más tiene: una malla Bluetooth que sigue funcionando cuando el mundo se queda sin señal."*
 - **Texto en Pantalla (Lower-Third):**
   - `CHAX: Mensajería P2P de Nueva Generación`
   - `Rápido en Internet • Imparable por Bluetooth Mesh`
@@ -100,16 +100,16 @@ flowchart TD
 
 ---
 
-### ESCENA 6: CHAX FRENTE A LOS GIGANTES DE LA INDUSTRIA
+### ESCENA 6: CHAX FRENTE A LA MENSAJERÍA TRADICIONAL
 - **Tiempo:** 2:25 - 2:45
 - **Visual en Pantalla:**
   - Foco en la tabla comparativa (`#diario`):
-  - Zoom en las columnas: WhatsApp (Cruz roja ✕), Telegram (Cruz roja ✕), Signal (Cruz roja ✕) frente a Chax (Check verde ✓ en todas las filas).
+  - Zoom en las columnas: Mensajería Centralizada (Cruz roja ✕), Apps en la Nube (Cruz roja ✕), Mensajería Tradicional (Cruz roja ✕) frente a Chax (Check verde ✓ en todas las filas).
   - Efecto de destaque en: *¿Funciona sin internet? Solo Chax*, *¿Exige número? Cero en Chax*.
 - **Audio / Locución (Host 1):**
-  > *"Cuando comparas a Chax con WhatsApp, Telegram o Signal, la diferencia es abismal. Todas las demás se detienen en cuanto se apaga el módem o te alejas de una antena. Ninguna otra tiene mapas satelitales ni Walkie-Talkie offline integrados. Chax es tu mensajero veloz de todos los días por internet, pero blindado para cuando todo lo demás falla."*
+  > *"Cuando comparas a Chax con la mensajería tradicional, la diferencia es abismal. Todas las demás se detienen en cuanto se apaga el módem o te alejas de una antena. Ninguna otra tiene mapas satelitales ni Walkie-Talkie offline integrados. Chax es tu mensajero veloz de todos los días por internet, pero blindado para cuando todo lo demás falla."*
 - **Texto en Pantalla (Overlay):**
-  - `WhatsApp, Telegram y Signal requieren conexión fija`
+  - `Las redes tradicionales requieren conexión fija a internet`
   - `Chax: Autonomía Soberana Absoluta`
 
 ---

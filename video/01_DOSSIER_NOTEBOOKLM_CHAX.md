@@ -31,7 +31,7 @@
 - **Transcripción local inteligente:** Transcripción automática de audio a texto procesada directamente en el chip del dispositivo.
 
 ### Superpoder 3: Identidad Soberana (Cero Teléfonos, Cero Cuentas)
-- **Sin número telefónico:** WhatsApp, Telegram y Signal exigen un número de teléfono que te vincula a una empresa de telecomunicaciones y a tu identidad civil. En Chax **no existe el número de teléfono**.
+- **Sin número telefónico:** Las apps convencionales exigen un número de teléfono que te vincula a una empresa de telecomunicaciones y a tu identidad civil. En Chax **no existe el número de teléfono**.
 - **Criptografía de Enclave Seguro:** La identidad es un par de llaves criptográficas asimétricas (Curvas X25519 para cifrado E2EE y Ed25519 para firma digital) generadas dentro del chip seguro de tu dispositivo Apple.
 - **Imposible de censurar:** Nadie puede suspender tu cuenta, bloquearte el acceso ni rastrear tus metadatos.
 - **Vinculación:** Los amigos se agregan mediante código QR en persona, seleccionándose en el radar de proximidad, mediante un enlace universal (`chax://...`) o a través de un "Chaxter en común".
@@ -68,7 +68,7 @@
 ## 4. ESCENARIOS REALES: ¿DÓNDE SALVA VIDAS Y COMUNICACIONES CHAX?
 
 ### Escenario 1: Festivales y Conciertos Masivos
-- **El problema:** 60,000 personas reunidas en un estadio o festival. Las antenas 5G colapsan por saturación de ancho de banda. Todo el mundo ve barras de señal pero los mensajes de WhatsApp tienen el icono de "relojito" permanente. Amigos separados en los baños o barras quedan incomunicados.
+- **El problema:** 60,000 personas reunidas en un estadio o festival. Las antenas 5G colapsan por saturación de ancho de banda. Todo el mundo ve barras de señal pero los mensajes de apps tradicionales tienen el icono de "relojito" permanente. Amigos separados en los baños o barras quedan incomunicados.
 - **La solución Chax:** En una multitud densa, Chax funciona con mayor velocidad. Cada asistente es un repetidor físico. La malla cubre todo el festival de punta a punta y el radar te dice a cuántos metros y en qué dirección está tu amigo.
 
 ### Escenario 2: Senderismo, Montañismo y Zonas Remotas
@@ -85,9 +85,9 @@
 
 ---
 
-## 5. COMPARATIVA: CHAX VS. LOS GIGANTES
+## 5. COMPARATIVA: CHAX VS. MENSAJERÍA TRADICIONAL
 
-| Característica | CHAX | WhatsApp | Telegram | Signal |
+| Característica | CHAX | Mensajería Centralizada | Apps en la Nube | Mensajería Tradicional |
 | :--- | :---: | :---: | :---: | :---: |
 | **¿Funciona sin conexión a Internet?** | **SÍ (Bluetooth Mesh)** | ❌ No (Requiere red) | ❌ No (Requiere red) | ❌ No (Requiere red) |
 | **¿Exige número telefónico?** | **NUNCA (Identidad Soberana)** | ❌ Obligatorio | ❌ Obligatorio | ❌ Obligatorio |

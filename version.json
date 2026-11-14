@@ -1,0 +1,24 @@
+{
+  "ios": {
+    "latestVersion": "3.363",
+    "latestBuild": 703,
+    "minRequiredVersion": "3.348",
+    "testFlightUrl": "https://testflight.apple.com/join/hmfhvFdf",
+    "appStoreUrl": "",
+    "releaseNotesEs": "Auditoría integral de estabilidad, memoria y batería en segundo plano, despertar silencioso optimizado sin duplicados, protección de enlaces WAN Nostr y sincronización fluida de dispositivos gemelos.",
+    "releaseNotesEn": "Comprehensive background stability, memory, and battery audit, optimized duplicate-free silent wake, smart WAN Nostr relay protection, and seamless twin device sync.",
+    "releaseNotesPt": "Auditoria integral de estabilidade, memória e bateria em segundo plano, despertar silencioso otimizado sem duplicatas, proteção de relays WAN Nostr e sincronização fluida de dispositivos gêmeos."
+  },
+  "android": {
+    "latestVersion": "1.126",
+    "latestVersionCode": 148,
+    "minRequiredVersion": "1.118",
+    "minRequiredVersionCode": 140,
+    "playStoreUrl": "https://play.google.com/store/apps/details?id=com.appx.chax",
+    "playTestingUrl": "https://play.google.com/apps/testing/com.appx.chax",
+    "apkUrl": "https://chax.chat/downloads",
+    "releaseNotesEs": "Auditoría integral de estabilidad, servicio continuo en Android 15/16, hidratación multimedia bajo demanda, despertar silencioso sin duplicados y protección de enlaces WAN Nostr.",
+    "releaseNotesEn": "Comprehensive stability audit, uninterrupted Android 15/16 background service, on-demand media hydration, duplicate-free silent wake, and smart WAN Nostr relay protection.",
+    "releaseNotesPt": "Auditoria integral de estabilidade, serviço contínuo no Android 15/16, hidratação multimídia sob demanda, despertar silencioso sem duplicatas e proteção de relays WAN Nostr."
+  }
+}

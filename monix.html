@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Monix by Appx JP — Finanzas Soberanas en Cristal Líquido</title>
+  <meta name="description" content="Monix (Presupuestox) by Appx JP: finanzas personales 100% locales en iPhone y iPad. Universo gravitacional de esferas de agua, captura inteligente, OCR de tickets, copiloto IA local y sincronización P2P directa.">
+  <meta property="og:title" content="Monix by Appx JP — Finanzas Soberanas en Cristal Líquido">
+  <meta property="og:description" content="Controla tus finanzas sin servidores externos ni rastreadores. 100% Local-First en iOS con Apple Multipeer P2P y Liquid Glass.">
+  <meta property="og:image" content="assets/monix-icon.png">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/png" href="assets/monix-icon.png">
+
+  <!-- Privacy-friendly analytics -->
+  <script defer data-goatcounter="https://chax.goatcounter.com/count" src="//gc.zgo.at/count.js"></script>
+
+  <style>
+    :root {
+      --bg: #030712;
+      --bg-surface: #0b1120;
+      --bg-card: rgba(15, 23, 42, 0.78);
+      --border: rgba(56, 189, 248, 0.24);
+      --border-soft: rgba(255, 255, 255, 0.14);
+      --cyan: #22d3ee;
+      --blue: #38bdf8;
+      --gold: #fbbf24;
+      --green: #00f59b;
+      --purple: #a78bfa;
+      --coral: #fb7185;
+      --text: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --text-dim: #94a3b8;
+      --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, sans-serif;
+      --mono: "SF Mono", "Fira Code", monospace;
+      --r-md: 18px;
+      --r-lg: 24px;
+      --r-xl: 32px;
+      --r-pill: 9999px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; color-scheme: dark; }
+    body {
+      background:
+        radial-gradient(circle at 15% 10%, rgba(34, 211, 238, 0.14), transparent 42%),
+        radial-gradient(circle at 85% 20%, rgba(167, 139, 250, 0.12), transparent 40%),
+        var(--bg);
+      color: var(--text);
+      font-family: var(--font);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    :focus-visible {
+      outline: 2px solid var(--cyan);
+      outline-offset: 3px;
+    }
+
+    .wrap {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Header */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: rgba(3, 7, 18, 0.82);
+      backdrop-filter: blur(22px) saturate(180%);
+      -webkit-backdrop-filter: blur(22px) saturate(180%);
+      border-bottom: 1px solid var(--border-soft);
+    }
+
+    .nav-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 62px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.08rem;
+      letter-spacing: -0.02em;
+    }
+
+    .nav-brand img {
+      width: 34px;
+      height: 34px;
+      border-radius: 9px;
+      aspect-ratio: 1 / 1;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-secondary);
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--cyan); }
+
+    .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, var(--cyan), var(--blue));
+      color: #031124;
+      font-weight: 800;
+      font-size: 0.82rem;
+      padding: 9px 18px;
+      border-radius: var(--r-pill);
+    }
+
+    /* Hero */
+    .hero {
+      min-height: calc(92dvh - 62px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 64px 24px;
+    }
+
+    .hero-icon-frame {
+      width: 116px;
+      height: 116px;
+      border-radius: 28px;
+      padding: 4px;
+      background: linear-gradient(135deg, rgba(34, 211, 238, 0.7), rgba(251, 191, 36, 0.65));
+      box-shadow: 0 18px 48px rgba(34, 211, 238, 0.25);
+      margin-bottom: 24px;
+    }
+
+    .hero-icon-frame img {
+      width: 100%;
+      height: 100%;
+      border-radius: 24px;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: var(--r-pill);
+      background: rgba(34, 211, 238, 0.12);
+      border: 1px solid rgba(34, 211, 238, 0.42);
+      color: #67e8f9;
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .hero-title {
+      font-size: clamp(2.1rem, 1.4rem + 3.2vw, 4.4rem);
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1.06;
+      max-width: 880px;
+      margin-bottom: 18px;
+    }
+
+    .hero-title .accent {
+      background: linear-gradient(90deg, #67e8f9, #38bdf8, #fbbf24);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 0.92rem + 0.5vw, 1.22rem);
+      color: var(--text-secondary);
+      max-width: 680px;
+      margin-bottom: 30px;
+    }
+
+    .cta-row {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 26px;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, #22d3ee, #38bdf8);
+      color: #031124;
+      font-weight: 800;
+      font-size: 0.98rem;
+      padding: 15px 28px;
+      border-radius: var(--r-pill);
+      box-shadow: 0 10px 30px rgba(34, 211, 238, 0.3);
+      transition: transform 0.15s ease;
+    }
+
+    .btn-primary:hover { transform: translateY(-2px); }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: var(--text);
+      font-weight: 700;
+      font-size: 0.95rem;
+      padding: 15px 24px;
+      border-radius: var(--r-pill);
+      transition: background-color 0.2s ease;
+    }
+
+    .btn-secondary:hover { background: rgba(255, 255, 255, 0.12); }
+
+    .hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+
+    .stat-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: var(--r-pill);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-soft);
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+
+    /* Sections */
+    section { padding: 76px 0; scroll-margin-top: 72px; }
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.14), transparent);
+      margin: 0 24px;
+    }
+
+    .section-head { text-align: center; margin-bottom: 44px; }
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--cyan);
+      margin-bottom: 10px;
+    }
+    .section-title {
+      font-size: clamp(1.75rem, 1.3rem + 2vw, 2.8rem);
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1.12;
+      margin-bottom: 12px;
+    }
+    .section-sub {
+      color: var(--text-secondary);
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .feature-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--r-lg);
+      padding: 26px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .feature-box-icon {
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    .feature-box h3 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .feature-box p {
+      font-size: 0.92rem;
+      color: var(--text-secondary);
+    }
+
+    /* TestFlight Panel */
+    .tf-card {
+      background: linear-gradient(145deg, rgba(15, 23, 42, 0.94), rgba(8, 47, 73, 0.6));
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      border-radius: var(--r-xl);
+      padding: 36px;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 28px;
+      align-items: center;
+    }
+
+    .tf-status {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 14px;
+      border-radius: var(--r-pill);
+      background: rgba(0, 245, 155, 0.14);
+      border: 1px solid rgba(0, 245, 155, 0.42);
+      color: var(--green);
+      font-size: 0.78rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .tf-qr-panel {
+      background: rgba(3, 7, 18, 0.65);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--r-lg);
+      padding: 24px;
+      text-align: center;
+    }
+
+    .tf-qr-wrapper {
+      display: inline-block;
+      background: #ffffff;
+      padding: 12px;
+      border-radius: 16px;
+      margin: 12px 0;
+    }
+
+    .tf-qr-wrapper img {
+      width: 170px;
+      height: 170px;
+      aspect-ratio: 1 / 1;
+    }
+
+    /* Legal & Support Cards */
+    .legal-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .legal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--r-lg);
+      padding: 26px 24px;
+    }
+
+    .legal-card h3 {
+      font-size: 1.08rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+      color: var(--cyan);
+    }
+
+    .legal-card p, .legal-card li {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-bottom: 8px;
+    }
+
+    .legal-card ul { padding-left: 18px; }
+
+    /* Developer Strip */
+    .dev-strip {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.92), rgba(30, 41, 59, 0.72));
+      border: 1px solid rgba(34, 211, 238, 0.34);
+      border-radius: var(--r-xl);
+      padding: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+
+    .dev-strip-brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .dev-strip-brand img {
+      width: 58px;
+      height: 58px;
+      border-radius: 14px;
+      aspect-ratio: 1 / 1;
+    }
+
+    footer {
+      border-top: 1px solid var(--border-soft);
+      padding: 36px 24px 52px;
+      margin-top: 40px;
+    }
+
+    .footer-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
+      font-size: 0.84rem;
+      color: var(--text-dim);
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+
+    .footer-links a:hover { color: var(--text); }
+
+    @media (max-width: 900px) {
+      .features-grid, .legal-grid, .tf-card { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+    }
+
+    @media (forced-colors: active) {
+      .feature-box, .tf-card, .legal-card, .dev-strip {
+        border: 1px solid CanvasText;
+      }
+      .btn-primary, .nav-cta {
+        border: 1px solid ButtonText;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <nav aria-label="Navegación principal Monix">
+    <div class="nav-inner">
+      <a href="monix.html" class="nav-brand">
+        <img src="assets/monix-icon.png" alt="Monix Logo" width="512" height="512">
+        <span>Monix <small style="color:var(--cyan);font-weight:700;">by Appx JP</small></span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#funciones">Funciones</a></li>
+        <li><a href="#testflight">TestFlight</a></li>
+        <li><a href="#privacy">Privacidad</a></li>
+        <li><a href="#support">Soporte</a></li>
+        <li><a href="index.html#ecosistema-appx">Ecosistema Appx JP</a></li>
+      </ul>
+      <a href="#testflight" class="nav-cta">Beta TestFlight</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="hero-icon-frame">
+      <img src="assets/monix-icon.png" alt="Ícono oficial de Monix" width="512" height="512" fetchpriority="high">
+    </div>
+
+    <div class="hero-badge">
+      <span aria-hidden="true">💧</span>
+      <span>Appx JP · iOS 16+ · v1.111 · com.assi.monix</span>
+    </div>
+
+    <h1 class="hero-title">
+      Finanzas soberanas en <span class="accent">cristal líquido</span>.
+    </h1>
+
+    <p class="hero-sub">
+      Visualiza tu presupuesto mensual en esferas de agua físicas, captura gastos en pantalla completa con OCR e IA local y sincroniza entre tus dispositivos Apple vía P2P directo sin subir un solo dato a la nube.
+    </p>
+
+    <div class="cta-row">
+      <a href="#testflight" id="monixHeroTfCta" class="btn-primary">
+        <span>🍎 Instalar Beta en Apple TestFlight (v1.111)</span>
+      </a>
+      <a href="index.html#ecosistema-appx" class="btn-secondary">
+        <span>🧬 Ver todas las apps de Appx JP →</span>
+      </a>
+    </div>
+
+    <div class="hero-pills">
+      <span class="stat-pill">🔒 <strong>100% Local-First</strong> · Cero servidores</span>
+      <span class="stat-pill">📡 <strong>Apple Multipeer P2P</strong> · Sincronización directa</span>
+      <span class="stat-pill">🧠 <strong>Vision OCR &amp; IA On-Device</strong> · Tickets y voz</span>
+      <span class="stat-pill">💳 <strong>MSI, Rollover &amp; 50/30/20</strong> · Motor contable real</span>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="funciones">
+    <div class="wrap">
+      <div class="section-head">
+        <div class="section-label">Ingeniería Financiera Local</div>
+        <h2 class="section-title">Diseñada para tomar el control sin ceder tu privacidad.</h2>
+        <p class="section-sub">Cada motor estadístico, presupuesto y lectura de recibos corre directamente en el chip de tu iPhone.</p>
+      </div>
+
+      <div class="features-grid">
+        <article class="feature-box">
+          <div class="feature-box-icon" aria-hidden="true">🫧</div>
+          <h3>Universo de Esferas Líquidas</h3>
+          <p>Cada categoría orbita con nivel físico de agua proporcional al consumo del mes, jerarquía de subcategorías y modo zen predictivo.</p>
+        </article>
+
+        <article class="feature-box">
+          <div class="feature-box-icon" aria-hidden="true">⚡</div>
+          <h3>Captura Full-Screen en 3 Pasos</h3>
+          <p>Teclado inteligente colapsable, ruta guiada Categoría › Subcategoría › Cuenta bancaria, preselección inteligente y soporte para Meses Sin Intereses (MSI).</p>
+        </article>
+
+        <article class="feature-box">
+          <div class="feature-box-icon" aria-hidden="true">🧾</div>
+          <h3>Escáner Vision OCR y Dictado por Voz</h3>
+          <p>Fotografía tickets de compra o dicta con lenguaje natural en español; Monix desglosa comercios, montos e impuestos 100% offline.</p>
+        </article>
+
+        <article class="feature-box">
+          <div class="feature-box-icon" aria-hidden="true">📡</div>
+          <h3>Sincronización P2P Multi-Dispositivo</h3>
+          <p>Replica perfiles, cuentas y movimientos entre tu iPhone, iPad o dispositivo familiar mediante Bluetooth y Wi-Fi Direct con Apple Multipeer.</p>
+        </article>
+
+        <article class="feature-box">
+          <div class="feature-box-icon" aria-hidden="true">📊</div>
+          <h3>Motores Estadísticos Reales</h3>
+          <p>Salud 50/30/20, estrategia Bola de Nieve y Avalancha de deudas, fondos de reserva (Sinking Funds), conciliación bancaria y radar de fugas.</p>
+        </article>
+
+        <article class="feature-box">
+          <div class="feature-box-icon" aria-hidden="true">🗂️</div>
+          <h3>Portabilidad Total JSON &amp; CSV</h3>
+          <p>Multi-perfil aislado (Personal, Negocio, Pareja), exportación inmediata a hojas de cálculo y respaldos locales íntegros con un toque.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="testflight">
+    <div class="wrap">
+      <div class="tf-card">
+        <div>
+          <div class="tf-status" id="monixTfStatusBadge">
+            <span aria-hidden="true">●</span>
+            <span id="monixTfStatusText">Canal Oficial TestFlight · Monix v1.111 (Build 111)</span>
+          </div>
+          <h2 class="section-title" style="text-align:left;">Únete a la Beta Pública de Monix en Apple TestFlight</h2>
+          <p style="color:var(--text-secondary);margin-bottom:20px;" id="monixTfDescription">
+            Instala Monix directamente desde la plataforma oficial de Apple en tu iPhone o iPad (`com.assi.monix`). Al habilitarse el enlace público tras la revisión beta de Apple, el botón y el código QR inferior te llevan directo a la instalación.
+          </p>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;" id="monixTfActions">
+            <a href="https://apps.apple.com/app/testflight/id899247664" target="_blank" rel="noopener" class="btn-secondary">
+              <span>1. Descargar App TestFlight de Apple</span>
+            </a>
+            <a href="mailto:support@chax.chat?subject=Beta%20TestFlight%20Monix%20(com.assi.monix)" id="monixTfJoinBtn" class="btn-primary">
+              <span>2. Solicitar Acceso / Ver Estado</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="tf-qr-panel">
+          <div style="font-size:0.84rem;font-weight:700;color:var(--cyan);">Acceso Móvil TestFlight</div>
+          <div class="tf-qr-wrapper">
+            <img id="monixTfQrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=https://chax.chat/monix.html" alt="Código QR oficial de Monix" width="240" height="240" loading="lazy">
+          </div>
+          <div style="font-size:0.78rem;color:var(--text-dim);" id="monixTfQrHint">
+            Bundle ID: <code>com.assi.monix</code> · Equipo: <strong>Appx JP</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section id="legal">
+    <div class="wrap">
+      <div class="legal-grid">
+        <article class="legal-card" id="privacy">
+          <h3>🔒 Política de Privacidad</h3>
+          <p><strong>Monix by Appx JP</strong> opera bajo arquitectura 100% Local-First y Conocimiento Cero:</p>
+          <ul>
+            <li>Sin cuentas, sin correos y sin servidores externos de almacenamiento financiero.</li>
+            <li>Cámara, micrófono, reconocimiento de voz, fotos y ubicación (One-Shot) se procesan exclusivamente dentro de tu dispositivo Apple.</li>
+            <li>Sincronización P2P opcional únicamente por red local y Bluetooth cifrado entre tus dispositivos autorizados.</li>
+          </ul>
+        </article>
+
+        <article class="legal-card" id="support">
+          <h3>🛟 Centro de Soporte</h3>
+          <p>¿Necesitas asistencia con respaldos JSON/CSV, sincronización P2P, perfiles o pruebas en TestFlight?</p>
+          <p>Canal oficial del desarrollador <strong>Appx JP</strong>:</p>
+          <p><a href="mailto:support@chax.chat" style="color:var(--cyan);font-weight:700;">support@chax.chat</a></p>
+          <p style="font-size:0.82rem;color:var(--text-dim);">Tiempo de respuesta habitual: &lt; 24 horas.</p>
+        </article>
+
+        <article class="legal-card" id="terms">
+          <h3>📜 Términos de Uso</h3>
+          <p>Monix se distribuye como herramienta de control financiero personal y contabilidad doméstica local-first.</p>
+          <ul>
+            <li>Tú conservas propiedad e independencia total de tus archivos exportables en JSON y CSV.</li>
+            <li>Te recomendamos generar respaldos periódicos desde Ajustes &gt; Respaldo y Restauración.</li>
+            <li>Software desarrollado de forma independiente por <strong>Appx JP</strong>.</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding-top:16px;">
+    <div class="wrap">
+      <div class="dev-strip">
+        <div class="dev-strip-brand">
+          <img src="assets/appx-logo.png" alt="Logo oficial Appx JP" width="512" height="512" loading="lazy">
+          <div>
+            <div style="font-size:0.74rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:var(--cyan);">Desarrollador Oficial</div>
+            <div style="font-size:1.3rem;font-weight:900;">Appx JP · Ecosistema de Software Soberano</div>
+            <div style="font-size:0.9rem;color:var(--text-secondary);">Chax · Monix · Sonorix · Medicionex · Retrox · Tadix</div>
+          </div>
+        </div>
+        <a href="index.html#ecosistema-appx" class="btn-primary">Explorar todas las apps de Appx JP →</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <div>© 2026 <strong>Appx JP</strong> · Monix (`com.assi.monix`) v1.111</div>
+    <div class="footer-links">
+      <a href="index.html">Chax</a>
+      <a href="index.html#ecosistema-appx">Appx JP</a>
+      <a href="download/">Descargas Chax</a>
+      <a href="#privacy">Privacidad</a>
+      <a href="#support">Soporte</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // URL pública de TestFlight de Monix (actualizada automáticamente por asc_process_and_submit.py --public)
+  const MONIX_TESTFLIGHT_URL = "";
+  (function () {
+    if (!MONIX_TESTFLIGHT_URL) return;
+    const heroCta = document.getElementById("monixHeroTfCta");
+    const joinBtn = document.getElementById("monixTfJoinBtn");
+    const qrImg = document.getElementById("monixTfQrImg");
+    const statusText = document.getElementById("monixTfStatusText");
+    if (heroCta) {
+      heroCta.href = MONIX_TESTFLIGHT_URL;
+      heroCta.target = "_blank";
+      heroCta.rel = "noopener";
+    }
+    if (joinBtn) {
+      joinBtn.href = MONIX_TESTFLIGHT_URL;
+      joinBtn.target = "_blank";
+      joinBtn.rel = "noopener";
+      joinBtn.innerHTML = "<span>2. Abrir Beta Pública en TestFlight →</span>";
+    }
+    if (qrImg) {
+      qrImg.src = "https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=" + encodeURIComponent(MONIX_TESTFLIGHT_URL);
+    }
+    if (statusText) {
+      statusText.textContent = "Beta Pública Activa en TestFlight · Monix v1.111";
+    }
+  })();
+</script>
+</body>
+</html>

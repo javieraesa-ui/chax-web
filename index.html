@@ -1121,6 +1121,165 @@
     @media (max-width: 480px) {
       .nav-cta { display: none; }
     }
+
+    /* ==========================================
+       APPX JP DEVELOPER IDENTITY & ECOSYSTEM
+    ========================================== */
+    .appx-manifesto {
+      background:
+        linear-gradient(135deg, rgba(56,189,248,0.10) 0%, rgba(10,14,24,0.94) 55%, rgba(0,245,155,0.08) 100%);
+      border: 1px solid rgba(56,189,248,0.34);
+      border-radius: var(--r-xl);
+      padding: 36px 34px;
+      margin-bottom: 26px;
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 28px;
+      align-items: center;
+    }
+    .appx-brand-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+    .appx-logo-img {
+      width: 64px;
+      height: 64px;
+      border-radius: 16px;
+      aspect-ratio: 1 / 1;
+      flex-shrink: 0;
+      border: 1px solid rgba(56,189,248,0.45);
+      box-shadow: 0 10px 28px rgba(56,189,248,0.22);
+    }
+    .appx-eyebrow {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--blue);
+      margin-bottom: 4px;
+    }
+    .appx-title {
+      font-size: clamp(1.35rem, 1.1rem + 1vw, 1.9rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+    .appx-pillars {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+    }
+    .appx-pillar {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: var(--r-md);
+      padding: 14px 16px;
+    }
+    .appx-pillar strong {
+      display: block;
+      font-size: 0.86rem;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+    .appx-pillar span {
+      display: block;
+      font-size: 0.78rem;
+      color: var(--text-secondary);
+      line-height: 1.45;
+    }
+    .appx-apps-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+    .appx-card {
+      background: var(--bg1);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: var(--r-lg);
+      padding: 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .appx-card.featured-monix {
+      grid-column: 1 / -1;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 24px;
+      align-items: center;
+      background: linear-gradient(135deg, rgba(34,211,238,0.12) 0%, rgba(15,23,42,0.92) 60%, rgba(251,191,36,0.08) 100%);
+      border-color: rgba(34,211,238,0.45);
+    }
+    .appx-monix-icon {
+      width: 84px;
+      height: 84px;
+      border-radius: 22px;
+      aspect-ratio: 1 / 1;
+      box-shadow: 0 12px 30px rgba(34,211,238,0.28);
+    }
+    .appx-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      align-self: flex-start;
+      padding: 4px 11px;
+      border-radius: var(--r-pill);
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: rgba(56,189,248,0.16);
+      color: #67e8f9;
+      border: 1px solid rgba(56,189,248,0.35);
+    }
+    .appx-tag.green {
+      background: rgba(0,245,155,0.15);
+      color: var(--green);
+      border-color: rgba(0,245,155,0.35);
+    }
+    .appx-tag.purple {
+      background: rgba(167,139,250,0.16);
+      color: #c4b5fd;
+      border-color: rgba(167,139,250,0.36);
+    }
+    .appx-tag.amber {
+      background: rgba(251,191,36,0.15);
+      color: #fde68a;
+      border-color: rgba(251,191,36,0.36);
+    }
+    .appx-card h3 {
+      font-size: 1.24rem;
+      font-weight: 850;
+      color: #fff;
+      letter-spacing: -0.02em;
+    }
+    .appx-card p {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      line-height: 1.58;
+    }
+    .appx-meta {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      font-family: var(--mono);
+    }
+    @media (max-width: 900px) {
+      .appx-manifesto,
+      .appx-apps-grid,
+      .appx-card.featured-monix {
+        grid-template-columns: 1fr;
+      }
+      .appx-pillars {
+        grid-template-columns: 1fr;
+      }
+    }
+    @media (forced-colors: active) {
+      .appx-manifesto, .appx-card, .appx-pillar {
+        border: 1px solid CanvasText;
+      }
+    }
   </style>
 </head>
 <body>
@@ -1149,6 +1308,7 @@
         <li><a href="#como-funciona">Cómo viaja</a></li>
         <li><a href="#escenarios">Escenarios</a></li>
         <li><a href="#faq">FAQ</a></li>
+        <li><a href="#ecosistema-appx">Appx JP</a></li>
       </ul>
       <div class="nav-right">
         <div class="lang-pill" id="langSelector">
@@ -1952,6 +2112,135 @@
   <div class="divider"></div>
 
   <!-- ================================================
+       IDENTIDAD DEL DESARROLLADOR: APPX JP Y ECOSISTEMA -X
+  ================================================ -->
+  <section id="ecosistema-appx" class="offscreen-section" aria-labelledby="appx-heading">
+    <div class="wrap">
+      <div class="section-head center fade-up">
+        <div class="section-label">Identidad del Desarrollador · Studio Soberano</div>
+        <h2 class="section-title" id="appx-heading">Construido por <span style="color:var(--blue)">Appx JP</span>.<br>Otras apps del mismo ecosistema.</h2>
+        <p class="section-sub">
+          Appx JP es un estudio independiente de ingeniería de software que diseña herramientas nativas 100% Local-First, sin rastreadores ni dependencia en servidores centrales: cada usuario es dueño absoluto de sus llaves, mensajes, mediciones y patrimonio.
+        </p>
+      </div>
+
+      <!-- Manifiesto y Pilares de Appx JP -->
+      <div class="appx-manifesto fade-up">
+        <div>
+          <div class="appx-brand-row">
+            <img src="assets/appx-logo.png" alt="Logo oficial del desarrollador Appx JP" class="appx-logo-img" width="512" height="512" loading="lazy">
+            <div>
+              <div class="appx-eyebrow">🧬 Appx JP · Ingeniería &amp; Soberanía Digital</div>
+              <h3 class="appx-title">Filosofía «-x»: Precisión, Privacidad y Autonomía</h3>
+            </div>
+          </div>
+          <p style="font-size:0.95rem;color:var(--text-secondary);line-height:1.65;margin-bottom:14px;">
+            Todas las aplicaciones firmadas por <strong style="color:#fff;">Javier Posada (Appx JP)</strong> comparten una misma columna vertebral técnica: cómputo local en el dispositivo (Apple Silicon, SwiftUI y Web moderna), comunicación directa entre pares y cero monetización mediante datos personales.
+          </p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+            <a href="monix.html" class="btn-primary" style="padding:11px 22px;font-size:0.86rem;">
+              💧 Conocer Monix (Finanzas Local-First) →
+            </a>
+            <a href="mailto:support@chax.chat?subject=Contacto%20Appx%20JP" class="btn-ghost" style="padding:10px 18px;font-size:0.84rem;">
+              ✉️ support@chax.chat
+            </a>
+          </div>
+        </div>
+
+        <div class="appx-pillars">
+          <div class="appx-pillar">
+            <strong>🔒 100% Local-First</strong>
+            <span>Tus bases de datos, recibos y llaves criptográficas viven exclusivamente en tu equipo.</span>
+          </div>
+          <div class="appx-pillar">
+            <strong>📡 Redes Directas P2P</strong>
+            <span>Enlace Bluetooth y Wi-Fi Direct entre dispositivos vía Multipeer y protocolos abiertos.</span>
+          </div>
+          <div class="appx-pillar">
+            <strong>💎 Cristal Líquido Nativo</strong>
+            <span>Interfaces táctiles fluidas, hápticas y adaptativas diseñadas para claridad inmediata.</span>
+          </div>
+          <div class="appx-pillar">
+            <strong>📐 Rigor Matemático</strong>
+            <span>Motores estadísticos, DSP acústico y sellos criptográficos SHA-256 verificables.</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Catálogo de Otras Apps del Desarrollador Appx JP -->
+      <div class="appx-apps-grid fade-up">
+        <!-- App Destacada: Monix -->
+        <article class="appx-card featured-monix">
+          <img src="assets/monix-icon.png" alt="Ícono de Monix" class="appx-monix-icon" width="512" height="512" loading="lazy">
+          <div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
+              <span class="appx-tag">🍎 Nuevo en TestFlight · iOS &amp; iPad</span>
+              <span class="appx-tag green">Finanzas Personales P2P</span>
+            </div>
+            <h3>Monix (Presupuestox) — Finanzas Soberanas en Cristal Líquido</h3>
+            <p style="margin-top:6px;">
+              Universo físico de esferas de agua que muestran tu consumo mensual al instante, captura de pantalla completa en 3 pasos con Vision OCR para tickets, dictado por voz con IA on-device, control real de Meses Sin Intereses (MSI), plan de liquidación de deudas Bola de Nieve / Avalancha y sincronización P2P cifrada sin nube.
+            </p>
+            <div class="appx-meta" style="margin-top:8px;">com.assi.monix · v1.111 · Cero servidores · Exportación JSON/CSV</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;min-width:190px;">
+            <a href="monix.html" class="btn-primary" style="justify-content:center;padding:12px 20px;font-size:0.86rem;">
+              Abrir ficha de Monix →
+            </a>
+            <a href="monix.html#testflight" class="btn-ghost" style="justify-content:center;padding:10px 18px;font-size:0.8rem;">
+              🍎 TestFlight Beta (iOS)
+            </a>
+          </div>
+        </article>
+
+        <!-- Sonorix & Medicionex -->
+        <article class="appx-card">
+          <span class="appx-tag green">🎧 Audio Profesional · macOS &amp; Studio</span>
+          <h3>Sonorix &amp; Medicionex</h3>
+          <p>
+            Suite de metrología electroacústica y análisis DSP en tiempo real para interfaces y sistemas de audio: calibración de latencia, barridos 40 Hz–10 kHz, piso de ruido, reportes ejecutivos PDF con score 0–100 y sello criptográfico de integridad.
+          </p>
+          <div class="appx-meta">macOS Swift &amp; Web Studio · Metrología &amp; SQLite</div>
+        </article>
+
+        <!-- Retrox -->
+        <article class="appx-card">
+          <span class="appx-tag purple">⚖️ Gobernanza P2P · Equipos</span>
+          <h3>Retrox</h3>
+          <p>
+            Plataforma de reconocimiento y evaluación 360° entre pares ponderada por jerarquía y reputación histórica, fricción matemática contra sesgos (<em>Skin in the Game</em>) y auditoría asimétrica orientada a equipos de alto desempeño.
+          </p>
+          <div class="appx-meta">Web / PWA React 19 + TypeScript · Motor 360°</div>
+        </article>
+
+        <!-- Tadix -->
+        <article class="appx-card">
+          <span class="appx-tag amber">📈 Algoritmos Cuantitativos</span>
+          <h3>Tadix</h3>
+          <p>
+            Ecosistema de indicadores y motores cuantitativos multi-temporalidad de acción del precio con blindaje estricto anti-repaint para lectura disciplinada de matrices de tendencia y scalping de precisión.
+          </p>
+          <div class="appx-meta">Pine Script v6 · PJ Hybrid Master Matrix</div>
+        </article>
+
+        <!-- Chax -->
+        <article class="appx-card">
+          <span class="appx-tag">🧭 Comunicación Híbrida · iOS, Mac &amp; Android</span>
+          <h3>Chax Network</h3>
+          <p>
+            El mensajero soberano omnicanal de <strong>Appx JP</strong>: rápido por internet vía Nostr e imparable en malla Bluetooth/Wi-Fi/LoRa cuando la red móvil falla, con mapas offline <code>.chaxmap</code> y sincronización <code>TwinSync</code>.
+          </p>
+          <div style="margin-top:auto;display:flex;gap:10px;flex-wrap:wrap;">
+            <a href="download/" class="btn-ghost" style="padding:8px 16px;font-size:0.8rem;">Descargar Chax →</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ================================================
        CTA FINAL DE URGENCIA
   ================================================ -->
   <section class="cta-section" id="descargas">
@@ -2006,6 +2295,8 @@
       <span>Chax · iOS &amp; macOS v3.364 · Android v1.127</span>
     </div>
     <div class="footer-links">
+      <a href="monix.html">Monix</a>
+      <a href="#ecosistema-appx">Appx JP</a>
       <a href="privacy.html">Privacidad</a>
       <a href="terms.html">Términos</a>
       <a href="support.html">Soporte</a>
@@ -2014,7 +2305,7 @@
       <a href="pt/index.html" data-lang="pt" class="lang-item">Português</a>
       <button type="button" id="motionToggle" class="motion-toggle">Pausar red animada</button>
     </div>
-    <div class="footer-copy">© 2026 Chax. Rápido internet, imparable mesh.</div>
+    <div class="footer-copy">© 2026 Appx JP · Chax &amp; Monix. Tecnología soberana local-first.</div>
   </div>
 </footer>
 

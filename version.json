@@ -1,24 +1,34 @@
 {
   "ios": {
-    "latestVersion": "3.364",
-    "latestBuild": 704,
+    "latestVersion": "3.368",
+    "latestBuild": 708,
     "minRequiredVersion": "3.348",
     "testFlightUrl": "https://testflight.apple.com/join/hmfhvFdf",
     "appStoreUrl": "",
-    "releaseNotesEs": "Auditoría integral de estabilidad, memoria y batería en segundo plano, despertar silencioso optimizado sin duplicados, protección de enlaces WAN Nostr y sincronización fluida de dispositivos gemelos.",
-    "releaseNotesEn": "Comprehensive background stability, memory, and battery audit, optimized duplicate-free silent wake, smart WAN Nostr relay protection, and seamless twin device sync.",
-    "releaseNotesPt": "Auditoria integral de estabilidade, memória e bateria em segundo plano, despertar silencioso otimizado sem duplicatas, proteção de relays WAN Nostr e sincronização fluida de dispositivos gêmeos."
+    "releaseNotesEs": "Notificaciones push instantáneas reforzadas con conmutación automática multi-despachador, Vigía multi-relé v1/v2 y respaldo de alertas para mensajes recientes no leídos, además del formato horario unificado de 12 horas (a.m./p.m.).",
+    "releaseNotesEn": "Hardened instant push notifications with automatic multi-dispatcher failover, v1/v2 multi-relay watcher, and reliable unread message alerts, plus unified 12-hour (AM/PM) time formatting.",
+    "releaseNotesPt": "Notificações push instantâneas reforçadas com alternância automática multi-despachador, vigia multi-relé v1/v2 e alertas confiáveis para mensagens recentes não lidas, além do formato de hora unificado de 12 horas (AM/PM)."
+  },
+  "macos": {
+    "latestVersion": "3.368",
+    "latestBuild": 708,
+    "minRequiredVersion": "3.348",
+    "testFlightUrl": "https://testflight.apple.com/join/hmfhvFdf",
+    "appStoreUrl": "",
+    "releaseNotesEs": "Notificaciones y despertar push multi-relé reforzados, formato horario unificado de 12 horas (a.m./p.m.) y paridad nativa en macOS con Ethernet LAN, portapapeles aislado y bóveda cifrada.",
+    "releaseNotesEn": "Hardened multi-relay push notifications, unified 12-hour (AM/PM) time format, and full native macOS parity with Ethernet LAN discovery, isolated clipboard, and encrypted vault.",
+    "releaseNotesPt": "Notificações push multi-relé reforçadas, formato de hora unificado de 12 horas (AM/PM) e paridade nativa no macOS com Ethernet LAN, área de transferência isolada e cofre criptografado."
   },
   "android": {
-    "latestVersion": "1.127",
-    "latestVersionCode": 149,
+    "latestVersion": "1.131",
+    "latestVersionCode": 153,
     "minRequiredVersion": "1.118",
     "minRequiredVersionCode": 140,
     "playStoreUrl": "https://play.google.com/store/apps/details?id=com.appx.chax",
     "playTestingUrl": "https://play.google.com/apps/testing/com.appx.chax",
     "apkUrl": "https://chax.chat/downloads",
-    "releaseNotesEs": "Auditoría integral de estabilidad, servicio continuo en Android 15/16, hidratación multimedia bajo demanda, despertar silencioso sin duplicados y protección de enlaces WAN Nostr.",
-    "releaseNotesEn": "Comprehensive stability audit, uninterrupted Android 15/16 background service, on-demand media hydration, duplicate-free silent wake, and smart WAN Nostr relay protection.",
-    "releaseNotesPt": "Auditoria integral de estabilidade, serviço contínuo no Android 15/16, hidratação multimídia sob demanda, despertar silencioso sem duplicatas e proteção de relays WAN Nostr."
+    "releaseNotesEs": "Despertar push con conmutación automática y respaldo WAN para mensajes y archivos, formato horario unificado de 12 horas (a.m./p.m.), indicador de llegada tardía, traducción privada en el dispositivo y nodos LoRa en Mapax.",
+    "releaseNotesEn": "Failover push wake-up and resilient WAN relay fallback for messages and files, unified 12-hour (AM/PM) time format, late-arrival bubble indicator, private on-device translation, and LoRa nodes on Mapax.",
+    "releaseNotesPt": "Despertar push com alternância automática e fallback WAN resiliente para mensagens e arquivos, formato de hora unificado de 12 horas (AM/PM), indicador de chegada tardia, tradução local privada e nós LoRa no Mapax."
   }
 }

@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chax — Fast internet. Unstoppable mesh. Install before you need it.</title>
-  <meta name="description" content="Fast internet, unstoppable mesh. Chax flies over WiFi or 5G today and keeps connecting you off-grid when earthquakes, storms, blackouts or dead zones strike. No phone number. Free.">
+  <title>Chax — Fast internet. Unstoppable mesh. Sovereignty &amp; community.</title>
+  <meta name="description" content="Fast internet, unstoppable mesh. Everyday speed over Wi-Fi or 5G with sovereign cryptographic identity, shared offline Mapax maps, and peer-to-peer community bridge nodes. Zero phone number.">
   <meta property="og:title" content="Chax — Fast internet. Unstoppable mesh.">
-  <meta property="og:description" content="When cell towers go dark, the App Store stops existing. Install Chax free in 30 seconds today and protect your family circle without internet or a phone number.">
+  <meta property="og:description" content="Own your keys with no phone number, share offline OpenStreetMap &amp; satellite routes (.chaxmap), and help neighbors communicate as a sealed-packet bridge node.">
   <meta property="og:image" content="../assets/app-icon.png">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/png" href="../assets/app-icon.png">
@@ -78,15 +78,15 @@
     .urgency-bar {
       position: relative;
       z-index: 101;
-      background: linear-gradient(90deg, rgba(251,191,36,0.12), rgba(251,113,133,0.14), rgba(0,245,155,0.10));
-      border-bottom: 1px solid rgba(251,191,36,0.22);
+      background: linear-gradient(90deg, rgba(0,245,155,0.12), rgba(56,189,248,0.12), rgba(167,139,250,0.10));
+      border-bottom: 1px solid rgba(0,245,155,0.22);
       padding: 8px 16px;
       text-align: center;
       font-size: 0.78rem;
       color: var(--text);
       line-height: 1.4;
     }
-    .urgency-bar strong { color: var(--amber); }
+    .urgency-bar strong { color: var(--green); }
     .urgency-bar a {
       display: inline-block;
       margin-left: 8px;
@@ -282,9 +282,9 @@
       box-shadow: inset 0 0 0 1px rgba(56,189,248,0.4);
     }
     .sim-btn[data-sim="emergency"][aria-pressed="true"] {
-      background: rgba(251,113,133,0.18);
-      color: #ffd5dc;
-      box-shadow: inset 0 0 0 1px rgba(251,113,133,0.45);
+      background: rgba(0,245,155,0.16);
+      color: #00f59b;
+      box-shadow: inset 0 0 0 1px rgba(0,245,155,0.42);
     }
     .sim-panel {
       display: grid;
@@ -440,10 +440,10 @@
       gap: 14px;
     }
     .paradox-card.step-now { border-top: 3px solid var(--blue); }
-    .paradox-card.step-cut { border-top: 3px solid var(--amber); }
+    .paradox-card.step-cut { border-top: 3px solid var(--green); }
     .paradox-card.step-trap {
-      border-top: 3px solid var(--coral);
-      background: linear-gradient(180deg, rgba(251,113,133,0.08) 0%, var(--bg1) 100%);
+      border-top: 3px solid var(--amber);
+      background: linear-gradient(180deg, rgba(251,191,36,0.06) 0%, var(--bg1) 100%);
     }
     .paradox-step {
       font-size: 0.72rem;
@@ -452,8 +452,8 @@
       text-transform: uppercase;
     }
     .paradox-card.step-now .paradox-step { color: var(--blue); }
-    .paradox-card.step-cut .paradox-step { color: var(--amber); }
-    .paradox-card.step-trap .paradox-step { color: var(--coral); }
+    .paradox-card.step-cut .paradox-step { color: var(--green); }
+    .paradox-card.step-trap .paradox-step { color: var(--amber); }
     .paradox-title {
       font-size: 1.24rem;
       font-weight: 800;
@@ -466,7 +466,7 @@
       line-height: 1.62;
     }
     .paradox-callout {
-      background: linear-gradient(135deg, rgba(0,245,155,0.09) 0%, rgba(17,17,24,0.95) 60%, rgba(251,113,133,0.08) 100%);
+      background: linear-gradient(135deg, rgba(0,245,155,0.09) 0%, rgba(17,17,24,0.95) 60%, rgba(56,189,248,0.08) 100%);
       border: 1px solid rgba(0,245,155,0.28);
       border-radius: var(--r-xl);
       padding: 36px 40px;
@@ -1078,10 +1078,10 @@
 
 <canvas id="bg-canvas" aria-hidden="true"></canvas>
 
-<!-- Preventive Urgency Top Bar -->
-<div class="urgency-bar" role="region" aria-label="Preparedness notice">
-  <strong>⚠️ Emergency Rule #1:</strong> when cell towers drop, the app store stops existing. Install it while you still have signal.
-  <a href="#descargas">Install in 30s →</a>
+<!-- Community Sovereignty Top Bar -->
+<div class="urgency-bar" role="region" aria-label="Sovereign network notice">
+  <strong>🧭 Sovereign communication:</strong> zero phone numbers, shared offline maps &amp; privacy-preserving community bridge nodes.
+  <a href="#descargas">Download free →</a>
 </div>
 
 <!-- ================================================
@@ -1095,10 +1095,10 @@
         <span>Chax</span>
       </a>
       <ul class="nav-links">
-        <li><a href="#paradoja">Why today?</a></li>
+        <li><a href="#filosofia">Philosophy</a></li>
         <li><a href="#funciones">Features</a></li>
         <li><a href="#como-funciona">How it travels</a></li>
-        <li><a href="#escenarios">Emergencies</a></li>
+        <li><a href="#escenarios">Scenarios</a></li>
         <li><a href="#faq">FAQ</a></li>
       </ul>
       <div class="nav-right">
@@ -1114,7 +1114,7 @@
           <span class="lang-sep" aria-hidden="true">|</span>
           <a href="../pt/index.html" class="lang-item" data-lang="pt" title="Português">PT</a>
         </div>
-        <a href="#descargas" class="nav-cta">Install before blackout</a>
+        <a href="#descargas" class="nav-cta">Download free</a>
       </div>
     </div>
   </nav>
@@ -1125,7 +1125,7 @@
        HERO
   ================================================ -->
   <section class="hero" id="hero">
-    <div class="hero-eyebrow">iOS &amp; Mac v3.363 · Official Android v1.126 · 100% Free</div>
+    <div class="hero-eyebrow">iOS &amp; Mac v3.364 · Official Android v1.127 · 100% Free</div>
 
     <h1 class="hero-title">
       Fast internet.<br>
@@ -1133,122 +1133,122 @@
     </h1>
 
     <p class="hero-sub">
-      Use it at full speed over WiFi or 5G today. And when an earthquake, blackout, storm, remote highway or crowded stadium knocks every other messaging app offline, keep talking phone-to-phone over <strong>Bluetooth Mesh</strong> and <strong>LoRa Radio (+30 km)</strong>. No servers to crash. No phone number required.
+      Everyday messaging at full speed with <strong>zero phone number</strong>, end-to-end <strong>TwinSync</strong> across your devices, and offline <strong>Mapax</strong> routes you can share anywhere. And when cellular coverage fades on highways, festivals, or neighborhood outages, your phone becomes a community bridge over <strong>Bluetooth Mesh</strong> and <strong>LoRa Radio (+30 km)</strong>.
     </p>
 
     <!-- Interactive Network Simulator -->
     <div class="sim-box" id="networkSim">
       <div class="sim-controls" role="group" aria-label="Simulate connection state">
-        <button type="button" class="sim-btn" data-sim="online" aria-pressed="false">
-          ⚡ Online (Everyday Speed)
+        <button type="button" class="sim-btn" data-sim="online" aria-pressed="true">
+          ⚡ Internet Mode (Fast &amp; Sovereign)
         </button>
-        <button type="button" class="sim-btn" data-sim="emergency" aria-pressed="true">
-          🚨 Emergency · 0 Signal (Blackout / Disaster)
+        <button type="button" class="sim-btn" data-sim="emergency" aria-pressed="false">
+          🤝 Community Mesh Mode (0 Bars)
         </button>
       </div>
 
-      <div class="sim-panel" id="sim-panel-emergency">
+      <div class="sim-panel" id="sim-panel-emergency" hidden>
         <div class="sim-col dead">
-          <div class="sim-col-label">Conventional messaging apps</div>
-          <div class="sim-col-text">✕ Endless spinning clock · Cloud servers unreachable · <strong>Impossible to open App Store or Google Play to install anything.</strong></div>
+          <div class="sim-col-label">Cloud-dependent apps</div>
+          <div class="sim-col-text">✕ Stuck connecting when towers saturate · Require your phone number · Zero communication between neighbors off-grid.</div>
         </div>
         <div class="sim-col alive">
-          <div class="sim-col-label">Chax already in your pocket</div>
-          <div class="sim-col-text">✓ <strong>Multi-hop BLE mesh active</strong> · Lock-screen voice autoplay · Offline satellite Mapax · SOS beacon &amp; 30 km LoRa link.</div>
+          <div class="sim-col-label">Chax Community Mesh</div>
+          <div class="sim-col-text">✓ <strong>Automatic neighbor relay</strong> via opaque Sealed Sender hops · Offline satellite Mapax &amp; <code>.chaxmap</code> sharing · Lock-screen voice &amp; 30 km LoRa link.</div>
         </div>
       </div>
 
-      <div class="sim-panel" id="sim-panel-online" hidden>
+      <div class="sim-panel" id="sim-panel-online">
         <div class="sim-col wan">
-          <div class="sim-col-label">Internet Mode (WiFi / 5G)</div>
-          <div class="sim-col-text">⚡ <strong>Instant worldwide delivery</strong> over E2EE encrypted Nostr WAN relays, sovereign groups, one-tap stickers &amp; cross-sync between iPhone, iPad, Mac and Android.</div>
+          <div class="sim-col-label">Internet Mode (Wi-Fi / 5G)</div>
+          <div class="sim-col-text">⚡ <strong>Instant global delivery</strong> across encrypted Nostr WAN relays, sovereign groups, <code>.chaxmap</code> pins &amp; E2EE <code>TwinSync</code> between iPhone, iPad, Mac &amp; Android.</div>
         </div>
         <div class="sim-col alive">
-          <div class="sim-col-label">Zero surveillance sovereignty</div>
-          <div class="sim-col-text">🛡️ <strong>No phone number</strong>, no central cloud harvesting your contacts, and programmable anti-forensic flash storage autopurge.</div>
+          <div class="sim-col-label">Sovereignty with zero surveillance</div>
+          <div class="sim-col-text">🛡️ <strong>No phone number or SIM</strong>, hardware-born cryptographic keys, Protocol v2 &amp; programmable anti-forensic flash autopurge.</div>
         </div>
       </div>
     </div>
 
     <div class="hero-actions">
       <a href="#descargas" class="btn-primary">
-        ⚡ Install free before you need it
+        ⚡ Download free for my device
       </a>
       <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" rel="noopener" class="btn-ghost">
         <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 3.5c.61-.75 1.04-1.8 1.01-2.85-.92.04-2.03.62-2.67 1.37-.58.67-1.08 1.74-1.01 2.78.98.08 2.06-.55 2.67-1.3z"/></svg>
-        iPhone, iPad &amp; Mac (v3.363)
+        iPhone, iPad &amp; Mac (v3.364)
       </a>
       <a href="../download/" class="btn-ghost">
-        🤖 Official Android (v1.126)
+        🤖 Official Android (v1.127)
       </a>
     </div>
 
     <p class="hero-micro">
-      ⏱️ <strong>30 seconds today over WiFi</strong> · Zero standby battery drain · No SIM card required · Ready when everything else goes silent.
+      🛡️ <strong>Your keys, your maps, your community</strong> · Zero phone number · Negligible standby battery · Connects seamlessly online and off-grid.
     </p>
 
     <div class="hero-stats">
       <div class="stat-pill">📡 <strong>Triple Route: Internet + BLE + LoRa</strong></div>
-      <div class="stat-pill">🎙️ <strong>Lock-Screen Voice Autoplay</strong></div>
-      <div class="stat-pill">🗺️ <strong>100% Offline Satellite Maps</strong></div>
-      <div class="stat-pill">🛡️ <strong>No Phone Numbers or Central Servers</strong></div>
+      <div class="stat-pill">🗺️ <strong>Offline Shared Mapax &amp; .chaxmap</strong></div>
+      <div class="stat-pill">🤝 <strong>Sealed-Packet Bridge Nodes</strong></div>
+      <div class="stat-pill">🛡️ <strong>Sovereign TwinSync · No SIM</strong></div>
     </div>
   </section>
 
   <div class="divider"></div>
 
   <!-- ================================================
-       THE BLACKOUT PARADOX
+       THREE PHILOSOPHIES OF CHAX
   ================================================ -->
-  <section id="paradoja">
+  <section id="filosofia">
     <div class="wrap">
       <div class="section-head center fade-up">
-        <div class="section-label coral">The Blackout Paradox</div>
-        <h2 class="section-title">The mistake everyone makes<br>takes exactly 60 seconds.</h2>
+        <div class="section-label" style="color:var(--green)">Three Pillars of Chax</div>
+        <h2 class="section-title">Communication belongs to you —<br>and grows stronger when shared.</h2>
         <p class="section-sub">
-          Nobody plans on losing communication. Yet everyone assumes they will still have internet access when it is time to prepare.
+          Chax is not just an off-grid contingency tool. It is a daily philosophy built on cryptographic autonomy, mutual aid, and open territory.
         </p>
       </div>
 
       <div class="paradox-grid fade-up">
         <article class="paradox-card step-now">
-          <div class="paradox-step">Moment 01 · Right Now</div>
-          <h3 class="paradox-title">Everything feels normal. Full bars and battery.</h3>
+          <div class="paradox-step">Pillar 01 · The Sovereign Individual</div>
+          <h3 class="paradox-title">Your identity lives in your own keys, never a SIM card.</h3>
           <p class="paradox-desc">
-            You read this page and think: <em>“Cool app, I’ll grab it before my next trip or whenever I need it.”</em> Normalcy bias convinces you the network will always stay online.
+            Zero phone numbers, zero emails, and zero corporate permission needed to talk. Sync your keys across iPhone, iPad, Mac, and Android with end-to-end encrypted <code>TwinSync</code>, Protocol v2 <code>Sealed Sender</code>, and programmable autopurge.
           </p>
         </article>
 
         <article class="paradox-card step-cut">
-          <div class="paradox-step">Moment 02 · The Sudden Outage</div>
-          <h3 class="paradox-title">Earthquake, power blackout, or dead mountain pass.</h3>
+          <div class="paradox-step">Pillar 02 · Mutual Aid Bridge Node</div>
+          <h3 class="paradox-title">Your phone helps carry your neighbors’ voices blindly.</h3>
           <p class="paradox-desc">
-            Within seconds, cell towers saturate or lose backup power. Your signal bars drop to <strong>No Service</strong> right when you desperately need to check if your family is safe.
+            Every Chax phone can act as an automatic community relay over BLE Mesh: it forwards <strong>opaque, sealed packets</strong> nobody can inspect, while its battery-aware <code>PathTable</code> protects your power.
           </p>
         </article>
 
         <article class="paradox-card step-trap">
-          <div class="paradox-step">Moment 03 · The Silent Trap</div>
-          <h3 class="paradox-title">You try to download Chax… and it is too late.</h3>
+          <div class="paradox-step">Pillar 03 · Shared Territory (Mapax)</div>
+          <h3 class="paradox-title">Open maps and landmarks owned by your group.</h3>
           <p class="paradox-desc">
-            You open the App Store or Google Play, only to face a blank screen. Without signal you cannot download a single megabyte. Being reachable is a choice made 30 seconds before the crisis.
+            Carry OpenStreetMap street layers and offline satellite tiles free of commercial API keys, share live pin collections inside chat, and export portable <code>.chaxmap</code> territory packs so nobody hikes or rides blind.
           </p>
         </article>
       </div>
 
       <div class="paradox-callout fade-up">
         <div class="paradox-quote-wrap">
-          <h3 class="paradox-quote">You can't download a parachute <span>after you've jumped out of the plane.</span></h3>
+          <h3 class="paradox-quote">Resilient networks are not rented — <span>they are woven neighbor to neighbor.</span></h3>
           <p class="paradox-callout-sub">
-            Chax is free, weighs less than three photos, and sleeps without draining battery. But an emergency network needs at least two phones: <strong>install it today and send it right now to the 3 people you cannot afford to lose track of.</strong>
+            Chax uses barely any standby battery and takes seconds to set up. Every extra device in your household, riding crew, or block strengthens a sovereign network nobody can switch off.
           </p>
         </div>
         <div class="paradox-callout-actions">
           <a href="#descargas" class="btn-primary" style="justify-content:center;">
-            ⚡ Install on my phone today
+            ⚡ Add my node to the network
           </a>
           <button type="button" class="btn-share-circle" data-share-btn>
-            📲 Send Chax to my family now
+            📲 Invite family &amp; neighbors
           </button>
         </div>
       </div>
@@ -1263,24 +1263,24 @@
   <section id="funciones">
     <div class="wrap">
       <div class="section-head fade-up">
-        <div class="section-label">Superpowers</div>
-        <h2 class="section-title">Fast every day.<br>Lifesaving on the critical day.</h2>
-        <p class="section-sub">Built to delight over fast WiFi/5G daily, and engineered to become a tactical survival link the instant signal disappears.</p>
+        <div class="section-label">Key Capabilities</div>
+        <h2 class="section-title">Fast every day.<br>Sovereign on every route.</h2>
+        <p class="section-sub">Engineered to fly on daily Wi-Fi or 5G with offline cartography and multi-device sync—and seamlessly form a neighbor mesh whenever coverage fades.</p>
       </div>
 
-      <!-- FEATURE 1: OFFLINE MAPS -->
+      <!-- FEATURE 1: OFFLINE MAPS & SHARED CARTOGRAPHY -->
       <div class="feature-card fade-up" id="feature-mapax">
         <div class="feature-card-body">
-          <div class="feature-tag tag-green">🗺️ Offline Mapax</div>
-          <h3 class="feature-headline">Locate friends even when ordinary maps turn blank.</h3>
+          <div class="feature-tag tag-green">🗺️ Shared Offline Mapax</div>
+          <h3 class="feature-headline">Carry, mark, and share entire territories with zero coverage.</h3>
           <p class="feature-desc">
-            Chax stores crisp street and satellite maps directly on your device alongside a live directional radar toward your contacts and local path tracking—without spending a single cellular byte.
+            Store crisp OpenStreetMap and satellite layers right on your device alongside a live directional radar toward friends. Save custom spots, send collections inside any chat, or export portable <code>.chaxmap</code> files for your whole crew.
           </p>
           <ul class="feature-list">
+            <li><strong>Shareable bookmark collections:</strong> send trailheads, rally points, and routes straight in chat or via <code>.chaxmap</code></li>
+            <li><strong>OpenStreetMap + Satellite offline:</strong> zero third-party commercial API keys or location tracking</li>
             <li><strong>Exact distance and bearing</strong> to team members and family in meters</li>
-            <li><strong>Street &amp; satellite layers</strong> cached locally with anti-poisoning protection</li>
-            <li><strong>Your trail history</strong> stays strictly inside your own device</li>
-            <li><strong>Smart storage cleanup</strong> prevents filling up your phone memory</li>
+            <li><strong>Local-only trail history &amp; smart cache limits</strong> so storage stays tidy</li>
           </ul>
         </div>
         <div class="feature-visual">
@@ -1292,8 +1292,8 @@
             </div>
           </div>
           <div class="float-bubble fb-green float-b" style="top:18%;right:10%;">
-            <div class="bubble-label">Nearby contact</div>
-            <div class="bubble-value">Javier • 42 m →</div>
+            <div class="bubble-label">Shared territory</div>
+            <div class="bubble-value">.chaxmap + 42 m →</div>
           </div>
           <div class="float-bubble fb-blue float-a" style="bottom:20%;left:6%;">
             <div class="bubble-label">Map engine</div>
@@ -1305,15 +1305,15 @@
       <!-- FEATURE 2: VOICE AUTOPLAY -->
       <div class="feature-card reverse fade-up" id="feature-ptt">
         <div class="feature-card-body">
-          <div class="feature-tag tag-coral">🎙️ Tactical Voice &amp; Lock-Screen Autoplay</div>
+          <div class="feature-tag tag-coral">🎙️ Instant Voice &amp; Lock-Screen Autoplay</div>
           <h3 class="feature-headline">Hold, speak, release. Heard aloud even while your phone stays locked.</h3>
           <p class="feature-desc">
-            With tactical autoplay enabled, incoming voice dispatches play automatically out loud through your speaker while your phone stays safely in a pocket, backpack, or handlebar mount.
+            With hands-free autoplay enabled, incoming voice dispatches play automatically out loud through your speaker while your phone stays safely in a pocket, backpack, or handlebar mount.
           </p>
           <ul class="feature-list">
             <li><strong>Instant walkie-talkie feel:</strong> lightweight compressed dispatch without lag</li>
-            <li><strong>Hands-free lock-screen playback:</strong> no need to stop or unlock</li>
-            <li><strong>On-device voice transcription:</strong> read instantly in noisy or stealth environments</li>
+            <li><strong>Hands-free lock-screen playback:</strong> ideal on bikes, trails, or team logistics</li>
+            <li><strong>On-device voice transcription:</strong> read silently in noisy or quiet places</li>
             <li><strong>E2EE encrypted voice</strong> across BLE, Mesh hops, and Internet relays</li>
           </ul>
         </div>
@@ -1376,6 +1376,53 @@
             <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:14px;">
               <div style="font-size:4.8rem;filter:drop-shadow(0 0 20px rgba(251,191,36,0.45))" aria-hidden="true">🧗‍♂️</div>
               <div style="background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.35);border-radius:12px;padding:10px 18px;font-size:0.78rem;color:var(--amber);font-weight:700">✓ Sticker ~25 KB · Ready over Mesh</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- FEATURE 3B + 4B DUO: BRIDGE NODE & PROTOCOL V2 / TWINSYNC -->
+      <div class="feature-duo fade-up" id="feature-extras-mesh">
+        <div class="feature-card" id="feature-nodo">
+          <div class="feature-card-body">
+            <div class="feature-tag tag-green">🤝 Living Community Mesh</div>
+            <h3 class="feature-headline" style="font-size:clamp(1.3rem,2.5vw,1.9rem)">Be a bridge node: carry sealed packets without seeing them.</h3>
+            <p class="feature-desc">Every device running Chax strengthens nearby resilience automatically, relaying opaque encrypted traffic with our battery-aware <code>PathTable</code> scheduler and proximity RSSI radar.</p>
+            <ul class="feature-list">
+              <li><strong>RSSI Proximity Radar:</strong> estimate contacts in rings (&lt; 3 m, &lt; 10 m, &lt; 30 m)</li>
+              <li><strong>1-tap SOS amplification</strong> across neighboring phones</li>
+              <li><strong>Smart BLE duty cycling</strong> keeps battery healthy all day</li>
+            </ul>
+          </div>
+          <div class="feature-visual">
+            <div class="blob" style="width:200px;height:200px;background:radial-gradient(circle,rgba(0,245,155,0.2),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+            <div class="phone-mock float-a" style="width:165px">
+              <div class="phone-island" style="width:54px;height:8px"></div>
+              <div class="phone-screen">
+                <img src="../assets/screenshots/iphone/04_radar_mesh.png" alt="Chax Community Mesh Radar and Bridge Nodes" loading="lazy" width="1320" height="2868">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-card" id="feature-v2">
+          <div class="feature-card-body">
+            <div class="feature-tag tag-blue">🔐 Protocol v2 &amp; TwinSync</div>
+            <h3 class="feature-headline" style="font-size:clamp(1.3rem,2.5vw,1.9rem)">Sealed Sender &amp; multi-device sync with zero cloud.</h3>
+            <p class="feature-desc">Control transport status at a glance from a tri-modal pill (Online, Mesh, LoRa) and link iPhone, iPad, Mac, and Android under verifiable cryptographic custody.</p>
+            <ul class="feature-list">
+              <li><strong>End-to-end <code>TwinSync</code>:</strong> mirror your account across Apple &amp; Android</li>
+              <li><strong>Verifiable <code>SHA-256</code> Constellation</strong> instead of phone numbers</li>
+              <li><strong>Tri-modal connectivity &amp; custom LoRa presets</strong> (LongFast, ShortTurbo)</li>
+            </ul>
+          </div>
+          <div class="feature-visual">
+            <div class="blob" style="width:200px;height:200px;background:radial-gradient(circle,rgba(56,189,248,0.2),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+            <div class="phone-mock float-b" style="width:165px">
+              <div class="phone-island" style="width:54px;height:8px"></div>
+              <div class="phone-screen">
+                <img src="../assets/screenshots/iphone/05_ajustes_red.png" alt="Chax Network Settings and Protocol v2" loading="lazy" width="1320" height="2868">
+              </div>
             </div>
           </div>
         </div>
@@ -1475,8 +1522,8 @@
           <div class="route-num" style="color:var(--purple)">Route 03</div>
           <div class="route-icon" aria-hidden="true">⚡</div>
           <h3 class="route-title">Multi-Hop Mesh</h3>
-          <p class="route-desc">During blackouts or packed stadiums, sealed packets hop encrypted across nearby Chax phones to escape dead zones.</p>
-          <div class="route-badge" style="background:rgba(167,139,250,0.12);color:var(--purple)">Autonomous crowd mesh</div>
+          <p class="route-desc">At festivals, rural trails, or contingencies, sealed packets hop encrypted across nearby Chax phones to escape coverage gaps.</p>
+          <div class="route-badge" style="background:rgba(167,139,250,0.12);color:var(--purple)">Living neighbor mesh</div>
         </div>
         <div class="route-card" style="border: 1px solid rgba(251, 146, 60, 0.4); background: linear-gradient(180deg, rgba(251, 146, 60, 0.08) 0%, var(--bg1) 100%);">
           <div class="route-num" style="color:var(--orange)">Route 04</div>
@@ -1557,7 +1604,7 @@
               Cross 30 km with zero cell towers and zero monthly fees.
             </h3>
             <p style="font-size:0.92rem;color:var(--text-secondary);line-height:1.6;margin-bottom:20px;">
-              During backcountry expeditions, coastal sailing, or major grid failures, link a tiny LoRa radio node to Chax over Bluetooth to transmit messages and SOS coordinates miles past the horizon.
+              During backcountry expeditions, coastal sailing, or neighborhood contingencies, link a tiny LoRa radio node to Chax over Bluetooth to transmit messages and SOS coordinates miles past the horizon.
             </p>
             <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:14px;">
               <div style="background:rgba(255,255,255,0.035);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 16px;">
@@ -1566,7 +1613,7 @@
               </div>
               <div style="background:rgba(255,255,255,0.035);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 16px;">
                 <div style="color:var(--green);font-weight:800;font-size:1.05rem;margin-bottom:4px;">🔋 Days per charge</div>
-                <div style="color:var(--text-secondary);font-size:0.82rem;">Milliwatt transmission built to outlast multi-day blackouts.</div>
+                <div style="color:var(--text-secondary);font-size:0.82rem;">Milliwatt transmission engineered for prolonged off-grid autonomy.</div>
               </div>
             </div>
           </div>
@@ -1609,40 +1656,40 @@
   <section id="escenarios">
     <div class="wrap">
       <div class="section-head fade-up">
-        <div class="section-label coral">4 Critical Moments</div>
-        <h2 class="section-title">Moments you will be glad you installed it ahead of time.</h2>
-        <p class="section-sub">The second any of these strikes, opening a store to download an app is no longer an option.</p>
+        <div class="section-label" style="color:var(--green)">4 Real Scenarios</div>
+        <h2 class="section-title">Where Chax shines daily — and when it counts most.</h2>
+        <p class="section-sub">From everyday speed over Wi-Fi to remote expeditions and mutual aid off-grid.</p>
       </div>
 
       <div class="scenarios-grid fade-up">
-        <div class="scenario-card" style="border-top:3px solid var(--coral)">
-          <div class="scenario-icon" aria-hidden="true">🚨</div>
-          <div class="scenario-label">Scenario 01 · Earthquakes, storms &amp; blackouts</div>
-          <h3 class="scenario-title">The power grid drops and towers overload. Your family network stays alive.</h3>
+        <div class="scenario-card" style="border-top:3px solid var(--green)">
+          <div class="scenario-icon" aria-hidden="true">🤝</div>
+          <div class="scenario-label">Scenario 01 · Neighborhood solidarity &amp; outages</div>
+          <h3 class="scenario-title">When grid power or towers drop, your community stays linked.</h3>
           <div class="scenario-problem">
-            <strong style="color:var(--coral)">The real fear:</strong> In the first 20 minutes after a quake or storm, millions dial at once. Lines freeze and you cannot confirm if your loved ones are safe.
+            <strong style="color:var(--amber)">The challenge:</strong> Right after a power outage or cell tower overload, centralized networks lock up just as neighbors and family need to coordinate.
           </div>
           <p class="scenario-solution">
-            <strong>With Chax pre-installed:</strong> Your phone wakes its local neighborhood mesh. Check-ins hop building to building and reach up to 30 km with a LoRa link.
+            <strong>With Chax in your neighborhood:</strong> Your phone and nearby devices form an automatic bridge mesh. Sealed messages hop block to block and reach up to 30 km with an optional LoRa link.
           </p>
           <ul class="scenario-bullets">
-            <li><span class="check">✓</span> <span><strong>Community SOS beacon:</strong> Broadcast safe status and location offline</span></li>
-            <li><span class="check">✓</span> <span><strong>Voice autoplay:</strong> Hear critical updates hands-free even while locked</span></li>
+            <li><span class="check">✓</span> <span><strong>Community SOS beacon:</strong> Share safe status and coordinates offline</span></li>
+            <li><span class="check">✓</span> <span><strong>Voice autoplay:</strong> Hear critical check-ins hands-free even while locked</span></li>
           </ul>
         </div>
 
         <div class="scenario-card">
-          <div class="scenario-icon" aria-hidden="true">🏔️</div>
+          <div class="scenario-icon" aria-hidden="true">🗺️</div>
           <div class="scenario-label">Scenario 02 · Highways, trails &amp; backcountry</div>
-          <h3 class="scenario-title">Miles from the nearest cell tower. Every meter and minute matter.</h3>
+          <h3 class="scenario-title">Shared territory miles beyond the nearest cell tower.</h3>
           <div class="scenario-problem">
-            <strong style="color:var(--coral)">The risk:</strong> A breakdown on a remote stretch, dense trail fog, or a separated hiking partner renders ordinary messaging useless.
+            <strong style="color:var(--amber)">The challenge:</strong> Heading into mountain passes, convoys, or remote trails renders cloud-dependent maps and chat apps unusable.
           </div>
           <p class="scenario-solution">
-            <strong>With Chax pre-installed:</strong> Navigate with stored satellite Mapax, measure exact meter-level distance to friends, and coordinate hands-free with zero cellular data.
+            <strong>With Chax pre-installed:</strong> Navigate with offline satellite Mapax tiles, share pin collections in chat, or export portable <code>.chaxmap</code> route packs for your whole crew.
           </p>
           <ul class="scenario-bullets">
-            <li><span class="check">✓</span> <span><strong>Offline satellite &amp; street maps</strong> stored directly on phone flash</span></li>
+            <li><span class="check">✓</span> <span><strong>Offline OpenStreetMap &amp; satellite tiles</strong> saved directly on your phone</span></li>
             <li><span class="check">✓</span> <span><strong>Hands-free voice dispatch</strong> built for convoys, cycling &amp; hiking</span></li>
           </ul>
         </div>
@@ -1652,30 +1699,30 @@
           <div class="scenario-label">Scenario 03 · Festivals, stadiums &amp; crowds</div>
           <h3 class="scenario-title">60,000 people. Full 5G bars, zero throughput. Find your group fast.</h3>
           <div class="scenario-problem">
-            <strong style="color:var(--coral)">The daily frustration:</strong> Your signal bars look full yet texts sit unsent for 40 minutes because everyone fights for one congested tower.
+            <strong style="color:var(--amber)">The challenge:</strong> Your reception bars look full yet messages stall for 40 minutes because everyone fights for one congested tower.
           </div>
           <p class="scenario-solution">
-            <strong>With Chax pre-installed:</strong> Chax bypasses congested towers completely and hops across nearby festival phones in milliseconds.
+            <strong>With Chax in your crew:</strong> Chax skips congested towers completely and hops across nearby festival phones in milliseconds.
           </p>
           <ul class="scenario-bullets">
-            <li><span class="check">✓</span> <span><strong>Bigger crowds make the mesh stronger</strong> with denser relay hops</span></li>
-            <li><span class="check">✓</span> <span><strong>Live proximity radar</strong> to regroup effortlessly before leaving</span></li>
+            <li><span class="check">✓</span> <span><strong>Higher density makes the mesh stronger</strong> with multi-hop routing</span></li>
+            <li><span class="check">✓</span> <span><strong>RSSI proximity radar</strong> (&lt; 3 m, &lt; 10 m, &lt; 30 m) to regroup effortlessly</span></li>
           </ul>
         </div>
 
         <div class="scenario-card">
           <div class="scenario-icon" aria-hidden="true">🛡️</div>
-          <div class="scenario-label">Scenario 04 · Global server outages &amp; privacy</div>
-          <h3 class="scenario-title">When corporate cloud apps crash worldwide, your chats keep running.</h3>
+          <div class="scenario-label">Scenario 04 · Sovereignty &amp; multi-device custody</div>
+          <h3 class="scenario-title">Your keys, your chats, and all your devices under your control.</h3>
           <div class="scenario-problem">
-            <strong style="color:var(--coral)">The single point of failure:</strong> When centralized platforms suffer datacenter outages or ban numbers, your entire team stops cold.
+            <strong style="color:var(--amber)">The challenge:</strong> Traditional platforms bind your identity to a phone number and expose your social graph on centralized servers.
           </div>
           <p class="scenario-solution">
-            <strong>With Chax pre-installed:</strong> Zero central bottlenecks, zero SIM dependency, and autonomous key-to-key encryption you control outright.
+            <strong>With Chax:</strong> Your identity lives in your own hardware, mirrors across iPhone, iPad, Mac &amp; Android via <code>TwinSync</code> E2EE, and scrubs local traces with anti-forensic autopurge.
           </p>
           <ul class="scenario-bullets">
             <li><span class="check">✓</span> <span><strong>No phone number</strong> or centralized identity lock-in</span></li>
-            <li><span class="check">✓</span> <span><strong>Anti-forensic autopurge</strong> leaves zero recoverable residue</span></li>
+            <li><span class="check">✓</span> <span><strong>Anti-forensic autopurge</strong> &amp; <code>TwinSync</code> across all your devices</span></li>
           </ul>
         </div>
       </div>
@@ -1692,7 +1739,7 @@
       <div class="section-head center fade-up">
         <div class="section-label">Side-by-Side Comparison</div>
         <h2 class="section-title">Fast internet. <span style="color:var(--green)">Unstoppable mesh.</span></h2>
-        <p class="section-sub">On normal days they look similar. The minute infrastructure drops, nothing else comes close.</p>
+        <p class="section-sub">On Wi-Fi they look similar. When digital sovereignty, shared offline maps, and community bridge nodes matter, the difference is total.</p>
       </div>
 
       <div class="compare-wrap fade-up">
@@ -1800,51 +1847,51 @@
 
       <div class="faq-list fade-up">
         <details class="faq-item" open>
-          <summary>Why should I install Chax right now if I'm not having an emergency today?</summary>
+          <summary>What does helping the community as a bridge node mean? Is it safe and battery-friendly?</summary>
           <div class="faq-a">
-            Because <strong>the moment an emergency strikes, you lose access to the App Store and Google Play</strong>. Installing today over WiFi takes 30 seconds, uses negligible space, and sleeps without draining your battery. It also lets you calmly scan QR codes with family members so your trusted safety circle is already linked before any blackout, storm, or road trip.
+            When you run Chax near others who lack coverage, your device automatically assists in the background by relaying <strong>opaque, sealed packets</strong> (<code>Sealed Sender</code>). Neither you nor any intermediate phone can open contents or inspect identities—it simply helps neighbors stay connected. Its adaptive Bluetooth Low Energy scheduler (<code>PathTable</code>) protects battery life throughout the day.
           </div>
         </details>
 
         <details class="faq-item">
-          <summary>Can I use Chax every day over regular internet too?</summary>
+          <summary>If I already use everyday messengers, what does Chax add on regular Wi-Fi or 5G?</summary>
           <div class="faq-a">
-            Yes! That is why we say <strong>Fast internet, unstoppable mesh</strong>. Whenever WiFi or 5G is available, Chax delivers texts, voice notes, and group chats worldwide in real time—with zero phone number required and programmable flash autopurge. The instant cell signal disappears, it shifts to local mesh without a single tap.
+            A lot! That is why we say <strong>Fast internet. Unstoppable mesh.</strong> Over everyday Wi-Fi or 5G, Chax gives you zero-phone-number messaging, OpenStreetMap &amp; satellite offline maps (<code>Mapax</code>) with shareable <code>.chaxmap</code> collections, and E2EE <code>TwinSync</code> across iPhone, iPad, Mac, and Android—and shifts automatically to mesh when bars disappear.
           </div>
         </details>
 
         <details class="faq-item">
           <summary>Does Android communicate directly with iPhone and Mac?</summary>
           <div class="faq-a">
-            Yes. Official Android (<strong>v1.126</strong> via Google Play and direct APK) and iOS/macOS (<strong>v3.363</strong> via Apple TestFlight) speak the exact same encrypted multi-hop protocol. Families and teams can mix Android and Apple devices seamlessly online and off-grid.
+            Yes. Official Android (<strong>v1.127</strong> via Google Play and direct APK) and iOS/macOS (<strong>v3.364</strong> via Apple TestFlight) speak the exact same encrypted multi-hop protocol. Families and teams can mix Android and Apple devices seamlessly online and off-grid.
           </div>
         </details>
 
         <details class="faq-item">
-          <summary>Does having Chax installed drain my battery?</summary>
+          <summary>How do I share offline maps and waypoints with my group?</summary>
           <div class="faq-a">
-            Barely anything. While idle, it relies on ultra-low-energy Bluetooth packets optimized for background sleep, drawing far less power than GPS navigation or social feeds.
+            Inside <strong>Mapax</strong> you can cache OpenStreetMap street layers and satellite tiles free of commercial API keys ahead of time, organize custom bookmark groups, and share them straight in chat or as portable <code>.chaxmap</code> packs so everyone navigates the exact same territory offline.
           </div>
         </details>
 
         <details class="faq-item">
           <summary>Do I need to buy external antennas to use it off-grid?</summary>
           <div class="faq-a">
-            <strong>No.</strong> Phone-to-phone Bluetooth Mesh (~100 m direct, extendable across multiple hops in crowds or neighborhoods) works right out of the box using your phone's built-in radios. Portable LoRa radios (+30 km) are purely optional for backcountry expeditions or extreme regional reach.
+            <strong>No.</strong> Phone-to-phone Bluetooth Mesh (~100 m direct, extendable across multiple hops in crowds or neighborhoods) works right out of the box using your phone's built-in radios. Portable LoRa radios (+30 km) are purely optional for backcountry expeditions or community regional bridges.
           </div>
         </details>
 
         <details class="faq-item">
           <summary>Can intermediate phones in the mesh read my messages?</summary>
           <div class="faq-a">
-            Never. Every dispatch travels in an end-to-end encrypted sealed envelope. Relaying phones only pass along opaque encrypted bytes without any ability to inspect contents or identify senders.
+            Never. Every dispatch travels in a Protocol v2 end-to-end encrypted sealed envelope. Relaying phones only pass along opaque encrypted bytes without any ability to inspect contents or identify senders.
           </div>
         </details>
 
         <details class="faq-item">
-          <summary>How do I add contacts without sharing my phone number?</summary>
+          <summary>How do I add contacts or link my Mac without a phone number?</summary>
           <div class="faq-a">
-            Open your QR card inside Chax and let your friend or family member scan it in seconds, or share your public key link while online today. Zero SIM cards, zero emails, zero uploaded address books.
+            In seconds: show your QR card inside Chax for an in-person scan or compare verifiable <code>SHA-256</code> fingerprints. To use one sovereign account across iPhone, iPad, Mac, and Android simultaneously, scan the end-to-end encrypted <code>TwinSync</code> pairing code.
           </div>
         </details>
       </div>
@@ -1859,22 +1906,22 @@
   <section class="cta-section" id="descargas">
     <div class="cta-glow" aria-hidden="true"></div>
     <div class="wrap" style="position:relative;z-index:2">
-      <div class="cta-eyebrow">⚠️ DON'T WAIT FOR THE BLACKOUT</div>
+      <div class="cta-eyebrow" style="border-color:rgba(0,245,155,0.3);background:rgba(0,245,155,0.08);color:var(--green)">🧭 DIGITAL SOVEREIGNTY · COMMUNITY MESH · SHARED MAPS</div>
       <h2 class="cta-title">
         Fast internet today.<br>
-        <span class="glow-green" style="color:var(--green)">Unstoppable mesh</span> when everything fails.
+        <span class="glow-green" style="color:var(--green)">Unstoppable mesh</span> when communities unite.
       </h2>
       <p class="cta-sub">
-        Install free in 30 seconds while you still have WiFi or data. When the signal bars drop, it will already be waiting in your pocket.
+        Download free in seconds, create a sovereign identity with zero phone number, and add one more living bridge node across iPhone, iPad, Mac &amp; Android.
       </p>
 
       <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;">
         <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" rel="noopener" class="btn-primary" style="font-size:1.02rem;padding:16px 32px;">
           <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 3.5c.61-.75 1.04-1.8 1.01-2.85-.92.04-2.03.62-2.67 1.37-.58.67-1.08 1.74-1.01 2.78.98.08 2.06-.55 2.67-1.3z"/></svg>
-          Install on TestFlight · iOS &amp; Mac (v3.363)
+          Install on TestFlight · iOS &amp; Mac (v3.364)
         </a>
         <a href="../download/" class="btn-ghost" style="font-size:0.98rem;padding:16px 28px;border-color:rgba(0,245,155,0.45);background:rgba(0,245,155,0.08);">
-          🤖 Download Android (v1.126 · Play Store &amp; APK) →
+          🤖 Download Android (v1.127 · Play Store &amp; APK) →
         </a>
       </div>
 
@@ -1884,7 +1931,7 @@
         </button>
       </div>
 
-      <div class="cta-note">iOS 16+ · iPhone, iPad &amp; Mac (v3.363) · Android 8+ (v1.126) · 100% Free</div>
+      <div class="cta-note">iOS 16+ · iPhone, iPad &amp; Mac (v3.364) · Android 8+ (v1.127) · 100% Free</div>
     </div>
   </section>
 </main>
@@ -1893,7 +1940,7 @@
 <div class="sticky-mobile-cta" id="stickyMobileCta" role="region" aria-label="Quick install">
   <div class="sticky-mobile-text">
     Fast internet · Unstoppable mesh
-    <span>Install before a blackout or trip</span>
+    <span>Sovereignty, bridge nodes &amp; offline maps</span>
   </div>
   <a href="#descargas" class="sticky-mobile-btn">Install free</a>
 </div>
@@ -1905,7 +1952,7 @@
   <div class="footer-inner">
     <div class="footer-brand">
       <img src="../assets/app-icon.png" alt="Chax Logo" loading="lazy" width="512" height="512">
-      <span>Chax · iOS &amp; macOS v3.363 · Android v1.126</span>
+      <span>Chax · iOS &amp; macOS v3.364 · Android v1.127</span>
     </div>
     <div class="footer-links">
       <a href="../privacy.html">Privacy</a>
@@ -1948,7 +1995,7 @@
   const shareBtns = document.querySelectorAll('[data-share-btn]');
   const shareUrl = 'https://chax.chat/';
   const shareTitle = 'Chax — Fast internet. Unstoppable mesh.';
-  const shareText = 'Install Chax today while we have signal: if a blackout or emergency hits, we can still talk without internet or phone numbers.';
+  const shareText = 'Try Chax with me: fast over internet, unstoppable community mesh, shareable offline maps (.chaxmap), and zero phone number required.';
 
   shareBtns.forEach(btn => {
     const originalText = btn.textContent;

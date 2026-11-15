@@ -1,7 +1,7 @@
 {
   "ios": {
-    "latestVersion": "3.363",
-    "latestBuild": 703,
+    "latestVersion": "3.364",
+    "latestBuild": 704,
     "minRequiredVersion": "3.348",
     "testFlightUrl": "https://testflight.apple.com/join/hmfhvFdf",
     "appStoreUrl": "",
@@ -10,8 +10,8 @@
     "releaseNotesPt": "Auditoria integral de estabilidade, memória e bateria em segundo plano, despertar silencioso otimizado sem duplicatas, proteção de relays WAN Nostr e sincronização fluida de dispositivos gêmeos."
   },
   "android": {
-    "latestVersion": "1.126",
-    "latestVersionCode": 148,
+    "latestVersion": "1.127",
+    "latestVersionCode": 149,
     "minRequiredVersion": "1.118",
     "minRequiredVersionCode": 140,
     "playStoreUrl": "https://play.google.com/store/apps/details?id=com.appx.chax",

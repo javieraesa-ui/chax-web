@@ -20,8 +20,8 @@
     "releaseNotesPt": "Anti-envenenamento de IP LAN para recepção direta de fotos e mensagens do Android/iOS, respostas em grupo compactas, emojis sem corte e sincronização ponto a ponto reforçada."
   },
   "android": {
-    "latestVersion": "1.138",
-    "latestVersionCode": 160,
+    "latestVersion": "1.139",
+    "latestVersionCode": 161,
     "minRequiredVersion": "1.120",
     "minRequiredVersionCode": 142,
     "playStoreUrl": "https://play.google.com/store/apps/details?id=com.appx.chax",

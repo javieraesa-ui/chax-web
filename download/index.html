@@ -2,246 +2,642 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Descargar Chax Oficial — Android (Google Play), iOS (TestFlight) y Mac</title>
-  <meta name="description" content="Descarga Chax gratis para Android (v1.139), iPhone/iPad (v3.374) y Mac. Rápido por internet, imparable en mesh: soberanía sin número, mapas offline compartibles y nodos comunitarios.">
+  <meta name="description" content="Descarga Chax gratis para Android (v1.142), iPhone/iPad (v3.383) y Mac. Rápido por internet, imparable en mesh: soberanía sin número, mapas offline compartibles y nodos comunitarios.">
   <meta property="og:title" content="Descargar Chax — Rápido internet. Imparable mesh.">
   <meta property="og:description" content="Instala Chax gratis en Android, iOS y Mac: mensajería instantánea sin teléfono, mapas Mapax compartibles (.chaxmap) y red comunitaria de respaldo.">
   <meta property="og:image" content="/assets/logo.png">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/png" href="/assets/app-icon.png">
+  <link rel="canonical" href="https://chax.chat/download/">
 
   <!-- Hojas de Estilo Base de Chax -->
   <link rel="stylesheet" href="/assets/style.css">
 
   <!-- Privacy-friendly Web Analytics (GoatCounter) -->
   <script data-goatcounter="https://chax.goatcounter.com/count" defer src="//gc.zgo.at/count.js"></script>
+  <script defer src="/assets/gc-events.js"></script>
 
   <style>
-    /* Estilos Premium para la Página de Descargas */
-    .download-page {
-      padding-top: 100px;
-      padding-bottom: 80px;
-      position: relative;
-      z-index: 2;
+    :root {
+      --target-size: 24px;
     }
 
+    @media (pointer: coarse) {
+      :root {
+        --target-size: 44px;
+      }
+    }
+
+    html {
+      scroll-padding-top: 84px;
+    }
+
+    :target {
+      scroll-margin-top: 84px;
+    }
+
+    .download-page {
+      padding-top: 20px;
+      padding-bottom: max(56px, env(safe-area-inset-bottom, 0px));
+      padding-left: env(safe-area-inset-left, 0px);
+      padding-right: env(safe-area-inset-right, 0px);
+      position: relative;
+      z-index: 2;
+      overflow-wrap: break-word;
+    }
+
+    .download-page h1,
+    .download-page h2,
+    .download-page h3 {
+      text-wrap: balance;
+    }
+
+    .download-page p,
+    .download-page li {
+      text-wrap: pretty;
+    }
+
+    .download-page :where(a, code) {
+      overflow-wrap: anywhere;
+    }
+
+    .download-page :where(button, a.dl-action-btn, a.dl-btn-secondary, a.btn-secondary, summary, label:has(input[type="checkbox"])) {
+      min-block-size: var(--target-size);
+      min-inline-size: var(--target-size);
+    }
+
+    /* Hero compacto para mostrar botones arriba del doblez */
     .dl-hero {
       text-align: center;
-      max-width: 780px;
-      margin: 0 auto 50px;
+      max-width: 760px;
+      margin: 0 auto 20px;
     }
 
     .dl-hero-badge {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      padding: 6px 16px;
+      gap: 6px;
+      padding: 4px 12px;
       border-radius: 980px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 0.06em;
+      font-size: 0.72rem;
+      font-weight: 750;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
       background: rgba(0, 245, 155, 0.12);
       color: var(--volt-green);
       border: 1px solid rgba(0, 245, 155, 0.3);
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
 
     .dl-hero-title {
-      font-size: 2.8rem;
+      font-size: clamp(1.55rem, 3.8vw, 2.3rem);
       font-weight: 850;
       color: #fff;
-      line-height: 1.15;
+      line-height: 1.12;
       letter-spacing: -0.03em;
-      margin-bottom: 16px;
+      margin-bottom: 8px;
     }
 
     .dl-hero-sub {
-      font-size: 1.15rem;
+      font-size: clamp(0.88rem, 2vw, 1rem);
       color: var(--text-muted);
-      line-height: 1.6;
+      line-height: 1.45;
+      margin: 0 auto;
     }
 
-    /* Grilla de Plataformas */
+    /* Grilla principal de plataformas */
     .dl-grid {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 28px;
-      margin-bottom: 40px;
-    }
-
-    @media (max-width: 860px) {
-      .dl-grid {
-        grid-template-columns: 1fr;
-      }
-      .dl-hero-title {
-        font-size: 2.1rem;
-      }
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+      margin-bottom: 28px;
+      align-items: stretch;
     }
 
     .dl-card {
-      background: rgba(14, 20, 32, 0.85);
+      background: rgba(14, 20, 32, 0.88);
       border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 24px;
-      padding: 36px 32px;
+      border-radius: 22px;
+      padding: 24px 22px;
       display: flex;
       flex-direction: column;
+      min-inline-size: 0;
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       position: relative;
-      overflow: hidden;
       box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
       transition: transform 0.25s ease, border-color 0.25s ease;
     }
 
-    .dl-card:hover {
-      transform: translateY(-4px);
-    }
-
     .dl-card.featured-android {
-      border-color: rgba(0, 245, 155, 0.4);
-      background: linear-gradient(180deg, rgba(0, 245, 155, 0.08) 0%, rgba(14, 20, 32, 0.92) 100%);
-      box-shadow: 0 20px 50px rgba(0, 245, 155, 0.12);
+      border-color: rgba(0, 245, 155, 0.42);
+      background: linear-gradient(180deg, rgba(0, 245, 155, 0.08) 0%, rgba(14, 20, 32, 0.94) 100%);
+      box-shadow: 0 20px 50px rgba(0, 245, 155, 0.11);
     }
 
     .dl-card.featured-ios {
-      border-color: rgba(56, 189, 248, 0.4);
-      background: linear-gradient(180deg, rgba(56, 189, 248, 0.08) 0%, rgba(14, 20, 32, 0.92) 100%);
+      border-color: rgba(56, 189, 248, 0.42);
+      background: linear-gradient(180deg, rgba(56, 189, 248, 0.08) 0%, rgba(14, 20, 32, 0.94) 100%);
       box-shadow: 0 20px 50px rgba(56, 189, 248, 0.1);
+    }
+
+    @media (max-width: 860px) {
+      .download-page {
+        padding-top: 10px;
+      }
+      .dl-hero {
+        margin-bottom: 14px;
+      }
+      .dl-hero-badge {
+        display: none;
+      }
+      .dl-hero-title {
+        font-size: 1.5rem;
+        margin-bottom: 4px;
+      }
+      .dl-hero-sub {
+        font-size: 0.85rem;
+        line-height: 1.38;
+      }
+      .dl-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+      .dl-grid.prefer-apple .featured-ios {
+        order: -1;
+      }
+      .dl-card {
+        padding: 18px 16px;
+        border-radius: 20px;
+      }
+    }
+
+    .dl-card-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
     }
 
     .dl-platform-pill {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      align-self: flex-start;
-      padding: 4px 12px;
+      padding: 4px 11px;
       border-radius: 980px;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 750;
       text-transform: uppercase;
       letter-spacing: 0.05em;
-      margin-bottom: 20px;
     }
 
     .pill-android {
-      background: rgba(0, 245, 155, 0.2);
+      background: rgba(0, 245, 155, 0.18);
       color: var(--volt-green);
       border: 1px solid rgba(0, 245, 155, 0.4);
     }
 
     .pill-ios {
-      background: rgba(56, 189, 248, 0.2);
+      background: rgba(56, 189, 248, 0.18);
       color: #38bdf8;
       border: 1px solid rgba(56, 189, 248, 0.4);
     }
 
+    .dl-version-tag {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      padding: 3px 9px;
+      border-radius: 980px;
+    }
+
     .dl-platform-title {
-      font-size: 1.75rem;
+      font-size: clamp(1.32rem, 2.5vw, 1.6rem);
       font-weight: 800;
       color: #fff;
-      margin-bottom: 10px;
+      margin-bottom: 6px;
       letter-spacing: -0.02em;
     }
 
     .dl-platform-desc {
       color: var(--text-muted);
-      font-size: 0.98rem;
-      line-height: 1.6;
-      margin-bottom: 24px;
-      flex-grow: 1;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 14px;
     }
 
-    .dl-action-btn {
+    /* Aviso no bloqueante para WebView embebido en Android */
+    .dl-webview-banner {
+      background: rgba(255, 152, 0, 0.12);
+      border: 1px solid rgba(255, 152, 0, 0.45);
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-bottom: 14px;
+    }
+
+    .dl-webview-banner[hidden] {
+      display: none;
+    }
+
+    .dl-webview-title {
+      font-size: 0.82rem;
+      font-weight: 800;
+      color: #ffb74d;
+      margin-bottom: 4px;
+    }
+
+    .dl-webview-copy {
+      font-size: 0.82rem;
+      color: #f8fafc;
+      line-height: 1.4;
+      margin-bottom: 10px;
+    }
+
+    .dl-webview-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .dl-btn-amber {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      width: 100%;
-      padding: 16px 24px;
+      gap: 6px;
+      padding: 9px 14px;
       border-radius: 980px;
-      font-size: 1.05rem;
+      background: #ff9800;
+      color: #070a0f;
+      font-size: 0.84rem;
       font-weight: 800;
       text-decoration: none;
-      transition: all 0.25s ease;
+      border: none;
       cursor: pointer;
     }
 
-    .dl-btn-green {
-      background: var(--volt-green);
-      color: #070a0f;
-      box-shadow: 0 8px 24px rgba(0, 245, 155, 0.35);
-    }
-
-    .dl-btn-green:hover {
-      box-shadow: 0 12px 36px rgba(0, 245, 155, 0.55);
-      transform: translateY(-2px);
-    }
-
-    .dl-btn-blue {
-      background: #1e293b;
+    .dl-btn-copy {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 9px 14px;
+      border-radius: 980px;
+      background: rgba(255, 255, 255, 0.08);
       color: #fff;
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+      font-size: 0.82rem;
+      font-weight: 700;
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      cursor: pointer;
     }
 
-    .dl-btn-blue:hover {
-      background: #334155;
-      border-color: #38bdf8;
-      transform: translateY(-2px);
+    /* Pasos guiados Google Play */
+    .dl-wizard-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 14px;
     }
 
-    .dl-btn-secondary {
+    .dl-step-box {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      padding: 13px 14px;
+      min-inline-size: 0;
+      transition: border-color 0.2s ease, background 0.2s ease;
+    }
+
+    .dl-step-box.is-active {
+      background: rgba(0, 245, 155, 0.07);
+      border-color: rgba(0, 245, 155, 0.45);
+    }
+
+    .dl-step-box.is-done {
+      background: rgba(0, 245, 155, 0.04);
+      border-color: rgba(0, 245, 155, 0.28);
+    }
+
+    .dl-step-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 5px;
+    }
+
+    .dl-step-kicker {
+      font-size: 0.71rem;
+      font-weight: 800;
+      color: var(--volt-green);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .dl-step-badge {
+      font-size: 0.7rem;
+      font-weight: 750;
+      color: var(--volt-green);
+      background: rgba(0, 245, 155, 0.14);
+      border: 1px solid rgba(0, 245, 155, 0.35);
+      padding: 2px 8px;
+      border-radius: 980px;
+    }
+
+    .dl-step-badge[hidden] {
+      display: none;
+    }
+
+    .dl-step-copy {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      margin: 0 0 10px;
+      line-height: 1.42;
+    }
+
+    /* Botones de acción */
+    .dl-action-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 8px;
       width: 100%;
-      margin-top: 12px;
-      padding: 12px 20px;
+      padding: 12px 16px;
       border-radius: 980px;
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.93rem;
+      font-weight: 800;
+      line-height: 1.25;
+      text-align: center;
       text-decoration: none;
       transition: all 0.2s ease;
+      cursor: pointer;
+      border: 1px solid transparent;
     }
 
-    .dl-btn-secondary:hover {
+    .dl-btn-label {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .dl-btn-arrow {
+      display: inline-block;
+      flex-shrink: 0;
+    }
+
+    .dl-btn-green {
+      background: var(--volt-green);
+      color: #070a0f;
+      box-shadow: 0 8px 24px rgba(0, 245, 155, 0.32);
+    }
+
+    .dl-btn-green:hover {
+      box-shadow: 0 12px 32px rgba(0, 245, 155, 0.52);
+      transform: translateY(-1px);
+    }
+
+    .dl-btn-outline {
+      background: rgba(255, 255, 255, 0.04);
       color: #fff;
-      background: rgba(255, 255, 255, 0.08);
-      border-color: rgba(255, 255, 255, 0.2);
+      border: 1px solid rgba(0, 245, 155, 0.35);
     }
 
-    /* Contenedor de Código QR */
+    .dl-btn-outline:hover {
+      background: rgba(0, 245, 155, 0.12);
+      border-color: var(--volt-green);
+    }
+
+    .dl-btn-blue {
+      background: #1e293b;
+      color: #fff;
+      border: 1px solid rgba(56, 189, 248, 0.45);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+
+    .dl-btn-blue:hover {
+      background: #2b3b54;
+      border-color: #38bdf8;
+      transform: translateY(-1px);
+    }
+
+    .dl-btn-apk {
+      background: rgba(255, 255, 255, 0.06);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .dl-btn-apk:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    /* Checkbox accesible del Paso 1 */
+    .dl-check-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+      padding: 6px 4px;
+      font-size: 0.82rem;
+      font-weight: 650;
+      color: var(--text-main);
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .dl-check-label input[type="checkbox"] {
+      inline-size: 18px;
+      block-size: 18px;
+      accent-color: var(--volt-green);
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+
+    /* Acordeón nativo <details> (Modern Web Guidance) */
+    .dl-accordion {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+
+    .dl-accordion details {
+      background: rgba(7, 10, 15, 0.58);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+
+    .dl-accordion details[open] {
+      border-color: rgba(0, 245, 155, 0.32);
+    }
+
+    .dl-accordion summary {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 11px 14px;
+      font-size: 0.84rem;
+      font-weight: 700;
+      color: #e2e8f0;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .dl-accordion summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .dl-accordion summary::before {
+      content: "";
+      inline-size: 1em;
+      block-size: 1em;
+      flex-shrink: 0;
+      background-color: var(--volt-green);
+      -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat center / contain;
+      mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat center / contain;
+      rotate: -90deg;
+    }
+
+    .dl-accordion details[open] > summary::before {
+      rotate: 0deg;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .dl-accordion summary::before {
+        transition: rotate 0.2s ease;
+      }
+      .dl-accordion details::details-content {
+        transition: block-size 0.28s ease-in-out, content-visibility 0.28s ease-in-out allow-discrete, display 0.28s ease-in-out allow-discrete;
+      }
+    }
+
+    .dl-accordion details::details-content {
+      interpolate-size: allow-keywords;
+      overflow: clip;
+      contain: layout;
+    }
+
+    .dl-accordion details:not([open])::details-content {
+      block-size: 0;
+    }
+
+    .dl-details-body {
+      padding: 2px 14px 14px;
+      font-size: 0.83rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    .dl-trouble-list {
+      margin: 0;
+      padding-left: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .dl-trouble-list strong {
+      color: #fff;
+    }
+
+    .dl-apk-note {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      margin-top: 8px;
+      line-height: 1.45;
+    }
+
+    /* Checklist inline de Apple (balance visual con tarjeta Android en desktop) */
+    .dl-apple-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-top: 16px;
+      margin-bottom: 16px;
+    }
+
+    .dl-apple-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: rgba(7, 10, 15, 0.55);
+      border: 1px solid rgba(56, 189, 248, 0.18);
+      border-radius: 14px;
+      padding: 12px 14px;
+    }
+
+    .dl-apple-num {
+      inline-size: 26px;
+      block-size: 26px;
+      border-radius: 50%;
+      background: rgba(56, 189, 248, 0.2);
+      color: #38bdf8;
+      border: 1px solid rgba(56, 189, 248, 0.45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.78rem;
+      font-weight: 800;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .dl-apple-step strong {
+      display: block;
+      color: #fff;
+      font-size: 0.86rem;
+      margin-bottom: 2px;
+    }
+
+    .dl-apple-step p {
+      font-size: 0.81rem;
+      color: var(--text-muted);
+      line-height: 1.42;
+      margin: 0;
+    }
+
+    .dl-apple-step a {
+      color: #38bdf8;
+      font-weight: 700;
+    }
+
+    /* Contenedor de Código QR (solo visible en desktop / puntero fino) */
     .dl-qr-box {
-      margin-top: 26px;
-      padding-top: 24px;
+      margin-top: auto;
+      padding-top: 18px;
       border-top: 1px dashed rgba(255, 255, 255, 0.12);
       text-align: center;
     }
 
+    @media (max-width: 860px), (pointer: coarse) {
+      .dl-qr-box {
+        display: none;
+      }
+    }
+
     .dl-qr-label {
-      font-size: 0.85rem;
+      font-size: 0.82rem;
       color: var(--text-dim);
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       font-weight: 600;
     }
 
     .dl-qr-wrapper {
       display: inline-block;
       background: #ffffff;
-      padding: 12px;
-      border-radius: 18px;
+      padding: 10px;
+      border-radius: 16px;
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      transition: transform 0.2s ease;
-    }
-
-    .dl-qr-wrapper:hover {
-      transform: scale(1.03);
     }
 
     .dl-qr-img {
@@ -252,18 +648,45 @@
     }
 
     .dl-qr-hint {
-      font-size: 0.78rem;
+      font-size: 0.76rem;
       color: var(--text-dim);
-      margin-top: 10px;
+      margin-top: 8px;
     }
 
-    /* Guía de Instalación en Pasos */
+    /* Secciones inferiores */
+    .dl-desktop-card {
+      background: rgba(14, 20, 32, 0.68);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 22px;
+      padding: 24px 26px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .dl-desktop-info h3 {
+      font-size: 1.18rem;
+      color: #fff;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .dl-desktop-info p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+      max-width: 560px;
+      margin: 0;
+    }
+
     .dl-steps-card {
       background: rgba(14, 20, 32, 0.75);
-      border: 1px solid rgba(0, 245, 155, 0.25);
-      border-radius: 24px;
-      padding: 36px 32px;
-      margin-bottom: 40px;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      border-radius: 22px;
+      padding: 28px 26px;
+      margin-bottom: 20px;
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
     }
@@ -271,25 +694,32 @@
     .dl-steps-header {
       display: flex;
       align-items: center;
-      gap: 12px;
-      margin-bottom: 24px;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
     }
 
     .dl-steps-header h3 {
-      font-size: 1.35rem;
+      font-size: 1.25rem;
       color: #fff;
       font-weight: 800;
+      margin: 0;
     }
 
     .dl-steps-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
     }
 
     @media (max-width: 768px) {
       .dl-steps-grid {
         grid-template-columns: 1fr;
+      }
+      .dl-desktop-card,
+      .dl-steps-card {
+        padding: 20px 18px;
       }
     }
 
@@ -297,82 +727,43 @@
       background: rgba(7, 10, 15, 0.6);
       border: 1px solid rgba(255, 255, 255, 0.06);
       border-radius: 16px;
-      padding: 22px;
+      padding: 18px;
       display: flex;
       flex-direction: column;
     }
 
-    .dl-step-number {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: var(--volt-green);
-      color: #070a0f;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 850;
-      font-size: 0.95rem;
-      margin-bottom: 14px;
-    }
-
     .dl-step-item h4 {
       color: #fff;
-      font-size: 1.05rem;
+      font-size: 1rem;
       font-weight: 750;
-      margin-bottom: 8px;
+      margin-bottom: 6px;
     }
 
     .dl-step-item p {
       color: var(--text-muted);
-      font-size: 0.9rem;
-      line-height: 1.55;
+      font-size: 0.86rem;
+      line-height: 1.5;
+      margin: 0;
     }
 
-    /* Sección de Escritorio */
-    .dl-desktop-card {
-      background: rgba(14, 20, 32, 0.65);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 24px;
-      padding: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 24px;
-      flex-wrap: wrap;
-      margin-bottom: 40px;
-    }
-
-    .dl-desktop-info h4 {
-      font-size: 1.25rem;
-      color: #fff;
-      font-weight: 800;
-      margin-bottom: 6px;
-    }
-
-    .dl-desktop-info p {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      max-width: 520px;
-    }
-
-    .dl-desktop-actions {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
+    .lang-item.is-btn {
+      background: none;
+      border: none;
+      font: inherit;
+      cursor: pointer;
     }
   </style>
 </head>
 <body>
 
   <!-- Fondo Interactivo de Malla en Canvas -->
-  <canvas id="meshBackground"></canvas>
+  <canvas id="meshBackground" aria-hidden="true"></canvas>
 
   <!-- NAVEGACIÓN SUPERIOR OFICIAL -->
   <header>
     <div class="container">
       <div class="nav-bar">
-        <a href="/" class="brand-wrap">
+        <a href="/" class="brand-wrap" id="brandHomeLink">
           <div class="brand-icon-box">
             <img src="/assets/app-icon.png" alt="Chax Logo" width="512" height="512" />
           </div>
@@ -380,27 +771,27 @@
         </a>
 
         <ul class="nav-links">
-          <li><a href="/">Inicio</a></li>
-          <li><a href="/#filosofia">Filosofía</a></li>
-          <li><a href="/#funciones">Funciones</a></li>
-          <li><a href="/#como-funciona">¿Cómo Funciona?</a></li>
-          <li><a href="/#escenarios">Escenarios</a></li>
+          <li><a href="/" data-i18n="navHome">Inicio</a></li>
+          <li><a href="/#filosofia" data-i18n="navPhilosophy">Filosofía</a></li>
+          <li><a href="/#funciones" data-i18n="navFeatures">Funciones</a></li>
+          <li><a href="/#como-funciona" data-i18n="navHow">¿Cómo Funciona?</a></li>
+          <li><a href="/#escenarios" data-i18n="navScenarios">Escenarios</a></li>
           <li><a href="/#ecosistema-appx">Appx JP</a></li>
           <li><a href="/monix.html">Monix</a></li>
         </ul>
 
         <div class="nav-right">
-          <div class="lang-pill" id="langSelector">
+          <div class="lang-pill" id="langSelector" role="group" aria-label="Idioma">
             <svg class="lang-globe-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <circle cx="12" cy="12" r="10"></circle>
               <line x1="2" y1="12" x2="22" y2="12"></line>
               <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
             </svg>
-            <a href="/" class="lang-item active" data-lang="es" title="Español">ES</a>
-            <span class="lang-sep">|</span>
-            <a href="/en/" class="lang-item" data-lang="en" title="English">EN</a>
-            <span class="lang-sep">|</span>
-            <a href="/pt/" class="lang-item" data-lang="pt" title="Português">PT</a>
+            <a href="?lang=es" class="lang-item active" data-lang="es" title="Español">ES</a>
+            <span class="lang-sep" aria-hidden="true">|</span>
+            <a href="?lang=en" class="lang-item" data-lang="en" title="English">EN</a>
+            <span class="lang-sep" aria-hidden="true">|</span>
+            <a href="?lang=pt" class="lang-item" data-lang="pt" title="Português">PT</a>
           </div>
         </div>
       </div>
@@ -411,232 +802,280 @@
   <main class="download-page">
     <div class="container">
 
-      <!-- Hero de Descargas -->
+      <!-- Hero Compacto -->
       <div class="dl-hero">
         <div class="dl-hero-badge">
-          <span>🧭</span>
-          <span>Centro Oficial de Descargas · Red Soberana y Comunitaria</span>
+          <span aria-hidden="true">🧭</span>
+          <span data-i18n="heroBadge">Centro Oficial de Descargas · Red Soberana</span>
         </div>
-        <h1 class="dl-hero-title">
-          Rápido internet.<br />Imparable mesh.
+        <h1 class="dl-hero-title" data-i18n="heroTitle">
+          Descarga Chax gratis
         </h1>
-        <p class="dl-hero-sub">
-          Descarga Chax gratis en Android, iOS y Mac. Disfruta mensajería cotidiana a máxima velocidad sin número telefónico, sincronización <code>TwinSync</code>, mapas offline compartibles (<code>.chaxmap</code>) y nodos puente entre vecinos.
+        <p class="dl-hero-sub" data-i18n="heroSub">
+          Rápido por internet, imparable en mesh sin señal. Elige tu dispositivo abajo:
         </p>
       </div>
 
       <!-- Grilla de Plataformas Móviles -->
-      <div class="dl-grid">
+      <div class="dl-grid" id="platformGrid">
 
-        <!-- TARJETA ANDROID: GOOGLE PLAY OFICIAL -->
-        <div class="dl-card featured-android">
-          <span class="dl-platform-pill pill-android">🤖 Android • Google Play Store</span>
-          <h2 class="dl-platform-title">Android (Google Play Oficial)</h2>
-          <p class="dl-platform-desc" style="flex-grow: 0; margin-bottom: 20px;">
-            Sigue estos <strong>2 pasos en orden</strong> para instalar Chax desde Google Play con actualizaciones automáticas:
+        <!-- TARJETA ANDROID: ASISTENTE GOOGLE PLAY + RESCATE + APK -->
+        <section class="dl-card featured-android" id="androidCard" aria-labelledby="androidTitle">
+          <div class="dl-card-head">
+            <span class="dl-platform-pill pill-android" data-i18n="androidPill">🤖 Android · Google Play</span>
+            <span class="dl-version-tag">v1.142</span>
+          </div>
+          <h2 class="dl-platform-title" id="androidTitle" data-i18n="androidTitle">Instala Chax en Android</h2>
+          <p class="dl-platform-desc" data-i18n-html="androidIntro">
+            Acceso anticipado en Google Play: sigue <strong>estos pasos en orden con el mismo Gmail</strong> de tu tienda Play.
           </p>
 
-          <!-- Paso 1 -->
-          <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid rgba(0, 245, 155, 0.25); border-radius: 16px; padding: 18px; margin-bottom: 16px;">
-            <div style="font-size: 0.74rem; font-weight: 800; color: var(--volt-green); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;">
-              Paso 1 · Obligatorio primero
+          <!-- Banner no bloqueante para WebView embebido en Android -->
+          <div class="dl-webview-banner" id="webviewBanner" hidden role="region" aria-label="Abrir en Chrome">
+            <div class="dl-webview-title" data-i18n="webviewTitle">⚠️ Estás dentro de un navegador integrado</div>
+            <div class="dl-webview-copy" data-i18n="webviewCopy">
+              Los navegadores integrados suelen trabar el inicio de sesión de Google Play. Abre esta página en Chrome para instalar en segundos:
             </div>
-            <p style="font-size: 0.88rem; color: var(--text-muted); margin: 0 0 14px; line-height: 1.5;">
-              Entra con el mismo correo Gmail de tu Play Store y toca <em>«Unirse al grupo»</em>.
-            </p>
-            <a href="https://groups.google.com/g/chaxters" target="_blank" rel="noopener" class="dl-btn-secondary" style="margin-top: 0; border-color: rgba(0, 245, 155, 0.45); color: #fff; font-weight: 700;">
-              <span>1️⃣ Unirse al Grupo Chaxters →</span>
-            </a>
-          </div>
-
-          <!-- Paso 2 -->
-          <div style="background: rgba(0, 245, 155, 0.06); border: 1px solid rgba(0, 245, 155, 0.35); border-radius: 16px; padding: 18px; margin-bottom: 20px;">
-            <div style="font-size: 0.74rem; font-weight: 800; color: var(--volt-green); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;">
-              Paso 2 · Instalar app
+            <div class="dl-webview-actions">
+              <a href="intent://chax.chat/download/#Intent;scheme=https;package=com.android.chrome;end" id="btnOpenChrome" class="dl-btn-amber" data-gc-event="open-in-chrome">
+                <span data-i18n="btnOpenChrome">Abrir en Chrome</span>
+              </a>
+              <button type="button" id="btnCopyUrl" class="dl-btn-copy" data-gc-event="copy-download-link">
+                <span data-i18n="btnCopyUrl">Copiar enlace</span>
+              </button>
             </div>
-            <p style="font-size: 0.88rem; color: var(--text-muted); margin: 0 0 14px; line-height: 1.5;">
-              Ya dentro del grupo, abre este enlace, toca <em>«Participar en la prueba»</em> y descarga Chax.
-            </p>
-            <a href="https://play.google.com/apps/testing/com.appx.chax" target="_blank" rel="noopener" class="dl-action-btn dl-btn-green" style="padding: 14px 20px; font-size: 0.98rem;">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M3 20.5v-17c0-.83.67-1.5 1.5-1.5.31 0 .61.1.86.28l14.17 8.5c.71.43.94 1.35.51 2.06-.13.21-.3.38-.51.51l-14.17 8.5c-.71.43-1.63.2-2.06-.51-.18-.25-.28-.55-.28-.84z"/>
-              </svg>
-              <span>2️⃣ Descargar en Google Play (v1.139)</span>
-            </a>
           </div>
 
-          <!-- Divisor Descarga Directa -->
-          <div style="text-align: center; font-size: 0.78rem; color: var(--text-dim); margin: 4px 0 12px; letter-spacing: 0.01em;">
-            — ¿Prefieres instalar directo sin pasar por el grupo? —
+          <!-- Asistente Guiado de 3 Pasos -->
+          <div class="dl-wizard-list">
+
+            <!-- PASO 1 -->
+            <div class="dl-step-box is-active" id="step1Box">
+              <div class="dl-step-meta">
+                <span class="dl-step-kicker" data-i18n="step1Kicker">Paso 1 · Obligatorio primero</span>
+                <span class="dl-step-badge" id="step1DoneBadge" hidden data-i18n="doneBadge">✓ Listo</span>
+              </div>
+              <p class="dl-step-copy" data-i18n-html="step1Copy">
+                Abre el grupo con el <strong>mismo Gmail de tu Play Store</strong> y toca <em>«Unirse al grupo»</em> / <em>«Join group»</em>.
+              </p>
+              <a href="https://groups.google.com/g/chaxters" target="_blank" rel="noopener" id="btnStep1" class="dl-action-btn dl-btn-green">
+                <span class="dl-btn-label">
+                  <span data-i18n="step1Btn">1. Unirse al Grupo Chaxters</span>
+                  <span class="dl-btn-arrow" aria-hidden="true">→</span>
+                </span>
+              </a>
+              <label class="dl-check-label" for="chkStep1">
+                <input type="checkbox" id="chkStep1">
+                <span data-i18n="step1Check">Ya me uní al grupo Chaxters</span>
+              </label>
+            </div>
+
+            <!-- PASO 2 -->
+            <div class="dl-step-box" id="step2Box">
+              <div class="dl-step-meta">
+                <span class="dl-step-kicker" data-i18n="step2Kicker">Paso 2 · Activar prueba en tu cuenta</span>
+                <span class="dl-step-badge" id="step2DoneBadge" hidden data-i18n="doneBadge">✓ Listo</span>
+              </div>
+              <p class="dl-step-copy" data-i18n-html="step2Copy">
+                Toca <em>«Convertirse en verificador»</em> / <em>«Become a tester»</em> y después toca <em>«Descárgala en Google Play»</em>.
+              </p>
+              <a href="https://play.google.com/apps/testing/com.appx.chax" target="_blank" rel="noopener" id="btnStep2" class="dl-action-btn dl-btn-outline">
+                <span class="dl-btn-label">
+                  <span data-i18n="step2Btn">2. Activar Prueba en Google Play</span>
+                  <span class="dl-btn-arrow" aria-hidden="true">→</span>
+                </span>
+              </a>
+            </div>
+
+            <!-- PASO 3 -->
+            <div class="dl-step-box" id="step3Box">
+              <div class="dl-step-meta">
+                <span class="dl-step-kicker" data-i18n="step3Kicker">Paso 3 · Abrir en la app Play Store</span>
+              </div>
+              <p class="dl-step-copy" data-i18n="step3Copy">
+                ¿Ya activaste la prueba pero la web se queda cargando? Abre la ficha directo en la app de Play Store:
+              </p>
+              <a href="https://play.google.com/apps/testing/com.appx.chax" target="_blank" rel="noopener" id="btnStep3" class="dl-action-btn dl-btn-outline">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <path d="M3 20.5v-17c0-.83.67-1.5 1.5-1.5.31 0 .61.1.86.28l14.17 8.5c.71.43.94 1.35.51 2.06-.13.21-.3.38-.51.51l-14.17 8.5c-.71.43-1.63.2-2.06-.51-.18-.25-.28-.55-.28-.84z"/>
+                </svg>
+                <span class="dl-btn-label">
+                  <span data-i18n="step3Btn">3. Abrir directo en Play Store (v1.142)</span>
+                </span>
+              </a>
+            </div>
+
           </div>
 
-          <a href="/download/chax-latest.apk" class="dl-btn-secondary" style="margin-top: 0; margin-bottom: 8px; color: #fff;">
-            ⚡ Descargar APK Directo (v1.139 · 1 clic)
-          </a>
-          <p style="font-size: 0.78rem; color: var(--text-dim); text-align: center; margin: 0 0 12px; line-height: 1.45;">
-            Abre el archivo descargado y autoriza <em>«Instalar de esta fuente»</em>.
-          </p>
+          <!-- Acordeón Nativo: Rescate si no carga + APK Directo -->
+          <div class="dl-accordion" aria-label="Ayuda y descarga directa Android">
+            <details id="play-help">
+              <summary>
+                <span data-i18n="troubleSummary">¿Play Store se queda cargando o dice «No encontrado» / «Reintentar»?</span>
+              </summary>
+              <div class="dl-details-body">
+                <ol class="dl-trouble-list">
+                  <li data-i18n-html="trouble1"><strong>Verifica que sea el mismo Gmail:</strong> abre la app Google Play Store, toca tu foto de perfil arriba a la derecha y asegúrate de tener activa la misma cuenta del Paso 1.</li>
+                  <li data-i18n-html="trouble2"><strong>Refresca la caché de Play Store:</strong> cierra por completo la app de Google Play Store (deslízala fuera de recientes), ábrela otra vez y vuelve a tocar el <strong>Paso 3</strong>.</li>
+                  <li data-i18n-html="trouble3"><strong>Usa Chrome, no un navegador interno:</strong> si abriste el enlace desde otra app, toca <code>⋮</code> y elige <em>Abrir en Chrome</em>.</li>
+                  <li data-i18n-html="trouble4"><strong>Espera 1–2 minutos:</strong> si acabas de unirte al grupo hace segundos, Google tarda un instante en sincronizar tu acceso.</li>
+                </ol>
+              </div>
+            </details>
 
-          <!-- Código QR Android -->
-          <div class="dl-qr-box" style="margin-top: auto;">
-            <div class="dl-qr-label">Escanea desde tu computadora con la cámara de Android:</div>
+            <details id="apk">
+              <summary>
+                <span data-i18n="apkSummary">¿Prefieres instalar sin Play Store? (APK Directo v1.142 · 1 clic)</span>
+              </summary>
+              <div class="dl-details-body">
+                <a href="/download/chax-latest.apk" class="dl-action-btn dl-btn-apk" id="btnDirectApk">
+                  <span class="dl-btn-label">
+                    <span data-i18n="apkBtn">⚡ Descargar APK Directo (v1.142 · 1 clic)</span>
+                  </span>
+                </a>
+                <p class="dl-apk-note" data-i18n-html="apkNote1">
+                  Abre el archivo descargado y autoriza <em>«Instalar de esta fuente»</em>.
+                </p>
+                <p class="dl-apk-note" data-i18n-html="apkNote2">
+                  El APK directo usa firma independiente a Google Play. Si luego cambias a Play Store, respalda tu identidad o enlaza con <code>TwinSync</code> antes de reinstalar.
+                </p>
+              </div>
+            </details>
+          </div>
+
+          <!-- Código QR Android (oculto en pantallas táctiles/móviles) -->
+          <div class="dl-qr-box">
+            <div class="dl-qr-label" data-i18n="androidQrLabel">Escanea con tu teléfono Android para abrir estos pasos directo:</div>
             <div class="dl-qr-wrapper">
-              <img src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=https://chax.chat/download/" alt="QR Página de Descarga Chax Android" class="dl-qr-img" width="240" height="240" loading="lazy">
+              <img id="androidQrImg" src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=https://chax.chat/download/" alt="QR Página de Descarga Chax Android" class="dl-qr-img" width="160" height="160" loading="lazy">
             </div>
-            <div class="dl-qr-hint">Abre esta página en tu teléfono para tocar Paso 1 y Paso 2 en un clic</div>
+            <div class="dl-qr-hint" data-i18n="androidQrHint">Abre esta misma guía en tu móvil para tocar Paso 1, 2 y 3 en un clic</div>
           </div>
-        </div>
+        </section>
 
-        <!-- TARJETA APPLE: IOS TESTFLIGHT -->
-        <div class="dl-card featured-ios">
-          <span class="dl-platform-pill pill-ios">🍎 Apple TestFlight Beta</span>
-          <h2 class="dl-platform-title">iPhone, iPad & Mac</h2>
-          <p class="dl-platform-desc">
-            Nativo en Swift para iOS 16+ y macOS. Autoplay táctico de voz incluso con pantalla bloqueada, Mapax offline, Protocolo v2 de huella cero, radar acústico RSSI y Bluetooth Multipeer multi-salto.
+        <!-- TARJETA APPLE: IOS & MAC TESTFLIGHT -->
+        <section class="dl-card featured-ios" id="appleCard" aria-labelledby="appleTitle">
+          <div class="dl-card-head">
+            <span class="dl-platform-pill pill-ios" data-i18n="applePill">🍎 Apple TestFlight Beta</span>
+            <span class="dl-version-tag">v3.383</span>
+          </div>
+          <h2 class="dl-platform-title" id="appleTitle" data-i18n="appleTitle">iPhone, iPad &amp; Mac</h2>
+          <p class="dl-platform-desc" data-i18n="appleIntro">
+            Nativo en Swift para iOS 16+ y macOS. Autoplay táctico de voz con pantalla bloqueada, Mapax offline, Protocolo v2 sin huella, radar acústico RSSI y Bluetooth Multipeer multi-salto.
           </p>
 
           <!-- Botón de Descarga TestFlight -->
-          <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" rel="noopener" class="dl-action-btn dl-btn-blue">
-            <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" rel="noopener" class="dl-action-btn dl-btn-blue" id="btnAppleTestFlight">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
               <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 3.5c.61-.75 1.04-1.8 1.01-2.85-.92.04-2.03.62-2.67 1.37-.58.67-1.08 1.74-1.01 2.78.98.08 2.06-.55 2.67-1.3z"/>
             </svg>
-            <span>Unirse a la Beta en TestFlight (v3.374)</span>
+            <span class="dl-btn-label">
+              <span data-i18n="appleBtn">Unirse en TestFlight (v3.383)</span>
+              <span class="dl-btn-arrow" aria-hidden="true">→</span>
+            </span>
           </a>
 
-          <div style="height: 48px;"></div>
-
-          <!-- Código QR iOS -->
-          <div class="dl-qr-box">
-            <div class="dl-qr-label">Escanea con la cámara de tu iPhone o iPad:</div>
-            <div class="dl-qr-wrapper">
-              <img src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=https://testflight.apple.com/join/hmfhvFdf" alt="QR Descarga TestFlight iOS" class="dl-qr-img" width="240" height="240" loading="lazy">
+          <!-- Checklist rápido Apple integrado para equilibrio visual -->
+          <div class="dl-apple-steps">
+            <div class="dl-apple-step">
+              <div class="dl-apple-num" aria-hidden="true">1</div>
+              <div>
+                <strong data-i18n="appleStep1Title">Instala Apple TestFlight</strong>
+                <p data-i18n-html="appleStep1Copy">Descarga la app gratuita <a href="https://apps.apple.com/app/testflight/id899247664" target="_blank" rel="noopener">TestFlight</a> desde el App Store si aún no la tienes.</p>
+              </div>
             </div>
-            <div class="dl-qr-hint">Instalación segura gestionada directamente por Apple (v3.374)</div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- GUÍA RÁPIDA: INSTALACIÓN EN APPLE (IOS / IPAD / MAC) -->
-      <div class="dl-steps-card" style="border-color: rgba(56, 189, 248, 0.35); margin-bottom: 30px;">
-        <div class="dl-steps-header">
-          <span style="font-size: 1.6rem;">🍎</span>
-          <h3>Instalación y Configuración en Apple (iPhone, iPad y Mac)</h3>
-        </div>
-
-        <div class="dl-steps-grid">
-          <div class="dl-step-item">
-            <div class="dl-step-number" style="background: #38bdf8; color: #070a0f;">1</div>
-            <h4>Instala Apple TestFlight</h4>
-            <p>Descarga la app oficial gratuita <a href="https://apps.apple.com/app/testflight/id899247664" target="_blank" rel="noopener" style="color: #38bdf8; font-weight: 700;">TestFlight</a> desde la App Store en tu iPhone, iPad o Mac si aún no la tienes instalada.</p>
+            <div class="dl-apple-step">
+              <div class="dl-apple-num" aria-hidden="true">2</div>
+              <div>
+                <strong data-i18n="appleStep2Title">Toca «Aceptar e Instalar»</strong>
+                <p data-i18n-html="appleStep2Copy">Abre el botón azul de arriba o escanea el QR para recibir actualizaciones automáticas (v3.383).</p>
+              </div>
+            </div>
+            <div class="dl-apple-step">
+              <div class="dl-apple-num" aria-hidden="true">✓</div>
+              <div>
+                <strong data-i18n="appleStep3Title">Activa Bluetooth, Red Local y Notificaciones</strong>
+                <p data-i18n="appleStep3Copy">Necesarios para mensajería directa sin señal, TwinSync LAN y avisos instantáneos.</p>
+              </div>
+            </div>
           </div>
 
-          <div class="dl-step-item">
-            <div class="dl-step-number" style="background: #38bdf8; color: #070a0f;">2</div>
-            <h4>Únete a la Beta Oficial</h4>
-            <p>Abre el enlace <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" rel="noopener" style="color: #38bdf8; font-weight: 700;">testflight.apple.com/join/hmfhvFdf</a> o escanea el código QR y toca <em>«Aceptar e Instalar»</em> (v3.374).</p>
+          <!-- Código QR iOS (oculto en pantallas táctiles/móviles) -->
+          <div class="dl-qr-box">
+            <div class="dl-qr-label" data-i18n="appleQrLabel">Escanea con la cámara de tu iPhone o iPad:</div>
+            <div class="dl-qr-wrapper">
+              <img src="https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=https://testflight.apple.com/join/hmfhvFdf" alt="QR Descarga TestFlight iOS" class="dl-qr-img" width="160" height="160" loading="lazy">
+            </div>
+            <div class="dl-qr-hint" data-i18n="appleQrHint">Instalación segura gestionada directamente por Apple (v3.383)</div>
           </div>
+        </section>
 
-          <div class="dl-step-item">
-            <div class="dl-step-number" style="background: #38bdf8; color: #070a0f;">✓</div>
-            <h4>Permisos para Malla Offline</h4>
-            <p>Al abrir Chax, concede permisos de <strong>Bluetooth</strong> y <strong>Red Local</strong> para comunicación directa sin señal, y <strong>Notificaciones</strong> para avisos de mensajes y radar sonoro de proximidad.</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- GUÍA RÁPIDA: INSTALACIÓN EN ANDROID (GOOGLE PLAY OFICIAL) -->
-      <div class="dl-steps-card" style="border-color: rgba(0, 245, 155, 0.35); margin-bottom: 40px;">
-        <div class="dl-steps-header">
-          <span style="font-size: 1.6rem;">🤖</span>
-          <h3>Instalación en Android — Guía en 3 pasos</h3>
-        </div>
-
-        <div class="dl-steps-grid" style="gap: 24px;">
-          <div class="dl-step-item" style="padding: 24px; gap: 6px;">
-            <div class="dl-step-number">1</div>
-            <h4>Únete al grupo</h4>
-            <p>Abre <a href="https://groups.google.com/g/chaxters" target="_blank" rel="noopener" style="color: var(--volt-green); font-weight: 700;">groups.google.com/g/chaxters</a> con el mismo Gmail de tu Play Store y pulsa <em>«Unirse al grupo»</em>.</p>
-          </div>
-
-          <div class="dl-step-item" style="padding: 24px; gap: 6px;">
-            <div class="dl-step-number">2</div>
-            <h4>Instala la app</h4>
-            <p>Entra al enlace de <a href="https://play.google.com/apps/testing/com.appx.chax" target="_blank" rel="noopener" style="color: var(--volt-green); font-weight: 700;">Google Play</a>, pulsa <em>«Convertirse en verificador»</em> y toca <em>«Instalar»</em> (o usa el APK directo).</p>
-          </div>
-
-          <div class="dl-step-item" style="padding: 24px; gap: 6px;">
-            <div class="dl-step-number">✓</div>
-            <h4>Activa permisos</h4>
-            <p>Concede <strong>Bluetooth</strong>, <strong>Ubicación</strong> y <strong>Notificaciones</strong> al abrir Chax para usar la malla sin internet.</p>
-          </div>
-        </div>
       </div>
 
       <!-- SECCIÓN MAC (APPLE TESTFLIGHT) -->
       <div class="dl-desktop-card">
         <div class="dl-desktop-info">
-          <h4>💻 Chax para Mac</h4>
-          <p>
+          <h3 data-i18n="macTitle">💻 Chax para Mac</h3>
+          <p data-i18n-html="macCopy">
             Chatea con la comodidad de tu teclado físico. Disponible oficialmente para <strong>Mac</strong> (Apple Silicon e Intel) junto con iPhone y iPad en Apple TestFlight.
           </p>
         </div>
         <div class="dl-desktop-actions">
           <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" rel="noopener" class="btn-secondary" style="font-size: 0.88rem; padding: 10px 22px; border-color: rgba(56, 189, 248, 0.4); color: #fff;">
-            🍏 Mac en TestFlight (v3.374) →
+            <span data-i18n="macBtn">🍏 Mac en TestFlight (v3.383) →</span>
           </a>
         </div>
       </div>
 
-      <!-- Aviso Importante de Pre-instalación -->
-      <div class="corporate-callout" style="margin-bottom: 30px;">
-        <div class="corporate-callout-icon">🤝</div>
-        <div class="corporate-callout-content">
+      <!-- Aviso Importante de Soberanía -->
+      <div class="corporate-callout" style="margin-bottom: 24px;">
+        <div class="corporate-callout-icon" aria-hidden="true">🤝</div>
+        <div class="corporate-callout-content" data-i18n-html="sovereigntyCallout">
           <strong>Soberanía, nodos puente y territorio compartido:</strong> Tu identidad nace en tu propio dispositivo y se enlaza con iPhone, iPad, Mac y Android vía <code>TwinSync</code> cifrado de extremo a extremo. Tus mapas de OpenStreetMap/satélite se comparten en archivos <code>.chaxmap</code> sin rastreo y tu teléfono fortalece la malla vecinal transportando paquetes sellados.
         </div>
       </div>
 
       <!-- OTRAS APPS DEL DESARROLLADOR APPX JP -->
-      <div class="dl-steps-card" style="border-color: rgba(56, 189, 248, 0.35); margin-bottom: 20px;">
-        <div class="dl-steps-header" style="justify-content: space-between; flex-wrap: wrap;">
+      <div class="dl-steps-card">
+        <div class="dl-steps-header">
           <div style="display:flex;align-items:center;gap:14px;">
             <img src="/assets/appx-logo.png" alt="Logo Appx JP" width="48" height="48" loading="lazy" style="width:48px;height:48px;border-radius:12px;aspect-ratio:1/1;">
             <div>
-              <div style="font-size:0.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#38bdf8;">Identidad del Desarrollador · Appx JP</div>
-              <h3 style="margin:0;">Otras Apps del Desarrollador Appx JP</h3>
+              <div style="font-size:0.72rem;font-weight:800;letter-spacing:0.1em;text-transform:uppercase;color:#38bdf8;" data-i18n="appxKicker">Identidad del Desarrollador · Appx JP</div>
+              <h3 data-i18n="appxTitle">Otras Apps del Desarrollador Appx JP</h3>
             </div>
           </div>
           <a href="/#ecosistema-appx" class="btn-secondary" style="font-size:0.84rem;padding:9px 18px;border-color:rgba(56,189,248,0.4);color:#fff;">
-            Ver estudio completo Appx JP →
+            <span data-i18n="appxViewAll">Ver estudio completo Appx JP →</span>
           </a>
         </div>
 
-        <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;background:linear-gradient(135deg,rgba(34,211,238,0.12),rgba(14,20,32,0.86));border:1px solid rgba(34,211,238,0.4);border-radius:20px;padding:22px;margin-bottom:18px;">
-          <img src="/assets/monix-icon.png" alt="Ícono de Monix" width="76" height="76" loading="lazy" style="width:76px;height:76px;border-radius:18px;aspect-ratio:1/1;">
-          <div style="flex:1;min-width:240px;">
-            <div style="font-size:0.74rem;font-weight:800;color:#67e8f9;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;">💧 Nuevo · iOS &amp; iPad TestFlight (com.assi.monix)</div>
-            <h4 style="font-size:1.2rem;color:#fff;font-weight:850;margin-bottom:6px;">Monix (Presupuestox) — Finanzas Soberanas Local-First</h4>
-            <p style="font-size:0.9rem;color:var(--text-muted);line-height:1.5;margin:0;">
+        <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;background:linear-gradient(135deg,rgba(34,211,238,0.12),rgba(14,20,32,0.86));border:1px solid rgba(34,211,238,0.4);border-radius:20px;padding:20px;margin-bottom:16px;">
+          <img src="/assets/monix-icon.png" alt="Ícono de Monix" width="72" height="72" loading="lazy" style="width:72px;height:72px;border-radius:18px;aspect-ratio:1/1;">
+          <div style="flex:1;min-width:220px;">
+            <div style="font-size:0.74rem;font-weight:800;color:#67e8f9;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px;" data-i18n="monixKicker">💧 Nuevo · iOS &amp; iPad TestFlight (com.assi.monix)</div>
+            <h4 style="font-size:1.15rem;color:#fff;font-weight:850;margin-bottom:6px;" data-i18n="monixTitle">Monix (Presupuestox) — Finanzas Soberanas Local-First</h4>
+            <p style="font-size:0.88rem;color:var(--text-muted);line-height:1.5;margin:0;" data-i18n="monixDesc">
               Esferas físicas de agua para tu presupuesto mensual, captura full-screen con Vision OCR e IA on-device, control real de MSI, Bola de Nieve / Avalancha de deudas y sincronización P2P directa sin servidores.
             </p>
           </div>
           <div style="display:flex;gap:10px;flex-wrap:wrap;">
-            <a href="/monix.html" class="dl-action-btn dl-btn-blue" style="width:auto;padding:12px 22px;font-size:0.9rem;">Abrir Monix →</a>
+            <a href="/monix.html" class="dl-action-btn dl-btn-blue" style="width:auto;padding:11px 20px;font-size:0.88rem;" data-i18n="monixBtn">Abrir Monix →</a>
           </div>
         </div>
 
         <div class="dl-steps-grid">
           <div class="dl-step-item">
             <h4>🎧 Sonorix &amp; Medicionex</h4>
-            <p>Suite de metrología electroacústica y DSP en tiempo real para calibración de latencia, barridos y reportes ejecutivos PDF con sello SHA-256.</p>
+            <p data-i18n="sonorixDesc">Suite de metrología electroacústica y DSP en tiempo real para calibración de latencia, barridos y reportes ejecutivos PDF con sello SHA-256.</p>
           </div>
           <div class="dl-step-item">
             <h4>⚖️ Retrox</h4>
-            <p>Motor P2P de reconocimiento organizacional y evaluación 360° ponderada por reputación histórica para equipos de alto desempeño.</p>
+            <p data-i18n="retroxDesc">Motor P2P de reconocimiento organizacional y evaluación 360° ponderada por reputación histórica para equipos de alto desempeño.</p>
           </div>
           <div class="dl-step-item">
             <h4>📈 Tadix</h4>
-            <p>Indicadores cuantitativos multi-temporalidad de acción del precio con arquitectura anti-repaint para lectura disciplinada del mercado.</p>
+            <p data-i18n="tadixDesc">Indicadores cuantitativos multi-temporalidad de acción del precio con arquitectura anti-repaint para lectura disciplinada del mercado.</p>
           </div>
         </div>
       </div>
@@ -655,56 +1094,535 @@
             </div>
             <span>Chax</span>
           </div>
-          <p class="footer-desc">
+          <p class="footer-desc" data-i18n="footerDesc">
             Mensajería para tu día a día: habla en directo, comparte mapas sin señal y comunícate con amigos incluso si se corta internet.
           </p>
           <div class="footer-status-pill">
             <span class="status-indicator"></span>
-            <span>Red Activa y Autónoma</span>
+            <span data-i18n="footerStatus">Red Activa y Autónoma</span>
           </div>
         </div>
 
         <div class="footer-col">
-          <div class="footer-col-title">Funciones</div>
+          <div class="footer-col-title" data-i18n="footerColFeatures">Funciones</div>
           <ul class="footer-links">
             <li><a href="/#feature-mapax">Mapas .chaxmap</a></li>
-            <li><a href="/#feature-nodo">Red Comunitaria</a></li>
-            <li><a href="/#feature-v2">Protocolo v2</a></li>
-            <li><a href="/#feature-ptt">Voz en Bloqueo</a></li>
-            <li><a href="/#feature-grupos">TwinSync y Mac</a></li>
-            <li><a href="/#como-funciona">Enrutamiento Dual</a></li>
+            <li><a href="/#feature-nodo" data-i18n="footerNode">Red Comunitaria</a></li>
+            <li><a href="/#feature-v2" data-i18n="footerV2">Protocolo v2</a></li>
+            <li><a href="/#feature-ptt" data-i18n="footerPtt">Voz en Bloqueo</a></li>
+            <li><a href="/#feature-grupos">TwinSync &amp; Mac</a></li>
+            <li><a href="/#como-funciona" data-i18n="footerRouting">Enrutamiento Dual</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
-          <div class="footer-col-title">Ecosistema Appx JP</div>
+          <div class="footer-col-title" data-i18n="footerColAppx">Ecosistema Appx JP</div>
           <ul class="footer-links">
-            <li><a href="/monix.html" style="color: #38bdf8; font-weight: 750;">Monix (Finanzas P2P)</a></li>
-            <li><a href="/#ecosistema-appx">Identidad Appx JP</a></li>
-            <li><a href="/privacy.html">Privacidad</a></li>
-            <li><a href="/terms.html">Términos</a></li>
-            <li><a href="/support.html">Soporte</a></li>
+            <li><a href="/monix.html" style="color: #38bdf8; font-weight: 750;">Monix</a></li>
+            <li><a href="/#ecosistema-appx">Appx JP</a></li>
+            <li><a href="/privacy.html" data-i18n="footerPrivacy">Privacidad</a></li>
+            <li><a href="/terms.html" data-i18n="footerTerms">Términos</a></li>
+            <li><a href="/support.html" data-i18n="footerSupport">Soporte</a></li>
           </ul>
         </div>
 
         <div class="footer-col">
-          <div class="footer-col-title">Idiomas</div>
+          <div class="footer-col-title" data-i18n="footerColLangs">Idiomas</div>
           <ul class="footer-links">
-            <li><a href="/" style="color: var(--volt-green); font-weight: 750;">Español</a></li>
-            <li><a href="/en/">English</a></li>
-            <li><a href="/pt/">Português</a></li>
+            <li><a href="?lang=es" class="lang-item" data-lang="es" style="color: var(--volt-green); font-weight: 750;">Español</a></li>
+            <li><a href="?lang=en" class="lang-item" data-lang="en">English</a></li>
+            <li><a href="?lang=pt" class="lang-item" data-lang="pt">Português</a></li>
           </ul>
         </div>
       </div>
 
       <div class="footer-bottom">
-        <div>© 2026 Chax. Rápido internet. Imparable mesh. Red de comunicaciones libres y soberanas.</div>
-        <div style="font-size: 0.8rem; color: var(--text-dim);">Hecho para conectar personas cuando todo lo demás falla.</div>
+        <div data-i18n="footerCopyright">© 2026 Chax. Rápido internet. Imparable mesh. Red de comunicaciones libres y soberanas.</div>
+        <div style="font-size: 0.8rem; color: var(--text-dim);" data-i18n="footerTagline">Hecho para conectar personas cuando todo lo demás falla.</div>
       </div>
     </div>
   </footer>
 
-  <!-- Scripts -->
+  <!-- Scripts base + Controlador interactivo de descargas -->
   <script src="/assets/app.js"></script>
+  <script>
+    (function () {
+      'use strict';
+
+      var WIZARD_KEY = 'chax_play_wizard_v1';
+      var PLAY_TESTING_URL = 'https://play.google.com/apps/testing/com.appx.chax';
+      var PLAY_INTENT_URL = 'intent://details?id=com.appx.chax#Intent;scheme=market;package=com.android.vending;S.browser_fallback_url=' + encodeURIComponent(PLAY_TESTING_URL) + ';end';
+
+      var I18N = {
+        es: {
+          pageTitle: 'Descargar Chax Oficial — Android (Google Play), iOS (TestFlight) y Mac',
+          metaDesc: 'Descarga Chax gratis para Android (v1.142), iPhone/iPad (v3.383) y Mac. Rápido por internet, imparable en mesh.',
+          navHome: 'Inicio',
+          navPhilosophy: 'Filosofía',
+          navFeatures: 'Funciones',
+          navHow: '¿Cómo Funciona?',
+          navScenarios: 'Escenarios',
+          heroBadge: 'Centro Oficial de Descargas · Red Soberana',
+          heroTitle: 'Descarga Chax gratis',
+          heroSub: 'Rápido por internet, imparable en mesh sin señal. Elige tu dispositivo abajo:',
+          androidPill: '🤖 Android · Google Play',
+          androidTitle: 'Instala Chax en Android',
+          androidIntro: 'Acceso anticipado en Google Play: sigue <strong>estos pasos en orden con el mismo Gmail</strong> de tu tienda Play.',
+          webviewTitle: '⚠️ Estás dentro de un navegador integrado',
+          webviewCopy: 'Los navegadores integrados suelen trabar el inicio de sesión de Google Play. Abre esta página en Chrome para instalar en segundos:',
+          btnOpenChrome: 'Abrir en Chrome',
+          btnCopyUrl: 'Copiar enlace',
+          btnCopiedUrl: '✓ Enlace copiado',
+          doneBadge: '✓ Listo',
+          step1Kicker: 'Paso 1 · Obligatorio primero',
+          step1Copy: 'Abre el grupo con el <strong>mismo Gmail de tu Play Store</strong> y toca <em>«Unirse al grupo»</em> / <em>«Join group»</em>.',
+          step1Btn: '1. Unirse al Grupo Chaxters',
+          step1Check: 'Ya me uní al grupo Chaxters',
+          step2Kicker: 'Paso 2 · Activar prueba en tu cuenta',
+          step2Copy: 'Toca <em>«Convertirse en verificador»</em> / <em>«Become a tester»</em> y después toca <em>«Descárgala en Google Play»</em>.',
+          step2Btn: '2. Activar Prueba en Google Play',
+          step3Kicker: 'Paso 3 · Abrir en la app Play Store',
+          step3Copy: '¿Ya activaste la prueba pero la web se queda cargando? Abre la ficha directo en la app de Play Store:',
+          step3Btn: '3. Abrir directo en Play Store (v1.142)',
+          troubleSummary: '¿Play Store se queda cargando o dice «No encontrado» / «Reintentar»?',
+          trouble1: '<strong>Verifica que sea el mismo Gmail:</strong> abre la app Google Play Store, toca tu foto de perfil arriba a la derecha y asegúrate de tener activa la misma cuenta del Paso 1.',
+          trouble2: '<strong>Refresca la caché de Play Store:</strong> cierra por completo la app de Google Play Store (deslízala fuera de recientes), ábrela otra vez y vuelve a tocar el <strong>Paso 3</strong>.',
+          trouble3: '<strong>Usa Chrome, no un navegador interno:</strong> si abriste el enlace desde otra app, toca <code>⋮</code> y elige <em>Abrir en Chrome</em>.',
+          trouble4: '<strong>Espera 1–2 minutos:</strong> si acabas de unirte al grupo hace segundos, Google tarda un instante en sincronizar tu acceso.',
+          apkSummary: '¿Prefieres instalar sin Play Store? (APK Directo v1.142 · 1 clic)',
+          apkBtn: '⚡ Descargar APK Directo (v1.142 · 1 clic)',
+          apkNote1: 'Abre el archivo descargado y autoriza <em>«Instalar de esta fuente»</em>.',
+          apkNote2: 'El APK directo usa firma independiente a Google Play. Si luego cambias a Play Store, respalda tu identidad o enlaza con <code>TwinSync</code> antes de reinstalar.',
+          androidQrLabel: 'Escanea con tu teléfono Android para abrir estos pasos directo:',
+          androidQrHint: 'Abre esta misma guía en tu móvil para tocar Paso 1, 2 y 3 en un clic',
+          applePill: '🍎 Apple TestFlight Beta',
+          appleTitle: 'iPhone, iPad & Mac',
+          appleIntro: 'Nativo en Swift para iOS 16+ y macOS. Autoplay táctico de voz con pantalla bloqueada, Mapax offline, Protocolo v2 sin huella, radar acústico RSSI y Bluetooth Multipeer multi-salto.',
+          appleBtn: 'Unirse en TestFlight (v3.383)',
+          appleStep1Title: 'Instala Apple TestFlight',
+          appleStep1Copy: 'Descarga la app gratuita <a href="https://apps.apple.com/app/testflight/id899247664" target="_blank" rel="noopener">TestFlight</a> desde el App Store si aún no la tienes.',
+          appleStep2Title: 'Toca «Aceptar e Instalar»',
+          appleStep2Copy: 'Abre el botón azul de arriba o escanea el QR para recibir actualizaciones automáticas (v3.383).',
+          appleStep3Title: 'Activa Bluetooth, Red Local y Notificaciones',
+          appleStep3Copy: 'Necesarios para mensajería directa sin señal, TwinSync LAN y avisos instantáneos.',
+          appleQrLabel: 'Escanea con la cámara de tu iPhone o iPad:',
+          appleQrHint: 'Instalación segura gestionada directamente por Apple (v3.383)',
+          macTitle: '💻 Chax para Mac',
+          macCopy: 'Chatea con la comodidad de tu teclado físico. Disponible oficialmente para <strong>Mac</strong> (Apple Silicon e Intel) junto con iPhone y iPad en Apple TestFlight.',
+          macBtn: '🍏 Mac en TestFlight (v3.383) →',
+          sovereigntyCallout: '<strong>Soberanía, nodos puente y territorio compartido:</strong> Tu identidad nace en tu propio dispositivo y se enlaza con iPhone, iPad, Mac y Android vía <code>TwinSync</code> cifrado de extremo a extremo. Tus mapas de OpenStreetMap/satélite se comparten en archivos <code>.chaxmap</code> sin rastreo y tu teléfono fortalece la malla vecinal transportando paquetes sellados.',
+          appxKicker: 'Identidad del Desarrollador · Appx JP',
+          appxTitle: 'Otras Apps del Desarrollador Appx JP',
+          appxViewAll: 'Ver estudio completo Appx JP →',
+          monixKicker: '💧 Nuevo · iOS & iPad TestFlight (com.assi.monix)',
+          monixTitle: 'Monix (Presupuestox) — Finanzas Soberanas Local-First',
+          monixDesc: 'Esferas físicas de agua para tu presupuesto mensual, captura full-screen con Vision OCR e IA on-device, control real de MSI, Bola de Nieve / Avalancha de deudas y sincronización P2P directa sin servidores.',
+          monixBtn: 'Abrir Monix →',
+          sonorixDesc: 'Suite de metrología electroacústica y DSP en tiempo real para calibración de latencia, barridos y reportes ejecutivos PDF con sello SHA-256.',
+          retroxDesc: 'Motor P2P de reconocimiento organizacional y evaluación 360° ponderada por reputación histórica para equipos de alto desempeño.',
+          tadixDesc: 'Indicadores cuantitativos multi-temporalidad de acción del precio con arquitectura anti-repaint para lectura disciplinada del mercado.',
+          footerDesc: 'Mensajería para tu día a día: habla en directo, comparte mapas sin señal y comunícate con amigos incluso si se corta internet.',
+          footerStatus: 'Red Activa y Autónoma',
+          footerColFeatures: 'Funciones',
+          footerNode: 'Red Comunitaria',
+          footerV2: 'Protocolo v2',
+          footerPtt: 'Voz en Bloqueo',
+          footerRouting: 'Enrutamiento Dual',
+          footerColAppx: 'Ecosistema Appx JP',
+          footerPrivacy: 'Privacidad',
+          footerTerms: 'Términos',
+          footerSupport: 'Soporte',
+          footerColLangs: 'Idiomas',
+          footerCopyright: '© 2026 Chax. Rápido internet. Imparable mesh. Red de comunicaciones libres y soberanas.',
+          footerTagline: 'Hecho para conectar personas cuando todo lo demás falla.'
+        },
+        en: {
+          pageTitle: 'Download Official Chax — Android (Google Play), iOS (TestFlight) & Mac',
+          metaDesc: 'Download Chax free for Android (v1.142), iPhone/iPad (v3.383) and Mac. Fast internet, unstoppable off-grid mesh.',
+          navHome: 'Home',
+          navPhilosophy: 'Philosophy',
+          navFeatures: 'Features',
+          navHow: 'How It Works',
+          navScenarios: 'Scenarios',
+          heroBadge: 'Official Download Center · Sovereign Network',
+          heroTitle: 'Download Chax free',
+          heroSub: 'Fast over internet, unstoppable off-grid mesh. Choose your platform below:',
+          androidPill: '🤖 Android · Google Play',
+          androidTitle: 'Install Chax on Android',
+          androidIntro: 'Google Play early access: follow <strong>these steps in order with the same Gmail</strong> signed into your Play Store app.',
+          webviewTitle: '⚠️ Opened inside an in-app browser',
+          webviewCopy: 'Embedded browsers often stall Google Play sign-in. Open this page in Chrome to install in seconds:',
+          btnOpenChrome: 'Open in Chrome',
+          btnCopyUrl: 'Copy link',
+          btnCopiedUrl: '✓ Link copied',
+          doneBadge: '✓ Done',
+          step1Kicker: 'Step 1 · Required first',
+          step1Copy: 'Open the group with the <strong>same Gmail as your Play Store</strong> and tap <em>“Join group”</em>.',
+          step1Btn: '1. Join Chaxters Group',
+          step1Check: 'I already joined the Chaxters group',
+          step2Kicker: 'Step 2 · Opt into testing',
+          step2Copy: 'Tap <em>“Become a tester”</em> and then tap <em>“download it on Google Play”</em>.',
+          step2Btn: '2. Opt In on Google Play',
+          step3Kicker: 'Step 3 · Open Play Store app directly',
+          step3Copy: 'Already opted in but the web link keeps loading? Launch the Play Store app directly:',
+          step3Btn: '3. Open directly in Play Store (v1.142)',
+          troubleSummary: 'Play Store stuck loading or showing “Item not found” / “Try again”?',
+          trouble1: '<strong>Check your Gmail account:</strong> open the Google Play Store app, tap your profile icon at top-right, and verify it matches Step 1.',
+          trouble2: '<strong>Clear Play Store cache:</strong> force-close the Play Store app (swipe from recents), reopen it, then tap <strong>Step 3</strong> again.',
+          trouble3: '<strong>Use Chrome instead of an in-app browser:</strong> tap <code>⋮</code> and select <em>Open in Chrome</em>.',
+          trouble4: '<strong>Wait 1–2 minutes:</strong> if you just joined the group, Google takes a moment to sync your tester access.',
+          apkSummary: 'Prefer installing without Play Store? (Direct APK v1.142 · 1 tap)',
+          apkBtn: '⚡ Download Direct APK (v1.142 · 1 tap)',
+          apkNote1: 'Open the downloaded file and allow <em>“Install from this source”</em>.',
+          apkNote2: 'The direct APK uses an independent signing key from Google Play. Back up your identity or link via <code>TwinSync</code> before switching between builds.',
+          androidQrLabel: 'Scan with your Android phone to open these steps directly:',
+          androidQrHint: 'Open this guide on your phone to tap Step 1, 2 & 3 in one tap',
+          applePill: '🍎 Apple TestFlight Beta',
+          appleTitle: 'iPhone, iPad & Mac',
+          appleIntro: 'Native Swift for iOS 16+ and macOS. Lock-screen voice autoplay, offline Mapax, zero-metadata Protocol v2, RSSI acoustic radar and multi-hop Bluetooth Multipeer.',
+          appleBtn: 'Join on TestFlight (v3.383)',
+          appleStep1Title: 'Install Apple TestFlight',
+          appleStep1Copy: 'Get the free <a href="https://apps.apple.com/app/testflight/id899247664" target="_blank" rel="noopener">TestFlight</a> app from the App Store if you don’t have it yet.',
+          appleStep2Title: 'Tap “Accept & Install”',
+          appleStep2Copy: 'Tap the blue button above or scan the QR code for automatic updates (v3.383).',
+          appleStep3Title: 'Allow Bluetooth, Local Network & Notifications',
+          appleStep3Copy: 'Required for direct off-grid messaging, LAN TwinSync and instant alerts.',
+          appleQrLabel: 'Scan with your iPhone or iPad camera:',
+          appleQrHint: 'Secure installation managed directly by Apple (v3.383)',
+          macTitle: '💻 Chax for Mac',
+          macCopy: 'Chat comfortably from your desktop keyboard. Officially available for <strong>Mac</strong> (Apple Silicon & Intel) alongside iPhone and iPad on Apple TestFlight.',
+          macBtn: '🍏 Mac on TestFlight (v3.383) →',
+          sovereigntyCallout: '<strong>Sovereignty, bridge nodes & shared territory:</strong> Your identity is generated on your own device and syncs across iPhone, iPad, Mac & Android via E2EE <code>TwinSync</code>. OpenStreetMap/satellite maps share as portable <code>.chaxmap</code> packs with zero tracking.',
+          appxKicker: 'Developer Identity · Appx JP',
+          appxTitle: 'More Apps by Appx JP',
+          appxViewAll: 'View full Appx JP studio →',
+          monixKicker: '💧 New · iOS & iPad TestFlight (com.assi.monix)',
+          monixTitle: 'Monix (Presupuestox) — Sovereign Local-First Finance',
+          monixDesc: 'Physics water spheres for your monthly budget, full-screen capture with Vision OCR & on-device AI, installment tracking, Snowball / Avalanche debt payoff and direct P2P sync.',
+          monixBtn: 'Open Monix →',
+          sonorixDesc: 'Electro-acoustic metrology and real-time DSP benchmarking suite for latency calibration, sweeps and SHA-256 signed PDF reports.',
+          retroxDesc: 'Peer-to-peer organizational recognition and 360° review engine weighted by historical reputation for high-performing teams.',
+          tadixDesc: 'Multi-timeframe quantitative price-action indicators built with strict anti-repaint architecture for disciplined market analysis.',
+          footerDesc: 'Everyday sovereign messaging: live voice, shareable off-grid maps and neighbor mesh when the internet goes down.',
+          footerStatus: 'Autonomous Active Network',
+          footerColFeatures: 'Features',
+          footerNode: 'Community Mesh',
+          footerV2: 'Protocol v2',
+          footerPtt: 'Lock-Screen Voice',
+          footerRouting: 'Dual Routing',
+          footerColAppx: 'Appx JP Ecosystem',
+          footerPrivacy: 'Privacy',
+          footerTerms: 'Terms',
+          footerSupport: 'Support',
+          footerColLangs: 'Languages',
+          footerCopyright: '© 2026 Chax. Fast internet. Unstoppable mesh. Free sovereign communications.',
+          footerTagline: 'Built to connect people when everything else fails.'
+        },
+        pt: {
+          pageTitle: 'Baixar Chax Oficial — Android (Google Play), iOS (TestFlight) e Mac',
+          metaDesc: 'Baixe o Chax grátis para Android (v1.142), iPhone/iPad (v3.383) e Mac. Rápido na internet, imparável no mesh.',
+          navHome: 'Início',
+          navPhilosophy: 'Filosofia',
+          navFeatures: 'Recursos',
+          navHow: 'Como Funciona',
+          navScenarios: 'Cenários',
+          heroBadge: 'Centro Oficial de Downloads · Rede Soberana',
+          heroTitle: 'Baixar Chax grátis',
+          heroSub: 'Rápido na internet, imparável no mesh sem sinal. Escolha seu dispositivo abaixo:',
+          androidPill: '🤖 Android · Google Play',
+          androidTitle: 'Instale o Chax no Android',
+          androidIntro: 'Acesso antecipado no Google Play: siga <strong>estes passos em ordem com o mesmo Gmail</strong> da sua Play Store.',
+          webviewTitle: '⚠️ Você está em um navegador integrado',
+          webviewCopy: 'Navegadores integrados costumam travar o login do Google Play. Abra esta página no Chrome para instalar em segundos:',
+          btnOpenChrome: 'Abrir no Chrome',
+          btnCopyUrl: 'Copiar link',
+          btnCopiedUrl: '✓ Link copiado',
+          doneBadge: '✓ Pronto',
+          step1Kicker: 'Passo 1 · Obrigatório primeiro',
+          step1Copy: 'Entre no grupo com o <strong>mesmo Gmail da sua Play Store</strong> e toque em <em>«Participar do grupo»</em> / <em>«Join group»</em>.',
+          step1Btn: '1. Entrar no Grupo Chaxters',
+          step1Check: 'Já entrei no grupo Chaxters',
+          step2Kicker: 'Passo 2 · Ativar teste na conta',
+          step2Copy: 'Toque em <em>«Tornar-se um testador»</em> / <em>«Become a tester»</em> e depois em <em>«Fazer o download no Google Play»</em>.',
+          step2Btn: '2. Ativar Teste no Google Play',
+          step3Kicker: 'Passo 3 · Abrir direto no app Play Store',
+          step3Copy: 'Já ativou o teste mas o site continua carregando? Abra a ficha direto no app da Play Store:',
+          step3Btn: '3. Abrir direto na Play Store (v1.142)',
+          troubleSummary: 'Play Store travou carregando ou exibiu «Não encontrado» / «Tentar novamente»?',
+          trouble1: '<strong>Confirme o mesmo Gmail:</strong> abra o app Google Play Store, toque na sua foto no canto superior direito e veja se é a mesma conta do Passo 1.',
+          trouble2: '<strong>Limpe o cache da Play Store:</strong> feche completamente o app da Google Play Store (remova dos recentes), reabra e toque no <strong>Passo 3</strong>.',
+          trouble3: '<strong>Use o Chrome:</strong> se abriu por outro app, toque em <code>⋮</code> e escolha <em>Abrir no Chrome</em>.',
+          trouble4: '<strong>Aguarde 1–2 minutos:</strong> o Google pode levar alguns instantes para sincronizar sua entrada no grupo.',
+          apkSummary: 'Prefere instalar sem a Play Store? (APK Direto v1.142 · 1 toque)',
+          apkBtn: '⚡ Baixar APK Direto (v1.142 · 1 toque)',
+          apkNote1: 'Abra o arquivo baixado e autorize <em>«Instalar desta fonte»</em>.',
+          apkNote2: 'O APK direto usa assinatura independente do Google Play. Faça backup da identidade ou use o <code>TwinSync</code> antes de trocar entre versões.',
+          androidQrLabel: 'Escaneie com seu celular Android para abrir estes passos direto:',
+          androidQrHint: 'Abra este guia no celular para tocar nos Passos 1, 2 e 3 em um clique',
+          applePill: '🍎 Apple TestFlight Beta',
+          appleTitle: 'iPhone, iPad & Mac',
+          appleIntro: 'Nativo em Swift para iOS 16+ e macOS. Reprodução tática de voz na tela bloqueada, Mapax offline, Protocolo v2 sem metadados, radar RSSI e Bluetooth Multipeer.',
+          appleBtn: 'Entrar no TestFlight (v3.383)',
+          appleStep1Title: 'Instale o Apple TestFlight',
+          appleStep1Copy: 'Baixe o app gratuito <a href="https://apps.apple.com/app/testflight/id899247664" target="_blank" rel="noopener">TestFlight</a> na App Store se ainda não tiver.',
+          appleStep2Title: 'Toque em «Aceitar e Instalar»',
+          appleStep2Copy: 'Abra o botão azul acima ou escaneie o QR para receber atualizações automáticas (v3.383).',
+          appleStep3Title: 'Permita Bluetooth, Rede Local e Notificações',
+          appleStep3Copy: 'Necessários para mensagens diretas sem sinal, TwinSync LAN e avisos instantâneos.',
+          appleQrLabel: 'Escaneie com a câmera do seu iPhone ou iPad:',
+          appleQrHint: 'Instalação segura gerenciada diretamente pela Apple (v3.383)',
+          macTitle: '💻 Chax para Mac',
+          macCopy: 'Converse com o conforto do teclado físico. Disponível oficialmente para <strong>Mac</strong> (Apple Silicon e Intel) junto com iPhone e iPad no Apple TestFlight.',
+          macBtn: '🍏 Mac no TestFlight (v3.383) →',
+          sovereigntyCallout: '<strong>Soberania, nós ponte e território compartilhado:</strong> Sua identidade nasce no seu aparelho e sincroniza entre iPhone, iPad, Mac e Android via <code>TwinSync</code> E2EE. Mapas OpenStreetMap/satélite são compartilhados em pacotes <code>.chaxmap</code> sem rastreamento.',
+          appxKicker: 'Identidade do Desenvolvedor · Appx JP',
+          appxTitle: 'Outros Apps do Desenvolvedor Appx JP',
+          appxViewAll: 'Ver estúdio completo Appx JP →',
+          monixKicker: '💧 Novo · iOS & iPad TestFlight (com.assi.monix)',
+          monixTitle: 'Monix (Presupuestox) — Finanças Soberanas Local-First',
+          monixDesc: 'Esferas físicas de água para seu orçamento mensal, captura em tela cheia com OCR Vision e IA no aparelho, controle de parcelas e sincronização P2P direta.',
+          monixBtn: 'Abrir Monix →',
+          sonorixDesc: 'Suíte de metrologia eletroacústica e DSP em tempo real para calibração de latência, varreduras e relatórios executivos PDF com selo SHA-256.',
+          retroxDesc: 'Motor P2P de reconhecimento organizacional e avaliação 360° ponderada por reputação histórica para equipes de alto desempenho.',
+          tadixDesc: 'Indicadores quantitativos multi-timeframe de ação do preço com arquitetura anti-repaint para leitura disciplinada do mercado.',
+          footerDesc: 'Mensageria para o dia a dia: voz imediata, mapas sem sinal e conexão comunitária mesmo se a internet cair.',
+          footerStatus: 'Rede Ativa e Autônoma',
+          footerColFeatures: 'Recursos',
+          footerNode: 'Rede Comunitária',
+          footerV2: 'Protocolo v2',
+          footerPtt: 'Voz na Tela Bloqueada',
+          footerRouting: 'Roteamento Dual',
+          footerColAppx: 'Ecossistema Appx JP',
+          footerPrivacy: 'Privacidade',
+          footerTerms: 'Termos',
+          footerSupport: 'Suporte',
+          footerColLangs: 'Idiomas',
+          footerCopyright: '© 2026 Chax. Rápido na internet. Imparável no mesh. Comunicações livres e soberanas.',
+          footerTagline: 'Feito para conectar pessoas quando todo o resto falha.'
+        }
+      };
+
+      var ua = navigator.userAgent || '';
+      var isAndroid = /Android/i.test(ua);
+      var isApple = !isAndroid && (/iPhone|iPad|iPod|Macintosh/i.test(ua) || (navigator.maxTouchPoints > 1 && /Mac/i.test(ua)));
+      var isAndroidWebView = isAndroid && /\bwv\b|WebView|Version\/\d+\.\d+\s+Chrome\//i.test(ua);
+
+      var platformGrid = document.getElementById('platformGrid');
+      if (platformGrid && isApple) {
+        platformGrid.classList.add('prefer-apple');
+      }
+
+      var webviewBanner = document.getElementById('webviewBanner');
+      if (webviewBanner && isAndroidWebView) {
+        webviewBanner.hidden = false;
+      }
+
+      var btnStep3 = document.getElementById('btnStep3');
+      if (btnStep3 && isAndroid) {
+        btnStep3.setAttribute('href', PLAY_INTENT_URL);
+        btnStep3.removeAttribute('target');
+      }
+
+      var currentLang = 'es';
+      function detectInitialLang() {
+        try {
+          var params = new URLSearchParams(window.location.search);
+          var q = (params.get('lang') || '').toLowerCase();
+          if (I18N[q]) return q;
+        } catch (_) {}
+        try {
+          var saved = (localStorage.getItem('chax_lang_pref') || '').toLowerCase();
+          if (I18N[saved]) return saved;
+        } catch (_) {}
+        var navLang = (navigator.language || '').slice(0, 2).toLowerCase();
+        if (I18N[navLang]) return navLang;
+        return 'es';
+      }
+
+      function applyLanguage(lang, updateUrl) {
+        if (!I18N[lang]) lang = 'es';
+        currentLang = lang;
+        var dict = I18N[lang];
+        document.documentElement.lang = lang;
+        document.title = dict.pageTitle;
+        var metaDesc = document.querySelector('meta[name="description"]');
+        if (metaDesc) metaDesc.setAttribute('content', dict.metaDesc);
+
+        document.querySelectorAll('[data-i18n]').forEach(function (el) {
+          var key = el.getAttribute('data-i18n');
+          if (dict[key] !== undefined) el.textContent = dict[key];
+        });
+        document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
+          var key = el.getAttribute('data-i18n-html');
+          if (dict[key] !== undefined) el.innerHTML = dict[key];
+        });
+
+        document.querySelectorAll('.lang-item[data-lang]').forEach(function (el) {
+          var isAct = el.getAttribute('data-lang') === lang;
+          el.classList.toggle('active', isAct);
+          if (el.closest('.footer-links')) {
+            el.style.color = isAct ? 'var(--volt-green)' : '';
+            el.style.fontWeight = isAct ? '750' : '';
+          }
+        });
+
+        var brandLink = document.getElementById('brandHomeLink');
+        if (brandLink) {
+          brandLink.setAttribute('href', lang === 'es' ? '/' : '/' + lang + '/');
+        }
+
+        var pageUrl = lang === 'es' ? 'https://chax.chat/download/' : 'https://chax.chat/download/?lang=' + lang;
+        var chromeIntentUrl = 'intent://chax.chat/download/' + (lang === 'es' ? '' : '?lang=' + lang) + '#Intent;scheme=https;package=com.android.chrome;end';
+        var btnChrome = document.getElementById('btnOpenChrome');
+        if (btnChrome) btnChrome.setAttribute('href', chromeIntentUrl);
+
+        var qrImg = document.getElementById('androidQrImg');
+        if (qrImg) {
+          qrImg.setAttribute('src', 'https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data=' + encodeURIComponent(pageUrl));
+        }
+
+        if (updateUrl && window.history && window.history.replaceState) {
+          var nextPath = window.location.pathname + (lang === 'es' ? '' : '?lang=' + lang) + window.location.hash;
+          window.history.replaceState(null, '', nextPath);
+        }
+      }
+
+      document.querySelectorAll('.lang-item[data-lang]').forEach(function (el) {
+        el.addEventListener('click', function (e) {
+          e.preventDefault();
+          var lang = el.getAttribute('data-lang');
+          try {
+            localStorage.setItem('chax_lang_pref', lang);
+          } catch (_) {}
+          applyLanguage(lang, true);
+        });
+      });
+
+      applyLanguage(detectInitialLang(), false);
+
+      // Botón Copiar enlace en el banner WebView
+      var btnCopyUrl = document.getElementById('btnCopyUrl');
+      if (btnCopyUrl) {
+        btnCopyUrl.addEventListener('click', function () {
+          var targetUrl = currentLang === 'es' ? 'https://chax.chat/download/' : 'https://chax.chat/download/?lang=' + currentLang;
+          var labelSpan = btnCopyUrl.querySelector('span');
+          function markCopied() {
+            if (labelSpan) labelSpan.textContent = I18N[currentLang].btnCopiedUrl;
+            setTimeout(function () {
+              if (labelSpan) labelSpan.textContent = I18N[currentLang].btnCopyUrl;
+            }, 2200);
+          }
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(targetUrl).then(markCopied, function () {});
+          } else {
+            var ta = document.createElement('textarea');
+            ta.value = targetUrl;
+            ta.setAttribute('readonly', '');
+            ta.style.position = 'fixed';
+            ta.style.opacity = '0';
+            document.body.appendChild(ta);
+            ta.select();
+            try { document.execCommand('copy'); markCopied(); } catch (_) {}
+            document.body.removeChild(ta);
+          }
+        });
+      }
+
+      // Estado interactivo del asistente Google Play (Paso 1 -> Paso 2 -> Paso 3)
+      var chkStep1 = document.getElementById('chkStep1');
+      var step1Box = document.getElementById('step1Box');
+      var step2Box = document.getElementById('step2Box');
+      var step3Box = document.getElementById('step3Box');
+      var btnStep1 = document.getElementById('btnStep1');
+      var btnStep2 = document.getElementById('btnStep2');
+      var step1Badge = document.getElementById('step1DoneBadge');
+      var step2Badge = document.getElementById('step2DoneBadge');
+
+      function loadWizardState() {
+        try {
+          var raw = localStorage.getItem(WIZARD_KEY);
+          if (raw) {
+            var parsed = JSON.parse(raw);
+            return { step1Done: !!parsed.step1Done, step2Done: !!parsed.step2Done };
+          }
+        } catch (_) {}
+        return { step1Done: false, step2Done: false };
+      }
+
+      function saveWizardState(state) {
+        try {
+          localStorage.setItem(WIZARD_KEY, JSON.stringify(state));
+        } catch (_) {}
+      }
+
+      function setButtonHighlight(btn, primary) {
+        if (!btn) return;
+        btn.classList.toggle('dl-btn-green', primary);
+        btn.classList.toggle('dl-btn-outline', !primary);
+      }
+
+      function renderWizardState(state) {
+        if (chkStep1) chkStep1.checked = state.step1Done;
+        if (step1Badge) step1Badge.hidden = !state.step1Done;
+        if (step2Badge) step2Badge.hidden = !state.step2Done;
+
+        step1Box.classList.toggle('is-active', !state.step1Done);
+        step1Box.classList.toggle('is-done', state.step1Done);
+
+        step2Box.classList.toggle('is-active', state.step1Done && !state.step2Done);
+        step2Box.classList.toggle('is-done', state.step2Done);
+
+        step3Box.classList.toggle('is-active', state.step1Done && state.step2Done);
+
+        setButtonHighlight(btnStep1, !state.step1Done);
+        setButtonHighlight(btnStep2, state.step1Done && !state.step2Done);
+        setButtonHighlight(btnStep3, state.step1Done && state.step2Done);
+      }
+
+      var wizardState = loadWizardState();
+      renderWizardState(wizardState);
+
+      if (chkStep1) {
+        chkStep1.addEventListener('change', function () {
+          wizardState.step1Done = !!chkStep1.checked;
+          if (!wizardState.step1Done) {
+            wizardState.step2Done = false;
+          }
+          saveWizardState(wizardState);
+          renderWizardState(wizardState);
+        });
+      }
+
+      if (btnStep1) {
+        btnStep1.addEventListener('click', function () {
+          wizardState.step1Done = true;
+          saveWizardState(wizardState);
+          renderWizardState(wizardState);
+        });
+      }
+
+      if (btnStep2) {
+        btnStep2.addEventListener('click', function () {
+          wizardState.step1Done = true;
+          wizardState.step2Done = true;
+          saveWizardState(wizardState);
+          renderWizardState(wizardState);
+        });
+      }
+
+      // Abrir acordeón correspondiente si se llega con hash #apk o #play-help
+      function openHashDetails() {
+        var h = (window.location.hash || '').replace('#', '');
+        if (h === 'apk' || h === 'play-help') {
+          var target = document.getElementById(h);
+          if (target && target.tagName === 'DETAILS') {
+            target.open = true;
+          }
+        }
+      }
+      openHashDetails();
+      window.addEventListener('hashchange', openHashDetails);
+    })();
+  </script>
 </body>
 </html>

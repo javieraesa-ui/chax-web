@@ -1,34 +1,34 @@
 {
   "ios": {
-    "latestVersion": "3.374",
-    "latestBuild": 714,
+    "latestVersion": "3.383",
+    "latestBuild": 723,
     "minRequiredVersion": "3.360",
     "testFlightUrl": "https://testflight.apple.com/join/hmfhvFdf",
     "appStoreUrl": "",
-    "releaseNotesEs": "Cámara rápida y burbujas perfeccionadas (emojis sin recorte y respuestas grupales compactas), entrega multimedia LAN/WAN sin desvío de fragmentos y notificaciones instantáneas reforzadas.",
-    "releaseNotesEn": "Refined quick camera and message bubbles (unclipped standalone emojis and compact group replies), deterministic LAN/WAN media delivery, and hardened instant notifications.",
-    "releaseNotesPt": "Câmera rápida e bolhas aprimoradas (emojis sem corte e respostas em grupo compactas), entrega de mídia LAN/WAN determinística e notificações instantâneas reforçadas."
+    "releaseNotesEs": "Mapa interactivo multi-salto y validador físico de rutas (Ida/ACK, tiempo WAN honesto y estado transparente cuando falta ruta), conexiones WebSocket persistentes sin cortes cada 5 min, redundancia celular multi-relay, entrega fluida de audios/ubicaciones y notificaciones sin repeticiones.",
+    "releaseNotesEn": "Interactive multi-hop route map with deterministic RoutePhysicsValidator (forward/ACK lanes, honest WAN span, transparent unreported-route state), persistent WebSocket sessions without 5-minute drops, multi-relay cellular redundancy, smooth audio/location delivery, and deduplicated push notifications.",
+    "releaseNotesPt": "Mapa interativo multi-salto com validador físico de rotas (Ida/ACK, tempo WAN honesto e estado transparente quando falta rota), conexões WebSocket persistentes sem quedas a cada 5 min, redundância celular multi-relay, entrega fluida de áudios/localizações e notificações sem repetições."
   },
   "macos": {
-    "latestVersion": "3.374",
-    "latestBuild": 714,
+    "latestVersion": "3.383",
+    "latestBuild": 723,
     "minRequiredVersion": "3.360",
     "testFlightUrl": "https://testflight.apple.com/join/hmfhvFdf",
     "appStoreUrl": "",
-    "releaseNotesEs": "Anti-envenenamiento de IP LAN para recepción directa de fotos y mensajes desde Android/iOS, respuestas grupales compactas, emojis sin recorte y sincronización punto a punto reforzada.",
-    "releaseNotesEn": "LAN IP anti-poisoning for direct photo and message delivery from Android/iOS, compact group replies, unclipped emojis, and hardened peer-to-peer sync.",
-    "releaseNotesPt": "Anti-envenenamento de IP LAN para recepção direta de fotos e mensagens do Android/iOS, respostas em grupo compactas, emojis sem corte e sincronização ponto a ponto reforçada."
+    "releaseNotesEs": "Guardia atómica de instancia única en macOS, mapa interactivo multi-salto y validador físico de rutas, sesiones WebSocket persistentes sin cortes de 5 min, failover determinista multi-relay para audios/ubicaciones y notificaciones sin repeticiones.",
+    "releaseNotesEn": "Atomic single-instance macOS guard, interactive multi-hop route map and physics validator, persistent WebSocket sessions without 5-minute drops, deterministic multi-relay failover for audio/location payloads, and deduplicated notifications.",
+    "releaseNotesPt": "Guarda atômica de instância única no macOS, mapa interativo multi-salto e validador físico de rotas, sessões WebSocket persistentes sem quedas de 5 min, failover determinístico multi-relay para áudios/localizações e notificações sem repetições."
   },
   "android": {
-    "latestVersion": "1.139",
-    "latestVersionCode": 161,
+    "latestVersion": "1.142",
+    "latestVersionCode": 164,
     "minRequiredVersion": "1.120",
     "minRequiredVersionCode": 142,
     "playStoreUrl": "https://play.google.com/store/apps/details?id=com.appx.chax",
     "playTestingUrl": "https://play.google.com/apps/testing/com.appx.chax",
-    "apkUrl": "https://chax.chat/downloads",
-    "releaseNotesEs": "Nueva Cámara Rápida integrada (fotos de alta resolución y grabación de video HD), galería unificada de fotos y videos, envío directo de fotos a Mac/iOS en red local y mayor fluidez general.",
-    "releaseNotesEn": "New integrated Quick Camera (high-res photos and HD video recording), unified photo and video gallery picker, direct LAN photo delivery to Mac/iOS, and enhanced overall smoothness.",
-    "releaseNotesPt": "Nova Câmera Rápida integrada (fotos de alta resolução e gravação de vídeo HD), galeria unificada de fotos e vídeos, envio direto de fotos para Mac/iOS na rede local e maior fluidez geral."
+    "apkUrl": "https://chax.chat/download/chax-latest.apk",
+    "releaseNotesEs": "Enrutamiento inteligente de actualizaciones (Google Play vs APK directo), respaldo inmediato de descarga si el caché de tienda no refresca, y paridad integral con v3.383 en telemetría física de rutas y resiliencia multi-relay.",
+    "releaseNotesEn": "Smart update routing (Google Play vs direct APK), zero-lock download fallback if store cache lags, and full parity with v3.383 on route physics telemetry and multi-relay resilience.",
+    "releaseNotesPt": "Roteamento inteligente de atualizações (Google Play vs APK direto), alternativa imediata se o cache da loja atrasar e paridade total com v3.383 em telemetria física de rotas e resiliência multi-relay."
   }
 }

@@ -1,34 +1,34 @@
 {
   "ios": {
-    "latestVersion": "3.383",
-    "latestBuild": 723,
+    "latestVersion": "3.396",
+    "latestBuild": 736,
     "minRequiredVersion": "3.360",
     "testFlightUrl": "https://testflight.apple.com/join/hmfhvFdf",
     "appStoreUrl": "",
-    "releaseNotesEs": "Mapa interactivo multi-salto y validador físico de rutas (Ida/ACK, tiempo WAN honesto y estado transparente cuando falta ruta), conexiones WebSocket persistentes sin cortes cada 5 min, redundancia celular multi-relay, entrega fluida de audios/ubicaciones y notificaciones sin repeticiones.",
-    "releaseNotesEn": "Interactive multi-hop route map with deterministic RoutePhysicsValidator (forward/ACK lanes, honest WAN span, transparent unreported-route state), persistent WebSocket sessions without 5-minute drops, multi-relay cellular redundancy, smooth audio/location delivery, and deduplicated push notifications.",
-    "releaseNotesPt": "Mapa interativo multi-salto com validador físico de rotas (Ida/ACK, tempo WAN honesto e estado transparente quando falta rota), conexões WebSocket persistentes sem quedas a cada 5 min, redundância celular multi-relay, entrega fluida de áudios/localizações e notificações sem repetições."
+    "releaseNotesEs": "Mapas offline OSM por defecto con etiquetas discretas (Offline/En línea), paridad total con Android 1.159 en sincronización TwinSync multiplataforma, soporte nativo de radio LoRa Meshtastic, avatares en Radar, traducciones ES/EN/PT completas y mayor estabilidad de red.",
+    "releaseNotesEn": "Offline OSM maps by default with clean Offline/Online availability labels, full TwinSync cross-platform parity with Android 1.159, native Meshtastic LoRa radio support, Radar user avatars, full ES/EN/PT localization, and improved mesh/network stability.",
+    "releaseNotesPt": "Mapas offline OSM por padrão com rótulos discretos (Offline/Online), paridade completa TwinSync multiplataforma com Android 1.159, suporte nativo a rádio LoRa Meshtastic, avatares no Radar, traduções ES/EN/PT completas e maior estabilidade de rede."
   },
   "macos": {
-    "latestVersion": "3.383",
-    "latestBuild": 723,
+    "latestVersion": "3.396",
+    "latestBuild": 736,
     "minRequiredVersion": "3.360",
     "testFlightUrl": "https://testflight.apple.com/join/hmfhvFdf",
     "appStoreUrl": "",
-    "releaseNotesEs": "Guardia atómica de instancia única en macOS, mapa interactivo multi-salto y validador físico de rutas, sesiones WebSocket persistentes sin cortes de 5 min, failover determinista multi-relay para audios/ubicaciones y notificaciones sin repeticiones.",
-    "releaseNotesEn": "Atomic single-instance macOS guard, interactive multi-hop route map and physics validator, persistent WebSocket sessions without 5-minute drops, deterministic multi-relay failover for audio/location payloads, and deduplicated notifications.",
-    "releaseNotesPt": "Guarda atômica de instância única no macOS, mapa interativo multi-salto e validador físico de rotas, sessões WebSocket persistentes sem quedas de 5 min, failover determinístico multi-relay para áudios/localizações e notificações sem repetições."
+    "releaseNotesEs": "Mapas offline OSM por defecto con etiquetas claras, sincronización instantánea TwinSync con iOS y Android v1.159, enrutamiento LAN directo sin bloqueos bajo VPN, traducciones ES/EN/PT completas y estabilidad mejorada en red y radar local.",
+    "releaseNotesEn": "Offline OSM maps by default with clear labels, instant TwinSync synchronization with iOS and Android v1.159, smooth direct LAN routing even with VPN active, full ES/EN/PT translations, and improved local radar and network stability.",
+    "releaseNotesPt": "Mapas offline OSM por padrão com rótulos claros, sincronização TwinSync instantânea com iOS e Android v1.159, roteamento LAN direto sem travamentos com VPN ativa, traduções ES/EN/PT completas e maior estabilidade de rede e radar local."
   },
   "android": {
-    "latestVersion": "1.142",
-    "latestVersionCode": 164,
+    "latestVersion": "1.159",
+    "latestVersionCode": 181,
     "minRequiredVersion": "1.120",
     "minRequiredVersionCode": 142,
     "playStoreUrl": "https://play.google.com/store/apps/details?id=com.appx.chax",
     "playTestingUrl": "https://play.google.com/apps/testing/com.appx.chax",
     "apkUrl": "https://chax.chat/download/chax-latest.apk",
-    "releaseNotesEs": "Enrutamiento inteligente de actualizaciones (Google Play vs APK directo), respaldo inmediato de descarga si el caché de tienda no refresca, y paridad integral con v3.383 en telemetría física de rutas y resiliencia multi-relay.",
-    "releaseNotesEn": "Smart update routing (Google Play vs direct APK), zero-lock download fallback if store cache lags, and full parity with v3.383 on route physics telemetry and multi-relay resilience.",
-    "releaseNotesPt": "Roteamento inteligente de atualizações (Google Play vs APK direto), alternativa imediata se o cache da loja atrasar e paridade total com v3.383 em telemetria física de rotas e resiliência multi-relay."
+    "releaseNotesEs": "Vinculación BLE/PIN LoRa Meshtastic mejorada, prioridad Wi-Fi LAN TCP sobre BLE sin bloqueos, mapas offline por defecto con etiquetas discretas, paridad visual con iOS v3.396, Mensajes a ti mismo, sincronización TwinSync multiplataforma y traducciones ES/EN/PT completas.",
+    "releaseNotesEn": "Improved LoRa Meshtastic BLE/PIN pairing, direct Wi-Fi LAN TCP priority over BLE without locks, offline-first maps with clean availability labels, iOS v3.396 UI/radar parity, Saved Self Messages, full TwinSync cross-platform sync, and complete ES/EN/PT localization.",
+    "releaseNotesPt": "Pareamento BLE/PIN LoRa Meshtastic aprimorado, prioridade Wi-Fi LAN TCP sobre BLE sem travamentos, mapas offline por padrão com rótulos claros, paridade visual com iOS v3.396, Mensagens para você mesmo, TwinSync multiplataforma e traduções ES/EN/PT completas."
   }
 }

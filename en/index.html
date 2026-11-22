@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chax — Fast internet. Unstoppable mesh. Sovereignty &amp; community.</title>
-  <meta name="description" content="Fast internet, unstoppable mesh. Everyday speed over Wi-Fi or 5G with sovereign cryptographic identity, shared offline Mapax maps, and peer-to-peer community bridge nodes. Zero phone number.">
-  <meta property="og:title" content="Chax — Fast internet. Unstoppable mesh.">
-  <meta property="og:description" content="Own your keys with no phone number, share offline OpenStreetMap &amp; satellite routes (.chaxmap), and help neighbors communicate as a sealed-packet bridge node.">
+  <title>Chax — Fast over internet. Unstoppable off-grid.</title>
+  <meta name="description" content="Fast over internet, unstoppable mesh. Encrypted messaging with zero phone number that hops phone-to-phone over Bluetooth, Wi-Fi Direct, and LoRa radio when coverage disappears, plus shareable offline maps (.chaxmap).">
+  <meta property="og:title" content="Chax — Fast over internet. Unstoppable off-grid.">
+  <meta property="og:description" content="Own your keys with no phone number, share offline OpenStreetMap &amp; satellite packs (.chaxmap), and help neighbors communicate as a sealed-packet bridge node.">
   <meta property="og:image" content="../assets/app-icon.png">
   <meta property="og:type" content="website">
   <link rel="icon" type="image/png" href="../assets/app-icon.png">
@@ -21,121 +21,168 @@
     ========================================== */
     :root {
       --green: #00f59b;
-      --green-dim: rgba(0,245,155,0.12);
-      --green-glow: rgba(0,245,155,0.35);
+      --green-dim: rgba(0, 245, 155, 0.12);
+      --green-glow: rgba(0, 245, 155, 0.35);
       --blue: #38bdf8;
       --purple: #a78bfa;
       --coral: #fb7185;
       --amber: #fbbf24;
       --orange: #fb923c;
       --bg: #000000;
-      --bg1: #0a0a0d;
-      --bg2: #111118;
-      --surface: rgba(255,255,255,0.04);
-      --surface-hover: rgba(255,255,255,0.07);
-      --border: rgba(255,255,255,0.08);
-      --border-bright: rgba(255,255,255,0.16);
+      --bg1: #0a0a0f;
+      --bg2: #11111a;
+      --surface: rgba(255, 255, 255, 0.045);
+      --surface-hover: rgba(255, 255, 255, 0.08);
+      --border: rgba(255, 255, 255, 0.10);
+      --border-bright: rgba(255, 255, 255, 0.20);
       --text: #f5f5f7;
-      --text-secondary: #a1a1a6;
-      --text-muted: #a1a1a6;
-      --text-dim: #787880;
+      --text-secondary: #b4b4bc;
+      --text-dim: #8e8e96;
       --font: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Helvetica Neue", sans-serif;
       --mono: "SF Mono", "Fira Code", monospace;
-      --r-sm: 10px;
+      --r-sm: 12px;
       --r-md: 18px;
-      --r-lg: 28px;
-      --r-xl: 36px;
+      --r-lg: 26px;
+      --r-xl: 32px;
       --r-pill: 9999px;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; color-scheme: dark; }
+    html {
+      scroll-behavior: smooth;
+      color-scheme: dark;
+      overflow-x: clip;
+    }
     body {
       background: var(--bg);
       color: var(--text);
       font-family: var(--font);
+      font-size: 17px;
+      line-height: 1.6;
       -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-      line-height: 1.5;
+      overflow-x: clip;
     }
     a { color: inherit; text-decoration: none; }
     img { max-width: 100%; display: block; }
     ul { list-style: none; }
     button { font-family: inherit; }
+    p { max-width: 62ch; }
+    code {
+      font-family: var(--mono);
+      font-size: 0.88em;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 2px 6px;
+      border-radius: 6px;
+    }
 
     :focus-visible {
       outline: 2px solid var(--green);
       outline-offset: 3px;
     }
 
+    /* Anchor jump compensation for sticky header */
+    section[id],
+    #ecosistema-appx {
+      scroll-margin-top: 72px;
+    }
+
+    /* Reading progress bar */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      z-index: 200;
+      pointer-events: none;
+      background: linear-gradient(90deg, var(--blue), var(--green));
+      transform-origin: 0 50%;
+      transform: scaleX(0);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      @supports (animation-timeline: scroll()) {
+        @keyframes chax-scroll-progress {
+          from { transform: scaleX(0); }
+          to { transform: scaleX(1); }
+        }
+        .scroll-progress {
+          animation: chax-scroll-progress auto linear;
+          animation-timeline: scroll(root block);
+        }
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .scroll-progress { display: none; }
+    }
+    body.motion-paused .scroll-progress {
+      animation-play-state: paused;
+    }
+
+    /* Background canvas */
     #bg-canvas {
-      position: fixed; inset: 0; z-index: 0;
-      pointer-events: none; opacity: 0.42;
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      opacity: 0.36;
     }
 
-    /* ==========================================
-       URGENCY TOP BAR
-    ========================================== */
-    .urgency-bar {
-      position: relative;
-      z-index: 101;
-      background: linear-gradient(90deg, rgba(0,245,155,0.12), rgba(56,189,248,0.12), rgba(167,139,250,0.10));
-      border-bottom: 1px solid rgba(0,245,155,0.22);
-      padding: 8px 16px;
-      text-align: center;
-      font-size: 0.78rem;
-      color: var(--text);
-      line-height: 1.4;
-    }
-    .urgency-bar strong { color: var(--green); }
-    .urgency-bar a {
-      display: inline-block;
-      margin-left: 8px;
-      color: var(--green);
-      font-weight: 700;
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
-    .urgency-bar a:hover { color: #ffffff; }
-
-    /* ==========================================
-       LAYOUT & NAV
-    ========================================== */
+    /* Layout & Header */
     .wrap {
       max-width: 1120px;
       margin: 0 auto;
       padding: 0 24px;
-      position: relative; z-index: 2;
+      position: relative;
+      z-index: 2;
     }
 
     header {
-      position: sticky; top: 0; z-index: 100;
-      background: rgba(0,0,0,0.78);
-      backdrop-filter: blur(24px) saturate(180%);
-      -webkit-backdrop-filter: blur(24px) saturate(180%);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(0, 0, 0, 0.82);
+      backdrop-filter: blur(22px) saturate(180%);
+      -webkit-backdrop-filter: blur(22px) saturate(180%);
       border-bottom: 1px solid var(--border);
     }
     .nav-inner {
-      max-width: 1120px; margin: 0 auto; padding: 0 24px;
-      height: 58px;
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 16px;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 0 24px;
+      min-height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
     }
     .nav-brand {
-      display: flex; align-items: center; gap: 10px;
-      font-weight: 800; font-size: 1.12rem; letter-spacing: -0.02em;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+      min-height: 44px;
       flex-shrink: 0;
     }
     .nav-brand img {
-      width: 32px; height: 32px; border-radius: 8px;
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
     }
     .nav-links {
-      display: flex; align-items: center; gap: 24px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
     }
     .nav-links a {
-      font-size: 0.84rem; color: var(--text-secondary);
-      transition: color .2s;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      transition: color 0.2s;
       white-space: nowrap;
+      padding: 10px 2px;
     }
     .nav-links a:hover { color: var(--text); }
     .nav-right {
@@ -148,113 +195,553 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 5px 12px;
+      padding: 0 12px;
+      min-height: 44px;
       border-radius: var(--r-pill);
       background: rgba(255, 255, 255, 0.06);
       border: 1px solid rgba(255, 255, 255, 0.14);
-      font-size: 0.76rem;
+      font-size: 0.78rem;
       font-weight: 600;
       transition: background-color 0.2s ease, border-color 0.2s ease;
     }
     .lang-pill:hover {
-      background: rgba(255, 255, 255, 0.09);
+      background: rgba(255, 255, 255, 0.10);
       border-color: rgba(0, 245, 155, 0.35);
     }
-    .lang-globe-icon { color: var(--green); opacity: 0.85; flex-shrink: 0; }
-    .lang-item { color: var(--text-dim); transition: color 0.15s ease; padding: 2px; }
+    .lang-globe-icon { color: var(--green); opacity: 0.9; flex-shrink: 0; }
+    .lang-item { color: var(--text-dim); transition: color 0.15s ease; padding: 6px 2px; }
     .lang-item:hover { color: var(--text); }
     .lang-item.active { color: var(--green); font-weight: 700; }
-    .lang-sep { color: rgba(255, 255, 255, 0.18); font-size: 0.7rem; }
+    .lang-sep { color: rgba(255, 255, 255, 0.2); font-size: 0.72rem; }
     .nav-cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       background: var(--green);
       color: #000;
       font-weight: 800;
-      font-size: 0.8rem;
-      padding: 8px 16px;
+      font-size: 0.85rem;
+      padding: 10px 18px;
+      min-height: 44px;
       border-radius: var(--r-pill);
-      transition: opacity .2s;
+      transition: opacity 0.2s, transform 0.15s;
       white-space: nowrap;
     }
-    .nav-cta:hover { opacity: 0.88; }
+    .nav-cta:hover { opacity: 0.9; transform: translateY(-1px); }
+
+    /* Sections & Typography */
+    section {
+      position: relative;
+      z-index: 2;
+      padding: clamp(80px, 11vw, 150px) 0;
+    }
+    .divider {
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+      margin: 0 24px;
+      position: relative;
+      z-index: 2;
+    }
+    .section-eyebrow {
+      display: inline-block;
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 14px;
+    }
+    .section-title {
+      font-size: clamp(1.9rem, 4vw, 3rem);
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.08;
+      margin-bottom: 16px;
+    }
+    .section-sub {
+      font-size: 1.06rem;
+      color: var(--text-secondary);
+      max-width: 62ch;
+      line-height: 1.65;
+    }
+    .section-head { margin-bottom: 44px; }
+    .section-head.center { text-align: center; }
+    .section-head.center .section-sub { margin: 0 auto; }
+
+    /* Buttons */
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 9px;
+      background: var(--green);
+      color: #000;
+      font-weight: 800;
+      font-size: 0.98rem;
+      padding: 14px 26px;
+      min-height: 48px;
+      border-radius: var(--r-pill);
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 8px 30px rgba(0, 245, 155, 0.28);
+      transition: transform 0.15s, opacity 0.15s, box-shadow 0.15s;
+    }
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      opacity: 0.95;
+      box-shadow: 0 12px 36px rgba(0, 245, 155, 0.42);
+    }
+    .btn-ghost {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: var(--surface);
+      border: 1px solid var(--border-bright);
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.94rem;
+      padding: 13px 22px;
+      min-height: 48px;
+      border-radius: var(--r-pill);
+      transition: background-color 0.15s, border-color 0.15s;
+    }
+    .btn-ghost:hover {
+      background: var(--surface-hover);
+      border-color: rgba(255, 255, 255, 0.34);
+    }
+    .btn-share-circle {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(0, 245, 155, 0.4);
+      color: #fff;
+      font-weight: 700;
+      font-size: 0.92rem;
+      padding: 12px 24px;
+      min-height: 48px;
+      border-radius: var(--r-pill);
+      cursor: pointer;
+      transition: background-color 0.2s, border-color 0.2s, transform 0.15s;
+    }
+    .btn-share-circle:hover {
+      background: rgba(0, 245, 155, 0.15);
+      border-color: var(--green);
+      transform: translateY(-1px);
+    }
 
     /* ==========================================
        HERO
     ========================================== */
     .hero {
-      min-height: calc(100svh - 92px);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      text-align: center;
-      padding: 56px 24px 68px;
-      position: relative; z-index: 2;
+      padding: clamp(56px, 8vw, 96px) 0 clamp(64px, 8vw, 108px);
     }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: clamp(32px, 5vw, 64px);
+      align-items: center;
+    }
+    .hero-copy { min-width: 0; }
     .hero-eyebrow {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(0,245,155,0.08);
-      border: 1px solid rgba(0,245,155,0.22);
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0, 245, 155, 0.08);
+      border: 1px solid rgba(0, 245, 155, 0.25);
       border-radius: var(--r-pill);
-      padding: 6px 16px;
-      font-size: 0.74rem; font-weight: 700;
+      padding: 6px 15px;
+      font-size: 0.76rem;
+      font-weight: 700;
       color: var(--green);
-      letter-spacing: 0.04em; text-transform: uppercase;
-      margin-bottom: 24px;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 22px;
     }
     .hero-eyebrow::before {
       content: '';
-      width: 7px; height: 7px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
       background: var(--green);
     }
     @media (prefers-reduced-motion: no-preference) {
-      .hero-eyebrow::before {
-        animation: pulse-dot 2s infinite;
-      }
+      .hero-eyebrow::before { animation: pulse-dot 2s infinite; }
     }
     @keyframes pulse-dot {
       0%, 100% { opacity: 1; transform: scale(1); }
       50% { opacity: 0.45; transform: scale(0.7); }
     }
+    body.motion-paused .hero-eyebrow::before { animation-play-state: paused; }
 
     .hero-title {
-      font-size: clamp(2.8rem, 8.2vw, 6.4rem);
+      font-size: clamp(2.4rem, 6vw, 4.6rem);
       font-weight: 900;
-      line-height: 1.01;
-      letter-spacing: -0.04em;
-      margin-bottom: 22px;
-      max-width: 960px;
+      line-height: 1.03;
+      letter-spacing: -0.02em;
+      margin-bottom: 20px;
     }
-    .hero-title .accent-green { color: var(--green); text-shadow: 0 0 42px rgba(0,245,155,0.28); }
-    .hero-title .accent-coral { color: var(--coral); text-shadow: 0 0 42px rgba(251,113,133,0.25); }
+    .hero-title .accent-green { color: var(--green); text-shadow: 0 0 36px rgba(0, 245, 155, 0.26); }
+    .hero-title .accent-coral { color: var(--coral); text-shadow: 0 0 36px rgba(251, 113, 133, 0.24); }
 
     .hero-sub {
-      font-size: clamp(1rem, 2.2vw, 1.24rem);
+      font-size: clamp(1.04rem, 1.8vw, 1.2rem);
       color: var(--text-secondary);
-      max-width: 680px;
       line-height: 1.62;
-      margin-bottom: 32px;
+      margin-bottom: 28px;
     }
-    .hero-sub strong { color: var(--text); }
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 22px;
+    }
+    .hero-trust {
+      font-size: 0.9rem;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+
+    .hero-visual {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 0;
+    }
+    .hero-glow {
+      position: absolute;
+      width: 340px;
+      height: 340px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0, 245, 155, 0.20), rgba(56, 189, 248, 0.08) 55%, transparent 72%);
+      filter: blur(28px);
+      pointer-events: none;
+    }
+    .phone-mock {
+      width: 245px;
+      background: #0d0d14;
+      border: 1.5px solid rgba(255, 255, 255, 0.16);
+      border-radius: 40px;
+      padding: 12px;
+      box-shadow: 0 36px 76px rgba(0, 0, 0, 0.72), 0 0 0 1px rgba(255, 255, 255, 0.06) inset;
+      position: relative;
+      z-index: 2;
+    }
+    .phone-island {
+      width: 70px;
+      height: 10px;
+      background: #000;
+      border-radius: 6px;
+      margin: 0 auto 10px;
+    }
+    .phone-screen {
+      border-radius: 28px;
+      overflow: hidden;
+      background: #000;
+    }
+    .phone-screen img {
+      width: 100%;
+      height: auto;
+    }
+    .hero-badge {
+      position: absolute;
+      z-index: 3;
+      background: rgba(12, 16, 26, 0.92);
+      border: 1px solid var(--border-bright);
+      backdrop-filter: blur(12px);
+      border-radius: 14px;
+      padding: 10px 14px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5);
+    }
+    .hero-badge-kicker {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .hero-badge-val {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--green);
+    }
+    .hero-badge.top-right { top: 12%; right: 2%; }
+    .hero-badge.bottom-left { bottom: 12%; left: 2%; }
+    .hero-badge.bottom-left .hero-badge-val { color: var(--blue); }
 
     /* ==========================================
-       INTERACTIVE NETWORK STATE SIMULATOR
+       DOWNLOAD SELECTOR (#descargas)
+    ========================================== */
+    .download-section {
+      background: linear-gradient(180deg, rgba(0, 245, 155, 0.03) 0%, rgba(10, 10, 15, 0.85) 100%);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .download-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+    .download-card {
+      background: var(--bg1);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      position: relative;
+      transition: border-color 0.2s, transform 0.2s;
+      min-width: 0;
+    }
+    .download-card:hover {
+      border-color: var(--border-bright);
+      transform: translateY(-2px);
+    }
+    .download-card.is-recommended {
+      border-color: rgba(0, 245, 155, 0.65);
+      background: linear-gradient(180deg, rgba(0, 245, 155, 0.09) 0%, var(--bg1) 70%);
+      box-shadow: 0 20px 50px rgba(0, 245, 155, 0.12);
+    }
+    .rec-badge {
+      display: none;
+      align-self: flex-start;
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #000;
+      background: var(--green);
+      padding: 4px 11px;
+      border-radius: var(--r-pill);
+    }
+    .download-card.is-recommended .rec-badge {
+      display: inline-flex;
+    }
+    .dl-card-head {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .dl-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      color: var(--text);
+      flex-shrink: 0;
+    }
+    .download-card.is-recommended .dl-icon {
+      background: rgba(0, 245, 155, 0.14);
+      border-color: rgba(0, 245, 155, 0.35);
+      color: var(--green);
+    }
+    .dl-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .dl-ver {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      font-family: var(--mono);
+    }
+    .dl-desc {
+      font-size: 0.94rem;
+      color: var(--text-secondary);
+      line-height: 1.55;
+      flex: 1;
+    }
+    .dl-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      min-height: 48px;
+      padding: 12px 18px;
+      border-radius: var(--r-pill);
+      font-weight: 800;
+      font-size: 0.94rem;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid var(--border-bright);
+      color: var(--text);
+      transition: background-color 0.2s, border-color 0.2s, transform 0.15s;
+    }
+    .dl-btn:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+    .download-card.is-recommended .dl-btn {
+      background: var(--green);
+      border-color: var(--green);
+      color: #000;
+      box-shadow: 0 8px 24px rgba(0, 245, 155, 0.28);
+    }
+    .download-card.is-recommended .dl-btn:hover {
+      opacity: 0.94;
+      transform: translateY(-1px);
+    }
+    .download-footnote {
+      text-align: center;
+      margin: 24px auto 0;
+      font-size: 0.9rem;
+      color: var(--text-dim);
+    }
+
+    /* ==========================================
+       SCROLLYTELLING STORY (#problema)
+    ========================================== */
+    .story-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.05fr;
+      gap: clamp(28px, 5vw, 56px);
+      align-items: start;
+    }
+    .story-steps {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .story-step {
+      background: var(--bg1);
+      border: 1px solid var(--border);
+      border-left: 3px solid transparent;
+      border-radius: var(--r-lg);
+      padding: 28px 26px;
+      cursor: pointer;
+      transition: border-color 0.25s, background-color 0.25s, opacity 0.25s;
+      opacity: 0.58;
+      min-height: 170px;
+    }
+    .story-step.is-active {
+      opacity: 1;
+      border-color: var(--border-bright);
+      border-left-color: var(--green);
+      background: linear-gradient(135deg, rgba(0, 245, 155, 0.08) 0%, var(--bg1) 70%);
+    }
+    .story-step[data-step="1"].is-active {
+      border-left-color: var(--blue);
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.09) 0%, var(--bg1) 70%);
+    }
+    .story-step[data-step="2"].is-active {
+      border-left-color: var(--coral);
+      background: linear-gradient(135deg, rgba(251, 113, 133, 0.09) 0%, var(--bg1) 70%);
+    }
+    .story-kicker {
+      font-size: 0.76rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+    .story-step[data-step="1"].is-active .story-kicker { color: var(--blue); }
+    .story-step[data-step="2"].is-active .story-kicker { color: var(--coral); }
+    .story-step[data-step="3"].is-active .story-kicker { color: var(--green); }
+    .story-step h3 {
+      font-size: 1.3rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+      line-height: 1.25;
+    }
+    .story-step p {
+      font-size: 0.96rem;
+      color: var(--text-secondary);
+    }
+
+    .story-visual-col {
+      position: sticky;
+      top: 92px;
+      min-width: 0;
+    }
+    .story-visual {
+      background: var(--bg1);
+      border: 1px solid var(--border-bright);
+      border-radius: var(--r-xl);
+      padding: 28px 24px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.55);
+      transition: border-color 0.3s;
+    }
+    .story-status {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 18px;
+      padding: 10px 14px;
+      border-radius: var(--r-sm);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      font-size: 0.86rem;
+      font-weight: 700;
+    }
+    .story-status-label { display: none; }
+    .story-visual[data-step="1"] { border-color: rgba(56, 189, 248, 0.38); }
+    .story-visual[data-step="2"] { border-color: rgba(251, 113, 133, 0.42); }
+    .story-visual[data-step="3"] { border-color: rgba(0, 245, 155, 0.48); }
+    .story-visual[data-step="1"] .status-s1 { display: inline; color: var(--blue); }
+    .story-visual[data-step="2"] .status-s2 { display: inline; color: var(--coral); }
+    .story-visual[data-step="3"] .status-s3 { display: inline; color: var(--green); }
+    .story-step-dots {
+      display: flex;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .story-step-dots span {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.18);
+      transition: background-color 0.2s, transform 0.2s;
+    }
+    .story-visual[data-step="1"] .story-step-dots span:nth-child(1) { background: var(--blue); transform: scale(1.25); }
+    .story-visual[data-step="2"] .story-step-dots span:nth-child(2) { background: var(--coral); transform: scale(1.25); }
+    .story-visual[data-step="3"] .story-step-dots span:nth-child(3) { background: var(--green); transform: scale(1.25); }
+
+    /* SVG state transitions */
+    #meshDiagramSvg .svg-wan-group,
+    #meshDiagramSvg .svg-cut-group,
+    #meshDiagramSvg .svg-mesh-group {
+      transition: opacity 0.35s ease;
+    }
+    .story-visual[data-step="1"] .svg-wan-group { opacity: 1; }
+    .story-visual[data-step="1"] .svg-cut-group { opacity: 0.12; }
+    .story-visual[data-step="1"] .svg-mesh-group { opacity: 0.24; }
+
+    .story-visual[data-step="2"] .svg-wan-group { opacity: 0.22; }
+    .story-visual[data-step="2"] .svg-cut-group { opacity: 1; }
+    .story-visual[data-step="2"] .svg-mesh-group { opacity: 0.45; }
+
+    .story-visual[data-step="3"] .svg-wan-group { opacity: 0.14; }
+    .story-visual[data-step="3"] .svg-cut-group { opacity: 0.35; }
+    .story-visual[data-step="3"] .svg-mesh-group { opacity: 1; }
+
+    /* ==========================================
+       SIMULATOR & 3 PILLARS (#como-funciona)
     ========================================== */
     .sim-box {
       width: 100%;
-      max-width: 760px;
-      background: rgba(16, 16, 24, 0.88);
+      max-width: 820px;
+      margin: 0 auto 36px;
+      background: rgba(16, 16, 26, 0.9);
       border: 1px solid var(--border-bright);
       border-radius: var(--r-lg);
-      padding: 18px 20px;
-      margin-bottom: 34px;
-      backdrop-filter: blur(18px);
-      -webkit-backdrop-filter: blur(18px);
-      box-shadow: 0 24px 60px rgba(0,0,0,0.55);
-      text-align: left;
+      padding: 20px;
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
     }
     .sim-controls {
       display: flex;
       gap: 8px;
-      background: rgba(0,0,0,0.55);
+      background: rgba(0, 0, 0, 0.55);
       border: 1px solid var(--border);
       border-radius: var(--r-pill);
       padding: 5px;
@@ -265,9 +752,10 @@
       border: none;
       background: transparent;
       color: var(--text-secondary);
-      padding: 10px 14px;
+      padding: 11px 16px;
+      min-height: 44px;
       border-radius: var(--r-pill);
-      font-size: 0.84rem;
+      font-size: 0.88rem;
       font-weight: 700;
       cursor: pointer;
       transition: background-color 0.2s, color 0.2s, box-shadow 0.2s;
@@ -278,41 +766,41 @@
     }
     .sim-btn:hover { color: var(--text); }
     .sim-btn[data-sim="online"][aria-pressed="true"] {
-      background: rgba(56,189,248,0.16);
+      background: rgba(56, 189, 248, 0.16);
       color: var(--blue);
-      box-shadow: inset 0 0 0 1px rgba(56,189,248,0.4);
+      box-shadow: inset 0 0 0 1px rgba(56, 189, 248, 0.42);
     }
     .sim-btn[data-sim="emergency"][aria-pressed="true"] {
-      background: rgba(0,245,155,0.16);
-      color: #00f59b;
-      box-shadow: inset 0 0 0 1px rgba(0,245,155,0.42);
+      background: rgba(0, 245, 155, 0.16);
+      color: var(--green);
+      box-shadow: inset 0 0 0 1px rgba(0, 245, 155, 0.45);
     }
     .sim-panel {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 12px;
+      gap: 14px;
     }
     .sim-panel[hidden] { display: none; }
     .sim-col {
       border-radius: var(--r-md);
-      padding: 14px 16px;
+      padding: 16px 18px;
       border: 1px solid var(--border);
-      background: rgba(255,255,255,0.025);
+      background: rgba(255, 255, 255, 0.025);
     }
     .sim-col.dead {
-      border-color: rgba(251,113,133,0.28);
-      background: rgba(251,113,133,0.06);
+      border-color: rgba(251, 113, 133, 0.3);
+      background: rgba(251, 113, 133, 0.06);
     }
     .sim-col.alive {
-      border-color: rgba(0,245,155,0.34);
-      background: rgba(0,245,155,0.07);
+      border-color: rgba(0, 245, 155, 0.35);
+      background: rgba(0, 245, 155, 0.07);
     }
     .sim-col.wan {
-      border-color: rgba(56,189,248,0.34);
-      background: rgba(56,189,248,0.07);
+      border-color: rgba(56, 189, 248, 0.35);
+      background: rgba(56, 189, 248, 0.07);
     }
     .sim-col-label {
-      font-size: 0.7rem;
+      font-size: 0.74rem;
       font-weight: 800;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -322,466 +810,202 @@
     .sim-col.alive .sim-col-label { color: var(--green); }
     .sim-col.wan .sim-col-label { color: var(--blue); }
     .sim-col-text {
-      font-size: 0.86rem;
+      font-size: 0.92rem;
       color: var(--text);
-      line-height: 1.5;
-      font-weight: 500;
+      line-height: 1.55;
     }
     .sim-col.dead .sim-col-text { color: #fecdd3; }
 
-    .hero-actions {
-      display: flex; align-items: center; gap: 12px;
-      flex-wrap: wrap; justify-content: center;
-      margin-bottom: 18px;
-    }
-    .btn-primary {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--green);
-      color: #000;
-      font-weight: 800; font-size: 0.96rem;
-      padding: 15px 28px;
-      border-radius: var(--r-pill);
-      border: none;
-      cursor: pointer;
-      box-shadow: 0 8px 30px rgba(0,245,155,0.28);
-      transition: transform .15s, opacity .15s, box-shadow .15s;
-    }
-    .btn-primary:hover { transform: scale(1.025); opacity: 0.94; box-shadow: 0 10px 36px rgba(0,245,155,0.42); }
-    .btn-ghost {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: var(--surface);
-      border: 1px solid var(--border-bright);
-      color: var(--text);
-      font-weight: 600; font-size: 0.9rem;
-      padding: 14px 22px;
-      border-radius: var(--r-pill);
-      transition: background-color .15s, border-color .15s;
-    }
-    .btn-ghost:hover { background: var(--surface-hover); border-color: rgba(255,255,255,0.3); }
-
-    .hero-micro {
-      font-size: 0.82rem;
-      color: var(--text-secondary);
-      margin-bottom: 36px;
-      max-width: 620px;
-    }
-    .hero-micro strong { color: var(--amber); }
-
-    .hero-stats {
-      display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
-    }
-    .stat-pill {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border);
-      border-radius: var(--r-pill);
-      padding: 8px 16px;
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-      display: flex; align-items: center; gap: 6px;
-    }
-    .stat-pill strong { color: var(--text); }
-
-    /* ==========================================
-       SECTION HEADERS & LAYOUT
-    ========================================== */
-    .section-label {
-      display: inline-block;
-      font-size: 0.72rem; font-weight: 800;
-      letter-spacing: 0.12em; text-transform: uppercase;
-      color: var(--green);
-      margin-bottom: 16px;
-    }
-    .section-label.amber { color: var(--amber); }
-    .section-label.coral { color: var(--coral); }
-    .section-title {
-      font-size: clamp(2rem, 4.8vw, 3.4rem);
-      font-weight: 900;
-      letter-spacing: -0.035em;
-      line-height: 1.07;
-      margin-bottom: 18px;
-    }
-    .section-sub {
-      font-size: 1.06rem;
-      color: var(--text-secondary);
-      max-width: 620px;
-      line-height: 1.65;
-    }
-    .section-head { margin-bottom: 52px; }
-    .section-head.center { text-align: center; }
-    .section-head.center .section-sub { margin: 0 auto; }
-
-    section {
-      position: relative; z-index: 2;
-      padding: 88px 0;
-      scroll-margin-top: 72px;
-    }
-    .divider {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--border), transparent);
-      margin: 0 24px;
-      position: relative; z-index: 2;
-    }
-
-    /* ==========================================
-       PARADOX PSYCHOLOGY SECTION
-    ========================================== */
-    .paradox-grid {
+    .pillars-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 18px;
-      margin-bottom: 28px;
     }
-    .paradox-card {
+    .pillar-card {
       background: var(--bg1);
       border: 1px solid var(--border);
       border-radius: var(--r-lg);
-      padding: 32px 28px;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
+      padding: 26px 24px;
     }
-    .paradox-card.step-now { border-top: 3px solid var(--blue); }
-    .paradox-card.step-cut { border-top: 3px solid var(--green); }
-    .paradox-card.step-trap {
-      border-top: 3px solid var(--amber);
-      background: linear-gradient(180deg, rgba(251,191,36,0.06) 0%, var(--bg1) 100%);
-    }
-    .paradox-step {
-      font-size: 0.72rem;
+    .pillar-kicker {
+      font-size: 0.74rem;
       font-weight: 800;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 8px;
     }
-    .paradox-card.step-now .paradox-step { color: var(--blue); }
-    .paradox-card.step-cut .paradox-step { color: var(--green); }
-    .paradox-card.step-trap .paradox-step { color: var(--amber); }
-    .paradox-title {
-      font-size: 1.24rem;
+    .pillar-card h3 {
+      font-size: 1.15rem;
       font-weight: 800;
-      letter-spacing: -0.02em;
-      line-height: 1.25;
+      margin-bottom: 8px;
+      letter-spacing: -0.015em;
     }
-    .paradox-desc {
-      font-size: 0.92rem;
-      color: var(--text-secondary);
-      line-height: 1.62;
-    }
-    .paradox-callout {
-      background: linear-gradient(135deg, rgba(0,245,155,0.09) 0%, rgba(17,17,24,0.95) 60%, rgba(56,189,248,0.08) 100%);
-      border: 1px solid rgba(0,245,155,0.28);
-      border-radius: var(--r-xl);
-      padding: 36px 40px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 28px;
-      flex-wrap: wrap;
-    }
-    .paradox-quote-wrap { flex: 1; min-width: 280px; }
-    .paradox-quote {
-      font-size: clamp(1.3rem, 2.8vw, 1.85rem);
-      font-weight: 900;
-      letter-spacing: -0.03em;
-      line-height: 1.2;
-      margin-bottom: 10px;
-      color: #ffffff;
-    }
-    .paradox-quote span { color: var(--green); }
-    .paradox-callout-sub {
+    .pillar-card p {
       font-size: 0.94rem;
       color: var(--text-secondary);
-      line-height: 1.6;
-      max-width: 600px;
-    }
-    .paradox-callout-actions {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-      min-width: 250px;
-    }
-    .btn-share-circle {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      background: rgba(255,255,255,0.07);
-      border: 1px solid rgba(0,245,155,0.4);
-      color: #ffffff;
-      font-weight: 700;
-      font-size: 0.9rem;
-      padding: 13px 22px;
-      border-radius: var(--r-pill);
-      cursor: pointer;
-      transition: background-color 0.2s, border-color 0.2s, transform 0.15s;
-    }
-    .btn-share-circle:hover {
-      background: rgba(0,245,155,0.16);
-      border-color: var(--green);
-      transform: translateY(-1px);
     }
 
     /* ==========================================
-       FEATURE BIG CARDS
+       FEATURES 6-CARD GRID (#funciones)
     ========================================== */
-    .feature-card {
-      border-radius: var(--r-xl);
-      overflow: hidden;
-      position: relative;
-      background: var(--bg2);
-      border: 1px solid var(--border);
-      margin-bottom: 24px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      align-items: center;
-      min-height: 500px;
-      transition: border-color .3s;
-    }
-    .feature-card:hover { border-color: var(--border-bright); }
-    .feature-card.reverse { direction: rtl; }
-    .feature-card.reverse > * { direction: ltr; }
-    .feature-card-body {
-      padding: 52px 48px;
-      display: flex; flex-direction: column; gap: 20px;
-    }
-
-    .feature-duo {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-      margin-bottom: 24px;
-    }
-    .feature-duo .feature-card {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      min-height: 500px;
-      margin-bottom: 0;
-    }
-    .feature-duo .feature-card-body { padding: 44px 40px 20px; flex: 1; }
-    .feature-duo .feature-visual { min-height: 240px; padding: 20px; }
-
-    .feature-tag {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-size: 0.72rem; font-weight: 800;
-      letter-spacing: 0.08em; text-transform: uppercase;
-      padding: 5px 12px;
-      border-radius: var(--r-pill);
-      width: fit-content;
-    }
-    .tag-green { background: rgba(0,245,155,0.1); color: var(--green); border: 1px solid rgba(0,245,155,0.22); }
-    .tag-blue { background: rgba(56,189,248,0.1); color: var(--blue); border: 1px solid rgba(56,189,248,0.22); }
-    .tag-purple { background: rgba(167,139,250,0.1); color: var(--purple); border: 1px solid rgba(167,139,250,0.22); }
-    .tag-coral { background: rgba(251,113,133,0.1); color: var(--coral); border: 1px solid rgba(251,113,133,0.22); }
-    .tag-amber { background: rgba(251,191,36,0.1); color: var(--amber); border: 1px solid rgba(251,191,36,0.22); }
-
-    .feature-headline {
-      font-size: clamp(1.55rem, 2.8vw, 2.25rem);
-      font-weight: 800;
-      line-height: 1.12;
-      letter-spacing: -0.03em;
-    }
-    .feature-desc {
-      font-size: 0.95rem;
-      color: var(--text-secondary);
-      line-height: 1.68;
-    }
-    .feature-desc strong { color: var(--text); }
-    .feature-list { display: flex; flex-direction: column; gap: 10px; }
-    .feature-list li {
-      display: flex; align-items: flex-start; gap: 10px;
-      font-size: 0.88rem; color: var(--text-secondary); line-height: 1.5;
-    }
-    .feature-list li::before {
-      content: '→';
-      color: var(--green);
-      font-weight: 800;
-      flex-shrink: 0;
-    }
-    .feature-list li strong { color: var(--text); }
-
-    .feature-visual {
-      position: relative;
-      height: 100%; min-height: 380px;
-      display: flex; align-items: center; justify-content: center;
-      overflow: hidden;
-    }
-    .blob {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(60px);
-      pointer-events: none;
-    }
-
-    .phone-mock {
-      width: 200px;
-      background: #0d0d12;
-      border: 1.5px solid rgba(255,255,255,0.12);
-      border-radius: 40px;
-      padding: 14px;
-      box-shadow: 0 40px 80px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.05) inset;
-      position: relative; z-index: 2;
-    }
-    .phone-island {
-      width: 72px; height: 10px;
-      background: #000; border-radius: 6px;
-      margin: 0 auto 12px;
-    }
-    .phone-screen {
-      border-radius: 26px; overflow: hidden;
-      background: var(--bg);
-    }
-    .phone-screen img { width: 100%; height: auto; display: block; }
-
-    .float-bubble {
-      position: absolute;
-      background: rgba(14,20,32,0.92);
-      backdrop-filter: blur(12px);
-      border: 1px solid var(--border-bright);
-      border-radius: 16px;
-      padding: 12px 16px;
-      font-size: 0.78rem;
-      line-height: 1.4;
-      max-width: 210px;
-      z-index: 4;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.45);
-    }
-    .float-bubble .bubble-label {
-      font-size: 0.65rem; color: var(--text-dim); margin-bottom: 4px;
-      font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em;
-    }
-    .float-bubble .bubble-value { font-weight: 700; font-size: 0.85rem; }
-    .fb-green .bubble-value { color: var(--green); }
-    .fb-blue .bubble-value { color: var(--blue); }
-    .fb-coral .bubble-value { color: var(--coral); }
-
-    /* ==========================================
-       ROUTES & LORA
-    ========================================== */
-    .routes-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-    }
-    .route-card {
-      border-radius: var(--r-lg);
-      padding: 32px 24px;
-      border: 1px solid var(--border);
-      background: var(--bg1);
-      display: flex; flex-direction: column; gap: 12px;
-    }
-    .route-num {
-      font-size: 0.72rem; font-weight: 800;
-      letter-spacing: 0.12em; text-transform: uppercase;
-    }
-    .route-icon { font-size: 2rem; }
-    .route-title { font-size: 1.08rem; font-weight: 800; letter-spacing: -0.02em; }
-    .route-desc { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; }
-    .route-badge {
-      display: inline-block;
-      font-size: 0.68rem; font-weight: 800;
-      letter-spacing: 0.06em; text-transform: uppercase;
-      padding: 5px 10px;
-      border-radius: var(--r-pill);
-      width: fit-content; margin-top: auto;
-    }
-    .route-card:nth-child(1) { border-top: 2px solid var(--blue); }
-    .route-card:nth-child(2) { border-top: 2px solid var(--green); }
-    .route-card:nth-child(3) { border-top: 2px solid var(--purple); }
-
-    /* ==========================================
-       SCENARIOS
-    ========================================== */
-    .scenarios-grid {
+    .features-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 18px;
     }
-    .scenario-card {
-      background: var(--bg1);
-      border: 1px solid var(--border);
-      border-radius: var(--r-lg);
-      padding: 34px;
-      transition: border-color .2s, transform .2s;
-      display: flex; flex-direction: column; gap: 14px;
-    }
-    .scenario-card:hover { border-color: var(--border-bright); transform: translateY(-2px); }
-    .scenario-icon { font-size: 2.3rem; line-height: 1; }
-    .scenario-label {
-      font-size: 0.7rem; font-weight: 800;
-      letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim);
-    }
-    .scenario-title { font-size: 1.22rem; font-weight: 800; letter-spacing: -0.025em; line-height: 1.25; }
-    .scenario-problem {
-      font-size: 0.86rem; color: var(--text-secondary); line-height: 1.6;
-      padding: 14px 16px;
-      background: rgba(251,113,133,0.06);
-      border: 1px solid rgba(251,113,133,0.16);
-      border-radius: var(--r-sm);
-    }
-    .scenario-solution { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6; }
-    .scenario-solution strong { color: var(--green); }
-    .scenario-bullets { display: flex; flex-direction: column; gap: 8px; }
-    .scenario-bullets li { display: flex; gap: 8px; font-size: 0.84rem; color: var(--text-secondary); line-height: 1.45; }
-    .scenario-bullets li .check { color: var(--green); font-weight: 900; flex-shrink: 0; }
-
-    /* ==========================================
-       COMPARE TABLE & SCREENSHOTS
-    ========================================== */
-    .offscreen-section {
-      content-visibility: auto;
-      contain-intrinsic-size: auto 620px;
-    }
-
-    .compare-wrap {
+    .feat-card {
       background: var(--bg1);
       border: 1px solid var(--border);
       border-radius: var(--r-xl);
+      padding: 30px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-width: 0;
+      transition: border-color 0.2s;
+    }
+    .feat-card:hover { border-color: var(--border-bright); }
+    .feat-card.has-media {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 24px;
+      align-items: center;
+    }
+    .feat-tag {
+      display: inline-flex;
+      align-self: flex-start;
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 11px;
+      border-radius: var(--r-pill);
+      background: rgba(0, 245, 155, 0.10);
+      color: var(--green);
+      border: 1px solid rgba(0, 245, 155, 0.25);
+    }
+    .feat-tag.blue { background: rgba(56, 189, 248, 0.10); color: var(--blue); border-color: rgba(56, 189, 248, 0.25); }
+    .feat-tag.coral { background: rgba(251, 113, 133, 0.10); color: var(--coral); border-color: rgba(251, 113, 133, 0.25); }
+    .feat-tag.purple { background: rgba(167, 139, 250, 0.10); color: var(--purple); border-color: rgba(167, 139, 250, 0.25); }
+    .feat-tag.amber { background: rgba(251, 191, 36, 0.10); color: var(--amber); border-color: rgba(251, 191, 36, 0.25); }
+    .feat-tag.orange { background: rgba(251, 146, 60, 0.12); color: var(--orange); border-color: rgba(251, 146, 60, 0.30); }
+    .feat-title {
+      font-size: 1.32rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+    }
+    .feat-desc {
+      font-size: 0.96rem;
+      color: var(--text-secondary);
+    }
+    .feat-shot {
+      background: #0d0d14;
+      border: 1px solid var(--border-bright);
+      border-radius: 22px;
       overflow: hidden;
+      max-width: 190px;
+      margin: 0 auto;
+      box-shadow: 0 20px 44px rgba(0, 0, 0, 0.55);
     }
-    .compare-table { width: 100%; border-collapse: collapse; }
-    .compare-table th, .compare-table td {
-      padding: 18px 22px; text-align: center; font-size: 0.88rem;
-      border-bottom: 1px solid var(--border);
-    }
-    .compare-table th:first-child, .compare-table td:first-child {
-      text-align: left; font-weight: 600; color: var(--text-secondary);
-    }
-    .compare-table thead th {
-      font-size: 0.76rem; font-weight: 800; letter-spacing: 0.06em;
-      text-transform: uppercase; color: var(--text-dim);
-      background: rgba(255,255,255,0.02); padding: 20px 22px;
-    }
-    .compare-table thead th.col-chax { color: var(--green); background: rgba(0,245,155,0.06); }
-    .compare-table td.col-chax { background: rgba(0,245,155,0.03); }
-    .compare-table tr:last-child td { border-bottom: none; }
-    .compare-table tr:hover td { background: rgba(255,255,255,0.02); }
-    .compare-table tr:hover td.col-chax { background: rgba(0,245,155,0.06); }
-    .yes { color: var(--green); font-weight: 700; }
-    .no { color: var(--text-dim); }
+    .feat-shot img { width: 100%; height: auto; }
 
+    /* ==========================================
+       SCENARIOS HORIZONTAL SNAP CAROUSEL (#escenarios)
+    ========================================== */
+    .scenarios-track {
+      display: flex;
+      gap: 18px;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-padding-inline: 4px;
+      padding: 4px 2px 16px;
+      scrollbar-color: rgba(255, 255, 255, 0.22) transparent;
+      scrollbar-width: thin;
+    }
+    .scenario-slide {
+      flex: 0 0 min(330px, 84vw);
+      scroll-snap-align: start;
+      background: var(--bg1);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--green);
+      border-radius: var(--r-lg);
+      padding: 28px 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .scenario-slide:nth-child(2) { border-top-color: var(--blue); }
+    .scenario-slide:nth-child(3) { border-top-color: var(--purple); }
+    .scenario-slide:nth-child(4) { border-top-color: var(--amber); }
+    .scenario-kicker {
+      font-size: 0.74rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .scenario-slide h3 {
+      font-size: 1.22rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+    .scenario-vs {
+      font-size: 0.9rem;
+      padding: 12px 14px;
+      border-radius: var(--r-sm);
+      background: rgba(251, 113, 133, 0.07);
+      border: 1px solid rgba(251, 113, 133, 0.20);
+      color: #fecdd3;
+    }
+    .scenario-help {
+      font-size: 0.94rem;
+      color: var(--text-secondary);
+    }
+    .scenario-help strong { color: var(--green); }
+
+    /* ==========================================
+       SCREENSHOTS (#capturas)
+    ========================================== */
     .device-tabs-bar {
-      display: flex; gap: 4px;
-      background: rgba(255,255,255,0.04);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--border);
       border-radius: var(--r-pill);
-      padding: 4px;
-      margin-bottom: 36px;
-      width: fit-content; margin-left: auto; margin-right: auto;
+      padding: 5px;
+      margin: 0 auto 32px;
+      width: fit-content;
+      max-width: 100%;
     }
     .device-tab {
-      padding: 8px 20px; border-radius: var(--r-pill);
-      font-size: 0.85rem; font-weight: 600; cursor: pointer;
-      transition: background-color .2s, color .2s;
-      color: var(--text-secondary); border: none; background: none;
+      padding: 8px 18px;
+      min-height: 44px;
+      border-radius: var(--r-pill);
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background-color 0.2s, color 0.2s;
+      color: var(--text-secondary);
+      border: none;
+      background: none;
     }
-    .device-tab.active, .device-tab[aria-pressed="true"] {
-      background: rgba(255,255,255,0.1);
+    .device-tab.active,
+    .device-tab[aria-pressed="true"] {
+      background: rgba(255, 255, 255, 0.12);
       color: var(--text);
     }
     .screenshots-row {
-      display: flex; gap: 16px;
-      overflow-x: auto; padding-bottom: 12px;
-      scrollbar-width: none; scroll-snap-type: x mandatory;
+      display: flex;
+      gap: 16px;
+      overflow-x: auto;
+      padding-bottom: 12px;
+      scrollbar-width: none;
+      scroll-snap-type: x mandatory;
     }
     .screenshots-row::-webkit-scrollbar { display: none; }
     .screenshot-item {
@@ -792,39 +1016,88 @@
       background: var(--bg1);
       scroll-snap-align: start;
     }
-    .screenshot-item img { height: 500px; width: auto; display: block; }
-    .screenshot-item.mac img { height: 350px; width: auto; }
+    .screenshot-item img { height: 470px; width: auto; display: block; }
+    .screenshot-item.mac img { height: 340px; width: auto; }
 
     /* ==========================================
-       NATIVE DETAILS ACCORDION FAQ
+       COMPARE TABLE (#comparar)
     ========================================== */
-    .faq-list { display: flex; flex-direction: column; gap: 10px; }
+    .compare-wrap {
+      background: var(--bg1);
+      border: 1px solid var(--border);
+      border-radius: var(--r-xl);
+      overflow: hidden;
+    }
+    .compare-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    .compare-table th,
+    .compare-table td {
+      padding: 16px 20px;
+      text-align: center;
+      font-size: 0.92rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .compare-table th:first-child,
+    .compare-table td:first-child {
+      text-align: left;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .compare-table thead th {
+      font-size: 0.78rem;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      background: rgba(255, 255, 255, 0.025);
+    }
+    .compare-table thead th.col-chax {
+      color: var(--green);
+      background: rgba(0, 245, 155, 0.07);
+    }
+    .compare-table td.col-chax {
+      background: rgba(0, 245, 155, 0.035);
+    }
+    .compare-table tr:last-child td { border-bottom: none; }
+    .yes { color: var(--green); font-weight: 700; }
+    .no { color: var(--text-dim); }
+
+    /* ==========================================
+       FAQ ACCORDION (#faq)
+    ========================================== */
+    .faq-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
     .faq-item {
       background: var(--bg1);
       border: 1px solid var(--border);
       border-radius: var(--r-md);
       overflow: hidden;
-      transition: border-color .2s;
+      transition: border-color 0.2s;
     }
-    .faq-item[open] {
-      border-color: rgba(0,245,155,0.28);
-    }
+    .faq-item[open] { border-color: rgba(0, 245, 155, 0.34); }
     .faq-item summary {
       list-style: none;
       display: flex;
       align-items: center;
       gap: 0.85ch;
-      padding: 20px 24px;
+      padding: 18px 22px;
+      min-height: 54px;
       cursor: pointer;
-      font-size: 0.98rem;
+      font-size: 1rem;
       font-weight: 700;
       color: var(--text);
       line-height: 1.4;
       user-select: none;
-      transition: background-color .2s;
     }
     .faq-item summary::-webkit-details-marker { display: none; }
-    .faq-item summary:hover { background: rgba(255,255,255,0.025); }
+    .faq-item summary:hover { background: rgba(255, 255, 255, 0.025); }
     .faq-item summary::before {
       content: "";
       inline-size: 1.05em;
@@ -835,14 +1108,12 @@
       mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E") no-repeat center / contain;
       rotate: -90deg;
     }
-    .faq-item[open] > summary::before {
-      rotate: 0deg;
-    }
+    .faq-item[open] > summary::before { rotate: 0deg; }
     .faq-a {
-      padding: 0 24px 22px 44px;
-      font-size: 0.92rem;
+      padding: 0 22px 20px 44px;
+      font-size: 0.94rem;
       color: var(--text-secondary);
-      line-height: 1.7;
+      line-height: 1.68;
     }
     .faq-a strong { color: var(--text); }
 
@@ -851,175 +1122,172 @@
       overflow: clip;
       contain: layout;
     }
-    details.faq-item:not([open])::details-content {
-      block-size: 0;
-    }
+    details.faq-item:not([open])::details-content { block-size: 0; }
     @media (prefers-reduced-motion: no-preference) {
-      .faq-item summary::before {
-        transition: rotate 0.2s ease;
-      }
+      .faq-item summary::before { transition: rotate 0.2s ease; }
       details.faq-item::details-content {
-        transition: block-size, content-visibility, display;
-        transition-duration: 0.28s;
-        transition-timing-function: ease-in-out;
-        transition-behavior: allow-discrete;
+        transition: block-size 0.26s ease-in-out, display 0.26s ease-in-out allow-discrete;
       }
     }
 
     /* ==========================================
-       CTA SECTION & STICKY MOBILE CTA
+       FINAL CTA (#instalar)
     ========================================== */
-    .cta-section {
+    .cta-final {
       text-align: center;
-      padding: 110px 24px;
-      position: relative; z-index: 2;
-      scroll-margin-top: 60px;
+      position: relative;
+      overflow: hidden;
     }
     .cta-glow {
       position: absolute;
-      width: 580px; height: 580px;
+      width: 520px;
+      height: 520px;
       border-radius: 50%;
-      background: radial-gradient(circle, rgba(0,245,155,0.12) 0%, transparent 70%);
-      top: 50%; left: 50%; transform: translate(-50%,-50%);
+      background: radial-gradient(circle, rgba(0, 245, 155, 0.12) 0%, transparent 70%);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
       pointer-events: none;
     }
-    .cta-eyebrow {
-      font-size: 0.78rem; font-weight: 800;
-      letter-spacing: 0.1em; text-transform: uppercase;
-      color: var(--amber);
-      margin-bottom: 20px;
+    .final-buttons {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin: 28px 0 20px;
     }
-    .cta-title {
-      font-size: clamp(2.2rem, 5.5vw, 4.4rem);
-      font-weight: 900;
-      letter-spacing: -0.04em;
-      line-height: 1.05;
-      margin-bottom: 20px;
-      max-width: 820px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .cta-sub {
-      font-size: 1.05rem;
-      color: var(--text-secondary);
-      max-width: 540px;
-      margin: 0 auto 36px;
-      line-height: 1.6;
-    }
-    .cta-note {
-      margin-top: 18px;
-      font-size: 0.82rem;
-      color: var(--text-secondary);
-    }
-
-    .sticky-mobile-cta { display: none; }
 
     /* ==========================================
-       FOOTER & MOTION CONTROL
+       FOOTER & COMPACT APPX JP
     ========================================== */
     footer {
       border-top: 1px solid var(--border);
-      padding: 40px 24px 64px;
-      position: relative; z-index: 2;
+      padding: 48px 24px 86px;
+      position: relative;
+      z-index: 2;
+      background: rgba(6, 6, 10, 0.92);
     }
+    .footer-stack {
+      max-width: 1120px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+    .appx-compact {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px 28px;
+      padding: 20px 22px;
+      border-radius: var(--r-lg);
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+    }
+    .appx-compact-brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      min-width: 240px;
+      flex: 1;
+    }
+    .appx-compact-brand img {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      flex-shrink: 0;
+      border: 1px solid rgba(56, 189, 248, 0.4);
+    }
+    .appx-compact-title {
+      font-size: 0.96rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+    .appx-compact-desc {
+      font-size: 0.86rem;
+      color: var(--text-secondary);
+    }
+    .appx-compact-apps {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px 18px;
+      font-size: 0.86rem;
+      color: var(--text-secondary);
+    }
+    .appx-compact-apps a {
+      color: var(--blue);
+      font-weight: 600;
+      padding: 6px 0;
+    }
+    .appx-compact-apps a:hover { text-decoration: underline; }
+
     .footer-inner {
-      max-width: 1120px; margin: 0 auto;
-      display: flex; align-items: center; justify-content: space-between;
-      gap: 20px; flex-wrap: wrap;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
     }
     .footer-brand {
-      display: flex; align-items: center; gap: 8px;
-      font-weight: 700; font-size: 0.92rem; color: var(--text-secondary);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
     }
     .footer-brand img { width: 24px; height: 24px; border-radius: 6px; }
-    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; align-items: center; }
-    .footer-links a { font-size: 0.82rem; color: var(--text-secondary); transition: color .2s; }
+    .footer-links {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .footer-links a {
+      font-size: 0.86rem;
+      color: var(--text-secondary);
+      padding: 6px 0;
+      transition: color 0.2s;
+    }
     .footer-links a:hover { color: var(--text); }
     .motion-toggle {
-      background: rgba(255,255,255,0.05);
+      background: rgba(255, 255, 255, 0.06);
       border: 1px solid var(--border-bright);
       color: var(--text-secondary);
-      padding: 6px 12px;
+      padding: 8px 14px;
+      min-height: 44px;
       border-radius: var(--r-pill);
-      font-size: 0.76rem;
+      font-size: 0.82rem;
       font-weight: 600;
       cursor: pointer;
       transition: background-color 0.2s, color 0.2s;
     }
-    .motion-toggle:hover { background: rgba(255,255,255,0.1); color: var(--text); }
-    .footer-copy { font-size: 0.78rem; color: var(--text-dim); }
-
-    .glow-green { text-shadow: 0 0 40px rgba(0,245,155,0.4); }
-
-    @keyframes float-a {
-      0%,100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
-    }
-    @keyframes float-b {
-      0%,100% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-7px) rotate(1deg); }
-    }
-
-    @media (prefers-reduced-motion: no-preference) {
-      .fade-up {
-        opacity: 0; transform: translateY(24px);
-        transition: opacity .55s ease, transform .55s ease;
-      }
-      .fade-up.visible { opacity: 1; transform: translateY(0); }
-      .float-a { animation: float-a 4.2s ease-in-out infinite; }
-      .float-b { animation: float-b 5s ease-in-out infinite; }
-      body.motion-paused .float-a,
-      body.motion-paused .float-b,
-      body.motion-paused .hero-eyebrow::before {
-        animation-play-state: paused;
-      }
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .fade-up { opacity: 1; transform: none; }
-    }
+    .motion-toggle:hover { background: rgba(255, 255, 255, 0.12); color: var(--text); }
+    .footer-copy { font-size: 0.82rem; color: var(--text-dim); }
 
     /* ==========================================
-       RESPONSIVE
+       STICKY MOBILE CTA BAR
     ========================================== */
-    @media (max-width: 1080px) {
-      .routes-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-    @media (max-width: 900px) {
-      .paradox-grid { grid-template-columns: 1fr; }
-      .feature-card { grid-template-columns: 1fr; min-height: auto; }
-      .feature-card.reverse { direction: ltr; }
-      .feature-visual { min-height: 280px; }
-      .feature-duo { grid-template-columns: 1fr; gap: 24px; }
-      .feature-duo .feature-card { min-height: auto; }
-      .feature-duo .feature-card-body { padding: 38px 28px 18px; }
-      .feature-duo .feature-visual { min-height: 240px; }
-      .scenarios-grid { grid-template-columns: 1fr; }
-      .routes-grid { grid-template-columns: 1fr; }
-      .nav-links { display: none; }
-      .nav-right { gap: 8px; }
-      .nav-cta { padding: 6px 12px; font-size: 0.76rem; }
-      .lang-pill { padding: 4px 10px; font-size: 0.74rem; gap: 5px; }
-      .compare-table th, .compare-table td { padding: 12px 14px; font-size: 0.78rem; }
-    }
-
+    .sticky-mobile-cta { display: none; }
     @media (max-width: 768px) {
-      .sim-panel { grid-template-columns: 1fr; }
-      .sim-controls { flex-direction: column; border-radius: var(--r-md); }
       .sticky-mobile-cta {
         display: flex;
         position: fixed;
-        bottom: 12px; left: 12px; right: 12px;
+        bottom: 12px;
+        left: 12px;
+        right: 12px;
         z-index: 95;
-        background: rgba(14, 20, 28, 0.94);
+        background: rgba(12, 16, 24, 0.95);
         backdrop-filter: blur(18px);
         -webkit-backdrop-filter: blur(18px);
-        border: 1px solid rgba(0, 245, 155, 0.35);
+        border: 1px solid rgba(0, 245, 155, 0.38);
         border-radius: var(--r-pill);
-        padding: 10px 12px 10px 18px;
+        padding: 8px 10px 8px 18px;
         align-items: center;
         justify-content: space-between;
         gap: 10px;
-        box-shadow: 0 14px 40px rgba(0,0,0,0.75);
+        box-shadow: 0 14px 40px rgba(0, 0, 0, 0.78);
         transform: translateY(140%);
         opacity: 0;
         pointer-events: none;
@@ -1031,109 +1299,117 @@
         pointer-events: auto;
       }
       .sticky-mobile-text {
-        font-size: 0.78rem;
+        font-size: 0.84rem;
         font-weight: 700;
         color: #fff;
         line-height: 1.25;
       }
       .sticky-mobile-text span {
         display: block;
-        font-size: 0.68rem;
+        font-size: 0.75rem;
         font-weight: 500;
         color: var(--green);
       }
       .sticky-mobile-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
         background: var(--green);
         color: #000;
         font-weight: 800;
-        font-size: 0.78rem;
-        padding: 9px 15px;
+        font-size: 0.85rem;
+        padding: 10px 16px;
+        min-height: 44px;
         border-radius: var(--r-pill);
         white-space: nowrap;
         flex-shrink: 0;
       }
     }
 
-    @media (max-width: 600px) {
-      .wrap { padding: 0 16px; }
-      .feature-card { border-radius: var(--r-lg); }
-      .feature-card-body { padding: 32px 20px 18px; }
-      .paradox-callout { padding: 28px 22px; }
-      .feature-visual { min-height: 240px; }
-      .hero { padding: 38px 16px 46px; }
-      .cta-section { padding: 72px 16px; }
-      section { padding: 60px 0; }
-      .screenshot-item img { height: 340px; }
-      .screenshot-item.mac img { height: 220px; }
-      .float-bubble { padding: 8px 12px; font-size: 0.72rem; max-width: 145px; }
-      .float-bubble .bubble-value { font-size: 0.78rem; }
-      .faq-a { padding: 0 20px 18px 20px; }
-      .faq-item summary { padding: 18px 20px; }
+    /* ==========================================
+       SCROLL REVEALS
+    ========================================== */
+    @media (prefers-reduced-motion: no-preference) {
+      @supports ((animation-timeline: view()) and (animation-range: entry)) {
+        @keyframes chax-reveal-up {
+          from { opacity: 0; transform: translateY(24px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .reveal {
+          animation: chax-reveal-up linear both;
+          animation-timeline: view();
+          animation-range: entry 0% cover 20%;
+        }
+      }
+      .reveal-io .reveal {
+        opacity: 0;
+        transform: translateY(22px);
+        transition: opacity 0.5s ease, transform 0.5s ease;
+      }
+      .reveal-io .reveal.in-view {
+        opacity: 1;
+        transform: none;
+      }
     }
-    @media (max-width: 480px) {
-      .nav-cta { display: none; }
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1 !important; transform: none !important; animation: none !important; }
+    }
+    body.motion-paused .reveal {
+      opacity: 1 !important;
+      transform: none !important;
+      animation: none !important;
     }
 
-    /* APPX JP DEVELOPER IDENTITY & ECOSYSTEM */
-    .appx-manifesto {
-      background: linear-gradient(135deg, rgba(56,189,248,0.10) 0%, rgba(10,14,24,0.94) 55%, rgba(0,245,155,0.08) 100%);
-      border: 1px solid rgba(56,189,248,0.34);
-      border-radius: var(--r-xl);
-      padding: 36px 34px;
-      margin-bottom: 26px;
-      display: grid;
-      grid-template-columns: 1.35fr 1fr;
-      gap: 28px;
-      align-items: center;
+    /* ==========================================
+       RESPONSIVE
+    ========================================== */
+    @media (max-width: 960px) {
+      .nav-links { display: none; }
+      .hero-grid { grid-template-columns: 1fr; text-align: left; }
+      .hero-visual { margin-top: 12px; }
+      .download-grid { grid-template-columns: 1fr; }
+      .download-card.is-recommended { order: -1; }
+      .story-grid { grid-template-columns: 1fr; }
+      .story-visual-col {
+        order: -1;
+        position: sticky;
+        top: 64px;
+        z-index: 6;
+        background: var(--bg);
+        padding: 4px 0 10px;
+      }
+      .story-visual { padding: 16px; }
+      #meshDiagramSvg { max-height: 160px; }
+      .pillars-grid { grid-template-columns: 1fr; }
+      .features-grid { grid-template-columns: 1fr; }
+      .feat-card.has-media { grid-template-columns: 1fr; }
     }
-    .appx-brand-row { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
-    .appx-logo-img { width: 64px; height: 64px; border-radius: 16px; aspect-ratio: 1 / 1; flex-shrink: 0; border: 1px solid rgba(56,189,248,0.45); box-shadow: 0 10px 28px rgba(56,189,248,0.22); }
-    .appx-eyebrow { font-size: 0.72rem; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--blue); margin-bottom: 4px; }
-    .appx-title { font-size: clamp(1.35rem, 1.1rem + 1vw, 1.9rem); font-weight: 900; letter-spacing: -0.02em; color: #fff; }
-    .appx-pillars { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
-    .appx-pillar { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); border-radius: var(--r-md); padding: 14px 16px; }
-    .appx-pillar strong { display: block; font-size: 0.86rem; color: #fff; margin-bottom: 4px; }
-    .appx-pillar span { display: block; font-size: 0.78rem; color: var(--text-secondary); line-height: 1.45; }
-    .appx-apps-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
-    .appx-card { background: var(--bg1); border: 1px solid rgba(255,255,255,0.14); border-radius: var(--r-lg); padding: 28px; display: flex; flex-direction: column; gap: 14px; }
-    .appx-card.featured-monix {
-      grid-column: 1 / -1;
-      display: grid;
-      grid-template-columns: auto 1fr auto;
-      gap: 24px;
-      align-items: center;
-      background: linear-gradient(135deg, rgba(34,211,238,0.12) 0%, rgba(15,23,42,0.92) 60%, rgba(251,191,36,0.08) 100%);
-      border-color: rgba(34,211,238,0.45);
+
+    @media (max-width: 768px) {
+      .sim-panel { grid-template-columns: 1fr; }
+      .sim-controls { flex-direction: column; border-radius: var(--r-md); }
+      .screenshot-item img { height: 350px; }
+      .screenshot-item.mac img { height: 220px; }
     }
-    .appx-monix-icon { width: 84px; height: 84px; border-radius: 22px; aspect-ratio: 1 / 1; box-shadow: 0 12px 30px rgba(34,211,238,0.28); }
-    .appx-tag {
-      display: inline-flex; align-items: center; gap: 6px; align-self: flex-start;
-      padding: 4px 11px; border-radius: var(--r-pill); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase;
-      background: rgba(56,189,248,0.16); color: #67e8f9; border: 1px solid rgba(56,189,248,0.35);
-    }
-    .appx-tag.green { background: rgba(0,245,155,0.15); color: var(--green); border-color: rgba(0,245,155,0.35); }
-    .appx-tag.purple { background: rgba(167,139,250,0.16); color: #c4b5fd; border-color: rgba(167,139,250,0.36); }
-    .appx-tag.amber { background: rgba(251,191,36,0.15); color: #fde68a; border-color: rgba(251,191,36,0.36); }
-    .appx-card h3 { font-size: 1.24rem; font-weight: 850; color: #fff; letter-spacing: -0.02em; }
-    .appx-card p { font-size: 0.9rem; color: var(--text-secondary); line-height: 1.58; }
-    .appx-meta { font-size: 0.78rem; color: var(--text-dim); font-family: var(--mono); }
-    @media (max-width: 900px) {
-      .appx-manifesto, .appx-apps-grid, .appx-card.featured-monix, .appx-pillars { grid-template-columns: 1fr; }
-    }
-    @media (forced-colors: active) {
-      .appx-manifesto, .appx-card, .appx-pillar { border: 1px solid CanvasText; }
+
+    @media (max-width: 600px) {
+      .wrap { padding: 0 16px; }
+      .nav-inner { padding: 0 14px; gap: 8px; }
+      .nav-brand span { font-size: 1rem; }
+      .lang-pill { padding: 0 9px; gap: 4px; font-size: 0.74rem; }
+      .nav-cta { padding: 8px 13px; font-size: 0.8rem; }
+      .phone-mock { width: 200px; }
+      .hero-badge.top-right { right: 0; top: 8%; }
+      .hero-badge.bottom-left { left: 0; bottom: 8%; }
+      .compare-table th, .compare-table td { padding: 12px 12px; font-size: 0.84rem; }
+      .faq-a { padding: 0 18px 18px 22px; }
     }
   </style>
 </head>
 <body>
 
+<div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 <canvas id="bg-canvas" aria-hidden="true"></canvas>
-
-<!-- Community Sovereignty Top Bar -->
-<div class="urgency-bar" role="region" aria-label="Sovereign network notice">
-  <strong>🧭 Sovereign communication:</strong> zero phone numbers, shared offline maps &amp; privacy-preserving community bridge nodes.
-  <a href="#descargas">Download free →</a>
-</div>
 
 <!-- ================================================
      HEADER & NAV
@@ -1146,12 +1422,10 @@
         <span>Chax</span>
       </a>
       <ul class="nav-links">
-        <li><a href="#filosofia">Philosophy</a></li>
+        <li><a href="#como-funciona">How it works</a></li>
         <li><a href="#funciones">Features</a></li>
-        <li><a href="#como-funciona">How it travels</a></li>
         <li><a href="#escenarios">Scenarios</a></li>
         <li><a href="#faq">FAQ</a></li>
-        <li><a href="#ecosistema-appx">Appx JP</a></li>
       </ul>
       <div class="nav-right">
         <div class="lang-pill" id="langSelector">
@@ -1166,7 +1440,7 @@
           <span class="lang-sep" aria-hidden="true">|</span>
           <a href="../pt/index.html" class="lang-item" data-lang="pt" title="Português">PT</a>
         </div>
-        <a href="#descargas" class="nav-cta">Download free</a>
+        <a href="#descargas" class="nav-cta" id="navDownloadCta">Download free</a>
       </div>
     </div>
   </nav>
@@ -1174,135 +1448,308 @@
 
 <main>
   <!-- ================================================
-       HERO
+       1. HERO
   ================================================ -->
   <section class="hero" id="hero">
-    <div class="hero-eyebrow">iOS &amp; Mac v3.383 · Official Android v1.142 · 100% Free</div>
+    <div class="wrap">
+      <div class="hero-grid">
+        <div class="hero-copy">
+          <div class="hero-eyebrow">iOS &amp; Mac v<span data-ver="ios">3.396</span> · Android v<span data-ver="android">1.159</span> · Free</div>
+          <h1 class="hero-title">
+            Fast over internet.<br>
+            <span class="accent-green">Unstoppable</span> <span class="accent-coral">off-grid.</span>
+          </h1>
+          <p class="hero-sub">
+            Encrypted messaging that flies on Wi-Fi or 5G, and hops phone-to-phone over Bluetooth, Wi-Fi Direct, and LoRa radio when coverage disappears.
+          </p>
+          <div class="hero-actions">
+            <a href="#descargas" class="btn-primary" id="heroPrimaryCta" data-gc-event="hero-download">
+              ⚡ Download free
+            </a>
+            <a href="#como-funciona" class="btn-ghost">
+              See how it works ↓
+            </a>
+          </div>
+          <p class="hero-trust">
+            Free · No phone number · End-to-end encrypted · iPhone, Mac &amp; Android
+          </p>
+        </div>
 
-    <h1 class="hero-title">
-      Fast internet.<br>
-      <span class="accent-green">Unstoppable</span> <span class="accent-coral">mesh.</span>
-    </h1>
-
-    <p class="hero-sub">
-      Everyday messaging at full speed with <strong>zero phone number</strong>, end-to-end <strong>TwinSync</strong> across your devices, and offline <strong>Mapax</strong> routes you can share anywhere. And when cellular coverage fades on highways, festivals, or neighborhood outages, your phone becomes a community bridge over <strong>Bluetooth Mesh</strong> and <strong>LoRa Radio (+30 km)</strong>.
-    </p>
-
-    <!-- Interactive Network Simulator -->
-    <div class="sim-box" id="networkSim">
-      <div class="sim-controls" role="group" aria-label="Simulate connection state">
-        <button type="button" class="sim-btn" data-sim="online" aria-pressed="true">
-          ⚡ Internet Mode (Fast &amp; Sovereign)
-        </button>
-        <button type="button" class="sim-btn" data-sim="emergency" aria-pressed="false">
-          🤝 Community Mesh Mode (0 Bars)
-        </button>
+        <div class="hero-visual">
+          <div class="hero-glow" aria-hidden="true"></div>
+          <div class="phone-mock">
+            <div class="phone-island" aria-hidden="true"></div>
+            <div class="phone-screen">
+              <img src="../assets/screenshots/radar_mesh_iphone.webp" alt="Bluetooth mesh radar and active links in Chax" width="1320" height="2868" fetchpriority="high">
+            </div>
+          </div>
+          <div class="hero-badge top-right" aria-hidden="true">
+            <div class="hero-badge-kicker">Active Mesh</div>
+            <div class="hero-badge-val">Bluetooth + LoRa ✓</div>
+          </div>
+          <div class="hero-badge bottom-left" aria-hidden="true">
+            <div class="hero-badge-kicker">Protocol v2</div>
+            <div class="hero-badge-val">Zero Phone · E2EE</div>
+          </div>
+        </div>
       </div>
-
-      <div class="sim-panel" id="sim-panel-emergency" hidden>
-        <div class="sim-col dead">
-          <div class="sim-col-label">Cloud-dependent apps</div>
-          <div class="sim-col-text">✕ Stuck connecting when towers saturate · Require your phone number · Zero communication between neighbors off-grid.</div>
-        </div>
-        <div class="sim-col alive">
-          <div class="sim-col-label">Chax Community Mesh</div>
-          <div class="sim-col-text">✓ <strong>Automatic neighbor relay</strong> via opaque Sealed Sender hops · Offline satellite Mapax &amp; <code>.chaxmap</code> sharing · Lock-screen voice &amp; 30 km LoRa link.</div>
-        </div>
-      </div>
-
-      <div class="sim-panel" id="sim-panel-online">
-        <div class="sim-col wan">
-          <div class="sim-col-label">Internet Mode (Wi-Fi / 5G)</div>
-          <div class="sim-col-text">⚡ <strong>Instant global delivery</strong> across encrypted Nostr WAN relays, sovereign groups, <code>.chaxmap</code> pins &amp; E2EE <code>TwinSync</code> between iPhone, iPad, Mac &amp; Android.</div>
-        </div>
-        <div class="sim-col alive">
-          <div class="sim-col-label">Sovereignty with zero surveillance</div>
-          <div class="sim-col-text">🛡️ <strong>No phone number or SIM</strong>, hardware-born cryptographic keys, Protocol v2 &amp; programmable anti-forensic flash autopurge.</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="hero-actions">
-      <a href="#descargas" class="btn-primary">
-        ⚡ Download free for my device
-      </a>
-      <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" rel="noopener" class="btn-ghost">
-        <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 3.5c.61-.75 1.04-1.8 1.01-2.85-.92.04-2.03.62-2.67 1.37-.58.67-1.08 1.74-1.01 2.78.98.08 2.06-.55 2.67-1.3z"/></svg>
-        iPhone, iPad &amp; Mac (v3.383)
-      </a>
-      <a href="../download/?lang=en" class="btn-ghost">
-        🤖 Official Android (v1.142)
-      </a>
-    </div>
-
-    <p class="hero-micro">
-      🛡️ <strong>Your keys, your maps, your community</strong> · Zero phone number · Negligible standby battery · Connects seamlessly online and off-grid.
-    </p>
-
-    <div class="hero-stats">
-      <div class="stat-pill">📡 <strong>Triple Route: Internet + BLE + LoRa</strong></div>
-      <div class="stat-pill">🗺️ <strong>Offline Shared Mapax &amp; .chaxmap</strong></div>
-      <div class="stat-pill">🤝 <strong>Sealed-Packet Bridge Nodes</strong></div>
-      <div class="stat-pill">🛡️ <strong>Sovereign TwinSync · No SIM</strong></div>
     </div>
   </section>
 
   <div class="divider"></div>
 
   <!-- ================================================
-       THREE PHILOSOPHIES OF CHAX
+       2. SMART DEVICE DOWNLOAD (#descargas)
   ================================================ -->
-  <section id="filosofia">
+  <section class="download-section" id="descargas" aria-labelledby="download-heading">
     <div class="wrap">
-      <div class="section-head center fade-up">
-        <div class="section-label" style="color:var(--green)">Three Pillars of Chax</div>
-        <h2 class="section-title">Communication belongs to you —<br>and grows stronger when shared.</h2>
-        <p class="section-sub">
-          Chax is not just an off-grid contingency tool. It is a daily philosophy built on cryptographic autonomy, mutual aid, and open territory.
-        </p>
+      <div class="section-head center reveal">
+        <div class="section-eyebrow">Direct Install</div>
+        <h2 class="section-title" id="download-heading">Choose your device</h2>
+        <p class="section-sub">Download the official release across Apple and Android speaking the exact same encrypted protocol.</p>
       </div>
 
-      <div class="paradox-grid fade-up">
-        <article class="paradox-card step-now">
-          <div class="paradox-step">Pillar 01 · The Sovereign Individual</div>
-          <h3 class="paradox-title">Your identity lives in your own keys, never a SIM card.</h3>
-          <p class="paradox-desc">
-            Zero phone numbers, zero emails, and zero corporate permission needed to talk. Sync your keys across iPhone, iPad, Mac, and Android with end-to-end encrypted <code>TwinSync</code>, Protocol v2 <code>Sealed Sender</code>, and programmable autopurge.
-          </p>
-        </article>
-
-        <article class="paradox-card step-cut">
-          <div class="paradox-step">Pillar 02 · Mutual Aid Bridge Node</div>
-          <h3 class="paradox-title">Your phone helps carry your neighbors’ voices blindly.</h3>
-          <p class="paradox-desc">
-            Every Chax phone can act as an automatic community relay over BLE Mesh: it forwards <strong>opaque, sealed packets</strong> nobody can inspect, while its battery-aware <code>PathTable</code> protects your power.
-          </p>
-        </article>
-
-        <article class="paradox-card step-trap">
-          <div class="paradox-step">Pillar 03 · Shared Territory (Mapax)</div>
-          <h3 class="paradox-title">Open maps and landmarks owned by your group.</h3>
-          <p class="paradox-desc">
-            Carry OpenStreetMap street layers and offline satellite tiles free of commercial API keys, share live pin collections inside chat, and export portable <code>.chaxmap</code> territory packs so nobody hikes or rides blind.
-          </p>
-        </article>
-      </div>
-
-      <div class="paradox-callout fade-up">
-        <div class="paradox-quote-wrap">
-          <h3 class="paradox-quote">Resilient networks are not rented — <span>they are woven neighbor to neighbor.</span></h3>
-          <p class="paradox-callout-sub">
-            Chax uses barely any standby battery and takes seconds to set up. Every extra device in your household, riding crew, or block strengthens a sovereign network nobody can switch off.
-          </p>
-        </div>
-        <div class="paradox-callout-actions">
-          <a href="#descargas" class="btn-primary" style="justify-content:center;">
-            ⚡ Add my node to the network
+      <div class="download-grid reveal" id="downloadGrid">
+        <!-- iPhone & iPad -->
+        <article class="download-card" data-platform="ios">
+          <span class="rec-badge">Recommended for your device</span>
+          <div class="dl-card-head">
+            <div class="dl-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 3.5c.61-.75 1.04-1.8 1.01-2.85-.92.04-2.03.62-2.67 1.37-.58.67-1.08 1.74-1.01 2.78.98.08 2.06-.55 2.67-1.3z"/></svg>
+            </div>
+            <div>
+              <h3 class="dl-title">iPhone &amp; iPad</h3>
+              <div class="dl-ver">v<span data-ver="ios">3.396</span> · TestFlight</div>
+            </div>
+          </div>
+          <p class="dl-desc">Native app with lock-screen voice autoplay, offline Mapax, and multi-hop Bluetooth mesh.</p>
+          <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" rel="noopener" class="dl-btn" data-gc-event="home-ios-testflight">
+            Install via TestFlight →
           </a>
-          <button type="button" class="btn-share-circle" data-share-btn>
-            📲 Invite family &amp; neighbors
+        </article>
+
+        <!-- Mac -->
+        <article class="download-card" data-platform="mac">
+          <span class="rec-badge">Recommended for your device</span>
+          <div class="dl-card-head">
+            <div class="dl-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <div>
+              <h3 class="dl-title">Mac</h3>
+              <div class="dl-ver">v<span data-ver="macos">3.396</span> · Apple Silicon &amp; Intel</div>
+            </div>
+          </div>
+          <p class="dl-desc">Type with a full keyboard and mirror conversations end-to-end with TwinSync.</p>
+          <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" rel="noopener" class="dl-btn" data-gc-event="home-mac-testflight">
+            Install via TestFlight →
+          </a>
+        </article>
+
+        <!-- Android -->
+        <article class="download-card" data-platform="android">
+          <span class="rec-badge">Recommended for your device</span>
+          <div class="dl-card-head">
+            <div class="dl-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.6 9.48l1.84-3.18c.16-.31.04-.69-.26-.85-.29-.15-.65-.06-.83.22l-1.88 3.24a11.43 11.43 0 0 0-8.94 0L5.65 5.67c-.19-.28-.54-.37-.83-.22-.3.16-.42.54-.26.85l1.84 3.18C4.04 10.74 2.52 13.06 2.2 15.8h19.6c-.32-2.74-1.84-5.06-4.2-6.32zM7 13.5a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5zm10 0a1.25 1.25 0 1 1 0-2.5 1.25 1.25 0 0 1 0 2.5z"/></svg>
+            </div>
+            <div>
+              <h3 class="dl-title">Android</h3>
+              <div class="dl-ver">v<span data-ver="android">1.159</span> · Google Play &amp; APK</div>
+            </div>
+          </div>
+          <p class="dl-desc">Step-by-step guide to join Google Play closed testing or download the direct APK.</p>
+          <a href="../download/?lang=en#androidCard" class="dl-btn" data-gc-event="home-android-download">
+            Download for Android →
+          </a>
+        </article>
+      </div>
+
+      <p class="download-footnote">Requires iOS 16+ / Android 8+ · 100% free</p>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ================================================
+       3. SCROLLYTELLING STORY (#problema)
+  ================================================ -->
+  <section id="problema" aria-labelledby="problema-heading">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div class="section-eyebrow">Message Journey</div>
+        <h2 class="section-title" id="problema-heading">When the network drops, your message shifts paths.</h2>
+        <p class="section-sub">Zero manual settings or hidden toggles: Chax senses what radios are alive around you.</p>
+      </div>
+
+      <div class="story-grid">
+        <div class="story-steps">
+          <article class="story-step is-active" data-step="1" tabindex="0">
+            <div class="story-kicker">01 · Online</div>
+            <h3>Instant delivery over decentralized relays</h3>
+            <p>While Wi-Fi or 5G is available, texts, voice, and offline map packs cross continents via Nostr relays with zero central servers or phone numbers.</p>
+          </article>
+
+          <article class="story-step" data-step="2" tabindex="0">
+            <div class="story-kicker">02 · No Coverage</div>
+            <h3>Towers go dark, your conversation stays alive</h3>
+            <p>On dead highways, crowded stadiums, or blackouts, cloud-only messengers freeze. Chax detects the loss immediately and wakes the local mesh.</p>
+          </article>
+
+          <article class="story-step" data-step="3" tabindex="0">
+            <div class="story-kicker">03 · Encrypted Hops</div>
+            <h3>Your sealed envelope hops phone-to-phone</h3>
+            <p>Messages travel encrypted and opaque across Bluetooth, Wi-Fi Direct, or LoRa radio (+30 km) using nearby phones as blind community bridges.</p>
+          </article>
+        </div>
+
+        <div class="story-visual-col">
+          <div class="story-visual" id="storyVisual" data-step="1">
+            <div class="story-status">
+              <span class="story-status-label status-s1">🌐 Step 1 · Fast internet (WAN relays)</span>
+              <span class="story-status-label status-s2">📡 Step 2 · Cell tower lost — scanning peers</span>
+              <span class="story-status-label status-s3">🔒 Step 3 · Encrypted multi-hop mesh active</span>
+              <div class="story-step-dots" aria-hidden="true">
+                <span></span><span></span><span></span>
+              </div>
+            </div>
+
+            <svg id="meshDiagramSvg" viewBox="0 0 700 240" width="100%" role="img" aria-labelledby="meshDiagramTitle" style="overflow:visible">
+              <title id="meshDiagramTitle">Interactive diagram showing internet routing and encrypted multi-hop mesh delivery</title>
+              <defs>
+                <filter id="glow-g" x="-30%" y="-30%" width="160%" height="160%">
+                  <feGaussianBlur stdDeviation="4" result="blur"/>
+                  <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                </filter>
+                <linearGradient id="path-grad" x1="0" y1="0" x2="1" y2="0">
+                  <stop offset="0%" stop-color="#38bdf8"/>
+                  <stop offset="100%" stop-color="#00f59b"/>
+                </linearGradient>
+              </defs>
+
+              <!-- Step 1 Layer: Direct WAN Route -->
+              <g class="svg-wan-group">
+                <path d="M 80 120 Q 335 28 590 120" stroke="#38bdf8" stroke-width="2.5" stroke-dasharray="6 4" fill="none"/>
+                <circle cx="335" cy="48" r="18" fill="#082f49" stroke="#38bdf8" stroke-width="1.5"/>
+                <text x="335" y="52" fill="#fff" font-size="11" text-anchor="middle" font-family="-apple-system,sans-serif">🌐</text>
+                <text x="335" y="22" fill="#38bdf8" font-size="9" font-weight="700" text-anchor="middle" font-family="-apple-system,sans-serif">WAN Relays</text>
+              </g>
+
+              <!-- Step 2 Layer: Tower outage -->
+              <g class="svg-cut-group">
+                <line x1="319" y1="32" x2="351" y2="64" stroke="#fb7185" stroke-width="3" stroke-linecap="round"/>
+                <line x1="351" y1="32" x2="319" y2="64" stroke="#fb7185" stroke-width="3" stroke-linecap="round"/>
+                <circle cx="80" cy="120" r="46" fill="none" stroke="#00f59b" stroke-width="1.2" stroke-dasharray="4 4" opacity="0.65"/>
+              </g>
+
+              <!-- Step 3 Layer: Multi-hop mesh -->
+              <g class="svg-mesh-group">
+                <path d="M 80 120 Q 200 70 330 120 Q 460 170 590 120" stroke="rgba(255,255,255,0.08)" stroke-width="2" fill="none"/>
+                <path d="M 80 120 Q 200 170 330 120 Q 460 70 590 120" stroke="rgba(255,255,255,0.08)" stroke-width="2" fill="none"/>
+                <path d="M 80 120 Q 200 70 330 120 Q 460 170 590 120" stroke="url(#path-grad)" stroke-width="2.5" fill="none" stroke-dasharray="8 5" opacity="0.8"/>
+
+                <circle cx="250" cy="85" r="16" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
+                <text x="250" y="89" fill="#fff" font-size="10" text-anchor="middle" font-family="-apple-system,sans-serif">📱</text>
+                <text x="250" y="109" fill="#b4b4bc" font-size="8.5" text-anchor="middle" font-family="-apple-system,sans-serif">Hop 1 (opaque)</text>
+
+                <circle cx="420" cy="155" r="16" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
+                <text x="420" y="159" fill="#fff" font-size="10" text-anchor="middle" font-family="-apple-system,sans-serif">📱</text>
+                <text x="420" y="179" fill="#b4b4bc" font-size="8.5" text-anchor="middle" font-family="-apple-system,sans-serif">Hop 2 (opaque)</text>
+
+                <circle r="5" fill="#00f59b" filter="url(#glow-g)">
+                  <animateMotion path="M 80 120 Q 200 70 330 120 Q 460 170 590 120" dur="2.2s" repeatCount="indefinite"/>
+                </circle>
+                <circle r="4" fill="#38bdf8" filter="url(#glow-g)">
+                  <animateMotion path="M 80 120 Q 200 70 330 120 Q 460 170 590 120" dur="2.2s" repeatCount="indefinite" begin="0.8s"/>
+                </circle>
+              </g>
+
+              <!-- Sender & receiver -->
+              <circle cx="80" cy="120" r="28" fill="rgba(0,245,155,0.12)" stroke="#00f59b" stroke-width="1.5"/>
+              <circle cx="80" cy="120" r="28" fill="rgba(0,245,155,0.06)" stroke="#00f59b" stroke-width="1" opacity="0.5">
+                <animateTransform attributeName="transform" type="scale" values="1;1.35;1" dur="2s" repeatCount="indefinite" additive="sum" origin="80 120"/>
+              </circle>
+              <circle cx="80" cy="120" r="16" fill="#052e16" stroke="#00f59b" stroke-width="2" filter="url(#glow-g)"/>
+              <text x="80" y="124" fill="#fff" font-size="11" text-anchor="middle" font-family="-apple-system,sans-serif">📱</text>
+              <text x="80" y="160" fill="#00f59b" font-size="9.5" text-anchor="middle" font-family="-apple-system,sans-serif" font-weight="700">You</text>
+
+              <circle cx="590" cy="120" r="28" fill="rgba(0,245,155,0.12)" stroke="#00f59b" stroke-width="1.5"/>
+              <circle cx="590" cy="120" r="16" fill="#052e16" stroke="#00f59b" stroke-width="2" filter="url(#glow-g)"/>
+              <text x="590" y="124" fill="#fff" font-size="11" text-anchor="middle" font-family="-apple-system,sans-serif">🎯</text>
+              <text x="590" y="160" fill="#00f59b" font-size="9.5" text-anchor="middle" font-family="-apple-system,sans-serif" font-weight="700">Your contact</text>
+              <text x="590" y="173" fill="#38bdf8" font-size="8.5" text-anchor="middle" font-family="-apple-system,sans-serif" font-weight="700">✓✓ Delivered</text>
+
+              <rect x="195" y="196" width="310" height="26" rx="13" fill="rgba(0,0,0,0.78)" stroke="rgba(0,245,155,0.35)" stroke-width="1"/>
+              <text x="350" y="213" fill="#00f59b" font-size="9" font-weight="700" text-anchor="middle" font-family="-apple-system,sans-serif">🔒 100% encrypted · Relays see zero content</text>
+            </svg>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ================================================
+       4. SIMULATOR + 3 PILLARS (#como-funciona)
+  ================================================ -->
+  <section id="como-funciona" aria-labelledby="how-heading">
+    <div class="wrap">
+      <div class="section-head center reveal">
+        <div class="section-eyebrow">Smart Routing</div>
+        <h2 class="section-title" id="how-heading">Fast internet. <span style="color:var(--green)">Unstoppable mesh.</span></h2>
+        <p class="section-sub">Switch modes below to see how Chax behaves on everyday Wi-Fi versus a complete outage.</p>
+      </div>
+
+      <div class="sim-box reveal" id="networkSim">
+        <div class="sim-controls" role="group" aria-label="Simulate connection state">
+          <button type="button" class="sim-btn" data-sim="online" aria-pressed="true">
+            ⚡ Internet Mode (Fast &amp; Sovereign)
+          </button>
+          <button type="button" class="sim-btn" data-sim="emergency" aria-pressed="false">
+            🤝 Community Mesh Mode (0 Bars)
           </button>
         </div>
+
+        <div class="sim-panel" id="sim-panel-emergency" hidden>
+          <div class="sim-col dead">
+            <div class="sim-col-label">Traditional centralized messaging</div>
+            <div class="sim-col-text">✕ When cell towers or Wi-Fi drop, two phones standing 20 meters apart are completely cut off.</div>
+          </div>
+          <div class="sim-col alive">
+            <div class="sim-col-label">Chax Community Mesh</div>
+            <div class="sim-col-text">✓ <strong>Automatic neighbor relays:</strong> sealed packets hop across nearby phones and LoRa (+30 km) with offline Mapax and voice.</div>
+          </div>
+        </div>
+
+        <div class="sim-panel" id="sim-panel-online">
+          <div class="sim-col wan">
+            <div class="sim-col-label">Internet Mode (Wi-Fi / 5G)</div>
+            <div class="sim-col-text">⚡ <strong>Instant delivery</strong> across iPhone, iPad, Mac &amp; Android via decentralized WAN relays and E2EE <code>TwinSync</code>.</div>
+          </div>
+          <div class="sim-col alive">
+            <div class="sim-col-label">Zero-Surveillance Sovereignty</div>
+            <div class="sim-col-text">🛡️ <strong>No phone number or SIM:</strong> Protocol v2 (<code>Sealed Sender</code>) and cryptographic keys stored solely on your hardware.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="pillars-grid reveal">
+        <article class="pillar-card">
+          <div class="pillar-kicker">01 · Identity</div>
+          <h3>No phone number or SIM</h3>
+          <p>Your keys are generated on your own device. Pair face-to-face via QR in 2 seconds without sharing phone or email.</p>
+        </article>
+        <article class="pillar-card">
+          <div class="pillar-kicker">02 · Community</div>
+          <h3>Blind bridge node</h3>
+          <p>Your phone quietly helps neighbors by forwarding opaque sealed envelopes while its battery-aware scheduler protects power.</p>
+        </article>
+        <article class="pillar-card">
+          <div class="pillar-kicker">03 · Privacy</div>
+          <h3>End-to-end encrypted</h3>
+          <p>No intermediate relay or bridge device can read your messages or profile who you talk to.</p>
+        </article>
       </div>
     </div>
   </section>
@@ -1310,234 +1757,62 @@
   <div class="divider"></div>
 
   <!-- ================================================
-       FEATURES
+       5. 6 CORE FEATURES (#funciones)
   ================================================ -->
-  <section id="funciones">
+  <section id="funciones" aria-labelledby="features-heading">
     <div class="wrap">
-      <div class="section-head fade-up">
-        <div class="section-label">Key Capabilities</div>
-        <h2 class="section-title">Fast every day.<br>Sovereign on every route.</h2>
-        <p class="section-sub">Engineered to fly on daily Wi-Fi or 5G with offline cartography and multi-device sync—and seamlessly form a neighbor mesh whenever coverage fades.</p>
+      <div class="section-head reveal">
+        <div class="section-eyebrow">Core Features</div>
+        <h2 class="section-title" id="features-heading">Built for daily freedom. Ready for anything.</h2>
+        <p class="section-sub">Fast on everyday Wi-Fi and loaded with offline maps, lock-screen voice, and LoRa support off-grid.</p>
       </div>
 
-      <!-- FEATURE 1: OFFLINE MAPS & SHARED CARTOGRAPHY -->
-      <div class="feature-card fade-up" id="feature-mapax">
-        <div class="feature-card-body">
-          <div class="feature-tag tag-green">🗺️ Shared Offline Mapax</div>
-          <h3 class="feature-headline">Carry, mark, and share entire territories with zero coverage.</h3>
-          <p class="feature-desc">
-            Store crisp OpenStreetMap and satellite layers right on your device alongside a live directional radar toward friends. Save custom spots, send collections inside any chat, or export portable <code>.chaxmap</code> files for your whole crew.
-          </p>
-          <ul class="feature-list">
-            <li><strong>Shareable bookmark collections:</strong> send trailheads, rally points, and routes straight in chat or via <code>.chaxmap</code></li>
-            <li><strong>OpenStreetMap + Satellite offline:</strong> zero third-party commercial API keys or location tracking</li>
-            <li><strong>Exact distance and bearing</strong> to team members and family in meters</li>
-            <li><strong>Local-only trail history &amp; smart cache limits</strong> so storage stays tidy</li>
-          </ul>
-        </div>
-        <div class="feature-visual">
-          <div class="blob" style="width:300px;height:300px;background:radial-gradient(circle,rgba(0,245,155,0.18),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
-          <div class="phone-mock float-a">
-            <div class="phone-island"></div>
-            <div class="phone-screen">
-              <img src="../assets/screenshots/iphone/03_mapax.png" alt="Chax Offline Maps View" loading="lazy" width="1320" height="2868">
-            </div>
+      <div class="features-grid">
+        <article class="feat-card has-media reveal" id="feature-mapax">
+          <div>
+            <span class="feat-tag">Offline Mapax</span>
+            <h3 class="feat-title" style="margin:12px 0 10px;">Download maps and share pins in chat.</h3>
+            <p class="feat-desc">Cache OpenStreetMap and satellite tiles locally, organize landmark groups, and export portable <code>.chaxmap</code> territory packs.</p>
           </div>
-          <div class="float-bubble fb-green float-b" style="top:18%;right:10%;">
-            <div class="bubble-label">Shared territory</div>
-            <div class="bubble-value">.chaxmap + 42 m →</div>
+          <div class="feat-shot">
+            <img src="../assets/screenshots/mapax_iphone.webp" alt="Shareable offline Mapax view in Chax" loading="lazy" width="1320" height="2868">
           </div>
-          <div class="float-bubble fb-blue float-a" style="bottom:20%;left:6%;">
-            <div class="bubble-label">Map engine</div>
-            <div class="bubble-value">100% Offline ✓</div>
-          </div>
-        </div>
-      </div>
+        </article>
 
-      <!-- FEATURE 2: VOICE AUTOPLAY -->
-      <div class="feature-card reverse fade-up" id="feature-ptt">
-        <div class="feature-card-body">
-          <div class="feature-tag tag-coral">🎙️ Instant Voice &amp; Lock-Screen Autoplay</div>
-          <h3 class="feature-headline">Hold, speak, release. Heard aloud even while your phone stays locked.</h3>
-          <p class="feature-desc">
-            With hands-free autoplay enabled, incoming voice dispatches play automatically out loud through your speaker while your phone stays safely in a pocket, backpack, or handlebar mount.
-          </p>
-          <ul class="feature-list">
-            <li><strong>Instant walkie-talkie feel:</strong> lightweight compressed dispatch without lag</li>
-            <li><strong>Hands-free lock-screen playback:</strong> ideal on bikes, trails, or team logistics</li>
-            <li><strong>On-device voice transcription:</strong> read silently in noisy or quiet places</li>
-            <li><strong>E2EE encrypted voice</strong> across BLE, Mesh hops, and Internet relays</li>
-          </ul>
-        </div>
-        <div class="feature-visual">
-          <div class="blob" style="width:280px;height:280px;background:radial-gradient(circle,rgba(251,113,133,0.16),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
-          <div class="phone-mock float-b">
-            <div class="phone-island"></div>
-            <div class="phone-screen">
-              <img src="../assets/screenshots/iphone/02_chat_directo.png" alt="Chax Lock Screen Voice Autoplay" loading="lazy" width="1320" height="2868">
-            </div>
+        <article class="feat-card has-media reveal" id="feature-ptt">
+          <div>
+            <span class="feat-tag coral">Tactical Voice</span>
+            <h3 class="feat-title" style="margin:12px 0 10px;">Listen hands-free even while locked.</h3>
+            <p class="feat-desc">Walkie-talkie voice autoplay across Bluetooth, mesh, or internet, paired with on-device transcription when you need silence.</p>
           </div>
-          <div class="float-bubble fb-coral float-a" style="top:18%;left:8%;">
-            <div class="bubble-label">Screen locked</div>
-            <div class="bubble-value">Autoplay Active ✓</div>
+          <div class="feat-shot">
+            <img src="../assets/screenshots/chat_ptt_iphone.webp" alt="Voice autoplay and transcription in Chax" loading="lazy" width="1320" height="2868">
           </div>
-          <div class="float-bubble float-b" style="bottom:20%;right:8%;">
-            <div class="bubble-label">Speech to text</div>
-            <div class="bubble-value">Transcribed ✓</div>
-          </div>
-        </div>
-      </div>
+        </article>
 
-      <!-- FEATURE 3 + 4 DUO -->
-      <div class="feature-duo fade-up" id="feature-extras">
-        <div class="feature-card" id="feature-privacidad">
-          <div class="feature-card-body">
-            <div class="feature-tag tag-purple">🔐 Sovereign Identity</div>
-            <h3 class="feature-headline" style="font-size:clamp(1.3rem,2.5vw,1.9rem)">No phone number. No email. No cloud accounts.</h3>
-            <p class="feature-desc">Your cryptographic identity is born locally on your phone. Pair via QR code in 2 seconds before trips or emergencies: nobody can suspend your account or harvest your address book.</p>
-            <ul class="feature-list">
-              <li>Face-to-face <strong>QR code linking</strong> in seconds</li>
-              <li><strong>Zero censorship</strong> or server lockouts</li>
-              <li>True <strong>end-to-end encrypted</strong> routing</li>
-            </ul>
-          </div>
-          <div class="feature-visual">
-            <div class="blob" style="width:200px;height:200px;background:radial-gradient(circle,rgba(167,139,250,0.2),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
-            <div class="phone-mock float-a" style="width:165px">
-              <div class="phone-island" style="width:54px;height:8px"></div>
-              <div class="phone-screen">
-                <img src="../assets/screenshots/iphone/04_identidad.png" alt="Chax Sovereign QR Identity" loading="lazy" width="1320" height="2868">
-              </div>
-            </div>
-          </div>
-        </div>
+        <article class="feat-card reveal" id="feature-privacidad">
+          <span class="feat-tag purple">Sovereign Privacy</span>
+          <h3 class="feat-title">Zero phone numbers. Zero cloud accounts.</h3>
+          <p class="feat-desc">Hardware-born cryptographic keys verified with <code>SHA-256</code> fingerprints and 2-second QR linking.</p>
+        </article>
 
-        <div class="feature-card" id="feature-stickers">
-          <div class="feature-card-body">
-            <div class="feature-tag tag-amber">✨ P2P Stickers &amp; Media</div>
-            <h3 class="feature-headline" style="font-size:clamp(1.3rem,2.5vw,1.9rem)">Share photos, video &amp; stickers even with zero cell signal.</h3>
-            <p class="feature-desc">Compress visual cutouts to ~25 KB so moments and visual cues travel cleanly over direct Bluetooth Mesh when cellular towers are completely unreachable.</p>
-            <ul class="feature-list">
-              <li><strong>Long-press auto-cutout</strong> directly from any photo</li>
-              <li><strong>Ultra-lightweight BLE/Mesh presets</strong> tuned for low-bandwidth hops</li>
-              <li>Sends <strong>phone-to-phone</strong> with zero data usage</li>
-            </ul>
-          </div>
-          <div class="feature-visual">
-            <div class="blob" style="width:200px;height:200px;background:radial-gradient(circle,rgba(251,191,36,0.16),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
-            <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:14px;">
-              <div style="font-size:4.8rem;filter:drop-shadow(0 0 20px rgba(251,191,36,0.45))" aria-hidden="true">🧗‍♂️</div>
-              <div style="background:rgba(251,191,36,0.12);border:1px solid rgba(251,191,36,0.35);border-radius:12px;padding:10px 18px;font-size:0.78rem;color:var(--amber);font-weight:700">✓ Sticker ~25 KB · Ready over Mesh</div>
-            </div>
-          </div>
-        </div>
-      </div>
+        <article class="feat-card reveal" id="feature-grupos">
+          <span class="feat-tag blue">Groups &amp; TwinSync</span>
+          <h3 class="feat-title">iPhone, iPad, Mac &amp; Android united.</h3>
+          <p class="feat-desc">Open, moderated, or alert groups plus end-to-end encrypted <code>TwinSync</code> mirroring between phone and Mac.</p>
+        </article>
 
-      <!-- FEATURE 3B + 4B DUO: BRIDGE NODE & PROTOCOL V2 / TWINSYNC -->
-      <div class="feature-duo fade-up" id="feature-extras-mesh">
-        <div class="feature-card" id="feature-nodo">
-          <div class="feature-card-body">
-            <div class="feature-tag tag-green">🤝 Living Community Mesh</div>
-            <h3 class="feature-headline" style="font-size:clamp(1.3rem,2.5vw,1.9rem)">Be a bridge node: carry sealed packets without seeing them.</h3>
-            <p class="feature-desc">Every device running Chax strengthens nearby resilience automatically, relaying opaque encrypted traffic with our battery-aware <code>PathTable</code> scheduler and proximity RSSI radar.</p>
-            <ul class="feature-list">
-              <li><strong>RSSI Proximity Radar:</strong> estimate contacts in rings (&lt; 3 m, &lt; 10 m, &lt; 30 m)</li>
-              <li><strong>1-tap SOS amplification</strong> across neighboring phones</li>
-              <li><strong>Smart BLE duty cycling</strong> keeps battery healthy all day</li>
-            </ul>
-          </div>
-          <div class="feature-visual">
-            <div class="blob" style="width:200px;height:200px;background:radial-gradient(circle,rgba(0,245,155,0.2),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
-            <div class="phone-mock float-a" style="width:165px">
-              <div class="phone-island" style="width:54px;height:8px"></div>
-              <div class="phone-screen">
-                <img src="../assets/screenshots/iphone/04_radar_mesh.png" alt="Chax Community Mesh Radar and Bridge Nodes" loading="lazy" width="1320" height="2868">
-              </div>
-            </div>
-          </div>
-        </div>
+        <article class="feat-card reveal" id="feature-autopurga">
+          <span class="feat-tag">Anti-Forensic Autopurge</span>
+          <h3 class="feat-title">You decide how long each chat lives.</h3>
+          <p class="feat-desc">Automatic flash erasure timers (1h, 24h, 7d) and a one-tap Panic Wipe to scrub local storage immediately.</p>
+        </article>
 
-        <div class="feature-card" id="feature-v2">
-          <div class="feature-card-body">
-            <div class="feature-tag tag-blue">🔐 Protocol v2 &amp; TwinSync</div>
-            <h3 class="feature-headline" style="font-size:clamp(1.3rem,2.5vw,1.9rem)">Sealed Sender &amp; multi-device sync with zero cloud.</h3>
-            <p class="feature-desc">Control transport status at a glance from a tri-modal pill (Online, Mesh, LoRa) and link iPhone, iPad, Mac, and Android under verifiable cryptographic custody.</p>
-            <ul class="feature-list">
-              <li><strong>End-to-end <code>TwinSync</code>:</strong> mirror your account across Apple &amp; Android</li>
-              <li><strong>Verifiable <code>SHA-256</code> Constellation</strong> instead of phone numbers</li>
-              <li><strong>Tri-modal connectivity &amp; custom LoRa presets</strong> (LongFast, ShortTurbo)</li>
-            </ul>
-          </div>
-          <div class="feature-visual">
-            <div class="blob" style="width:200px;height:200px;background:radial-gradient(circle,rgba(56,189,248,0.2),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
-            <div class="phone-mock float-b" style="width:165px">
-              <div class="phone-island" style="width:54px;height:8px"></div>
-              <div class="phone-screen">
-                <img src="../assets/screenshots/iphone/05_ajustes_red.png" alt="Chax Network Settings and Protocol v2" loading="lazy" width="1320" height="2868">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- FEATURE 5: GROUPS + CROSS PLATFORM -->
-      <div class="feature-card fade-up" id="feature-grupos">
-        <div class="feature-card-body">
-          <div class="feature-tag tag-blue">👥 Groups &amp; Cross-Platform</div>
-          <h3 class="feature-headline">iPhone, iPad, Mac &amp; Android.<br>Your whole circle on one unstoppable network.</h3>
-          <p class="feature-desc">
-            Create private family groups, trail squads, or neighborhood alert channels with flexible moderation. Seamlessly chat from your Mac desktop with full keyboard support.
-          </p>
-          <ul class="feature-list">
-            <li><strong>Cross-OS interoperability:</strong> iOS, macOS &amp; Android over mesh and internet</li>
-            <li><strong>3 group modes:</strong> open chat, moderated, or alert broadcasts</li>
-            <li><strong>24h ephemeral stories</strong> &amp; private inline group replies</li>
-            <li><strong>Sovereign Twin Sync:</strong> E2EE phone-to-Mac sync without cloud backups</li>
-          </ul>
-        </div>
-        <div class="feature-visual">
-          <div class="blob" style="width:300px;height:300px;background:radial-gradient(circle,rgba(56,189,248,0.16),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
-          <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:16px;padding:0 16px;">
-            <div style="background:#0d0d12;border:1.5px solid rgba(255,255,255,0.12);border-radius:14px;overflow:hidden;width:100%;max-width:330px;box-shadow:0 24px 60px rgba(0,0,0,0.65)">
-              <div style="background:#1a1a1f;padding:10px 14px;display:flex;align-items:center;gap:8px" aria-hidden="true">
-                <span style="width:10px;height:10px;border-radius:50%;background:#ff5f57;display:inline-block"></span>
-                <span style="width:10px;height:10px;border-radius:50%;background:#febc2e;display:inline-block"></span>
-                <span style="width:10px;height:10px;border-radius:50%;background:#28c840;display:inline-block"></span>
-                <span style="font-size:0.72rem;color:var(--text-dim);margin-left:8px">Chax · macOS</span>
-              </div>
-              <img src="../assets/screenshots/mac/01_conversaciones.png" alt="Chax native Mac app" loading="lazy" width="580" height="832" style="width:100%;height:auto;display:block">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- FEATURE 6: AUTOPURGE -->
-      <div class="feature-card reverse fade-up" id="feature-autopurga">
-        <div class="feature-card-body">
-          <div class="feature-tag tag-green">🛡️ Anti-Forensic Autopurge</div>
-          <h3 class="feature-headline">Zero flash-memory traces.<br>You choose how long conversations survive.</h3>
-          <p class="feature-desc">
-            Set automatic wipe timers (1 Hour, 24 Hours, or 7 Days) or trigger the one-tap Panic Protocol. When time expires, Chax atomically scrubs RAM and encrypted local flash storage.
-          </p>
-          <ul class="feature-list">
-            <li><strong>Granular timers:</strong> 1h, 24h, or 7d globally or per conversation</li>
-            <li><strong>Panic Wipe:</strong> instant emergency shredder in one tap</li>
-            <li><strong>True device Zero-Trust:</strong> zero copies ever sit on external servers</li>
-          </ul>
-        </div>
-        <div class="feature-visual">
-          <div class="blob" style="width:280px;height:280px;background:radial-gradient(circle,rgba(0,245,155,0.18),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
-          <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(0,245,155,0.25);border-radius:20px;padding:26px 22px;max-width:280px;text-align:center;box-shadow:0 16px 40px rgba(0,0,0,0.5);">
-            <div style="font-size:3.2rem;line-height:1" aria-hidden="true">⏱️</div>
-            <div style="font-weight:800;font-size:1.15rem;color:#fff">Autopurge Armed</div>
-            <div style="background:rgba(0,245,155,0.12);border:1px solid rgba(0,245,155,0.3);border-radius:10px;padding:6px 14px;font-size:0.75rem;color:var(--green);font-weight:700">Window: 24 Hours</div>
-            <div style="font-size:0.78rem;color:var(--text-secondary);line-height:1.45">Physical flash erasure leaving zero recoverable fragments.</div>
-          </div>
-          <div class="float-bubble fb-green float-a" style="top:15%;right:8%;">
-            <div class="bubble-label">Anti-Forensic</div>
-            <div class="bubble-value">Zero-Trust ✓</div>
-          </div>
-        </div>
+        <article class="feat-card reveal" id="feature-nodo">
+          <span class="feat-tag orange">Bridge Node &amp; LoRa</span>
+          <h3 class="feat-title">RSSI proximity radar &amp; LoRa (+30 km).</h3>
+          <p class="feat-desc">Gauge nearby teammates in meters off-grid and link 915/868 MHz LoRa radios to cross mountains or darkened cities.</p>
+        </article>
       </div>
     </div>
   </section>
@@ -1545,157 +1820,44 @@
   <div class="divider"></div>
 
   <!-- ================================================
-       HOW IT WORKS — 4 ROUTES
+       6. SCENARIOS CAROUSEL (#escenarios)
   ================================================ -->
-  <section id="como-funciona">
+  <section id="escenarios" aria-labelledby="scenarios-heading">
     <div class="wrap">
-      <div class="section-head center fade-up">
-        <div class="section-label">Cognitive Automatic Switching</div>
-        <h2 class="section-title">Fast internet. <span style="color:var(--green)">Unstoppable mesh.</span></h2>
-        <p class="section-sub">No ports to configure and no settings to toggle when reception vanishes. Chax automatically picks the fastest living route.</p>
+      <div class="section-head reveal">
+        <div class="section-eyebrow">Real Scenarios</div>
+        <h2 class="section-title" id="scenarios-heading">Where Chax shines daily — and when it matters most.</h2>
+        <p class="section-sub">Swipe horizontally to see how Chax handles outages, remote trails, and jammed stadiums.</p>
       </div>
 
-      <div class="routes-grid fade-up">
-        <div class="route-card">
-          <div class="route-num" style="color:var(--blue)">Route 01</div>
-          <div class="route-icon" aria-hidden="true">🌐</div>
-          <h3 class="route-title">Blazing Internet</h3>
-          <p class="route-desc">When WiFi or 5G is up, messages cross continents in milliseconds through decentralized, encrypted Nostr WAN relays.</p>
-          <div class="route-badge" style="background:rgba(56,189,248,0.12);color:var(--blue)">Everyday speed</div>
-        </div>
-        <div class="route-card">
-          <div class="route-num" style="color:var(--green)">Route 02</div>
-          <div class="route-icon" aria-hidden="true">📱</div>
-          <h3 class="route-title">Direct Bluetooth</h3>
-          <p class="route-desc">Within 100 m, voice and text jump straight phone-to-phone with zero mobile data—even in airplane mode or dead highways.</p>
-          <div class="route-badge" style="background:rgba(0,245,155,0.12);color:var(--green)">0 bars · 0 data</div>
-        </div>
-        <div class="route-card">
-          <div class="route-num" style="color:var(--purple)">Route 03</div>
-          <div class="route-icon" aria-hidden="true">⚡</div>
-          <h3 class="route-title">Multi-Hop Mesh</h3>
-          <p class="route-desc">At festivals, rural trails, or contingencies, sealed packets hop encrypted across nearby Chax phones to escape coverage gaps.</p>
-          <div class="route-badge" style="background:rgba(167,139,250,0.12);color:var(--purple)">Living neighbor mesh</div>
-        </div>
-        <div class="route-card" style="border: 1px solid rgba(251, 146, 60, 0.4); background: linear-gradient(180deg, rgba(251, 146, 60, 0.08) 0%, var(--bg1) 100%);">
-          <div class="route-num" style="color:var(--orange)">Route 04</div>
-          <div class="route-icon" aria-hidden="true">📻</div>
-          <h3 class="route-title">LoRa Radio (+30 km)</h3>
-          <p class="route-desc">Pair a pocket LoRa node over BLE to bridge valleys, mountain ridges, or darkened cities without carriers.</p>
-          <div class="route-badge" style="background:rgba(251,146,60,0.15);color:var(--orange)">Up to 30 km range</div>
-        </div>
-      </div>
+      <div class="scenarios-track reveal" role="region" aria-label="Chax real-world scenarios">
+        <article class="scenario-slide">
+          <div class="scenario-kicker">01 · Power &amp; tower outages</div>
+          <h3>When grids fail, your neighborhood stays linked.</h3>
+          <div class="scenario-vs">Without Chax: cloud messaging goes silent even between neighbors 20 meters apart.</div>
+          <p class="scenario-help"><strong>With Chax:</strong> Phones automatically form blind bridge hops to relay SOS beacons and lock-screen voice.</p>
+        </article>
 
-      <!-- Animated SVG mesh diagram -->
-      <div class="fade-up" style="margin-top:48px;background:var(--bg1);border:1px solid var(--border);border-radius:var(--r-xl);padding:42px;overflow:hidden;">
-        <div style="text-align:center;margin-bottom:28px">
-          <div class="section-label">Mesh Network in Motion</div>
-          <h3 style="font-size:1.4rem;font-weight:800;letter-spacing:-0.025em">How your message gets through when cell towers fail</h3>
-        </div>
-        <div style="max-width:700px;margin:0 auto">
-          <svg id="meshDiagramSvg" viewBox="0 0 700 240" width="100%" role="img" aria-labelledby="meshDiagramTitle" style="overflow:visible">
-            <title id="meshDiagramTitle">Encrypted multi-hop mesh transmission between phones without cellular signal</title>
-            <defs>
-              <filter id="glow-g" x="-30%" y="-30%" width="160%" height="160%">
-                <feGaussianBlur stdDeviation="4" result="blur"/>
-                <feComposite in="SourceGraphic" in2="blur" operator="over"/>
-              </filter>
-              <linearGradient id="path-grad" x1="0" y1="0" x2="1" y2="0">
-                <stop offset="0%" stop-color="#38bdf8"/>
-                <stop offset="100%" stop-color="#00f59b"/>
-              </linearGradient>
-            </defs>
+        <article class="scenario-slide">
+          <div class="scenario-kicker">02 · Mountains &amp; highways</div>
+          <h3>Navigate and coordinate miles past cell coverage.</h3>
+          <div class="scenario-vs">Without Chax: commercial cloud maps and chats stop working outside city limits.</div>
+          <p class="scenario-help"><strong>With Chax:</strong> Carry downloaded satellite Mapax tiles, share <code>.chaxmap</code> packs, and use hands-free convoy voice.</p>
+        </article>
 
-            <path d="M 80 120 Q 200 70 330 120 Q 460 170 590 120" stroke="rgba(255,255,255,0.08)" stroke-width="2" fill="none"/>
-            <path d="M 80 120 Q 200 170 330 120 Q 460 70 590 120" stroke="rgba(255,255,255,0.08)" stroke-width="2" fill="none"/>
-            <path d="M 80 120 Q 200 70 330 120 Q 460 170 590 120" stroke="url(#path-grad)" stroke-width="2.5" fill="none" stroke-dasharray="8 5" opacity="0.65"/>
+        <article class="scenario-slide">
+          <div class="scenario-kicker">03 · Concerts &amp; stadiums</div>
+          <h3>60,000 people. Full bars, zero throughput.</h3>
+          <div class="scenario-vs">Without Chax: messages queue for 40 minutes fighting one congested cellular tower.</div>
+          <p class="scenario-help"><strong>With Chax:</strong> Hops straight across nearby phones in the crowd while the RSSI Radar guides you to friends.</p>
+        </article>
 
-            <circle cx="80" cy="120" r="28" fill="rgba(0,245,155,0.12)" stroke="#00f59b" stroke-width="1.5"/>
-            <circle cx="80" cy="120" r="28" fill="rgba(0,245,155,0.06)" stroke="#00f59b" stroke-width="1" opacity="0.5">
-              <animateTransform attributeName="transform" type="scale" values="1;1.35;1" dur="2s" repeatCount="indefinite" additive="sum" origin="80 120"/>
-            </circle>
-            <circle cx="80" cy="120" r="16" fill="#052e16" stroke="#00f59b" stroke-width="2" filter="url(#glow-g)"/>
-            <text x="80" y="124" fill="#fff" font-size="11" text-anchor="middle" font-family="-apple-system,sans-serif">📱</text>
-            <text x="80" y="160" fill="#00f59b" font-size="9" text-anchor="middle" font-family="-apple-system,sans-serif" font-weight="700">You</text>
-
-            <circle cx="250" cy="85" r="16" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
-            <text x="250" y="89" fill="#fff" font-size="10" text-anchor="middle" font-family="-apple-system,sans-serif">📱</text>
-            <text x="250" y="109" fill="#94a3b8" font-size="8" text-anchor="middle" font-family="-apple-system,sans-serif">Hop 1 (opaque)</text>
-
-            <circle cx="420" cy="155" r="16" fill="#0f172a" stroke="#38bdf8" stroke-width="1.5"/>
-            <text x="420" y="159" fill="#fff" font-size="10" text-anchor="middle" font-family="-apple-system,sans-serif">📱</text>
-            <text x="420" y="179" fill="#94a3b8" font-size="8" text-anchor="middle" font-family="-apple-system,sans-serif">Hop 2 (opaque)</text>
-
-            <circle cx="590" cy="120" r="28" fill="rgba(0,245,155,0.12)" stroke="#00f59b" stroke-width="1.5"/>
-            <circle cx="590" cy="120" r="16" fill="#052e16" stroke="#00f59b" stroke-width="2" filter="url(#glow-g)"/>
-            <text x="590" y="124" fill="#fff" font-size="11" text-anchor="middle" font-family="-apple-system,sans-serif">🎯</text>
-            <text x="590" y="160" fill="#00f59b" font-size="9" text-anchor="middle" font-family="-apple-system,sans-serif" font-weight="700">Your contact</text>
-            <text x="590" y="172" fill="#38bdf8" font-size="8" text-anchor="middle" font-family="-apple-system,sans-serif" font-weight="700">✓✓ Delivered</text>
-
-            <circle r="5" fill="#00f59b" filter="url(#glow-g)">
-              <animateMotion path="M 80 120 Q 200 70 330 120 Q 460 170 590 120" dur="2.2s" repeatCount="indefinite"/>
-            </circle>
-            <circle r="4" fill="#38bdf8" filter="url(#glow-g)">
-              <animateMotion path="M 80 120 Q 200 70 330 120 Q 460 170 590 120" dur="2.2s" repeatCount="indefinite" begin="0.8s"/>
-            </circle>
-
-            <rect x="210" y="195" width="280" height="26" rx="13" fill="rgba(0,0,0,0.75)" stroke="rgba(0,245,155,0.35)" stroke-width="1"/>
-            <text x="350" y="212" fill="#00f59b" font-size="9" font-weight="700" text-anchor="middle" font-family="-apple-system,sans-serif">🔒 100% encrypted · Intermediate relays see zero content</text>
-          </svg>
-        </div>
-      </div>
-
-      <!-- LORA 30 KM SPOTLIGHT -->
-      <div class="fade-up" style="margin-top:28px;background:linear-gradient(135deg, rgba(251,146,60,0.09) 0%, rgba(15,23,42,0.88) 100%);border:1px solid rgba(251,146,60,0.35);border-radius:var(--r-xl);padding:38px;position:relative;overflow:hidden;">
-        <div style="display:flex;flex-wrap:wrap;gap:32px;align-items:center;justify-content:space-between;">
-          <div style="flex:1;min-width:280px;max-width:600px;">
-            <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(251,146,60,0.15);border:1px solid rgba(251,146,60,0.4);border-radius:100px;padding:6px 14px;color:var(--orange);font-size:0.75rem;font-weight:800;letter-spacing:0.05em;text-transform:uppercase;margin-bottom:14px;">
-              📻 Extreme Radio Range · LoRa 915 / 868 MHz
-            </div>
-            <h3 style="font-size:clamp(1.35rem,2.8vw,1.95rem);font-weight:800;letter-spacing:-0.03em;color:#fff;line-height:1.2;margin-bottom:12px;">
-              Cross 30 km with zero cell towers and zero monthly fees.
-            </h3>
-            <p style="font-size:0.92rem;color:var(--text-secondary);line-height:1.6;margin-bottom:20px;">
-              During backcountry expeditions, coastal sailing, or neighborhood contingencies, link a tiny LoRa radio node to Chax over Bluetooth to transmit messages and SOS coordinates miles past the horizon.
-            </p>
-            <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));gap:14px;">
-              <div style="background:rgba(255,255,255,0.035);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 16px;">
-                <div style="color:var(--orange);font-weight:800;font-size:1.05rem;margin-bottom:4px;">📡 +30 km line-of-sight</div>
-                <div style="color:var(--text-secondary);font-size:0.82rem;">Ultra-low power UHF radio waves with zero carrier or satellite subscriptions.</div>
-              </div>
-              <div style="background:rgba(255,255,255,0.035);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:14px 16px;">
-                <div style="color:var(--green);font-weight:800;font-size:1.05rem;margin-bottom:4px;">🔋 Days per charge</div>
-                <div style="color:var(--text-secondary);font-size:0.82rem;">Milliwatt transmission engineered for prolonged off-grid autonomy.</div>
-              </div>
-            </div>
-          </div>
-
-          <div style="flex:1;min-width:270px;max-width:390px;background:rgba(0,0,0,0.58);border:1px solid rgba(251,146,60,0.3);border-radius:18px;padding:24px;text-align:center;">
-            <div style="font-size:0.75rem;font-weight:800;color:var(--orange);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:16px;">LoRa Transmission Path</div>
-            <div style="display:flex;align-items:center;justify-content:space-between;position:relative;margin:22px 0;">
-              <div style="text-align:center;">
-                <div style="width:48px;height:48px;border-radius:12px;background:rgba(56,189,248,0.15);border:1px solid #38bdf8;display:flex;align-items:center;justify-content:center;font-size:1.35rem;margin:0 auto 6px;" aria-hidden="true">📱</div>
-                <div style="font-size:0.75rem;font-weight:700;color:#fff;">Your Phone</div>
-                <div style="font-size:0.68rem;color:var(--text-dim);">Chax App</div>
-              </div>
-              <div style="font-size:0.7rem;color:#38bdf8;font-weight:800;">BLE ➔</div>
-              <div style="text-align:center;">
-                <div style="width:48px;height:48px;border-radius:12px;background:rgba(251,146,60,0.15);border:1px solid #fb923c;display:flex;align-items:center;justify-content:center;font-size:1.35rem;margin:0 auto 6px;" aria-hidden="true">📻</div>
-                <div style="font-size:0.75rem;font-weight:700;color:#fb923c;">LoRa Node</div>
-                <div style="font-size:0.68rem;color:var(--text-dim);">Pocket</div>
-              </div>
-              <div style="font-size:0.7rem;color:#00f59b;font-weight:800;">~30 km ➔</div>
-              <div style="text-align:center;">
-                <div style="width:48px;height:48px;border-radius:12px;background:rgba(0,245,155,0.15);border:1px solid #00f59b;display:flex;align-items:center;justify-content:center;font-size:1.35rem;margin:0 auto 6px;" aria-hidden="true">🎯</div>
-                <div style="font-size:0.75rem;font-weight:700;color:#00f59b;">Receiver</div>
-                <div style="font-size:0.68rem;color:var(--text-dim);">Friend or Base</div>
-              </div>
-            </div>
-            <div style="font-size:0.78rem;color:var(--text-secondary);background:rgba(255,255,255,0.03);padding:10px 14px;border-radius:10px;border:1px solid rgba(255,255,255,0.07);line-height:1.45;">
-              💡 Help coordinates and critical dispatches without relying on any carrier.
-            </div>
-          </div>
-        </div>
+        <article class="scenario-slide">
+          <div class="scenario-kicker">04 · Daily sovereignty</div>
+          <h3>Your keys, your chats, and your devices under your control.</h3>
+          <div class="scenario-vs">Without Chax: accounts are locked to a SIM card and metadata piles up on servers.</div>
+          <p class="scenario-help"><strong>With Chax:</strong> Zero phone numbers, encrypted <code>TwinSync</code> across Apple &amp; Android, and programmable autopurge.</p>
+        </article>
       </div>
     </div>
   </section>
@@ -1703,158 +1865,80 @@
   <div class="divider"></div>
 
   <!-- ================================================
-       SCENARIOS (EMERGENCY FIRST)
+       7. SCREENSHOTS (#capturas)
   ================================================ -->
-  <section id="escenarios">
+  <section id="capturas" aria-labelledby="screens-heading">
     <div class="wrap">
-      <div class="section-head fade-up">
-        <div class="section-label" style="color:var(--green)">4 Real Scenarios</div>
-        <h2 class="section-title">Where Chax shines daily — and when it counts most.</h2>
-        <p class="section-sub">From everyday speed over Wi-Fi to remote expeditions and mutual aid off-grid.</p>
+      <div class="section-head center reveal">
+        <div class="section-eyebrow">On Your Screen</div>
+        <h2 class="section-title" id="screens-heading">iPhone, iPad, Mac &amp; Android.</h2>
+        <p class="section-sub">One encrypted protocol, one mesh network, and a native experience on every platform.</p>
       </div>
 
-      <div class="scenarios-grid fade-up">
-        <div class="scenario-card" style="border-top:3px solid var(--green)">
-          <div class="scenario-icon" aria-hidden="true">🤝</div>
-          <div class="scenario-label">Scenario 01 · Neighborhood solidarity &amp; outages</div>
-          <h3 class="scenario-title">When grid power or towers drop, your community stays linked.</h3>
-          <div class="scenario-problem">
-            <strong style="color:var(--amber)">The challenge:</strong> Right after a power outage or cell tower overload, centralized networks lock up just as neighbors and family need to coordinate.
-          </div>
-          <p class="scenario-solution">
-            <strong>With Chax in your neighborhood:</strong> Your phone and nearby devices form an automatic bridge mesh. Sealed messages hop block to block and reach up to 30 km with an optional LoRa link.
-          </p>
-          <ul class="scenario-bullets">
-            <li><span class="check">✓</span> <span><strong>Community SOS beacon:</strong> Share safe status and coordinates offline</span></li>
-            <li><span class="check">✓</span> <span><strong>Voice autoplay:</strong> Hear critical check-ins hands-free even while locked</span></li>
-          </ul>
-        </div>
-
-        <div class="scenario-card">
-          <div class="scenario-icon" aria-hidden="true">🗺️</div>
-          <div class="scenario-label">Scenario 02 · Highways, trails &amp; backcountry</div>
-          <h3 class="scenario-title">Shared territory miles beyond the nearest cell tower.</h3>
-          <div class="scenario-problem">
-            <strong style="color:var(--amber)">The challenge:</strong> Heading into mountain passes, convoys, or remote trails renders cloud-dependent maps and chat apps unusable.
-          </div>
-          <p class="scenario-solution">
-            <strong>With Chax pre-installed:</strong> Navigate with offline satellite Mapax tiles, share pin collections in chat, or export portable <code>.chaxmap</code> route packs for your whole crew.
-          </p>
-          <ul class="scenario-bullets">
-            <li><span class="check">✓</span> <span><strong>Offline OpenStreetMap &amp; satellite tiles</strong> saved directly on your phone</span></li>
-            <li><span class="check">✓</span> <span><strong>Hands-free voice dispatch</strong> built for convoys, cycling &amp; hiking</span></li>
-          </ul>
-        </div>
-
-        <div class="scenario-card">
-          <div class="scenario-icon" aria-hidden="true">🎵</div>
-          <div class="scenario-label">Scenario 03 · Festivals, stadiums &amp; crowds</div>
-          <h3 class="scenario-title">60,000 people. Full 5G bars, zero throughput. Find your group fast.</h3>
-          <div class="scenario-problem">
-            <strong style="color:var(--amber)">The challenge:</strong> Your reception bars look full yet messages stall for 40 minutes because everyone fights for one congested tower.
-          </div>
-          <p class="scenario-solution">
-            <strong>With Chax in your crew:</strong> Chax skips congested towers completely and hops across nearby festival phones in milliseconds.
-          </p>
-          <ul class="scenario-bullets">
-            <li><span class="check">✓</span> <span><strong>Higher density makes the mesh stronger</strong> with multi-hop routing</span></li>
-            <li><span class="check">✓</span> <span><strong>RSSI proximity radar</strong> (&lt; 3 m, &lt; 10 m, &lt; 30 m) to regroup effortlessly</span></li>
-          </ul>
-        </div>
-
-        <div class="scenario-card">
-          <div class="scenario-icon" aria-hidden="true">🛡️</div>
-          <div class="scenario-label">Scenario 04 · Sovereignty &amp; multi-device custody</div>
-          <h3 class="scenario-title">Your keys, your chats, and all your devices under your control.</h3>
-          <div class="scenario-problem">
-            <strong style="color:var(--amber)">The challenge:</strong> Traditional platforms bind your identity to a phone number and expose your social graph on centralized servers.
-          </div>
-          <p class="scenario-solution">
-            <strong>With Chax:</strong> Your identity lives in your own hardware, mirrors across iPhone, iPad, Mac &amp; Android via <code>TwinSync</code> E2EE, and scrubs local traces with anti-forensic autopurge.
-          </p>
-          <ul class="scenario-bullets">
-            <li><span class="check">✓</span> <span><strong>No phone number</strong> or centralized identity lock-in</span></li>
-            <li><span class="check">✓</span> <span><strong>Anti-forensic autopurge</strong> &amp; <code>TwinSync</code> across all your devices</span></li>
-          </ul>
-        </div>
+      <div class="device-tabs-bar reveal" role="group" aria-label="Filter screenshots by device">
+        <button type="button" class="device-tab active" data-device="iphone" aria-pressed="true">📱 iPhone</button>
+        <button type="button" class="device-tab" data-device="android" aria-pressed="false">🤖 Android</button>
+        <button type="button" class="device-tab" data-device="ipad" aria-pressed="false">📲 iPad</button>
+        <button type="button" class="device-tab" data-device="mac" aria-pressed="false">💻 Mac</button>
       </div>
+
+      <div class="screenshots-row reveal" id="screenshots-row"></div>
     </div>
   </section>
 
   <div class="divider"></div>
 
   <!-- ================================================
-       COMPARE TABLE (ZERO THIRD-PARTY TRADEMARKS)
+       8. SIMPLIFIED COMPARISON (#comparar)
   ================================================ -->
-  <section id="comparar" class="offscreen-section">
+  <section id="comparar" aria-labelledby="compare-heading">
     <div class="wrap">
-      <div class="section-head center fade-up">
-        <div class="section-label">Side-by-Side Comparison</div>
-        <h2 class="section-title">Fast internet. <span style="color:var(--green)">Unstoppable mesh.</span></h2>
-        <p class="section-sub">On Wi-Fi they look similar. When digital sovereignty, shared offline maps, and community bridge nodes matter, the difference is total.</p>
+      <div class="section-head center reveal">
+        <div class="section-eyebrow">Comparison</div>
+        <h2 class="section-title" id="compare-heading">Why switch to Chax today.</h2>
+        <p class="section-sub">On Wi-Fi they look alike. When sovereignty and off-grid resilience matter, there is no contest.</p>
       </div>
 
-      <div class="compare-wrap fade-up">
+      <div class="compare-wrap reveal">
         <div style="overflow-x:auto">
           <table class="compare-table">
             <thead>
               <tr>
-                <th>Scenario or Capability</th>
-                <th class="col-chax">CHAX</th>
-                <th>Centralized Messaging</th>
-                <th>Cloud Chat Apps</th>
-                <th>Traditional Messengers</th>
+                <th>Capability</th>
+                <th class="col-chax">Chax</th>
+                <th>Traditional centralized messaging</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td><strong>Works when cell &amp; WiFi infrastructure dies</strong></td>
-                <td class="col-chax"><span class="yes">✓ Instant autonomous mesh</span></td>
-                <td><span class="no">✕ Unreachable</span></td>
-                <td><span class="no">✕ Unreachable</span></td>
+                <td>Works when cell networks &amp; Wi-Fi go down</td>
+                <td class="col-chax"><span class="yes">✓ BLE + Wi-Fi + LoRa mesh</span></td>
                 <td><span class="no">✕ Unreachable</span></td>
               </tr>
               <tr>
-                <td><strong>Everyday speed over WiFi / 5G</strong></td>
+                <td>Everyday speed over Wi-Fi / 5G</td>
                 <td class="col-chax"><span class="yes">✓ Real-time multi-relay</span></td>
                 <td><span class="yes">✓ Cloud dependent</span></td>
-                <td><span class="yes">✓ Cloud dependent</span></td>
-                <td><span class="yes">✓ Cloud dependent</span></td>
               </tr>
               <tr>
-                <td><strong>No phone number or SIM required</strong></td>
+                <td>No phone number or SIM card required</td>
                 <td class="col-chax"><span class="yes">✓ Zero personal data</span></td>
                 <td><span class="no">✕ Mandatory</span></td>
-                <td><span class="no">✕ Mandatory</span></td>
-                <td><span class="no">✕ Mandatory</span></td>
               </tr>
               <tr>
-                <td><strong>Built-in offline satellite &amp; street maps</strong></td>
-                <td class="col-chax"><span class="yes">✓ Streets + Satellite</span></td>
-                <td><span class="no">✕ None</span></td>
-                <td><span class="no">✕ None</span></td>
+                <td>Offline satellite maps &amp; shareable packs (.chaxmap)</td>
+                <td class="col-chax"><span class="yes">✓ Built-in &amp; shareable</span></td>
                 <td><span class="no">✕ None</span></td>
               </tr>
               <tr>
-                <td><strong>Lock-screen voice autoplay</strong></td>
-                <td class="col-chax"><span class="yes">✓ Even off-grid</span></td>
-                <td><span class="no">✕ Requires cloud</span></td>
-                <td><span class="no">✕ Requires cloud</span></td>
+                <td>Hands-free lock-screen voice autoplay</td>
+                <td class="col-chax"><span class="yes">✓ Works even off-grid</span></td>
                 <td><span class="no">✕ Requires cloud</span></td>
               </tr>
               <tr>
-                <td><strong>LoRa Radio support (+30 km)</strong></td>
-                <td class="col-chax"><span class="yes">✓ 915 / 868 MHz native</span></td>
-                <td><span class="no">✕ Unsupported</span></td>
-                <td><span class="no">✕ Unsupported</span></td>
-                <td><span class="no">✕ Unsupported</span></td>
-              </tr>
-              <tr>
-                <td><strong>Anti-forensic flash autopurge</strong></td>
-                <td class="col-chax"><span class="yes">✓ 1h, 24h, 7d or Panic</span></td>
-                <td><span class="no">✕ Server logs</span></td>
-                <td><span class="no">✕ Cloud history</span></td>
-                <td><span class="no">✕ Central copies</span></td>
+                <td>Local flash autopurge &amp; LoRa Radio (+30 km)</td>
+                <td class="col-chax"><span class="yes">✓ 1h, 24h, 7d or Panic + LoRa</span></td>
+                <td><span class="no">✕ Server copies</span></td>
               </tr>
             </tbody>
           </table>
@@ -1866,84 +1950,55 @@
   <div class="divider"></div>
 
   <!-- ================================================
-       DEVICE SHOWCASE
+       9. FAQ (#faq)
   ================================================ -->
-  <section id="capturas" class="offscreen-section">
+  <section id="faq" aria-labelledby="faq-heading">
     <div class="wrap">
-      <div class="section-head center fade-up">
-        <div class="section-label">Devices</div>
-        <h2 class="section-title">iPhone, iPad, Mac &amp; Android.<br><span style="color:var(--text-secondary)">One unstoppable mesh.</span></h2>
-      </div>
-
-      <div class="device-tabs-bar fade-up" role="group" aria-label="Filter screenshots by device">
-        <button type="button" class="device-tab active" data-device="iphone" aria-pressed="true">📱 iPhone</button>
-        <button type="button" class="device-tab" data-device="ipad" aria-pressed="false">📲 iPad</button>
-        <button type="button" class="device-tab" data-device="mac" aria-pressed="false">💻 Mac</button>
-      </div>
-
-      <div class="screenshots-row fade-up" id="screenshots-row"></div>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- ================================================
-       FAQ (NATIVE <details> ACCORDION)
-  ================================================ -->
-  <section id="faq" class="offscreen-section" aria-labelledby="faq-heading">
-    <div class="wrap">
-      <div class="section-head fade-up">
-        <div class="section-label">Clear Answers</div>
+      <div class="section-head center reveal">
+        <div class="section-eyebrow">Clear Answers</div>
         <h2 class="section-title" id="faq-heading">Frequently asked questions before you install.</h2>
       </div>
 
-      <div class="faq-list fade-up">
+      <div class="faq-list reveal">
         <details class="faq-item" open>
-          <summary>What does helping the community as a bridge node mean? Is it safe and battery-friendly?</summary>
+          <summary>What does my phone do as a bridge node? Is it safe and battery-friendly?</summary>
           <div class="faq-a">
-            When you run Chax near others who lack coverage, your device automatically assists in the background by relaying <strong>opaque, sealed packets</strong> (<code>Sealed Sender</code>). Neither you nor any intermediate phone can open contents or inspect identities—it simply helps neighbors stay connected. Its adaptive Bluetooth Low Energy scheduler (<code>PathTable</code>) protects battery life throughout the day.
+            When you run Chax near others without coverage, your phone assists in the background by relaying <strong>opaque, sealed envelopes</strong> (<code>Sealed Sender</code>). Neither you nor any relay phone can open them or identify senders. Its adaptive <code>PathTable</code> scheduler tunes BLE duty cycles to protect battery life.
           </div>
         </details>
 
         <details class="faq-item">
-          <summary>If I already use everyday messengers, what does Chax add on regular Wi-Fi or 5G?</summary>
+          <summary>What does Chax add on an ordinary day with Wi-Fi or 5G?</summary>
           <div class="faq-a">
-            A lot! That is why we say <strong>Fast internet. Unstoppable mesh.</strong> Over everyday Wi-Fi or 5G, Chax gives you zero-phone-number messaging, OpenStreetMap &amp; satellite offline maps (<code>Mapax</code>) with shareable <code>.chaxmap</code> collections, and E2EE <code>TwinSync</code> across iPhone, iPad, Mac, and Android—and shifts automatically to mesh when bars disappear.
+            Instant messaging, groups, and voice with zero phone number, shareable offline satellite/street maps (<code>Mapax</code> and <code>.chaxmap</code>), and encrypted <code>TwinSync</code> across iPhone, iPad, Mac, and Android. When bars drop, it switches to mesh automatically.
           </div>
         </details>
 
         <details class="faq-item">
           <summary>Does Android communicate directly with iPhone and Mac?</summary>
           <div class="faq-a">
-            Yes. Official Android (<strong>v1.142</strong> via Google Play and direct APK) and iOS/macOS (<strong>v3.383</strong> via Apple TestFlight) speak the exact same encrypted multi-hop protocol. Families and teams can mix Android and Apple devices seamlessly online and off-grid.
+            Yes. Official Android (<strong>v<span data-ver="android">1.159</span></strong> via Google Play and direct APK) and iOS/macOS (<strong>v<span data-ver="ios">3.396</span></strong> via Apple TestFlight) speak the exact same encrypted multi-hop protocol online and off-grid.
           </div>
         </details>
 
         <details class="faq-item">
           <summary>How do I share offline maps and waypoints with my group?</summary>
           <div class="faq-a">
-            Inside <strong>Mapax</strong> you can cache OpenStreetMap street layers and satellite tiles free of commercial API keys ahead of time, organize custom bookmark groups, and share them straight in chat or as portable <code>.chaxmap</code> packs so everyone navigates the exact same territory offline.
+            Inside <strong>Mapax</strong> you download OpenStreetMap or satellite regions ahead of time free of commercial API keys, group your pins, and send them in chat or as portable <code>.chaxmap</code> files.
           </div>
         </details>
 
         <details class="faq-item">
-          <summary>Do I need to buy external antennas to use it off-grid?</summary>
+          <summary>Do I need external antennas to talk without cell coverage?</summary>
           <div class="faq-a">
-            <strong>No.</strong> Phone-to-phone Bluetooth Mesh (~100 m direct, extendable across multiple hops in crowds or neighborhoods) works right out of the box using your phone's built-in radios. Portable LoRa radios (+30 km) are purely optional for backcountry expeditions or community regional bridges.
+            <strong>No.</strong> Local mesh (~100 m per hop, extendable across multiple hops between nearby phones) uses your phone's built-in Bluetooth and Wi-Fi. Optional LoRa radios (+30 km) extend range for mountain expeditions or citywide links.
           </div>
         </details>
 
         <details class="faq-item">
-          <summary>Can intermediate phones in the mesh read my messages?</summary>
+          <summary>How do I add contacts without giving out my phone number?</summary>
           <div class="faq-a">
-            Never. Every dispatch travels in a Protocol v2 end-to-end encrypted sealed envelope. Relaying phones only pass along opaque encrypted bytes without any ability to inspect contents or identify senders.
-          </div>
-        </details>
-
-        <details class="faq-item">
-          <summary>How do I add contacts or link my Mac without a phone number?</summary>
-          <div class="faq-a">
-            In seconds: show your QR card inside Chax for an in-person scan or compare verifiable <code>SHA-256</code> fingerprints. To use one sovereign account across iPhone, iPad, Mac, and Android simultaneously, scan the end-to-end encrypted <code>TwinSync</code> pairing code.
+            Scan your Chax QR code in person in 2 seconds or verify <code>SHA-256</code> cryptographic fingerprints. No phone number, email, or cloud sign-up is ever requested.
           </div>
         </details>
       </div>
@@ -1953,159 +2008,30 @@
   <div class="divider"></div>
 
   <!-- ================================================
-       DEVELOPER IDENTITY: APPX JP & ECOSYSTEM APPS
+       10. FINAL CTA (#instalar)
   ================================================ -->
-  <section id="ecosistema-appx" class="offscreen-section" aria-labelledby="appx-heading">
-    <div class="wrap">
-      <div class="section-head center fade-up">
-        <div class="section-label">Developer Identity · Independent Studio</div>
-        <h2 class="section-title" id="appx-heading">Built by <span style="color:var(--blue)">Appx JP</span>.<br>More apps from our ecosystem.</h2>
-        <p class="section-sub">
-          Appx JP is an independent engineering studio crafting 100% Local-First software with zero trackers and zero cloud lock-in: you stay in full control of your keys, finances, audio metrology and communications.
-        </p>
-      </div>
-
-      <div class="appx-manifesto fade-up">
-        <div>
-          <div class="appx-brand-row">
-            <img src="../assets/appx-logo.png" alt="Appx JP Official Logo" class="appx-logo-img" width="512" height="512" loading="lazy">
-            <div>
-              <div class="appx-eyebrow">🧬 Appx JP · Sovereign Digital Engineering</div>
-              <h3 class="appx-title">The «-x» Philosophy: Precision, Privacy &amp; Autonomy</h3>
-            </div>
-          </div>
-          <p style="font-size:0.95rem;color:var(--text-secondary);line-height:1.65;margin-bottom:14px;">
-            Every product engineered by <strong style="color:#fff;">Javier Posada (Appx JP)</strong> shares a unified architecture: on-device computing (Apple Silicon, SwiftUI &amp; modern Web), direct peer-to-peer links and zero personal data harvesting.
-          </p>
-          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-            <a href="../monix.html" class="btn-primary" style="padding:11px 22px;font-size:0.86rem;">
-              💧 Explore Monix (Local-First Finance) →
-            </a>
-            <a href="mailto:support@chax.chat?subject=Appx%20JP%20Inquiry" class="btn-ghost" style="padding:10px 18px;font-size:0.84rem;">
-              ✉️ support@chax.chat
-            </a>
-          </div>
-        </div>
-
-        <div class="appx-pillars">
-          <div class="appx-pillar">
-            <strong>🔒 100% Local-First</strong>
-            <span>Your databases, receipts and cryptographic keys stay on your hardware.</span>
-          </div>
-          <div class="appx-pillar">
-            <strong>📡 Direct P2P Links</strong>
-            <span>Bluetooth &amp; Wi-Fi Direct sync via Apple Multipeer and open protocols.</span>
-          </div>
-          <div class="appx-pillar">
-            <strong>💎 Liquid Glass Craft</strong>
-            <span>Responsive haptic interfaces engineered for clarity and speed.</span>
-          </div>
-          <div class="appx-pillar">
-            <strong>📐 Mathematical Rigor</strong>
-            <span>Statistical engines, live audio DSP and verifiable SHA-256 seals.</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="appx-apps-grid fade-up">
-        <article class="appx-card featured-monix">
-          <img src="../assets/monix-icon.png" alt="Monix App Icon" class="appx-monix-icon" width="512" height="512" loading="lazy">
-          <div>
-            <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;">
-              <span class="appx-tag">🍎 New on TestFlight · iOS &amp; iPad</span>
-              <span class="appx-tag green">P2P Personal Finance</span>
-            </div>
-            <h3>Monix (Presupuestox) — Sovereign Liquid Glass Finance</h3>
-            <p style="margin-top:6px;">
-              Gravitational universe of water-filled spheres showing monthly budgets at a glance, 3-step full-screen entry with Vision OCR receipt scanning, on-device voice AI, installment tracking (MSI), Snowball &amp; Avalanche debt engines and encrypted Multipeer P2P sync.
-            </p>
-            <div class="appx-meta" style="margin-top:8px;">com.assi.monix · v1.111 · Zero servers · JSON/CSV portable</div>
-          </div>
-          <div style="display:flex;flex-direction:column;gap:10px;min-width:190px;">
-            <a href="../monix.html" class="btn-primary" style="justify-content:center;padding:12px 20px;font-size:0.86rem;">
-              View Monix Overview →
-            </a>
-            <a href="../monix.html#testflight" class="btn-ghost" style="justify-content:center;padding:10px 18px;font-size:0.8rem;">
-              🍎 TestFlight Beta (iOS)
-            </a>
-          </div>
-        </article>
-
-        <article class="appx-card">
-          <span class="appx-tag green">🎧 Pro Audio · macOS &amp; Studio</span>
-          <h3>Sonorix &amp; Medicionex</h3>
-          <p>
-            Electro-acoustic metrology and live DSP benchmarking suite: latency calibration, 40 Hz–10 kHz frequency sweeps, noise-floor audits and cryptographic PDF executive reports.
-          </p>
-          <div class="appx-meta">macOS Swift &amp; Web Studio · Audio Metrology</div>
-        </article>
-
-        <article class="appx-card">
-          <span class="appx-tag purple">⚖️ Peer Governance · Teams</span>
-          <h3>Retrox</h3>
-          <p>
-            Peer-to-peer recognition and 360° organizational review engine weighted by historical reputation, mathematical anti-bias friction and asymmetric auditability.
-          </p>
-          <div class="appx-meta">Web / PWA React 19 + TypeScript · 360° Engine</div>
-        </article>
-
-        <article class="appx-card">
-          <span class="appx-tag amber">📈 Quantitative Engines</span>
-          <h3>Tadix</h3>
-          <p>
-            Multi-timeframe quantitative market-structure indicators engineered with strict anti-repaint rules for disciplined scalping and trend-matrix analysis.
-          </p>
-          <div class="appx-meta">Pine Script v6 · PJ Hybrid Master Matrix</div>
-        </article>
-
-        <article class="appx-card">
-          <span class="appx-tag">🧭 Hybrid Messaging · iOS, Mac &amp; Android</span>
-          <h3>Chax Network</h3>
-          <p>
-            <strong>Appx JP</strong>'s sovereign omnichannel messenger: fast over Nostr relays on the internet, unstoppable over Bluetooth/Wi-Fi/LoRa mesh offline with <code>.chaxmap</code> packs and <code>TwinSync</code>.
-          </p>
-          <div style="margin-top:auto;display:flex;gap:10px;flex-wrap:wrap;">
-            <a href="../download/?lang=en" class="btn-ghost" style="padding:8px 16px;font-size:0.8rem;">Download Chax →</a>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <!-- ================================================
-       FINAL CTA
-  ================================================ -->
-  <section class="cta-section" id="descargas">
+  <section class="cta-final" id="instalar" aria-labelledby="final-cta-heading">
     <div class="cta-glow" aria-hidden="true"></div>
-    <div class="wrap" style="position:relative;z-index:2">
-      <div class="cta-eyebrow" style="border-color:rgba(0,245,155,0.3);background:rgba(0,245,155,0.08);color:var(--green)">🧭 DIGITAL SOVEREIGNTY · COMMUNITY MESH · SHARED MAPS</div>
-      <h2 class="cta-title">
-        Fast internet today.<br>
-        <span class="glow-green" style="color:var(--green)">Unstoppable mesh</span> when communities unite.
-      </h2>
-      <p class="cta-sub">
-        Download free in seconds, create a sovereign identity with zero phone number, and add one more living bridge node across iPhone, iPad, Mac &amp; Android.
-      </p>
+    <div class="wrap">
+      <div class="section-eyebrow">Add Your Node Today</div>
+      <h2 class="section-title" id="final-cta-heading">One phone protects your voice.<br><span style="color:var(--green)">Ten connect an entire community.</span></h2>
+      <p class="section-sub" style="margin:0 auto;">Download free in seconds and share it with your family or travel crew.</p>
 
-      <div style="display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;">
-        <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" rel="noopener" class="btn-primary" style="font-size:1.02rem;padding:16px 32px;">
-          <svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 3.5c.61-.75 1.04-1.8 1.01-2.85-.92.04-2.03.62-2.67 1.37-.58.67-1.08 1.74-1.01 2.78.98.08 2.06-.55 2.67-1.3z"/></svg>
-          Install on TestFlight · iOS &amp; Mac (v3.383)
+      <div class="final-buttons">
+        <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" rel="noopener" class="btn-primary" data-gc-event="final-ios-testflight">
+          🍎 iPhone &amp; iPad · TestFlight (v<span data-ver="ios">3.396</span>)
         </a>
-        <a href="../download/?lang=en" class="btn-ghost" style="font-size:0.98rem;padding:16px 28px;border-color:rgba(0,245,155,0.45);background:rgba(0,245,155,0.08);">
-          🤖 Download Android (v1.142 · Play Store &amp; APK) →
+        <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" rel="noopener" class="btn-ghost" data-gc-event="final-mac-testflight">
+          💻 Mac · TestFlight (v<span data-ver="macos">3.396</span>)
+        </a>
+        <a href="../download/?lang=en#androidCard" class="btn-ghost" style="border-color:rgba(0,245,155,0.45);background:rgba(0,245,155,0.08);" data-gc-event="final-android-download">
+          🤖 Android · Play Store &amp; APK (v<span data-ver="android">1.159</span>) →
         </a>
       </div>
 
-      <div style="margin-top:22px;">
-        <button type="button" class="btn-share-circle" data-share-btn>
-          📲 Share link with my family or travel group
-        </button>
-      </div>
-
-      <div class="cta-note">iOS 16+ · iPhone, iPad &amp; Mac (v3.383) · Android 8+ (v1.142) · 100% Free</div>
+      <button type="button" class="btn-share-circle" data-share-btn>
+        📲 Share link with my family or travel group
+      </button>
     </div>
   </section>
 </main>
@@ -2114,47 +2040,211 @@
 <div class="sticky-mobile-cta" id="stickyMobileCta" role="region" aria-label="Quick install">
   <div class="sticky-mobile-text">
     Fast internet · Unstoppable mesh
-    <span>Sovereignty, bridge nodes &amp; offline maps</span>
+    <span>No number · Offline maps · Free</span>
   </div>
-  <a href="#descargas" class="sticky-mobile-btn">Install free</a>
+  <a href="#descargas" class="sticky-mobile-btn" id="stickyMobileBtn" data-gc-event="sticky-download">Install free</a>
 </div>
 
 <!-- ================================================
-     FOOTER
+     FOOTER & COMPACT APPX JP ECOSYSTEM
 ================================================ -->
 <footer>
-  <div class="footer-inner">
-    <div class="footer-brand">
-      <img src="../assets/app-icon.png" alt="Chax Logo" loading="lazy" width="512" height="512">
-      <span>Chax · iOS &amp; macOS v3.383 · Android v1.142</span>
+  <div class="footer-stack">
+    <div class="appx-compact" id="ecosistema-appx">
+      <div class="appx-compact-brand">
+        <img src="../assets/appx-logo.png" alt="Appx JP Official Logo" width="512" height="512" loading="lazy">
+        <div>
+          <div class="appx-compact-title">Built by Appx JP</div>
+          <div class="appx-compact-desc">Independent 100% Local-First software studio by Javier Posada — zero trackers, zero central cloud.</div>
+        </div>
+      </div>
+      <div class="appx-compact-apps">
+        <a href="../monix.html">Monix (P2P Finance) →</a>
+        <span>Sonorix &amp; Medicionex (macOS Audio)</span>
+        <span>Retrox (P2P Governance)</span>
+        <span>Tadix (Pine Algorithms)</span>
+        <a href="mailto:support@chax.chat?subject=Appx%20JP%20Inquiry">support@chax.chat</a>
+      </div>
     </div>
-    <div class="footer-links">
-      <a href="../monix.html">Monix</a>
-      <a href="#ecosistema-appx">Appx JP</a>
-      <a href="../privacy.html">Privacy</a>
-      <a href="../terms.html">Terms</a>
-      <a href="../support.html">Support</a>
-      <a href="../download/?lang=en">Downloads</a>
-      <a href="../index.html" data-lang="es" class="lang-item">Español</a>
-      <a href="../pt/index.html" data-lang="pt" class="lang-item">Português</a>
-      <button type="button" id="motionToggle" class="motion-toggle">Pause mesh animation</button>
+
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="../assets/app-icon.png" alt="Chax Logo" loading="lazy" width="512" height="512">
+        <span>Chax · iOS &amp; macOS v<span data-ver="ios">3.396</span> · Android v<span data-ver="android">1.159</span></span>
+      </div>
+      <div class="footer-links">
+        <a href="../monix.html">Monix</a>
+        <a href="#ecosistema-appx">Appx JP</a>
+        <a href="../privacy.html">Privacy</a>
+        <a href="../terms.html">Terms</a>
+        <a href="../support.html">Support</a>
+        <a href="../download/?lang=en">Downloads</a>
+        <a href="../index.html" data-lang="es" class="lang-item">Español</a>
+        <a href="../pt/index.html" data-lang="pt" class="lang-item">Português</a>
+        <button type="button" id="motionToggle" class="motion-toggle">Pause mesh animation</button>
+      </div>
+      <div class="footer-copy">© 2026 Appx JP · Chax &amp; Monix. Sovereign local-first software.</div>
     </div>
-    <div class="footer-copy">© 2026 Appx JP · Chax &amp; Monix. Sovereign local-first software.</div>
   </div>
 </footer>
 
 <script>
+// ── DEVICE DETECTION + SMART CTA + LIVE VERSIONS ──
+function detectPlatform(ua, platform, maxTouchPoints) {
+  ua = String(ua || '');
+  platform = String(platform || '');
+  maxTouchPoints = Number(maxTouchPoints || 0);
+  if (platform === 'MacIntel' && maxTouchPoints > 1) return 'ios';
+  if (/iPhone|iPad|iPod/i.test(ua)) return 'ios';
+  if (/Android/i.test(ua)) return 'android';
+  if (/Macintosh|Mac OS X/i.test(ua) || /^Mac/i.test(platform)) return 'mac';
+  return 'other';
+}
+
+(function () {
+  var TESTFLIGHT_URL = 'https://testflight.apple.com/join/hmfhvFdf';
+  var ANDROID_URL = '../download/?lang=en#androidCard';
+  var detected = detectPlatform(navigator.userAgent, navigator.platform, navigator.maxTouchPoints);
+
+  var heroCta = document.getElementById('heroPrimaryCta');
+  var stickyBtn = document.getElementById('stickyMobileBtn');
+  var cards = document.querySelectorAll('.download-card[data-platform]');
+
+  cards.forEach(function (card) {
+    card.classList.toggle('is-recommended', card.getAttribute('data-platform') === detected);
+  });
+
+  function applySmartCta(el, prefix) {
+    if (!el) return;
+    if (detected === 'ios') {
+      el.textContent = prefix === 'hero' ? '🍎 Install on iPhone · free' : 'Install on iPhone';
+      el.setAttribute('href', TESTFLIGHT_URL);
+      el.setAttribute('target', '_blank');
+      el.setAttribute('rel', 'noopener');
+      el.setAttribute('data-gc-event', prefix + '-ios-testflight');
+    } else if (detected === 'android') {
+      el.textContent = prefix === 'hero' ? '🤖 Install on Android · free' : 'Install on Android';
+      el.setAttribute('href', ANDROID_URL);
+      el.removeAttribute('target');
+      el.removeAttribute('rel');
+      el.setAttribute('data-gc-event', prefix + '-android-download');
+    } else if (detected === 'mac') {
+      el.textContent = prefix === 'hero' ? '💻 Install on Mac · free' : 'Install on Mac';
+      el.setAttribute('href', TESTFLIGHT_URL);
+      el.setAttribute('target', '_blank');
+      el.setAttribute('rel', 'noopener');
+      el.setAttribute('data-gc-event', prefix + '-mac-testflight');
+    } else {
+      el.textContent = prefix === 'hero' ? '⚡ Download free' : 'Install free';
+      el.setAttribute('href', '#descargas');
+      el.removeAttribute('target');
+      el.removeAttribute('rel');
+      el.setAttribute('data-gc-event', prefix + '-download');
+    }
+  }
+
+  applySmartCta(heroCta, 'hero');
+  applySmartCta(stickyBtn, 'sticky');
+
+  fetch('/version.json', { cache: 'no-store' })
+    .then(function (r) { return r.ok ? r.json() : null; })
+    .then(function (data) {
+      if (!data) return;
+      var map = {
+        ios: data.ios && data.ios.latestVersion,
+        macos: data.macos && data.macos.latestVersion,
+        android: data.android && data.android.latestVersion
+      };
+      Object.keys(map).forEach(function (k) {
+        if (!map[k]) return;
+        document.querySelectorAll('[data-ver="' + k + '"]').forEach(function (el) {
+          el.textContent = map[k];
+        });
+      });
+    })
+    .catch(function () {});
+})();
+
+// ── DETERMINISTIC ANCHOR NAVIGATION ──
+(function () {
+  function scrollToId(id, smooth) {
+    var target = document.getElementById(id);
+    if (!target) return false;
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    target.scrollIntoView({ behavior: smooth && !reduced ? 'smooth' : 'auto', block: 'start' });
+    return true;
+  }
+
+  document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var href = link.getAttribute('href');
+      if (!href || href === '#') return;
+      var id = href.slice(1);
+      if (scrollToId(id, true)) {
+        e.preventDefault();
+        if (window.history && window.history.pushState) {
+          window.history.pushState(null, '', href);
+        }
+      }
+    });
+  });
+
+  window.addEventListener('load', function () {
+    if (window.location.hash && window.location.hash.length > 1) {
+      var id = window.location.hash.slice(1);
+      setTimeout(function () { scrollToId(id, false); }, 40);
+    }
+  });
+})();
+
+// ── SCROLLYTELLING STORY (#problema) ──
+(function () {
+  var steps = document.querySelectorAll('.story-step');
+  var visual = document.getElementById('storyVisual');
+  if (!steps.length || !visual) return;
+
+  function setStep(stepNum) {
+    visual.setAttribute('data-step', String(stepNum));
+    steps.forEach(function (s) {
+      s.classList.toggle('is-active', s.getAttribute('data-step') === String(stepNum));
+    });
+  }
+
+  steps.forEach(function (s) {
+    s.addEventListener('click', function () {
+      setStep(s.getAttribute('data-step'));
+    });
+    s.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        setStep(s.getAttribute('data-step'));
+      }
+    });
+  });
+
+  if ('IntersectionObserver' in window) {
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          setStep(entry.target.getAttribute('data-step'));
+        }
+      });
+    }, { threshold: 0.6 });
+    steps.forEach(function (s) { obs.observe(s); });
+  }
+})();
+
 // ── INTERACTIVE NETWORK SIMULATOR ──
 (function () {
-  const buttons = document.querySelectorAll('.sim-btn');
-  const panelEmergency = document.getElementById('sim-panel-emergency');
-  const panelOnline = document.getElementById('sim-panel-online');
+  var buttons = document.querySelectorAll('.sim-btn');
+  var panelEmergency = document.getElementById('sim-panel-emergency');
+  var panelOnline = document.getElementById('sim-panel-online');
   if (!buttons.length || !panelEmergency || !panelOnline) return;
 
-  buttons.forEach(btn => {
-    btn.addEventListener('click', () => {
-      const mode = btn.dataset.sim;
-      buttons.forEach(b => b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'));
+  buttons.forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var mode = btn.dataset.sim;
+      buttons.forEach(function (b) { b.setAttribute('aria-pressed', b === btn ? 'true' : 'false'); });
       if (mode === 'online') {
         panelEmergency.hidden = true;
         panelOnline.hidden = false;
@@ -2168,14 +2258,14 @@
 
 // ── SAFETY CIRCLE SHARE BUTTON ──
 (function () {
-  const shareBtns = document.querySelectorAll('[data-share-btn]');
-  const shareUrl = 'https://chax.chat/';
-  const shareTitle = 'Chax — Fast internet. Unstoppable mesh.';
-  const shareText = 'Try Chax with me: fast over internet, unstoppable community mesh, shareable offline maps (.chaxmap), and zero phone number required.';
+  var shareBtns = document.querySelectorAll('[data-share-btn]');
+  var shareUrl = 'https://chax.chat/';
+  var shareTitle = 'Chax — Fast over internet. Unstoppable off-grid.';
+  var shareText = 'Try Chax with me: fast over internet, unstoppable community mesh, shareable offline maps (.chaxmap), and zero phone number required.';
 
-  shareBtns.forEach(btn => {
-    const originalText = btn.textContent;
-    btn.addEventListener('click', async () => {
+  shareBtns.forEach(function (btn) {
+    var originalText = btn.textContent;
+    btn.addEventListener('click', async function () {
       if (navigator.share) {
         try {
           await navigator.share({ title: shareTitle, text: shareText, url: shareUrl });
@@ -2187,7 +2277,7 @@
       try {
         await navigator.clipboard.writeText(shareText + ' ' + shareUrl);
         btn.textContent = '✓ Link copied — paste it into your family chat';
-        setTimeout(() => { btn.textContent = originalText; }, 3200);
+        setTimeout(function () { btn.textContent = originalText; }, 3200);
       } catch (e) {
         window.location.href = '#descargas';
       }
@@ -2195,16 +2285,54 @@
   });
 })();
 
+// ── PROGRESS BAR & REVEAL FALLBACK ──
+(function () {
+  var noReduced = window.matchMedia('(prefers-reduced-motion: no-preference)').matches;
+  var progress = document.getElementById('scrollProgress');
+  if (progress && noReduced && !(window.CSS && CSS.supports('animation-timeline', 'scroll()'))) {
+    var ticking = false;
+    function syncProgress() {
+      ticking = false;
+      if (document.body.classList.contains('motion-paused')) return;
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var ratio = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+      progress.style.transform = 'scaleX(' + ratio + ')';
+    }
+    window.addEventListener('scroll', function () {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(syncProgress);
+      }
+    }, { passive: true });
+    syncProgress();
+  }
+
+  var hasViewTimeline = window.CSS && CSS.supports('(animation-timeline: view()) and (animation-range: entry)');
+  if (!hasViewTimeline && noReduced && 'IntersectionObserver' in window) {
+    document.documentElement.classList.add('reveal-io');
+    var els = document.querySelectorAll('.reveal');
+    var obs = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) {
+          e.target.classList.add('in-view');
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    els.forEach(function (el) { obs.observe(el); });
+  }
+})();
+
 // ── MESH BACKGROUND CANVAS + MOTION PAUSE CONTROL ──
 (function () {
-  const canvas = document.getElementById('bg-canvas');
-  const motionBtn = document.getElementById('motionToggle');
-  const meshSvg = document.getElementById('meshDiagramSvg');
+  var canvas = document.getElementById('bg-canvas');
+  var motionBtn = document.getElementById('motionToggle');
+  var meshSvg = document.getElementById('meshDiagramSvg');
   if (!canvas) return;
-  const ctx = canvas.getContext('2d');
-  let W, H, clusters = [], pkts = [], raf = null;
-  const reducedQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
-  let isPaused = reducedQuery.matches;
+  var ctx = canvas.getContext('2d');
+  var W, H, clusters = [], pkts = [], raf = null;
+  var reducedQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var isPaused = reducedQuery.matches;
 
   function updateMotionUI() {
     document.body.classList.toggle('motion-paused', isPaused);
@@ -2225,8 +2353,8 @@
   }
 
   function buildTopology() {
-    const isMobile = W < 768;
-    const specs = isMobile
+    var isMobile = W < 768;
+    var specs = isMobile
       ? [
           { cx: 0.24, cy: 0.16, rx: 0.22, ry: 0.11, count: 6, color: '#00f59b', rgb: '0,245,155' },
           { cx: 0.78, cy: 0.24, rx: 0.22, ry: 0.11, count: 6, color: '#00d9f5', rgb: '0,217,245' },
@@ -2246,41 +2374,44 @@
           { cx: 0.85, cy: 0.82, rx: 0.12, ry: 0.12, count: 6, color: '#00f59b', rgb: '0,245,155' }
         ];
 
-    clusters = specs.map((s, cIdx) => {
-      const cx = s.cx * W, cy = s.cy * H;
-      const rx = Math.max(55, s.rx * W), ry = Math.max(48, s.ry * H);
-      const nodes = [{
+    clusters = specs.map(function (s, cIdx) {
+      var cx = s.cx * W;
+      var cy = s.cy * H;
+      var rx = Math.max(55, s.rx * W);
+      var ry = Math.max(48, s.ry * H);
+      var nodes = [{
         isAnchor: true, relX: 0, relY: 0, vx: 0, vy: 0, x: cx, y: cy,
         r: 3.4, pulseR: 0, pulseAlpha: 0, color: s.color, rgb: s.rgb
       }];
 
-      const satCount = s.count - 1;
-      for (let i = 0; i < satCount; i++) {
-        const angle = (i / satCount) * Math.PI * 2 + cIdx * 0.6 + (Math.random() - 0.5) * 0.35;
-        const distScale = 0.45 + Math.random() * 0.5;
-        const relX = Math.cos(angle) * rx * distScale;
-        const relY = Math.sin(angle) * ry * distScale;
+      var satCount = s.count - 1;
+      for (var i = 0; i < satCount; i++) {
+        var angle = (i / satCount) * Math.PI * 2 + cIdx * 0.6 + (Math.random() - 0.5) * 0.35;
+        var distScale = 0.45 + Math.random() * 0.5;
+        var relX = Math.cos(angle) * rx * distScale;
+        var relY = Math.sin(angle) * ry * distScale;
         nodes.push({
-          isAnchor: false, relX, relY,
+          isAnchor: false, relX: relX, relY: relY,
           vx: (Math.random() - 0.5) * 0.28, vy: (Math.random() - 0.5) * 0.28,
           x: cx + relX, y: cy + relY,
           r: 1.8 + Math.random() * 1.1, pulseR: 0, pulseAlpha: 0,
           color: s.color, rgb: s.rgb
         });
       }
-      return { cx, cy, baseCx: cx, baseCy: cy, rx, ry, phase: cIdx * 1.4, color: s.color, rgb: s.rgb, nodes };
+      return { cx: cx, cy: cy, baseCx: cx, baseCy: cy, rx: rx, ry: ry, phase: cIdx * 1.4, color: s.color, rgb: s.rgb, nodes: nodes };
     });
 
     pkts = [];
-    for (let i = 0; i < (isMobile ? 7 : 12); i++) spawnPacket(true);
+    for (var i = 0; i < (isMobile ? 7 : 12); i++) spawnPacket(true);
   }
 
   function findClosestBridge(c1, c2) {
-    let best = null, minD = Infinity;
-    for (const a of c1.nodes) {
-      for (const b of c2.nodes) {
-        const d = Math.hypot(a.x - b.x, a.y - b.y);
-        if (d < minD) { minD = d; best = { a, b, d }; }
+    var best = null, minD = Infinity;
+    for (var i = 0; i < c1.nodes.length; i++) {
+      for (var j = 0; j < c2.nodes.length; j++) {
+        var a = c1.nodes[i], b = c2.nodes[j];
+        var d = Math.hypot(a.x - b.x, a.y - b.y);
+        if (d < minD) { minD = d; best = { a: a, b: b, d: d }; }
       }
     }
     return best;
@@ -2288,20 +2419,20 @@
 
   function spawnPacket(randomProgress) {
     if (!clusters.length || pkts.length >= (W < 768 ? 10 : 18)) return;
-    const c1Idx = Math.floor(Math.random() * clusters.length);
-    const c1 = clusters[c1Idx];
-    const neighbors = clusters
-      .map((c, idx) => ({ c, idx, d: Math.hypot(c.cx - c1.cx, c.cy - c1.cy) }))
-      .filter(item => item.idx !== c1Idx)
-      .sort((a, b) => a.d - b.d);
+    var c1Idx = Math.floor(Math.random() * clusters.length);
+    var c1 = clusters[c1Idx];
+    var neighbors = clusters
+      .map(function (c, idx) { return { c: c, idx: idx, d: Math.hypot(c.cx - c1.cx, c.cy - c1.cy) }; })
+      .filter(function (item) { return item.idx !== c1Idx; })
+      .sort(function (a, b) { return a.d - b.d; });
 
-    let path = [], isInterCluster = false;
+    var path = [], isInterCluster = false;
     if (neighbors.length > 0 && Math.random() < 0.68) {
-      const targetNeighbor = neighbors[Math.floor(Math.random() * Math.min(2, neighbors.length))].c;
-      const bridge = findClosestBridge(c1, targetNeighbor);
+      var targetNeighbor = neighbors[Math.floor(Math.random() * Math.min(2, neighbors.length))].c;
+      var bridge = findClosestBridge(c1, targetNeighbor);
       if (bridge) {
-        const startPeer = c1.nodes[Math.floor(Math.random() * c1.nodes.length)];
-        const endPeer = targetNeighbor.nodes[Math.floor(Math.random() * targetNeighbor.nodes.length)];
+        var startPeer = c1.nodes[Math.floor(Math.random() * c1.nodes.length)];
+        var endPeer = targetNeighbor.nodes[Math.floor(Math.random() * targetNeighbor.nodes.length)];
         path = [c1.nodes[0]];
         if (startPeer !== c1.nodes[0]) path.unshift(startPeer);
         if (bridge.a !== path[path.length - 1]) path.push(bridge.a);
@@ -2312,43 +2443,45 @@
       }
     }
     if (path.length < 2) {
-      const anchor = c1.nodes[0];
-      const n1 = c1.nodes[1 + Math.floor(Math.random() * (c1.nodes.length - 1))];
-      const n2 = c1.nodes[1 + Math.floor(Math.random() * (c1.nodes.length - 1))];
+      var anchor = c1.nodes[0];
+      var n1 = c1.nodes[1 + Math.floor(Math.random() * (c1.nodes.length - 1))];
+      var n2 = c1.nodes[1 + Math.floor(Math.random() * (c1.nodes.length - 1))];
       path = n1 !== n2 ? [anchor, n1, n2] : [anchor, n1];
     }
     if (path[0]) { path[0].pulseR = 2; path[0].pulseAlpha = 0.75; }
     pkts.push({
-      path, seg: 0, t: randomProgress ? Math.random() : 0,
+      path: path, seg: 0, t: randomProgress ? Math.random() : 0,
       speed: (isInterCluster ? 0.016 : 0.022) + Math.random() * 0.012,
       color: isInterCluster ? '#00d9f5' : c1.color,
       rgb: isInterCluster ? '0,217,245' : c1.rgb,
-      isInterCluster
+      isInterCluster: isInterCluster
     });
   }
 
-  let tick = 0;
+  var tick = 0;
   function renderFrame() {
     ctx.clearRect(0, 0, W, H);
-    const isMobile = W < 768;
+    var isMobile = W < 768;
 
-    for (const c of clusters) {
+    for (var ci = 0; ci < clusters.length; ci++) {
+      var c = clusters[ci];
       if (!isPaused) {
         c.cx = c.baseCx + Math.sin(tick * 0.7 + c.phase) * 18;
         c.cy = c.baseCy + Math.cos(tick * 0.55 + c.phase) * 14;
       }
-      const haloR = Math.max(c.rx, c.ry) * 1.15;
-      const grad = ctx.createRadialGradient(c.cx, c.cy, 2, c.cx, c.cy, haloR);
-      grad.addColorStop(0, `rgba(${c.rgb}, 0.055)`);
-      grad.addColorStop(0.6, `rgba(${c.rgb}, 0.018)`);
+      var haloR = Math.max(c.rx, c.ry) * 1.15;
+      var grad = ctx.createRadialGradient(c.cx, c.cy, 2, c.cx, c.cy, haloR);
+      grad.addColorStop(0, 'rgba(' + c.rgb + ', 0.055)');
+      grad.addColorStop(0.6, 'rgba(' + c.rgb + ', 0.018)');
       grad.addColorStop(1, 'rgba(0,0,0,0)');
       ctx.fillStyle = grad;
       ctx.beginPath(); ctx.arc(c.cx, c.cy, haloR, 0, Math.PI * 2); ctx.fill();
 
-      for (const n of c.nodes) {
+      for (var ni = 0; ni < c.nodes.length; ni++) {
+        var n = c.nodes[ni];
         if (!isPaused && !n.isAnchor) {
           n.relX += n.vx; n.relY += n.vy;
-          const norm = (n.relX * n.relX) / (c.rx * c.rx) + (n.relY * n.relY) / (c.ry * c.ry);
+          var norm = (n.relX * n.relX) / (c.rx * c.rx) + (n.relY * n.relY) / (c.ry * c.ry);
           if (norm > 1.0) { n.vx -= (n.relX / c.rx) * 0.018; n.vy -= (n.relY / c.ry) * 0.018; }
         }
         n.x = c.cx + n.relX; n.y = c.cy + n.relY;
@@ -2359,63 +2492,67 @@
       }
     }
 
-    for (const c of clusters) {
-      const maxIntra = Math.max(c.rx, c.ry) * 1.15;
-      for (let i = 0; i < c.nodes.length; i++) {
-        for (let j = i + 1; j < c.nodes.length; j++) {
-          const a = c.nodes[i], b = c.nodes[j];
-          const d = Math.hypot(a.x - b.x, a.y - b.y);
-          const isSpoke = i === 0 || j === 0;
+    for (var ci2 = 0; ci2 < clusters.length; ci2++) {
+      var c2 = clusters[ci2];
+      var maxIntra = Math.max(c2.rx, c2.ry) * 1.15;
+      for (var i = 0; i < c2.nodes.length; i++) {
+        for (var j = i + 1; j < c2.nodes.length; j++) {
+          var a = c2.nodes[i], b = c2.nodes[j];
+          var d = Math.hypot(a.x - b.x, a.y - b.y);
+          var isSpoke = i === 0 || j === 0;
           if (isSpoke || d < maxIntra) {
-            const alpha = isSpoke ? 0.20 : Math.max(0.06, (1 - d / maxIntra) * 0.22);
+            var alpha = isSpoke ? 0.20 : Math.max(0.06, (1 - d / maxIntra) * 0.22);
             ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
-            ctx.strokeStyle = `rgba(${c.rgb}, ${alpha})`; ctx.lineWidth = isSpoke ? 1.05 : 0.85; ctx.stroke();
+            ctx.strokeStyle = 'rgba(' + c2.rgb + ', ' + alpha + ')';
+            ctx.lineWidth = isSpoke ? 1.05 : 0.85;
+            ctx.stroke();
           }
         }
       }
     }
 
-    const maxClusterDist = isMobile ? H * 0.46 : W * 0.44;
-    for (let i = 0; i < clusters.length; i++) {
-      for (let j = i + 1; j < clusters.length; j++) {
-        const c1 = clusters[i], c2 = clusters[j];
-        const cd = Math.hypot(c1.cx - c2.cx, c1.cy - c2.cy);
+    var maxClusterDist = isMobile ? H * 0.46 : W * 0.44;
+    for (var i1 = 0; i1 < clusters.length; i1++) {
+      for (var j1 = i1 + 1; j1 < clusters.length; j1++) {
+        var ca = clusters[i1], cb = clusters[j1];
+        var cd = Math.hypot(ca.cx - cb.cx, ca.cy - cb.cy);
         if (cd < maxClusterDist) {
-          const bridge = findClosestBridge(c1, c2);
+          var bridge = findClosestBridge(ca, cb);
           if (bridge) {
-            const alpha = Math.max(0.08, (1 - cd / maxClusterDist) * 0.28);
+            var bAlpha = Math.max(0.08, (1 - cd / maxClusterDist) * 0.28);
             ctx.save(); ctx.beginPath(); ctx.setLineDash([5, 6]); ctx.lineDashOffset = -tick * 24;
             ctx.moveTo(bridge.a.x, bridge.a.y); ctx.lineTo(bridge.b.x, bridge.b.y);
-            ctx.strokeStyle = `rgba(0, 217, 245, ${alpha})`; ctx.lineWidth = 1.0; ctx.stroke(); ctx.restore();
+            ctx.strokeStyle = 'rgba(0, 217, 245, ' + bAlpha + ')'; ctx.lineWidth = 1.0; ctx.stroke(); ctx.restore();
           }
         }
       }
     }
 
     if (!isPaused) {
-      for (let i = pkts.length - 1; i >= 0; i--) {
-        const p = pkts[i];
+      for (var pi = pkts.length - 1; pi >= 0; pi--) {
+        var p = pkts[pi];
         p.t += p.speed;
         if (p.t >= 1) {
           p.t = 0;
-          const arrived = p.path[p.seg + 1];
+          var arrived = p.path[p.seg + 1];
           if (arrived) { arrived.pulseR = 2.2; arrived.pulseAlpha = 0.85; }
           p.seg++;
-          if (p.seg >= p.path.length - 1) { pkts.splice(i, 1); continue; }
+          if (p.seg >= p.path.length - 1) { pkts.splice(pi, 1); continue; }
         }
-        const a = p.path[p.seg], b = p.path[p.seg + 1];
-        if (!a || !b) continue;
-        const dx = b.x - a.x, dy = b.y - a.y;
-        const headX = a.x + dx * p.t, headY = a.y + dy * p.t;
-        const tailT = Math.max(0, p.t - 0.30);
-        const tailX = a.x + dx * tailT, tailY = a.y + dy * tailT;
+        var pa = p.path[p.seg], pb = p.path[p.seg + 1];
+        if (!pa || !pb) continue;
+        var dx = pb.x - pa.x, dy = pb.y - pa.y;
+        var headX = pa.x + dx * p.t, headY = pa.y + dy * p.t;
+        var tailT = Math.max(0, p.t - 0.30);
+        var tailX = pa.x + dx * tailT, tailY = pa.y + dy * tailT;
 
-        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y);
-        ctx.strokeStyle = `rgba(${p.rgb}, ${Math.sin(p.t * Math.PI) * 0.35})`; ctx.lineWidth = 1.3; ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(pa.x, pa.y); ctx.lineTo(pb.x, pb.y);
+        ctx.strokeStyle = 'rgba(' + p.rgb + ', ' + (Math.sin(p.t * Math.PI) * 0.35) + ')';
+        ctx.lineWidth = 1.3; ctx.stroke();
 
-        const trailGrad = ctx.createLinearGradient(tailX, tailY, headX, headY);
-        trailGrad.addColorStop(0, `rgba(${p.rgb}, 0)`);
-        trailGrad.addColorStop(0.7, `rgba(${p.rgb}, 0.65)`);
+        var trailGrad = ctx.createLinearGradient(tailX, tailY, headX, headY);
+        trailGrad.addColorStop(0, 'rgba(' + p.rgb + ', 0)');
+        trailGrad.addColorStop(0.7, 'rgba(' + p.rgb + ', 0.65)');
         trailGrad.addColorStop(1, '#ffffff');
         ctx.beginPath(); ctx.moveTo(tailX, tailY); ctx.lineTo(headX, headY);
         ctx.strokeStyle = trailGrad; ctx.lineWidth = p.isInterCluster ? 2.2 : 1.8; ctx.lineCap = 'round'; ctx.stroke();
@@ -2426,17 +2563,19 @@
       if (Math.random() < 0.14) spawnPacket(false);
     }
 
-    for (const c of clusters) {
-      for (const n of c.nodes) {
-        if (n.pulseAlpha > 0.03) {
-          ctx.beginPath(); ctx.arc(n.x, n.y, n.r + n.pulseR, 0, Math.PI * 2);
-          ctx.strokeStyle = `rgba(${n.rgb}, ${n.pulseAlpha})`; ctx.lineWidth = 1.2; ctx.stroke();
+    for (var ci3 = 0; ci3 < clusters.length; ci3++) {
+      var c3 = clusters[ci3];
+      for (var ni3 = 0; ni3 < c3.nodes.length; ni3++) {
+        var n3 = c3.nodes[ni3];
+        if (n3.pulseAlpha > 0.03) {
+          ctx.beginPath(); ctx.arc(n3.x, n3.y, n3.r + n3.pulseR, 0, Math.PI * 2);
+          ctx.strokeStyle = 'rgba(' + n3.rgb + ', ' + n3.pulseAlpha + ')'; ctx.lineWidth = 1.2; ctx.stroke();
         }
-        ctx.beginPath(); ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
-        ctx.fillStyle = n.isAnchor ? n.color : `rgba(${n.rgb}, 0.72)`; ctx.fill();
-        if (n.isAnchor) {
-          ctx.beginPath(); ctx.arc(n.x, n.y, n.r + 3.2, 0, Math.PI * 2);
-          ctx.strokeStyle = `rgba(${n.rgb}, 0.38)`; ctx.lineWidth = 1; ctx.stroke();
+        ctx.beginPath(); ctx.arc(n3.x, n3.y, n3.r, 0, Math.PI * 2);
+        ctx.fillStyle = n3.isAnchor ? n3.color : 'rgba(' + n3.rgb + ', 0.72)'; ctx.fill();
+        if (n3.isAnchor) {
+          ctx.beginPath(); ctx.arc(n3.x, n3.y, n3.r + 3.2, 0, Math.PI * 2);
+          ctx.strokeStyle = 'rgba(' + n3.rgb + ', 0.38)'; ctx.lineWidth = 1; ctx.stroke();
         }
       }
     }
@@ -2450,7 +2589,7 @@
   }
 
   if (motionBtn) {
-    motionBtn.addEventListener('click', () => {
+    motionBtn.addEventListener('click', function () {
       isPaused = !isPaused;
       updateMotionUI();
       if (!isPaused && !raf) loop();
@@ -2459,7 +2598,7 @@
   }
 
   window.addEventListener('resize', resize);
-  document.addEventListener('visibilitychange', () => {
+  document.addEventListener('visibilitychange', function () {
     if (document.hidden && raf) { cancelAnimationFrame(raf); raf = null; }
     else if (!document.hidden && !isPaused && !raf) loop();
   });
@@ -2470,54 +2609,49 @@
   else loop();
 })();
 
-// ── FADE UP ON SCROLL ────────────────────────────────
-(function () {
-  const els = document.querySelectorAll('.fade-up');
-  if (!els.length) return;
-  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    els.forEach(el => el.classList.add('visible'));
-    return;
-  }
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-      if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); }
-    });
-  }, { threshold: 0.1 });
-  els.forEach(el => obs.observe(el));
-})();
-
 // ── STICKY MOBILE CTA BAR VISIBILITY ─────────────────
 (function () {
-  const sticky = document.getElementById('stickyMobileCta');
-  const hero = document.getElementById('hero');
-  const descargas = document.getElementById('descargas');
+  var sticky = document.getElementById('stickyMobileCta');
+  var hero = document.getElementById('hero');
+  var descargas = document.getElementById('descargas');
+  var instalar = document.getElementById('instalar');
   if (!sticky || !hero || !descargas) return;
 
-  let heroVisible = true;
-  let ctaVisible = false;
+  var heroVisible = true;
+  var ctaVisible = false;
+  var finalVisible = false;
   function sync() {
-    sticky.classList.toggle('visible', !heroVisible && !ctaVisible);
+    sticky.classList.toggle('visible', !heroVisible && !ctaVisible && !finalVisible);
   }
-  const obs = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
+  var obs = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
       if (e.target === hero) heroVisible = e.isIntersecting;
       if (e.target === descargas) ctaVisible = e.isIntersecting;
+      if (instalar && e.target === instalar) finalVisible = e.isIntersecting;
     });
     sync();
   }, { threshold: 0.08 });
   obs.observe(hero);
   obs.observe(descargas);
+  if (instalar) obs.observe(instalar);
 })();
 
 // ── DEVICE TABS & SCREENSHOTS ────────────────────────
 (function () {
-  const data = {
+  var data = {
     iphone: [
       { src: '../assets/screenshots/iphone/01_conversaciones.png', alt: 'Chax Conversations on iPhone', w: 1320, h: 2868 },
       { src: '../assets/screenshots/iphone/02_chat_directo.png', alt: 'Direct chat on iPhone', w: 1320, h: 2868 },
       { src: '../assets/screenshots/iphone/03_mapax.png', alt: 'Offline Mapax on iPhone', w: 1320, h: 2868 },
       { src: '../assets/screenshots/iphone/04_identidad.png', alt: 'Phone-free identity on iPhone', w: 1320, h: 2868 },
       { src: '../assets/screenshots/iphone/05_ajustes_red.png', alt: 'Mesh network settings on iPhone', w: 1320, h: 2868 }
+    ],
+    android: [
+      { src: '../assets/screenshots/android/01_conversaciones.png', alt: 'Chax Conversations on Android', w: 1080, h: 2400 },
+      { src: '../assets/screenshots/android/02_chat_directo.png', alt: 'Direct chat on Android', w: 1080, h: 2400 },
+      { src: '../assets/screenshots/android/03_mapax.png', alt: 'Offline Mapax on Android', w: 1080, h: 2400 },
+      { src: '../assets/screenshots/android/04_radar_mesh.png', alt: 'Mesh radar on Android', w: 1080, h: 2400 },
+      { src: '../assets/screenshots/android/05_identidad.png', alt: 'Phone-free identity on Android', w: 1080, h: 2400 }
     ],
     ipad: [
       { src: '../assets/screenshots/ipad/01_conversaciones.png', alt: 'Conversations on iPad', w: 2064, h: 2752 },
@@ -2531,15 +2665,16 @@
     ]
   };
 
-  const row = document.getElementById('screenshots-row');
-  const tabs = document.querySelectorAll('.device-tab');
+  var row = document.getElementById('screenshots-row');
+  var tabs = document.querySelectorAll('.device-tab');
+  if (!row) return;
 
   function render(device) {
     row.innerHTML = '';
-    (data[device] || []).forEach(item => {
-      const div = document.createElement('div');
+    (data[device] || []).forEach(function (item) {
+      var div = document.createElement('div');
       div.className = 'screenshot-item' + (item.isMac ? ' mac' : '');
-      const img = document.createElement('img');
+      var img = document.createElement('img');
       img.src = item.src;
       img.alt = item.alt;
       img.width = item.w;
@@ -2551,9 +2686,9 @@
     });
   }
 
-  tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-      tabs.forEach(t => {
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      tabs.forEach(function (t) {
         t.classList.remove('active');
         t.setAttribute('aria-pressed', 'false');
       });
@@ -2566,10 +2701,10 @@
   render('iphone');
 })();
 
-// ── LANGUAGE PERSISTENCE ─────────────────────────────
+// ── LANGUAGE SELECTOR PERSISTENCE ────────────────
 (function () {
-  document.querySelectorAll('.lang-item').forEach(function(el) {
-    el.addEventListener('click', function() {
+  document.querySelectorAll('.lang-item').forEach(function (el) {
+    el.addEventListener('click', function () {
       var l = this.getAttribute('data-lang');
       if (l) {
         try { localStorage.setItem('chax_lang_pref', l); } catch (err) {}

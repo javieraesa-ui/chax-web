@@ -1,34 +1,34 @@
 {
   "ios": {
-    "latestVersion": "3.396",
-    "latestBuild": 736,
+    "latestVersion": "3.404",
+    "latestBuild": 744,
     "minRequiredVersion": "3.360",
     "testFlightUrl": "https://testflight.apple.com/join/hmfhvFdf",
-    "appStoreUrl": "",
-    "releaseNotesEs": "Mapas offline OSM por defecto con etiquetas discretas (Offline/En línea), paridad total con Android 1.159 en sincronización TwinSync multiplataforma, soporte nativo de radio LoRa Meshtastic, avatares en Radar, traducciones ES/EN/PT completas y mayor estabilidad de red.",
-    "releaseNotesEn": "Offline OSM maps by default with clean Offline/Online availability labels, full TwinSync cross-platform parity with Android 1.159, native Meshtastic LoRa radio support, Radar user avatars, full ES/EN/PT localization, and improved mesh/network stability.",
-    "releaseNotesPt": "Mapas offline OSM por padrão com rótulos discretos (Offline/Online), paridade completa TwinSync multiplataforma com Android 1.159, suporte nativo a rádio LoRa Meshtastic, avatares no Radar, traduções ES/EN/PT completas e maior estabilidade de rede."
+    "appStoreUrl": "https://apps.apple.com/app/id6813308866",
+    "releaseNotesEs": "Enlace BLE bidireccional simétrico con Android v1.167, sincronización silenciosa de historial, notas E2EE en cámara rápida y fotos/videos, botón directo Walkie-Talkie, telemetría determinista de rutas y mayor limpieza en Canal 0 LoRa y Radar.",
+    "releaseNotesEn": "Symmetric two-way BLE link with Android v1.167, silent history gap sync, E2EE captions on camera/photos/videos, quick Walkie-Talkie toggle, deterministic route telemetry, and cleaner LoRa Channel 0 & Radar discovery.",
+    "releaseNotesPt": "Link BLE bidirecional simétrico com Android v1.167, sincronização silenciosa de histórico, notas E2EE em câmera/fotos/vídeos, botão direto Walkie-Talkie, telemetria determinística de rotas e maior limpeza no Canal 0 LoRa e Radar."
   },
   "macos": {
-    "latestVersion": "3.396",
-    "latestBuild": 736,
+    "latestVersion": "3.404",
+    "latestBuild": 744,
     "minRequiredVersion": "3.360",
     "testFlightUrl": "https://testflight.apple.com/join/hmfhvFdf",
-    "appStoreUrl": "",
-    "releaseNotesEs": "Mapas offline OSM por defecto con etiquetas claras, sincronización instantánea TwinSync con iOS y Android v1.159, enrutamiento LAN directo sin bloqueos bajo VPN, traducciones ES/EN/PT completas y estabilidad mejorada en red y radar local.",
-    "releaseNotesEn": "Offline OSM maps by default with clear labels, instant TwinSync synchronization with iOS and Android v1.159, smooth direct LAN routing even with VPN active, full ES/EN/PT translations, and improved local radar and network stability.",
-    "releaseNotesPt": "Mapas offline OSM por padrão com rótulos claros, sincronização TwinSync instantânea com iOS e Android v1.159, roteamento LAN direto sem travamentos com VPN ativa, traduções ES/EN/PT completas e maior estabilidade de rede e radar local."
+    "appStoreUrl": "https://apps.apple.com/app/id6813308866",
+    "releaseNotesEs": "Enlace BLE bidireccional simétrico con Android v1.167, sincronización silenciosa de historial, notas E2EE en fotos/videos, simbología unificada, telemetría determinista de rutas y filtrado estricto de tramas técnicas en Radar y LoRa.",
+    "releaseNotesEn": "Symmetric two-way BLE link with Android v1.167, silent history gap sync, E2EE photo/video captions, unified symbology, deterministic route telemetry, and cleaner Radar/LoRa discovery filtering.",
+    "releaseNotesPt": "Link BLE bidirecional simétrico com Android v1.167, sincronização silenciosa de histórico, notas E2EE em fotos/vídeos, simbologia unificada, telemetria determinística de rotas e filtragem rigorosa no Radar e LoRa."
   },
   "android": {
-    "latestVersion": "1.159",
-    "latestVersionCode": 181,
+    "latestVersion": "1.167",
+    "latestVersionCode": 189,
     "minRequiredVersion": "1.120",
     "minRequiredVersionCode": 142,
     "playStoreUrl": "https://play.google.com/store/apps/details?id=com.appx.chax",
     "playTestingUrl": "https://play.google.com/apps/testing/com.appx.chax",
     "apkUrl": "https://chax.chat/download/chax-latest.apk",
-    "releaseNotesEs": "Vinculación BLE/PIN LoRa Meshtastic mejorada, prioridad Wi-Fi LAN TCP sobre BLE sin bloqueos, mapas offline por defecto con etiquetas discretas, paridad visual con iOS v3.396, Mensajes a ti mismo, sincronización TwinSync multiplataforma y traducciones ES/EN/PT completas.",
-    "releaseNotesEn": "Improved LoRa Meshtastic BLE/PIN pairing, direct Wi-Fi LAN TCP priority over BLE without locks, offline-first maps with clean availability labels, iOS v3.396 UI/radar parity, Saved Self Messages, full TwinSync cross-platform sync, and complete ES/EN/PT localization.",
-    "releaseNotesPt": "Pareamento BLE/PIN LoRa Meshtastic aprimorado, prioridade Wi-Fi LAN TCP sobre BLE sem travamentos, mapas offline por padrão com rótulos claros, paridade visual com iOS v3.396, Mensagens para você mesmo, TwinSync multiplataforma e traduções ES/EN/PT completas."
+    "releaseNotesEs": "Enlace BLE bidireccional simétrico con iOS/macOS v3.404 vía GATT Notify y respaldo Wi-Fi LAN, avatares y foto de perfil propia, sincronización silenciosa de historial, notas E2EE en cámara y resolución inmediata de alias de contactos.",
+    "releaseNotesEn": "Symmetric two-way BLE link with iOS/macOS v3.404 via GATT Notify and Wi-Fi LAN fallback, profile photo avatars, silent history sync, camera E2EE captions, and immediate peer alias resolution.",
+    "releaseNotesPt": "Link BLE bidirecional simétrico com iOS/macOS v3.404 via GATT Notify e respaldo Wi-Fi LAN, foto de perfil própria e avatares, sincronização silenciosa de histórico, legendas E2EE na câmera e resolução imediata de apelidos."
   }
 }

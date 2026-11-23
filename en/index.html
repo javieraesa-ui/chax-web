@@ -3,13 +3,145 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chax — Fast over internet. Unstoppable off-grid.</title>
-  <meta name="description" content="Fast over internet, unstoppable mesh. Encrypted messaging with zero phone number that hops phone-to-phone over Bluetooth, Wi-Fi Direct, and LoRa radio when coverage disappears, plus shareable offline maps (.chaxmap).">
-  <meta property="og:title" content="Chax — Fast over internet. Unstoppable off-grid.">
-  <meta property="og:description" content="Own your keys with no phone number, share offline OpenStreetMap &amp; satellite packs (.chaxmap), and help neighbors communicate as a sealed-packet bridge node.">
-  <meta property="og:image" content="../assets/app-icon.png">
+  <title>Chax Chat — Encrypted Messaging Without Internet | Off-Grid Mesh &amp; Offline Maps</title>
+  <meta name="description" content="Chax is the off-grid encrypted messenger that works without internet or cell coverage. Send messages, voice notes, and offline maps (.chaxmap) over Bluetooth mesh, Wi-Fi Direct, and LoRa radio with zero phone number or SIM. Available on iOS, Android, and Mac.">
+  <meta name="keywords" content="chax, chax chat, chax app, off grid messenger, mesh messaging app, chat without internet, text without cell service, bluetooth mesh chat, encrypted messaging no phone number, offline maps, emergency communication app, lora mesh messenger, peer to peer chat">
+  <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+  <meta name="author" content="Appx">
+  <meta name="theme-color" content="#000000">
+
+  <!-- Canonical & Multilingual Alternate Links -->
+  <link rel="canonical" href="https://chax.chat/en/">
+  <link rel="alternate" hreflang="es" href="https://chax.chat/">
+  <link rel="alternate" hreflang="en" href="https://chax.chat/en/">
+  <link rel="alternate" hreflang="pt" href="https://chax.chat/pt/">
+  <link rel="alternate" hreflang="x-default" href="https://chax.chat/">
+
+  <!-- Open Graph / Social Media -->
+  <meta property="og:locale" content="en_US">
+  <meta property="og:site_name" content="Chax Chat">
+  <meta property="og:title" content="Chax Chat — Fast over internet. Unstoppable off-grid.">
+  <meta property="og:description" content="Encrypted messaging with zero phone number or SIM. Flies over Wi-Fi and hops phone-to-phone over Bluetooth mesh and LoRa radio when off-grid, with offline maps.">
+  <meta property="og:url" content="https://chax.chat/en/">
+  <meta property="og:image" content="https://chax.chat/assets/appx-header.jpg">
+  <meta property="og:image:width" content="1600">
+  <meta property="og:image:height" content="900">
+  <meta property="og:image:alt" content="Chax Chat - Off-Grid Mesh Messenger &amp; Offline Maps">
   <meta property="og:type" content="website">
+
+  <!-- Twitter Cards -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Chax Chat — Fast over internet. Unstoppable off-grid.">
+  <meta name="twitter:description" content="Encrypted messaging with zero phone number. Flies over Wi-Fi and hops phone-to-phone in a resilient mesh network off the grid.">
+  <meta name="twitter:image" content="https://chax.chat/assets/appx-header.jpg">
+
   <link rel="icon" type="image/png" href="../assets/app-icon.png">
+  <link rel="apple-touch-icon" href="../assets/app-icon.png">
+
+  <!-- Structured Data (JSON-LD) for Google Search / Schema.org -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "@id": "https://chax.chat/en/#app",
+        "name": "Chax",
+        "alternateName": ["Chax Chat", "Chax App", "Chax Messenger"],
+        "operatingSystem": "iOS 16+, macOS 13+, Android 8+",
+        "applicationCategory": "CommunicationApplication",
+        "applicationSubCategory": "Encrypted Mesh Messenger",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        },
+        "description": "Encrypted messaging and off-grid mesh network without cell service or internet. Send messages, voice notes, and offline maps (.chaxmap) via Bluetooth, Wi-Fi Direct, and LoRa radio with zero phone number.",
+        "url": "https://chax.chat/en/",
+        "downloadUrl": "https://chax.chat/download/",
+        "softwareVersion": "3.404",
+        "image": "https://chax.chat/assets/app-icon.png",
+        "screenshot": "https://chax.chat/assets/appx-header.jpg",
+        "featureList": [
+          "End-to-end encrypted messaging with zero phone number or SIM",
+          "Off-grid Bluetooth and Wi-Fi Direct mesh networking",
+          "Interactive shareable offline maps (.chaxmap)",
+          "Meshtastic LoRa radio support",
+          "TwinSync cross-platform sync between iPhone, iPad, Mac, and Android",
+          "Zero-knowledge relay bridge nodes with Sealed Sender"
+        ],
+        "author": {
+          "@type": "Organization",
+          "name": "Appx",
+          "url": "https://chax.chat/"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "@id": "https://chax.chat/en/#website",
+        "url": "https://chax.chat/en/",
+        "name": "Chax Chat",
+        "alternateName": ["Chax", "Chax Messenger", "Chax Off-Grid Mesh"],
+        "description": "Fast over internet, unstoppable off-grid. Encrypted messaging and offline maps with zero phone number.",
+        "inLanguage": "en"
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://chax.chat/en/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "What does my phone do as a bridge node? Is it private and battery-safe?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "When running near other off-grid users, your phone helps route Sealed Sender envelopes. Neither you nor intermediate nodes can read contents or discover sender identities. Adaptive PathTable logic tunes BLE duty cycles to protect battery life."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What does Chax offer on a normal day with Internet?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Instant chats, groups, and voice notes with zero phone number, shareable offline maps (Mapax & .chaxmap), and direct encrypted TwinSync across iPhone, iPad, Mac, and Android. If cell service drops, it fails over to mesh automatically."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can Android communicate seamlessly with iPhone and Mac?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Official Android (v1.167 via Google Play and direct APK) and iOS/macOS (v3.404 via Apple TestFlight) speak the exact same encrypted multi-hop protocol online and off-grid."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I share offline maps and waypoints with my group?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Inside Mapax you download OpenStreetMap or satellite regions ahead of time free of commercial API keys, group your pins, and send them in chat or as portable .chaxmap files."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do I need external antennas to talk without cell coverage?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Local mesh (~100 m per hop, extendable across multiple hops between nearby phones) uses your phone's built-in Bluetooth and Wi-Fi. Optional LoRa radios (+30 km) extend range for mountain expeditions or citywide links."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I add contacts without giving out my phone number?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Scan your Chax QR code in person in 2 seconds or verify SHA-256 cryptographic fingerprints. No phone number, email, or cloud sign-up is ever requested."
+            }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
 
   <!-- Privacy-friendly analytics (deferred to keep critical path unblocked) -->
   <script defer data-goatcounter="https://chax.goatcounter.com/count" src="//gc.zgo.at/count.js"></script>
@@ -1454,7 +1586,7 @@
     <div class="wrap">
       <div class="hero-grid">
         <div class="hero-copy">
-          <div class="hero-eyebrow">iOS &amp; Mac v<span data-ver="ios">3.396</span> · Android v<span data-ver="android">1.159</span> · Free</div>
+          <div class="hero-eyebrow">iOS &amp; Mac v<span data-ver="ios">3.404</span> · Android v<span data-ver="android">1.167</span> · Free</div>
           <h1 class="hero-title">
             Fast over internet.<br>
             <span class="accent-green">Unstoppable</span> <span class="accent-coral">off-grid.</span>
@@ -1519,7 +1651,7 @@
             </div>
             <div>
               <h3 class="dl-title">iPhone &amp; iPad</h3>
-              <div class="dl-ver">v<span data-ver="ios">3.396</span> · TestFlight</div>
+              <div class="dl-ver">v<span data-ver="ios">3.404</span> · TestFlight</div>
             </div>
           </div>
           <p class="dl-desc">Native app with lock-screen voice autoplay, offline Mapax, and multi-hop Bluetooth mesh.</p>
@@ -1537,7 +1669,7 @@
             </div>
             <div>
               <h3 class="dl-title">Mac</h3>
-              <div class="dl-ver">v<span data-ver="macos">3.396</span> · Apple Silicon &amp; Intel</div>
+              <div class="dl-ver">v<span data-ver="macos">3.404</span> · Apple Silicon &amp; Intel</div>
             </div>
           </div>
           <p class="dl-desc">Type with a full keyboard and mirror conversations end-to-end with TwinSync.</p>
@@ -1555,7 +1687,7 @@
             </div>
             <div>
               <h3 class="dl-title">Android</h3>
-              <div class="dl-ver">v<span data-ver="android">1.159</span> · Google Play &amp; APK</div>
+              <div class="dl-ver">v<span data-ver="android">1.167</span> · Google Play &amp; APK</div>
             </div>
           </div>
           <p class="dl-desc">Step-by-step guide to join Google Play closed testing or download the direct APK.</p>
@@ -1977,7 +2109,7 @@
         <details class="faq-item">
           <summary>Does Android communicate directly with iPhone and Mac?</summary>
           <div class="faq-a">
-            Yes. Official Android (<strong>v<span data-ver="android">1.159</span></strong> via Google Play and direct APK) and iOS/macOS (<strong>v<span data-ver="ios">3.396</span></strong> via Apple TestFlight) speak the exact same encrypted multi-hop protocol online and off-grid.
+            Yes. Official Android (<strong>v<span data-ver="android">1.167</span></strong> via Google Play and direct APK) and iOS/macOS (<strong>v<span data-ver="ios">3.404</span></strong> via Apple TestFlight) speak the exact same encrypted multi-hop protocol online and off-grid.
           </div>
         </details>
 
@@ -2019,13 +2151,13 @@
 
       <div class="final-buttons">
         <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" rel="noopener" class="btn-primary" data-gc-event="final-ios-testflight">
-          🍎 iPhone &amp; iPad · TestFlight (v<span data-ver="ios">3.396</span>)
+          🍎 iPhone &amp; iPad · TestFlight (v<span data-ver="ios">3.404</span>)
         </a>
         <a href="https://testflight.apple.com/join/hmfhvFdf" target="_blank" rel="noopener" class="btn-ghost" data-gc-event="final-mac-testflight">
-          💻 Mac · TestFlight (v<span data-ver="macos">3.396</span>)
+          💻 Mac · TestFlight (v<span data-ver="macos">3.404</span>)
         </a>
         <a href="../download/?lang=en#androidCard" class="btn-ghost" style="border-color:rgba(0,245,155,0.45);background:rgba(0,245,155,0.08);" data-gc-event="final-android-download">
-          🤖 Android · Play Store &amp; APK (v<span data-ver="android">1.159</span>) →
+          🤖 Android · Play Store &amp; APK (v<span data-ver="android">1.167</span>) →
         </a>
       </div>
 
@@ -2070,7 +2202,7 @@
     <div class="footer-inner">
       <div class="footer-brand">
         <img src="../assets/app-icon.png" alt="Chax Logo" loading="lazy" width="512" height="512">
-        <span>Chax · iOS &amp; macOS v<span data-ver="ios">3.396</span> · Android v<span data-ver="android">1.159</span></span>
+        <span>Chax · iOS &amp; macOS v<span data-ver="ios">3.404</span> · Android v<span data-ver="android">1.167</span></span>
       </div>
       <div class="footer-links">
         <a href="../monix.html">Monix</a>
